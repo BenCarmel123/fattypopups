@@ -1,0 +1,246 @@
+@import '../../index.css';
+
+.credentials {
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    margin-left: var(--spacing-medium);
+    margin-right: var(--spacing-medium);
+}
+
+.credentials button {
+    font-size: 1rem;
+    padding: var(--spacing-small);
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+}
+
+.mainTitle {
+    font-size: 2rem;
+    font-weight: var(--font-weight-bold);
+    margin-left: var(--spacing-medium);
+    margin-right: var(--spacing-medium);
+    display: flex;
+    align-items: center;
+    font-style: italic;
+}
+
+.header {
+    background-color: transparent;
+    font-size: var(--font-size-medium);
+    font-weight: var(--font-weight-bold);
+    margin: var(--spacing-small) 0;
+    padding: var(--spacing-small) 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* Remove border-radius for square corners */
+    border-radius: 0;
+    /* Make header sticky at the top */
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    min-height: 3.5rem;
+    /* Match horizontal margins to .centeredContent for alignment */
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+@media (max-width: 600px) {
+  .header {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-small) var(--spacing-medium);
+    min-height: unset;
+    margin-left: 15%;
+    margin-right: 15%;
+  }
+  .mainTitle {
+    font-size: 1.2rem;
+    margin: 0 0 var(--spacing-xsmall) 0;
+    text-align: center;
+    width: 100%;
+    justify-content: center;
+    display: flex;
+  }
+  .credentials {
+    justify-content: center;
+    margin: 0;
+    width: 100%;
+    display: flex;
+  }
+  .credentials button {
+    font-size: 0.95rem;
+    padding: var(--spacing-xsmall) var(--spacing-small);
+    height: 2rem;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+  }
+}
+
+.centeredContent {
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+@media (max-width: 600px) {
+  .centeredContent {
+    margin-left: 15%;
+    margin-right: 15%;
+  }
+}
+
+.browse {
+    display: block;
+    font-size: var(--font-size-title);
+    font-weight: bold;
+}
+
+.carouselWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: var(--spacing-large);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.carouselArrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none !important;
+  box-shadow: none !important;
+  color: var(--chakra-colors-blue-400) !important;
+  padding: 0 !important;
+  border: none !important;
+  transition: none;
+  z-index: 2;
+}
+
+.carouselArrow.left {
+  left: 15vw;
+}
+.carouselArrow.right {
+  right: 15vw;
+}
+
+.carouselWrapper > .chakra-card {
+  width: 90vw;
+  max-width: 900px;
+  min-width: 220px;
+}
+
+.carouselCard {
+  width: 70vw;
+  max-width: 700px;
+  min-width: 220px;
+}
+
+@media (max-width: 600px) {
+  .carouselArrow.left {
+    left: 15vw;
+  }
+  .carouselArrow.right {
+    right: 15vw;
+  }
+  .carouselWrapper > .chakra-card {
+    width: 98vw;
+    min-width: 0;
+    max-width: 98vw;
+  }
+  .carouselCard {
+    width: 92vw;
+    min-width: 0;
+    max-width: 98vw;
+  }
+}
+
+.carousel-arrow-btn svg {
+  display: block;
+  pointer-events: none;
+}
+
+.carousel-arrow-btn:hover .carousel-arrow-circle,
+.carousel-arrow-btn:focus .carousel-arrow-circle,
+.carousel-arrow-btn:active .carousel-arrow-circle {
+  fill: var(--chakra-colors-blue-500);
+  stroke: var(--chakra-colors-blue-600);
+  transition: fill 0.2s, stroke 0.2s;
+}
+
+.carousel-arrow-btn:hover .carousel-arrow-line,
+.carousel-arrow-btn:focus .carousel-arrow-line,
+.carousel-arrow-btn:active .carousel-arrow-line {
+  stroke: #fff;
+  transition: stroke 0.2s;
+}
+
+.carousel-arrow-circle {
+  transition: fill 0.2s, stroke 0.2s;
+}
+
+.carousel-arrow-line {
+  transition: stroke 0.2s;
+}
+
+.carouselArrow:hover, .carouselArrow:active, .carouselArrow:focus {
+  background: none !important;
+  color: var(--chakra-colors-blue-600) !important;
+}
+
+.carouselFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 var(--spacing-large) var(--spacing-large) var(--spacing-large);
+  width: 100%;
+}
+
+.carouselFooter :global(button),
+.carouselFooter :global(.chakra-iconbutton) {
+  margin-bottom: var(--spacing-small);
+}
+
+.carouselFooterIcons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 var(--spacing-large) var(--spacing-large) var(--spacing-large);
+  width: 100%;
+}
+
+.carouselFooterIcons :global(button),
+.carouselFooterIcons :global(.chakra-iconbutton) {
+  margin-bottom: var(--spacing-small);
+}
+
+.adminCornerButton {
+  position: fixed !important;
+  top: var(--spacing-medium);
+  right: var(--spacing-medium);
+  z-index: 1000;
+  background: transparent !important;
+  box-shadow: none !important;
+  opacity: 0.7;
+  color: #2596be !important;
+  border: none !important;
+}
+
+@media (min-width: 600px) {
+  .centeredContent {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 600px;
+  }
+
+   .browse {
+        margin-top: -5rem;
+    }
+    
+}

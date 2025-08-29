@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Chocolate+Classical+Sans&display=swap');
+
+/* Global CSS Variables */
+:root {
+    --primary-header-color: #cce6ff;
+    --primary-bg-color: #fbf7f5;
+    --primary-button-color: #b6e4b7;
+    --secondary-button-color: #d2f3d1;
+    --border-color: #000000;
+    --error-color: #c46666;
+    --button-text-color: white;
+    --button-border-color: #121612;
+    --primary-font: "Plus Jakarta Sans", sans-serif;
+    --font-size-title: 40px;
+    --font-size-medium: 16px;
+    --font-weight-bold: bold;
+    --letter-spacing: 1.25px;
+    --line-height: 1.5;
+    --spacing-small: 5px;
+    --spacing-medium: 20px;
+    --spacing-large: 40px;
+    --border-radius: 5px;
+    --border-style-solid: solid;
+    --margin-top-medium: 10%;
+}
+
+/* Global body styling */
+body {
+    background-color: var(--primary-bg-color);
+    font-family: 'Chocolate Classical Sans', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 50vh;
+    letter-spacing: var(--letter-spacing);
+    line-height: var(--line-height);
+}
+
+html {
+    background-color: var(--primary-bg-color);
+}
+
+.centered-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    gap: var(--spacing-small);
+    /* margin-top: var(--margin-top-medium); */
+}
+
+.centered-content-global {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+@media (min-width: 600px) {
+  .centered-content-global {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 600px;
+  }
+}
