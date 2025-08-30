@@ -47,3 +47,13 @@ app.post('/api/events', async (req, res) => {
     }
 });
 
+// Fetch all events
+app.get('/api/events', async (req, res) => {
+    try {
+        const events = await pool.query('SELECT * FROM events');
+        res.json(events.rows);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+

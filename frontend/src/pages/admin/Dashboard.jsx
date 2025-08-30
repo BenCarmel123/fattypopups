@@ -1,32 +1,43 @@
 import { Checkbox, Table, Button } from "@chakra-ui/react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { ADD, EDIT } from "../../components/strings"
+import { SERVER_URL } from "../../Config"
 
 const Dashboard = ({ handleClick }) => {
   const [selection, setSelection] = useState([])
+  const [events, setEvents] = useState([])
+  
+  useEffect(() => {
+    fetch(`${SERVER_URL}/api/events`)
+      .then(res => res.json())
+      .then(data => setEvents(data))
+      .catch(err => console.error('Error fetching events:', err));
+  }, [])
 
-  const indeterminate = selection.length > 0 && selection.length < items.length
+  console.log('Fetched events:', events)
+
+  const indeterminate = selection.length > 0 && selection.length < events.length
 
   function backToFatty() {
     window.location.href = "/";
   }
 
-  const rows = items.map((item) => (
+  const rows = events.map((event) => (
     <Table.Row
-      key={item.name}
-      data-selected={selection.includes(item.name) ? "" : undefined}
+      key={event.title}
+      data-selected={selection.includes(event.title) ? "" : undefined}
     >
       <Table.Cell>
         <Checkbox.Root
           size="sm"
           mt="0.5"
           aria-label="Select row"
-          checked={selection.includes(item.name)}
+          checked={selection.includes(event.title)}
           onCheckedChange={(changes) => {
             setSelection((prev) =>
               changes.checked
-                ? [...prev, item.name]
-                : selection.filter((name) => name !== item.name),
+                ? [...prev, event.title]
+                : selection.filter((title) => title !== event.title),
             )
           }}
         >
@@ -34,36 +45,22 @@ const Dashboard = ({ handleClick }) => {
           <Checkbox.Control />
         </Checkbox.Root>
       </Table.Cell>
-      <Table.Cell>{item.name}</Table.Cell>
-      <Table.Cell>{item.category}</Table.Cell>
-      <Table.Cell>${item.price}</Table.Cell>
+      <Table.Cell>{event.title}</Table.Cell>
+      <Table.Cell>{event.description}</Table.Cell>
+      <Table.Cell>{event.venue_address}</Table.Cell>
     </Table.Row>
   ))
 
   return (
     <div className="centered-content-global" style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
       <Table.Root interactive stickyHeader>
-        <Table.Header colorScheme="blue">
-          <Table.Row>
+        <Table.Header>
+          <Table.Row style={{ backgroundColor: '#cce6ff' }}>
             <Table.ColumnHeader w="6">
-              <Checkbox.Root
-                size="sm"
-                mt="0.5"
-                aria-label="Select all rows"
-                checked={indeterminate ? "indeterminate" : selection.length > 0}
-                onCheckedChange={(changes) => {
-                  setSelection(
-                    changes.checked ? items.map((item) => item.name) : [],
-                  )
-                }}
-              >
-                <Checkbox.HiddenInput />
-                <Checkbox.Control />
-              </Checkbox.Root>
             </Table.ColumnHeader>
             <Table.ColumnHeader>Event</Table.ColumnHeader>
-            <Table.ColumnHeader>Start Date</Table.ColumnHeader>
-            <Table.ColumnHeader>End Date</Table.ColumnHeader>
+            <Table.ColumnHeader>Description</Table.ColumnHeader>
+            <Table.ColumnHeader>Location</Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
         <Table.Body>{rows}</Table.Body>
@@ -77,11 +74,5 @@ const Dashboard = ({ handleClick }) => {
     </div>
   )
 }
-
-const items = [
-  { name: "Event 1", category: "Music", price: 20 },
-  { name: "Event 2", category: "Art", price: 15 },
-  { name: "Event 3", category: "Tech", price: 30 },
-]
 
 export default Dashboard

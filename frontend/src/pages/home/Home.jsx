@@ -1,7 +1,8 @@
 import styles from '../home/home.module.css';
-import React from "react"
-import { APP_NAME, INSTA_LINK, INSTA_TEXT, ADMIN_ROUTE } from '../../Config';
-import { Button, RadioCard, Card, Image, Text, IconButton, Drawer, CloseButton, Stack, Portal } from '@chakra-ui/react';
+import React, { useState, useEffect } from "react"
+import { APP_NAME, INSTA_LINK, INSTA_TEXT, SERVER_URL } from '../../Config';
+import { ADMIN_ROUTE } from '../../adminRoute';
+import { Button, RadioCard, Card, Text, IconButton, Drawer, CloseButton } from '@chakra-ui/react';
 import { SiInstagram, SiGooglecalendar } from "react-icons/si";
 import { LuPhone } from "react-icons/lu";
 import { FaRegShareFromSquare } from "react-icons/fa6";
@@ -60,6 +61,16 @@ export default function HomePage() {
 }
 
 const Carousel = () => {
+  const [events, setEvents] = useState([]);
+  useEffect(() => {
+    fetch(`${SERVER_URL}/api/events`)
+      .then(res => res.json())
+      .then(data => setEvents(data))
+      .catch(err => console.error('Error fetching events:', err));
+  }, []);
+
+  console.log('Fetched events:', events);
+  
   // Helper for left/right arrow IconButton
   const renderArrow = (direction) => (
     <IconButton
