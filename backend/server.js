@@ -50,7 +50,7 @@ app.post('/api/events', async (req, res) => {
 // Fetch all events
 app.get('/api/events', async (req, res) => {
     try {
-        const events = await pool.query('SELECT * FROM events');
+        const events = await pool.query('SELECT * FROM events ORDER BY start_datetime ASC');
         res.json(events.rows);
     } catch (err) {
         res.status(500).json({ error: err.message });

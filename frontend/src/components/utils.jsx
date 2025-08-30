@@ -37,3 +37,14 @@ export default function validateEvent(event) {
     }
     return { valid: true };
 }
+
+// Helper to format date ranges from start and end dates of events
+export function formatDateRange(start, end) {
+    if (start && end) {
+        return `${new Date(start).toLocaleDateString(undefined, { month: 'long', day: 'numeric' })} - ${new Date(end).toLocaleDateString(undefined, { month: 'long', day: 'numeric' })}`;
+    } else if (start) {
+        return new Date(start).toLocaleDateString(undefined, { month: 'long', day: 'numeric' });
+    } else {
+        return '';
+    }
+}

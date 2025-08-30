@@ -1,6 +1,6 @@
 import { Button, Card, Stack, Input, Field } from "@chakra-ui/react";
 import { LOGIN } from "../../components/strings.jsx";
-import validateEvent from "./utils.jsx";
+import validateEvent from "../../components/utils.jsx";
 
 
 export function LoginForm( {handleClick}) {

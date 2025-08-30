@@ -9,6 +9,8 @@ import { FaRegShareFromSquare } from "react-icons/fa6";
 import { TfiArrowCircleRight, TfiArrowCircleLeft } from "react-icons/tfi";
 import { CiSquareMore } from "react-icons/ci";
 import { RiMailLine } from "react-icons/ri";
+import { formatDateRange } from '../../components/utils';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 function Credentials() {
   function handleInstagram() {
@@ -62,36 +64,93 @@ export default function HomePage() {
 
 const Carousel = () => {
   const [events, setEvents] = useState([]);
+  const [currentEventIndex, setCurrentEventIndex] = useState(0);
   useEffect(() => {
     fetch(`${SERVER_URL}/api/events`)
       .then(res => res.json())
       .then(data => setEvents(data))
       .catch(err => console.error('Error fetching events:', err));
   }, []);
-
-  console.log('Fetched events:', events);
   
-  // Helper for left/right arrow IconButton
-  const renderArrow = (direction) => (
-    <IconButton
-      className={styles.carouselArrow}
-      variant="ghost"
-      size="2xl"
-      color="blue.400"
-      style={direction === 'left' ? { left: '-4.5rem' } : { right: '-4.5rem' }}
-      _hover={{ background: 'blue.400', color: 'white' }}
-      _active={{ background: 'blue.600', color: 'white' }}
-      aria-label={direction === 'left' ? 'Previous' : 'Next'}
-    >
-      {direction === 'left' ? <TfiArrowCircleLeft /> : <TfiArrowCircleRight />}
-    </IconButton>
+
+  // If no events, show message
+  if (events.length === 0) {
+    return <Text>No events available.</Text>;
+  }
+
+  // Show only the current event  
+  const event = events[currentEventIndex];
+
+  return (
+    <div className={styles.carouselWrapper} style={{ marginTop: '1.5rem' }}>
+      <RenderArrow direction="left" nextEvent={setCurrentEventIndex} events={events} current={currentEventIndex}/>
+        <Card.Root className={styles.carouselCard} size="2xl" overflow="hidden" rounded="lg" >
+          <img
+            src={event.image_url}
+            alt={event.title}
+            style={{
+              width: '100%',
+              height: '300px%',
+              objectFit: 'cover',
+              display: 'block'
+            }}
+          />
+          <Details eventDetails={event.description} eventTitle={event.title}/>
+          <Card.Body gap="2" padding="6">
+            <Card.Title fontSize="2xl"> {event.title} </Card.Title>
+            <Card.Description fontSize="lg" color="gray.600">
+              {event.chef_names && Array.isArray(event.chef_names) ? event.chef_names.join(' X ') : ''}
+              <br/>
+              {event.venue_address} 
+              <br/>
+              {formatDateRange(event.start_datetime, event.end_datetime)}
+            </Card.Description>
+            <Text textStyle="2xl" fontWeight="medium" letterSpacing="tight" mt="2">
+            </Text>
+          </Card.Body>
+          <Card.Footer gap="2" className={styles.carouselFooterIcons}>
+            <Footer />
+          </Card.Footer>
+        </Card.Root>
+      <RenderArrow direction="right" nextEvent={setCurrentEventIndex} events={events} current={currentEventIndex}/>
+    </div>
   );
+}
+
+export { Carousel };
+
+// Carousel component helpers
+
+// Render Arrow component
+  function RenderArrow ( {direction, nextEvent, events, current} ) {
+    const ChevronIcon = direction === 'left' ? ChevronLeft : ChevronRight;
+    return (
+      <ChevronIcon
+        className={styles.carouselArrow}
+        variant="subtle"
+        size="lg"
+        color="blue"
+        style={direction === 'left' ? { left: '-4.5rem' } : { right: '-4.5rem' }}
+        _hover={{ background: 'blue.400', color: 'white' }}
+        _active={{ background: 'blue.600', color: 'white' }}
+        aria-label={direction === 'left' ? 'Previous' : 'Next'}
+        onClick={() => {
+          if (!events.length) return;
+          nextEvent(() => {
+            const len = events.length;
+            return direction === 'left'
+              ? (current - 1 + len) % len
+              : (current + 1) % len;
+          });
+        }}
+      />
+    );
+  }
   
   // Helper for footer icons
   const Footer = () => {
       return (
         <>
-          <IconButton variant="outline" size="xl" rounded="2xl"> <LuPhone /> </IconButton>
           <IconButton variant="outline" size="xl" rounded="2xl"> <SiGooglecalendar /> </IconButton>
           <IconButton variant="outline" size="xl" rounded="2xl"> <FaRegShareFromSquare /> </IconButton>
           <IconButton variant="outline" size="xl" rounded="2xl"> <SiInstagram /> </IconButton>
@@ -99,52 +158,32 @@ const Carousel = () => {
       );
   }
 
-
-  return (
-    <div className={styles.carouselWrapper} style={{ marginTop: '1.5rem' }}>
-      {renderArrow('left')}
-      <Card.Root className={styles.carouselCard} maxW="sm" overflow="hidden" rounded="lg">
-         <Details/>
-        <img src="/hakatan.jpg" alt="Event Image" />
-        <Card.Body gap="2">
-          <Card.Title> HaKatan </Card.Title>
-          <Card.Description>
-            Ori Salama x Ido Kablan || Levinsky 36
-          </Card.Description>
-          <Text textStyle="2xl" fontWeight="medium" letterSpacing="tight" mt="2">
-          </Text>
-        </Card.Body>
-        <Card.Footer gap="2" className={styles.carouselFooterIcons}>
-          <Footer />
-        </Card.Footer>
-      </Card.Root>
-      {renderArrow('right')}
-    </div>
-  )
-}
-
-export { Carousel };
-
-const Details = () => { 
+const Details = ({ eventDetails, eventTitle }) => { 
   return (
     <Drawer.Root> 
         <Text></Text>
         <Drawer.Trigger asChild>
-         <Button variant="outline" size="m" rounded="2xl" style={{ position: 'absolute', top: '1rem', right: '1rem', zIndex: 1000, background: 'transparent', boxShadow: 'none' }}><CiSquareMore /></Button>
+         <Button
+           variant="outline"
+           size="m"
+           rounded="2xl"
+           className={styles.detailsDrawerButton}
+         >
+           <CiSquareMore />
+         </Button>
         </Drawer.Trigger>
         <Drawer.Backdrop pos="absolute" boxSize="full" />
         <Drawer.Positioner pos="absolute" boxSize="full" padding="4">
           <Drawer.Content>
             <Drawer.Header>
-              <Drawer.Title>Drawer Title</Drawer.Title>
+              <Drawer.Title> {eventTitle} </Drawer.Title>
               <Drawer.CloseTrigger asChild>
                 <CloseButton size="sm" />
               </Drawer.CloseTrigger>
             </Drawer.Header>
             <Drawer.Body>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                {eventDetails}
               </p>
             </Drawer.Body>
             <Drawer.Footer>
