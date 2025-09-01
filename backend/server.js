@@ -57,3 +57,20 @@ app.get('/api/events', async (req, res) => {
     }
 });
 
+// Delete events by titles
+app.delete('/api/events', async (req, res) => {
+    const { titles } = req.body; 
+    if (!Array.isArray(titles) || titles.length === 0) {
+        return res.status(400).json({ error: 'Titles must be a non-empty array' });
+    }
+    try {
+        const deleteQuery = 'DELETE FROM events WHERE title = ANY($1::text[])';
+        await pool.query(deleteQuery, [titles]);
+        res.status(200).json(
+            { message: 'Events deleted successfully', 
+                events: titles});
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+

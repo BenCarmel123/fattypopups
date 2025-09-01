@@ -1,10 +1,25 @@
 import { Button, Card, Stack, Input, Field } from "@chakra-ui/react";
-import { LOGIN } from "../../components/strings.jsx";
+import { DASHBOARD, LOGIN } from "../../components/strings.jsx";
 import validateEvent from "../../components/utils.jsx";
+import { ADMIN_USERNAME, ADMIN_PASSWORD } from "../../adminRoute.js";
 
+export default function LoginForm( {handleClick} ) {
+    const handleLogin = (e) =>
+    {
+        e.preventDefault();
+        const form = e.target; // e.target is the form when using onSubmit
+        const username = form.username.value;
+        const password = form.password.value;
+        if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+            console.log("Login successful");
+            handleClick(DASHBOARD)();
+        } else {
+            console.log("Login failed");
+        }
+    }
 
-export function LoginForm( {handleClick}) {
     return (<div className="centered-content-global">
+            <form onSubmit={handleLogin}>
         <Card.Root maxW="md" w="100%" minW="350px">
             <Card.Header>
                 <div style={{ marginBottom: 8, color: '#888' }}>Hey Benji</div>
@@ -14,25 +29,24 @@ export function LoginForm( {handleClick}) {
                 <Stack gap={4} w="full">
                     <Field.Root>
                         <Field.Label color="#2596be">Username</Field.Label>
-                        <Input />
+                        <Input name="username" />
                     </Field.Root>
                     <Field.Root>
                         <Field.Label color="#2596be">Password</Field.Label>
-                        <Input type="password" />
+                        <Input type="password" name="password" />
                     </Field.Root>
                 </Stack>
             </Card.Body>
             <Card.Footer justifyContent="flex-end">
-                <Button variant="subtle" colorPalette="blue" ml={2} onClick = { handleClick(LOGIN) }>Login</Button>
+                <Button variant="subtle" colorPalette="blue" ml={2} type="submit">Login</Button>
             </Card.Footer>
         </Card.Root>
+        </form>
     </div>);
 }
 
-export default LoginForm;
-
-export function EventForm({ handleClick } ) {
-    function handleNewEvent(e) {
+export function EventForm({ handleClick, event } ) {
+    function handleEvent(e) {
         e.preventDefault(); 
         const form = e.target; // e.target is the form when using onSubmit
         const event = {
@@ -73,60 +87,59 @@ export function EventForm({ handleClick } ) {
             alert("Error creating event: " + err.message);
         });
     }
-
     return (
         <div className="centered-content-global">
             <Card.Root maxW="md" w="100%" minW="350px">
                 <Card.Header>
                     <div style={{ marginBottom: 8, color: '#888' }}>Add New Event</div>
                 </Card.Header>
-                <form onSubmit={handleNewEvent}>
+                <form onSubmit={handleEvent}>
                     <Card.Body>
                         <Stack gap={4} w="full">
                             <Field.Root>
                                 <Field.Label color="#2596be">Title</Field.Label>
-                                <Input name="title" />
+                                <Input name="title" defaultValue={event?.title || ""} />
                             </Field.Root>
                             <Field.Root>
                                 <Field.Label color="#2596be">Description</Field.Label>
-                                <Input name="description" />
+                                <Input name="description" defaultValue={event?.description || ""} />
                             </Field.Root>
                             <Field.Root>
                                 <Field.Label color="#2596be">Start Date & Time</Field.Label>
-                                <Input type="datetime-local" name="start_datetime" />
+                                <Input type="datetime-local" name="start_datetime" defaultValue={event?.start_datetime || ""} />
                             </Field.Root>
                             <Field.Root>
                                 <Field.Label color="#2596be">End Date & Time</Field.Label>
-                                <Input type="datetime-local" name="end_datetime" />
+                                <Input type="datetime-local" name="end_datetime" defaultValue={event?.end_datetime || ""} />
                             </Field.Root>
                             <Field.Root>
                                 <Field.Label color="#2596be">Venue Instagram</Field.Label>
-                                <Input name="venue_instagram" />
+                                <Input name="venue_instagram" defaultValue={event?.venue_instagram || ""} />
                             </Field.Root>
                             <Field.Root>
                                 <Field.Label color="#2596be">Venue Address</Field.Label>
-                                <Input name="venue_address" />
+                                <Input name="venue_address" defaultValue={event?.venue_address || ""} />
                             </Field.Root>
                             <Field.Root>
                                 <Field.Label color="#2596be">Chef Names (comma separated)</Field.Label>
-                                <Input name="chef_names" placeholder="e.g. Ori Salama, Ido Kablan" />
+                                <Input name="chef_names" placeholder="e.g. Ori Salama, Ido Kablan" defaultValue={event?.chef_names ? event.chef_names.join(', ') : ""} />
                             </Field.Root>
                             <Field.Root>
                                 <Field.Label color="#2596be">Chef Instagrams (comma separated)</Field.Label>
-                                <Input name="chef_instagrams" placeholder="e.g. @ori, @ido" />
+                                <Input name="chef_instagrams" placeholder="e.g. @ori, @ido" defaultValue={event?.chef_instagrams ? event.chef_instagrams.join(', ') : ""} />
                             </Field.Root>
                             <Field.Root>
                                 <Field.Label color="#2596be">Image URL</Field.Label>
-                                <Input name="image_url" />
+                                <Input name="image_url" defaultValue={event?.image_url || ""} />
                             </Field.Root>
                             <Field.Root>
                                 <Field.Label color="#2596be">Reservation URL</Field.Label>
-                                <Input name="reservation_url" />
+                                <Input name="reservation_url" defaultValue={event?.reservation_url || ""} />
                             </Field.Root>
                         </Stack>
                     </Card.Body>
                     <Card.Footer justifyContent="flex-end">
-                        <Button variant="ghost" onClick={handleClick(LOGIN)} type="button">Cancel</Button>
+                        <Button variant="ghost" onClick={handleClick(DASHBOARD)} type="button">Cancel</Button>
                         <Button variant="subtle" colorPalette="blue" ml={2} type="submit">Add Event</Button>
                     </Card.Footer>
                 </form>

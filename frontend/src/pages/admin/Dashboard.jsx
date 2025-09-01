@@ -2,11 +2,14 @@ import { Checkbox, Table, Button } from "@chakra-ui/react"
 import { useState, useEffect } from "react"
 import { ADD, EDIT } from "../../components/strings"
 import { SERVER_URL } from "../../Config"
+import MyAlert from "../../components/CustomAlert.jsx"; 
 
 const Dashboard = ({ handleClick }) => {
   const [selection, setSelection] = useState([])
   const [events, setEvents] = useState([])
+  const [alert, setAlert] = useState(undefined);
   
+  // Fetch events from the server
   useEffect(() => {
     fetch(`${SERVER_URL}/api/events`)
       .then(res => res.json())
@@ -14,10 +17,35 @@ const Dashboard = ({ handleClick }) => {
       .catch(err => console.error('Error fetching events:', err));
   }, [])
 
-  console.log('Fetched events:', events)
+  // Delete selected events
+  const handleDeleteEvents = () => {
+    fetch(`${SERVER_URL}/api/events`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ titles: selection }),
+    })
+    .then(res => {
+      if (res.ok) {
+        res.json().then(data => {
+          setEvents(data.events);
+          setSelection([]);
+        });
+      }
+    })
+    .catch(err => console.error('Error deleting events:', err));
+  }
 
-  const indeterminate = selection.length > 0 && selection.length < events.length
+  // Edit selected event (only if one selected)
+  const handleEditEvents = () => {
+    if (selection.length !== 1) {
+      setAlert({ status: "error", title: "Selection Error", description: "Please select exactly one event to edit." });
+      return
+    }
+    const eventToEdit = events.find(event => event.title === selection[0]);
+    handleClick(EDIT, eventToEdit)();
+  }
 
+  // Navigate back to homepage
   function backToFatty() {
     window.location.href = "/";
   }
@@ -53,6 +81,7 @@ const Dashboard = ({ handleClick }) => {
 
   return (
     <div className="centered-content-global" style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
+      {alert && <MyAlert {...alert} onClose={() => setAlert(null)} />}
       <Table.Root interactive stickyHeader>
         <Table.Header>
           <Table.Row style={{ backgroundColor: '#cce6ff' }}>
@@ -66,9 +95,9 @@ const Dashboard = ({ handleClick }) => {
         <Table.Body>{rows}</Table.Body>
       </Table.Root>
       <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginTop: '2rem' }}>
-        <Button colorPalette="blue" variant="subtle" onClick={ handleClick(ADD) }>Add</Button>
-        <Button colorPalette="blue" variant="subtle" onClick={ handleClick(EDIT) }>Edit</Button>
-        <Button colorPalette="blue" variant="subtle">Delete</Button>
+        <Button colorPalette="blue" variant="subtle" onClick={ handleClick(ADD, undefined) }>Add</Button>
+        <Button colorPalette="blue" variant="subtle" onClick={ handleEditEvents }>Edit</Button>
+        <Button colorPalette="blue" variant="subtle" onClick={handleDeleteEvents}>Delete</Button>
         <Button colorPalette="blue" variant="subtle" onClick={backToFatty}>Back</Button>
       </div>
     </div>
