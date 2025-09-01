@@ -273,3 +273,15 @@
     }
     
 }
+
+.detailsDrawerText {
+    font-size: 24px !important;
+    line-height: 1.5 !important;
+    color: var(--text-color) !important;
+    direction: rtl !important;
+}
+
+.detailsDrawerButton:hover, .detailsDrawerButton:active {
+  background-color: var(--primary-header-color) !important;
+  transition: background-color 0.2s, color 0.2s !important;
+}

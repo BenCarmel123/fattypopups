@@ -2,20 +2,14 @@ import styles from '../home/home.module.css';
 import React, { useState, useEffect } from "react"
 import { APP_NAME, INSTA_LINK, INSTA_TEXT, SERVER_URL } from '../../Config';
 import { ADMIN_ROUTE } from '../../adminRoute';
-import { Button, RadioCard, Card, Text, IconButton, Drawer, CloseButton } from '@chakra-ui/react';
-import { SiInstagram, SiGooglecalendar } from "react-icons/si";
-import { LuPhone } from "react-icons/lu";
-import { FaRegShareFromSquare } from "react-icons/fa6";
-import { TfiArrowCircleRight, TfiArrowCircleLeft } from "react-icons/tfi";
-import { CiSquareMore } from "react-icons/ci";
+import { Button, RadioCard, Card, Text, IconButton, Drawer, CloseButton, chakra } from '@chakra-ui/react';
+import { SiInstagram, SiGooglecalendar, SiWhatsapp } from "react-icons/si";
 import { RiMailLine } from "react-icons/ri";
 import { formatDateRange } from '../../components/utils';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { IoAdd } from "react-icons/io5";
 
 function Credentials() {
-  function handleInstagram() {
-    window.open(INSTA_LINK, '_blank', 'noopener,noreferrer');
-  }
 
   function handleAdmin() {
     window.location.href = "/" + ADMIN_ROUTE;
@@ -32,15 +26,15 @@ function Credentials() {
         >
           <RiMailLine /> Admin
         </Button>
-        <Button colorPalette="blue" variant="ghost" rounded="lg" onClick={handleInstagram}>
-          <SiInstagram/> {INSTA_TEXT}
-        </Button>
       </div>
     </>
   );
 }
 
 export default function HomePage() {
+   function handleInstagram() {
+    window.open(INSTA_LINK, '_blank', 'noopener,noreferrer');
+  }
   return (
     <>
     <header className={styles.header}>
@@ -48,8 +42,11 @@ export default function HomePage() {
         src="/logo.png"
         alt={APP_NAME}
         className={styles.mainTitle}
-        style={{ height: '8rem', objectFit: 'contain' }}
+        style={{ height: '12rem', objectFit: 'contain' }}
       />
+      <Button size="2xl" colorPalette="blue" variant="ghost" rounded="lg" onClick={handleInstagram} style={{ margin: '1.5rem 0 0.5rem 0', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+        <SiInstagram size="2xl" /> {INSTA_TEXT}
+      </Button>
       <Credentials />
     </header>
     <div className={`${styles.centeredContent} centered-content`}>
@@ -82,9 +79,10 @@ const Carousel = () => {
   const event = events[currentEventIndex];
 
   return (
-    <div className={styles.carouselWrapper} style={{ marginTop: '1.5rem' }}>
+    <div className={styles.carouselWrapper} style={{ marginTop: '1.5rem', boxShadow: '0 8px 16px rgb(201, 197, 197)', borderRadius: '2rem', background: 'white' }}>
       <RenderArrow direction="left" nextEvent={setCurrentEventIndex} events={events} current={currentEventIndex}/>
         <Card.Root className={styles.carouselCard} size="2xl" overflow="hidden" rounded="lg" >
+           <Details eventDetails={event.description} eventTitle={event.title}/>
           <img
             src={event.image_url}
             alt={event.title}
@@ -95,7 +93,6 @@ const Carousel = () => {
               display: 'block'
             }}
           />
-          <Details eventDetails={event.description} eventTitle={event.title}/>
           <Card.Body gap="2" padding="6">
             <Card.Title fontSize="2xl"> {event.title} </Card.Title>
             <Card.Description fontSize="lg" color="gray.600">
@@ -108,7 +105,7 @@ const Carousel = () => {
             <Text textStyle="2xl" fontWeight="medium" letterSpacing="tight" mt="2">
             </Text>
           </Card.Body>
-          <Card.Footer gap="2" className={styles.carouselFooterIcons}>
+          <Card.Footer gap="2" className={styles.carouselFooterIcons} style={{ justifyContent: 'flex-start', padding: '0 2.5rem 2.5rem 2.5rem' }}>
             <Footer />
           </Card.Footer>
         </Card.Root>
@@ -150,11 +147,11 @@ export { Carousel };
   // Helper for footer icons
   const Footer = () => {
       return (
-        <>
-          <IconButton variant="outline" size="xl" rounded="2xl"> <SiGooglecalendar /> </IconButton>
-          <IconButton variant="outline" size="xl" rounded="2xl"> <FaRegShareFromSquare /> </IconButton>
-          <IconButton variant="outline" size="xl" rounded="2xl"> <SiInstagram /> </IconButton>
-        </>
+        <div style={{ display: 'flex', gap: '3rem' }}>
+          <IconButton variant="outline" size="2xl" rounded="2xl"> <SiGooglecalendar /> </IconButton>
+          <IconButton variant="outline" size="2xl" rounded="2xl"> <SiWhatsapp /> </IconButton>
+          <IconButton variant="outline" size="2xl" rounded="2xl"> <SiInstagram /> </IconButton>
+        </div>
       );
   }
 
@@ -164,25 +161,25 @@ const Details = ({ eventDetails, eventTitle }) => {
         <Text></Text>
         <Drawer.Trigger asChild>
          <Button
-           variant="outline"
+           variant="subtle"
            size="m"
-           rounded="2xl"
+           rounded="m"
            className={styles.detailsDrawerButton}
+           style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: '0.5rem', paddingLeft: '1rem' }}
          >
-           <CiSquareMore />
+          <IoAdd style={{ marginRight: '0.5rem' }} />
          </Button>
         </Drawer.Trigger>
         <Drawer.Backdrop pos="absolute" boxSize="full" />
         <Drawer.Positioner pos="absolute" boxSize="full" padding="4">
           <Drawer.Content>
             <Drawer.Header>
-              <Drawer.Title> {eventTitle} </Drawer.Title>
               <Drawer.CloseTrigger asChild>
-                <CloseButton size="sm" />
+                <CloseButton size="lg" style={{ position: 'absolute', left: '1rem', top: '1rem' }} />
               </Drawer.CloseTrigger>
             </Drawer.Header>
             <Drawer.Body>
-              <p>
+              <p className={styles.detailsDrawerText}>
                 {eventDetails}
               </p>
             </Drawer.Body>
