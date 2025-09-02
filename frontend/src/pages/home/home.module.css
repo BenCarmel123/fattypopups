@@ -25,6 +25,9 @@
     display: flex;
     align-items: center;
     font-style: italic;
+    height: 7rem;
+    object-fit: contain;
+    margin-bottom: 0.5rem;
 }
 
 .header {
@@ -46,6 +49,16 @@
     /* Match horizontal margins to .centeredContent for alignment */
     margin-left: 5%;
     margin-right: 5%;
+    background: #f7f8fa;
+    border-bottom: 2px solid #e2e8f0;
+    box-shadow: 0 2px 8px rgba(180,180,180,0.12);
+    padding-bottom: 0.75rem;
+    width: 100vw;
+    margin-left: 0;
+    margin-right: 0;
+    left: 0;
+    right: 0;
+    position: relative;
 }
 
 @media (max-width: 600px) {
@@ -106,6 +119,7 @@
   align-items: center;
   justify-content: center;
   margin-top: var(--spacing-large);
+  margin-bottom: 6rem;
   width: 100%;
   height: auto;
   box-sizing: border-box;
@@ -249,6 +263,19 @@
   margin-bottom: var(--spacing-small);
 }
 
+.iconButtonIcon {
+  transition: transform 0.2s cubic-bezier(0.4,0,0.2,1);
+}
+.iconButton:hover .iconButtonIcon {
+  transform: rotate(-45deg);
+}
+.instaButtonIcon {
+  transition: transform 0.2s cubic-bezier(0.4,0,0.2,1);
+}
+.instaButton:hover .instaButtonIcon {
+  transform: rotate(-45deg);
+}
+
 .adminCornerButton {
   position: fixed !important;
   top: var(--spacing-medium);
@@ -284,4 +311,40 @@
 .detailsDrawerButton:hover, .detailsDrawerButton:active {
   background-color: var(--primary-header-color) !important;
   transition: background-color 0.2s, color 0.2s !important;
+}
+
+.eventLocation {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.eventLocation:hover {
+  text-decoration: underline;
+  color: var(--primary-header-color);
+  transition: color 0.2s;
+}
+
+.instaButtonWrapper {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.instaButton {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-right: 2rem;
+}
+
+body {
+  background: #f7f8fa;
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+html {
+  background: #f7f8fa;
+  height: 100%;
 }

@@ -8,9 +8,9 @@ import { RiMailLine } from "react-icons/ri";
 import { formatDateRange } from '../../components/utils';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { IoAdd } from "react-icons/io5";
+import { AspectRatio } from '@chakra-ui/react/aspect-ratio';
 
 function Credentials() {
-
   function handleAdmin() {
     window.location.href = "/" + ADMIN_ROUTE;
   }
@@ -31,8 +31,51 @@ function Credentials() {
   );
 }
 
+ function handleWhatsApp(event) {
+        const description = event.description || '';
+        window.open(`https://wa.me/?text=${encodeURIComponent(`${window.location.href}\n\n${description}`)}`, '_blank');
+    }
+
+  function handleMaps(address) {
+    const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+    window.open(mapsUrl, '_blank', 'noopener,noreferrer');
+  }
+
+function handleGoogleCalendar(event) {
+    if (!event) return;
+    let dateStr = event.start_datetime;
+    const endDateStr = event.end_datetime;
+    const eventName = event.title || "Pop Up";
+    const location = event.venue_address || "Tel Aviv";
+    const now = new Date();
+    const startDate = new Date(dateStr);
+    if (startDate < now && endDateStr) {
+        dateStr = endDateStr;
+    }
+    const date = new Date(dateStr);
+    date.setHours(18, 0, 0, 0);
+    const endDate = new Date(date);
+    endDate.setHours(endDate.getHours() + 2);
+    const startFormatted = date.toISOString().replace(/-|:|\.\d+/g, "");
+    const endFormatted = endDate.toISOString().replace(/-|:|\.\d+/g, "");
+    const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE` + 
+        `&text=${encodeURIComponent(eventName)}` + 
+        `&dates=${startFormatted}/${endFormatted}` + 
+        `&location=${encodeURIComponent(location)}`;
+    window.open(calendarUrl, '_blank');
+}
+
+function handleInstagram(event) {
+  const handle = event?.chef_instagrams?.[0]?.replace(/^@/, '');
+  window.open(
+    handle ? `https://instagram.com/${handle}` : INSTA_LINK,
+    '_blank',
+    'noopener,noreferrer'
+  );
+}
+
 export default function HomePage() {
-   function handleInstagram() {
+   function handleAshamen() {
     window.open(INSTA_LINK, '_blank', 'noopener,noreferrer');
   }
   return (
@@ -42,17 +85,18 @@ export default function HomePage() {
         src="/logo.png"
         alt={APP_NAME}
         className={styles.mainTitle}
-        style={{ height: '12rem', objectFit: 'contain' }}
       />
-      <Button size="2xl" colorPalette="blue" variant="ghost" rounded="lg" onClick={handleInstagram} style={{ margin: '1.5rem 0 0.5rem 0', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-        <SiInstagram size="2xl" /> {INSTA_TEXT}
-      </Button>
+      <div className={styles.instaButtonWrapper}>
+        <Button colorPalette="blue" variant="ghost" size="2xl" rounded="2xl" onClick={handleAshamen} className={styles.instaButton}>
+          <span className={styles.instaButtonIcon}><SiInstagram /></span> {INSTA_TEXT}
+        </Button>
+      </div>
       <Credentials />
     </header>
-    <div className={`${styles.centeredContent} centered-content`}>
+    <div className={`${styles.centeredContent} centered-content`} style={{ marginTop: '0.5rem' }}>
       <RadioCard.Root defaultValue="next">
       </RadioCard.Root>
-      <div style={{ height: '2.5rem' }} />
+      <div style={{ height: '1rem' }} />
       <Carousel />
     </div>
     </>
@@ -83,6 +127,7 @@ const Carousel = () => {
       <RenderArrow direction="left" nextEvent={setCurrentEventIndex} events={events} current={currentEventIndex}/>
         <Card.Root className={styles.carouselCard} size="2xl" overflow="hidden" rounded="lg" >
            <Details eventDetails={event.description} eventTitle={event.title}/>
+           <AspectRatio ratio={12 / 12}>
           <img
             src={event.image_url}
             alt={event.title}
@@ -93,12 +138,14 @@ const Carousel = () => {
               display: 'block'
             }}
           />
+          </AspectRatio>
           <Card.Body gap="2" padding="6">
             <Card.Title fontSize="2xl"> {event.title} </Card.Title>
             <Card.Description fontSize="lg" color="gray.600">
               {event.chef_names && Array.isArray(event.chef_names) ? event.chef_names.join(' X ') : ''}
               <br/>
-              {event.venue_address} 
+              <p className={styles.eventLocation} onClick={() => handleMaps(event.venue_address)}>{event.venue_address}</p>
+              
               <br/>
               {formatDateRange(event.start_datetime, event.end_datetime)}
             </Card.Description>
@@ -106,7 +153,7 @@ const Carousel = () => {
             </Text>
           </Card.Body>
           <Card.Footer gap="2" className={styles.carouselFooterIcons} style={{ justifyContent: 'flex-start', padding: '0 2.5rem 2.5rem 2.5rem' }}>
-            <Footer />
+            <Footer event={event}/>
           </Card.Footer>
         </Card.Root>
       <RenderArrow direction="right" nextEvent={setCurrentEventIndex} events={events} current={currentEventIndex}/>
@@ -145,12 +192,18 @@ export { Carousel };
   }
   
   // Helper for footer icons
-  const Footer = () => {
+  const Footer = ( {event} ) => {
       return (
-        <div style={{ display: 'flex', gap: '3rem' }}>
-          <IconButton variant="outline" size="2xl" rounded="2xl"> <SiGooglecalendar /> </IconButton>
-          <IconButton variant="outline" size="2xl" rounded="2xl"> <SiWhatsapp /> </IconButton>
-          <IconButton variant="outline" size="2xl" rounded="2xl"> <SiInstagram /> </IconButton>
+        <div className={styles.carouselFooterIcons}>
+          <IconButton variant="outline" size="2xl" rounded="2xl" onClick={() => handleGoogleCalendar(event)} className={styles.iconButton}>
+            <span className={styles.iconButtonIcon}><SiGooglecalendar /></span>
+          </IconButton>
+          <IconButton variant="outline" size="2xl" rounded="2xl" onClick={() => handleWhatsApp(event)} className={styles.iconButton}>
+            <span className={styles.iconButtonIcon}><SiWhatsapp /></span>
+          </IconButton>
+          <IconButton variant="outline" size="2xl" rounded="2xl" className={styles.iconButton}>
+            <span className={styles.iconButtonIcon} onClick={() => handleInstagram(event)}><SiInstagram /></span>
+          </IconButton>
         </div>
       );
   }

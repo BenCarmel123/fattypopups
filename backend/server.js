@@ -14,6 +14,7 @@ app.use(express.json()); // Parse JSON bodies
 
 // DB 
 const { Pool } = require('pg');
+const cron = require('node-cron');
 const pool = new Pool({connectionString: process.env.DATABASE_URL,}); 
 
 // Start server
@@ -37,9 +38,15 @@ catch (err) {
 app.post('/api/events', async (req, res) => {
     const { title, description, start_datetime, end_datetime, venue_instagram, venue_address, chef_names, chef_instagrams, image_url, reservation_url } = req.body;
     try {
+        // Insert new event
         const newEvent = await pool.query(
             'INSERT INTO events (title, description, start_datetime, end_datetime, venue_instagram, venue_address, chef_names, chef_instagrams, image_url, reservation_url) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *',
             [title, description, start_datetime, end_datetime, venue_instagram, venue_address, chef_names, chef_instagrams, image_url, reservation_url]
+        );
+        // Increment counter in counters table
+        await pool.query(
+            'UPDATE counters SET counter = counter + 1 WHERE name = $1',
+            ['events']
         );
         res.json(newEvent.rows[0]);
     } catch (err) {
@@ -73,4 +80,22 @@ app.delete('/api/events', async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
+
+
+async function cleanupPastEvents() {
+    try {
+        const now = new Date();
+        // Delete events where end_datetime is before today (i.e., past events)
+        const result = await pool.query(
+            'DELETE FROM events WHERE end_datetime < $1',
+            [now]
+        );
+        console.log(`✅ Past events cleanup: ${result.rowCount} events deleted`);
+    } catch (error) {
+        console.error('❌ Cleanup failed:', error);
+    }
+}
+
+// Run every day at 2 AM
+cron.schedule('0 2 * * *', cleanupPastEvents);
 
