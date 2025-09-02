@@ -1,4 +1,8 @@
 import validator from 'validator';
+import { SMALL, MEDIUM, LARGE } from './strings';
+import { MyAlert } from './CustomAlert.jsx';
+
+// Helper to validate event data
 export default function validateEvent(event) {
     const { title, description, start_datetime, end_datetime, venue_instagram, venue_address, chef_names, chef_instagrams, image_url, reservation_url } = event;
     
@@ -47,4 +51,11 @@ export function formatDateRange(start, end) {
     } else {
         return '';
     }
+}
+
+export function getScreenSize() {
+    const width = window.innerWidth;
+    if (width <= 600) return SMALL;
+    if (width <= 900) return MEDIUM;
+    return LARGE;
 }

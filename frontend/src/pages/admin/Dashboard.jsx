@@ -80,13 +80,12 @@ const Dashboard = ({ handleClick }) => {
   ))
 
   return (
-    <div className="centered-content-global" style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
+    <div className="centered-content-global" style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch', maxWidth: '1200px', minWidth: '400px', margin: '0 auto', padding: '2rem', borderRadius: '2rem' }}>
       {alert && <MyAlert {...alert} onClose={() => setAlert(null)} />}
-      <Table.Root interactive stickyHeader>
+      <Table.Root interactive stickyHeader size="lg">
         <Table.Header>
-          <Table.Row style={{ backgroundColor: '#cce6ff' }}>
-            <Table.ColumnHeader w="6">
-            </Table.ColumnHeader>
+          <Table.Row style={{ backgroundColor: '#cce6ff', fontSize: '1.25rem', height: '3.5rem' }}>
+            <Table.ColumnHeader w="6" />
             <Table.ColumnHeader>Event</Table.ColumnHeader>
             <Table.ColumnHeader>Description</Table.ColumnHeader>
             <Table.ColumnHeader>Location</Table.ColumnHeader>
@@ -94,11 +93,11 @@ const Dashboard = ({ handleClick }) => {
         </Table.Header>
         <Table.Body>{rows}</Table.Body>
       </Table.Root>
-      <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginTop: '2rem' }}>
-        <Button colorPalette="blue" variant="subtle" onClick={ handleClick(ADD, undefined) }>Add</Button>
-        <Button colorPalette="blue" variant="subtle" onClick={ handleEditEvents }>Edit</Button>
-        <Button colorPalette="blue" variant="subtle" onClick={handleDeleteEvents}>Delete</Button>
-        <Button colorPalette="blue" variant="subtle" onClick={backToFatty}>Back</Button>
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', marginTop: '2.5rem' }}>
+        <Button colorPalette="blue" variant="subtle" size="lg" onClick={ handleClick(ADD, undefined) }>Add</Button>
+        <Button colorPalette="blue" variant="subtle" size="lg" onClick={ handleEditEvents }>Edit</Button>
+        <Button colorPalette="blue" variant="subtle" size="lg" onClick={handleDeleteEvents}>Delete</Button>
+        <Button colorPalette="blue" variant="subtle" size="lg" onClick={backToFatty}>Back</Button>
       </div>
     </div>
   )

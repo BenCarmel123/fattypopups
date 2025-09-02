@@ -1,9 +1,13 @@
 import { Button, Card, Stack, Input, Field } from "@chakra-ui/react";
-import { DASHBOARD, LOGIN } from "../../components/strings.jsx";
+import { DASHBOARD } from "../../components/strings.jsx";
 import validateEvent from "../../components/utils.jsx";
 import { ADMIN_USERNAME, ADMIN_PASSWORD } from "../../adminRoute.js";
+import  MyAlert  from "../../components/CustomAlert.jsx";
+import { useState } from "react";
 
 export default function LoginForm( {handleClick} ) {
+    const [alert, setAlert] = useState(undefined);
+
     const handleLogin = (e) =>
     {
         e.preventDefault();
@@ -14,31 +18,39 @@ export default function LoginForm( {handleClick} ) {
             console.log("Login successful");
             handleClick(DASHBOARD)();
         } else {
+            setAlert({ status: "error", title: "Login Failed", description: "Invalid username or password." });
             console.log("Login failed");
         }
     }
 
-    return (<div className="centered-content-global">
+    return (<div className="centered-content-global" style={{ position: 'relative' }}>
+         {alert && (
+            <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 2000, display: 'flex', justifyContent: 'center', pointerEvents: 'none' }}>
+                <div style={{ pointerEvents: 'auto', width: 'fit-content' }}>
+                    <MyAlert {...alert} onClose={() => setAlert(null)} />
+                </div>
+            </div>
+        )}
             <form onSubmit={handleLogin}>
-        <Card.Root maxW="md" w="100%" minW="350px">
+        <Card.Root maxW="lg" w="100%" minW="400px" padding={8} boxShadow="2xl" borderRadius="2xl">
             <Card.Header>
-                <div style={{ marginBottom: 8, color: '#888' }}>Hey Benji</div>
-                <div style={{ fontWeight: 700, fontSize: 24 }}>Login</div>
+                <div style={{ marginBottom: 16, color: '#2596be', fontSize: 20 }}>Hey Benji</div>
+                <div style={{ fontWeight: 700, fontSize: 32 }}>Login</div>
             </Card.Header>
             <Card.Body>
-                <Stack gap={4} w="full">
+                <Stack gap={6} w="full">
                     <Field.Root>
-                        <Field.Label color="#2596be">Username</Field.Label>
-                        <Input name="username" />
+                        <Field.Label color="#2596be" fontSize={18}>Username</Field.Label>
+                        <Input name="username" size="lg" padding={6} fontSize={18} />
                     </Field.Root>
                     <Field.Root>
-                        <Field.Label color="#2596be">Password</Field.Label>
-                        <Input type="password" name="password" />
+                        <Field.Label color="#2596be" fontSize={18}>Password</Field.Label>
+                        <Input type="password" name="password" size="lg" padding={6} fontSize={18} />
                     </Field.Root>
                 </Stack>
             </Card.Body>
-            <Card.Footer justifyContent="flex-end">
-                <Button variant="subtle" colorPalette="blue" ml={2} type="submit">Login</Button>
+            <Card.Footer justifyContent="flex-end" paddingTop={6}>
+                <Button variant="subtle" colorPalette="blue" ml={4} size="lg" type="submit">Login</Button>
             </Card.Footer>
         </Card.Root>
         </form>
@@ -46,6 +58,9 @@ export default function LoginForm( {handleClick} ) {
 }
 
 export function EventForm({ handleClick, event } ) {
+    const [alert, setAlert] = useState(undefined);
+
+
     function handleEvent(e) {
         e.preventDefault(); 
         const form = e.target; // e.target is the form when using onSubmit
@@ -63,7 +78,7 @@ export function EventForm({ handleClick, event } ) {
         };
         const validation = validateEvent(event);
         if (!validation.valid) {
-            console.log("Validation Error: " + validation.error);
+           alert({ status: "error", title: "Validation Error", description: validation.error });
             return;
         }
         fetch("http://localhost:5000/api/events", {
@@ -88,7 +103,14 @@ export function EventForm({ handleClick, event } ) {
         });
     }
     return (
-        <div className="centered-content-global">
+        <div className="centered-content-global" style={{ position: 'relative' }}>
+            {alert && (
+                <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 2000, display: 'flex', justifyContent: 'center', pointerEvents: 'none' }}>
+                    <div style={{ pointerEvents: 'auto', width: 'fit-content' }}>
+                        <MyAlert {...alert} onClose={() => setAlert(null)} />
+                    </div>
+                </div>
+            )}
             <Card.Root maxW="md" w="100%" minW="350px">
                 <Card.Header>
                     <div style={{ marginBottom: 8, color: '#888' }}>Add New Event</div>

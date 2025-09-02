@@ -43,12 +43,15 @@ app.post('/api/events', async (req, res) => {
             'INSERT INTO events (title, description, start_datetime, end_datetime, venue_instagram, venue_address, chef_names, chef_instagrams, image_url, reservation_url) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *',
             [title, description, start_datetime, end_datetime, venue_instagram, venue_address, chef_names, chef_instagrams, image_url, reservation_url]
         );
-        // Increment counter in counters table
-        await pool.query(
-            'UPDATE counters SET counter = counter + 1 WHERE name = $1',
-            ['events']
-        );
-        res.json(newEvent.rows[0]);
+
+        // // Increment counter in counters table
+        
+        // await pool.query(
+        //     'UPDATE counters SET counter = counter + 1 WHERE name = $1',
+        //     ['events']
+        // );
+        // res.json(newEvent.rows[0]);
+
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
