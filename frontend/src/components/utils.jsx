@@ -59,3 +59,21 @@ export function getScreenSize() {
     if (width <= 900) return MEDIUM;
     return LARGE;
 }
+
+// Function to open Google Maps with the given address
+export function handleMaps(address) {
+  const query = encodeURIComponent(address);
+  const url = `https://www.google.com/maps/search/?api=1&query=${query}`;
+  window.open(url, '_blank', 'noopener,noreferrer');
+}
+
+// Function to open WhatsApp with pre-filled message
+ export function handleWhatsApp(description) {
+        const desc = description || '';
+        window.open(`https://wa.me/?text=${encodeURIComponent(`${window.location.href}\n\n${desc}`)}`, '_blank');
+    }
+
+export function handleInstagram(instagram) {
+    const instagramHandle = instagram.startsWith('@') ? instagram.slice(1) : instagram;
+    window.open(`https://www.instagram.com/${instagramHandle}`, '_blank', 'noopener,noreferrer');
+}

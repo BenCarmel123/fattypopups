@@ -2,65 +2,20 @@ import styles from '../home/home.module.css';
 import React, { useState, useEffect } from "react"
 import { APP_NAME, INSTA_LINK, INSTA_TEXT, SERVER_URL } from '../../Config';
 import { ADMIN_ROUTE } from '../../adminRoute';
-import { Button, RadioCard, Card, Text, IconButton, Drawer, CloseButton } from '@chakra-ui/react';
-import { SiInstagram, SiGooglecalendar, SiWhatsapp } from "react-icons/si";
+import { Button, Text } from '@chakra-ui/react';
+import { SiInstagram} from "react-icons/si";
 import { RiMailLine } from "react-icons/ri";
-import { formatDateRange, getScreenSize } from '../../components/utils';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { IoAdd } from "react-icons/io5";
-import { AspectRatio } from '@chakra-ui/react/aspect-ratio';
-import { LARGE, MEDIUM } from '../../components/strings';
+import EventCard from '../../components/EventCard';
+import { Instagram } from 'lucide-react';
 
- function handleWhatsApp(event) {
-        const description = event.description || '';
-        window.open(`https://wa.me/?text=${encodeURIComponent(`${window.location.href}\n\n${description}`)}`, '_blank');
-    }
-
- function handleMaps(address) {
-    const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
-    window.open(mapsUrl, '_blank', 'noopener,noreferrer');
-  }
-
-function handleGoogleCalendar(event) {
-    if (!event) return;
-    let dateStr = event.start_datetime;
-    const endDateStr = event.end_datetime;
-    const eventName = event.title || "Pop Up";
-    const location = event.venue_address || "Tel Aviv";
-    const now = new Date();
-    const startDate = new Date(dateStr);
-    if (startDate < now && endDateStr) {
-        dateStr = endDateStr;
-    }
-    const date = new Date(dateStr);
-    date.setHours(18, 0, 0, 0);
-    const endDate = new Date(date);
-    endDate.setHours(endDate.getHours() + 2);
-    const startFormatted = date.toISOString().replace(/-|:|\.\d+/g, "");
-    const endFormatted = endDate.toISOString().replace(/-|:|\.\d+/g, "");
-    const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE` + 
-        `&text=${encodeURIComponent(eventName)}` + 
-        `&dates=${startFormatted}/${endFormatted}` + 
-        `&location=${encodeURIComponent(location)}`;
-    window.open(calendarUrl, '_blank');
-}
-
-function handleInstagram(event) {
-  const handle = event?.chef_instagrams?.[0]?.replace(/^@/, '');
-  window.open(
-    handle ? `https://instagram.com/${handle}` : INSTA_LINK,
-    '_blank',
-    'noopener,noreferrer'
-  );
-}
-
-function Admin() {
+const Admin = () => {
+  
   function handleAdmin() {
     window.location.href = "/" + ADMIN_ROUTE;
   }
   return (
     <>
-      <div className={styles.credentials}>
+      <div className={styles.adminCorner}>
         <Button
           className={styles.adminCornerButton}
           colorScheme="teal"
@@ -75,216 +30,59 @@ function Admin() {
   );
 }
 
-// Carousel component helpers
-
-// Render Arrow component
-function RenderArrow ( {direction, nextEvent, events, current} ) {
-  const ChevronIcon = direction === 'left' ? ChevronLeft : ChevronRight;
+export function Header() {
   return (
-    <ChevronIcon
-      className={styles.carouselArrow}
-      variant="subtle"
-      size="lg"
-      color="blue"
-      style={direction === 'left' ? { left: '-4.5rem' } : { right: '-4.5rem' }}
-      _hover={{ background: 'blue.400', color: 'white' }}
-      _active={{ background: 'blue.600', color: 'white' }}
-      aria-label={direction === 'left' ? 'Previous' : 'Next'}
-      onClick={() => {
-        if (!events.length) return;
-        nextEvent(() => {
-          const len = events.length;
-          return direction === 'left'
-            ? (current - 1 + len) % len
-            : (current + 1) % len;
-        });
-      }}
-    />
-  );
-}
-  
-// Helper for footer icons
-const Footer = ( {event} ) => {
-    return (
-      <div className={styles.carouselFooterIcons}>
-        <IconButton variant="outline" size="2xl" rounded="2xl" onClick={() => handleGoogleCalendar(event)} className={styles.iconButton}>
-          <span className={styles.iconButtonIcon}><SiGooglecalendar /></span>
-        </IconButton>
-        <IconButton variant="outline" size="2xl" rounded="2xl" onClick={() => handleWhatsApp(event)} className={styles.iconButton}>
-          <span className={styles.iconButtonIcon}><SiWhatsapp /></span>
-        </IconButton>
-        <IconButton variant="outline" size="2xl" rounded="2xl" className={styles.iconButton}>
-          <span className={styles.iconButtonIcon} onClick={() => handleInstagram(event)}><SiInstagram /></span>
-        </IconButton>
+    <header className="sticky top-0 z-50 bg-white/90 border-b border-white-100 px-8 py-4">
+      <div className="flex items-center justify-between max-w-3xl mx-auto">
+        <h1 className="text-2xl font-extrabold bg-[#9bc2c3] bg-clip-text text-transparent tracking-normal">
+          fattypopups
+        </h1>
+        
+        <Button
+          variant="ghost"
+          className="text-[#9bc2c3] font-bold gap-1 transition-all duration-200 bg-blue-50 hover:bg-blue-200 hover:text-[#ffffff] px-4 rounded-2xl"
+          onClick={() => window.open('https://instagram.com/ben_ashamen', '_blank')}
+        >
+          <Instagram className="w-6 h-6" />
+          @ben_ashamen
+        </Button>
       </div>
-    );
-}
-
-// Details drawer component
-const Details = ({ eventDetails, eventTitle }) => { 
-  return (
-    <Drawer.Root> 
-        <Text></Text>
-        <Drawer.Trigger asChild>
-         <Button
-           variant="subtle"
-           size="m"
-           rounded="m"
-           className={styles.detailsDrawerButton}
-           style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: '0.5rem', paddingLeft: '1rem' }}
-         >
-          <IoAdd style={{ marginRight: '0.5rem' }} />
-         </Button>
-        </Drawer.Trigger>
-        <Drawer.Backdrop pos="absolute" boxSize="full" />
-        <Drawer.Positioner pos="absolute" boxSize="full" padding="4">
-          <Drawer.Content>
-            <Drawer.Header>
-              <Drawer.CloseTrigger asChild>
-                <CloseButton size="lg" style={{ position: 'absolute', left: '1rem', top: '1rem' }} />
-              </Drawer.CloseTrigger>
-            </Drawer.Header>
-            <Drawer.Body>
-              <p className={styles.detailsDrawerText}>
-                {eventDetails}
-              </p>
-            </Drawer.Body>
-            <Drawer.Footer>
-            </Drawer.Footer>
-          </Drawer.Content>
-        </Drawer.Positioner>
-    </Drawer.Root>
-  )
-}
-
-function EventCard({ event }) {
-  return (
-    <Card.Root className={styles.carouselCard} size="2xl" overflow="hidden" rounded="lg">
-      <Details eventDetails={event.description} eventTitle={event.title}/>
-      <AspectRatio ratio={12 / 12}>
-        <img
-          src={event.image_url}
-          alt={event.title}
-          style={{
-            width: '100%',
-            height: '300px',
-            objectFit: 'cover',
-            display: 'block'
-          }}
-        />
-      </AspectRatio>
-      <Card.Body gap="2" padding="6">
-        <Card.Title fontSize="2xl"> {event.title} </Card.Title>
-        <Card.Description fontSize="lg" color="gray.600">
-          {event.chef_names && Array.isArray(event.chef_names) ? event.chef_names.join(' X ') : ''}
-          <br/>
-          <p className={styles.eventLocation} onClick={() => handleMaps(event.venue_address)}>{event.venue_address}</p>
-          <br/>
-          {formatDateRange(event.start_datetime, event.end_datetime)}
-        </Card.Description>
-        <Text textStyle="2xl" fontWeight="medium" letterSpacing="tight" mt="2">
-        </Text>
-      </Card.Body>
-      <Card.Footer gap="2" className={styles.carouselFooterIcons} style={{ justifyContent: 'flex-start', padding: '0 2.5rem 2.5rem 2.5rem' }}>
-        <Footer event={event}/>
-      </Card.Footer>
-    </Card.Root>
+    </header>
   );
 }
 
-const Carousel = () => {
+export default function HomePage() {
   const [events, setEvents] = useState([]);
-  const [currentEventIndex, setCurrentEventIndex] = useState(0);
-  const [width, setWidth] = useState(getScreenSize());
-
-  // Handle orientation changes
-  useEffect(() => {
-    function handleOrientationChange() {
-      const newWidth = getScreenSize();
-      if (newWidth !== width) {
-        setWidth(newWidth);
-        setCurrentEventIndex(0);
-      }
-    }
-    window.addEventListener('orientationchange', handleOrientationChange);
-    return () => {
-      window.removeEventListener('orientationchange', handleOrientationChange);
-    };
-  }, [width]);
-
+  
   useEffect(() => {
     fetch(`${SERVER_URL}/api/events`)
       .then(res => res.json())
       .then(data => setEvents(data))
       .catch(err => console.error('Error fetching events:', err));
   }, []);
-
+  
   // If no events, show message
   if (events.length === 0) {
     return <Text>No events available.</Text>;
-  }
-
-  // Calculate max visible count based on width
-  const maxCount = width === LARGE ? 3 : width === MEDIUM ? 2 : 1;
-  console.log("events length:", events.length);
-  console.log("width:", maxCount);
-  const visibleCount = Math.min(maxCount, events.length);
-
-  console.log("Chosen:", visibleCount);
-
-  // Helper to get event indices for carousel
-  const getEventIndices = () => {
-    if (visibleCount === 1) return [currentEventIndex];
-    if (visibleCount === 2) return [currentEventIndex, (currentEventIndex + 1) % events.length];
-    if (visibleCount === 3) return [
-      (currentEventIndex - 1 + events.length) % events.length,
-      currentEventIndex,
-      (currentEventIndex + 1) % events.length
-    ];
-    return [currentEventIndex];
-  };
-
-  const indices = getEventIndices();
-
-  return (
-    <div className={styles.carouselWrapper} style={{ marginTop: '1.5rem', boxShadow: '0 8px 16px rgb(201, 197, 197)', borderRadius: '2rem', background: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem' }}>
-      <RenderArrow direction="left" nextEvent={setCurrentEventIndex} events={events} current={currentEventIndex}/>
-      <div style={{ display: 'flex', flexDirection: 'row', gap: '1rem', width: '100%', justifyContent: 'center', alignItems: 'stretch' }}>
-        {indices.map(idx => (
-          <EventCard key={events[idx].title + idx} event={events[idx]} />
-        ))}
-      </div>
-      <RenderArrow direction="right" nextEvent={setCurrentEventIndex} events={events} current={currentEventIndex}/>
-    </div>
-  );
-}
-
-export { Carousel };
-
-export default function HomePage() {
+  } 
+  
    function handleAshamen() {
     window.open(INSTA_LINK, '_blank', 'noopener,noreferrer');
   }
+
   return (
     <>
-    <header className={styles.header}>
-      <img
-        src="/logo.png"
-        alt={APP_NAME}
-        className={styles.mainTitle}
-      />
-      <div className={styles.instaButtonWrapper}>
-        <Button colorPalette="blue" variant="ghost" size="2xl" fontWeight="2xl" rounded="2xl" onClick={handleAshamen} className={styles.instaButton}>
-          <span className={styles.instaButtonIcon}><SiInstagram /></span> {INSTA_TEXT}
-        </Button>
-      </div>
-      <Admin />
-    </header>
-    <div className={`${styles.centeredContent} centered-content`} style={{ marginTop: '0.5rem' }}>
-      <RadioCard.Root defaultValue="next">
-      </RadioCard.Root>
-      <div style={{ height: '1rem' }} />
-      <Carousel />
+    <Header />
+    <Admin />
+    {/* Event cards */}
+    <div style={{ marginTop: '0.5rem', width: '100vw', maxWidth: '100vw', boxSizing: 'border-box', padding: 0 }}>
+      {events.map(evt => (
+        <div key={evt.title} style={{ marginBottom: '2rem', width: '80', maxWidth: '100vw', boxSizing: 'border-box', padding: 0 }}>
+          <EventCard event={evt} />
+        </div>
+      ))}
+      <div style={{ height: '2.5rem' }} />
+      {/* <Carousel /> */}
     </div>
     </>
   );

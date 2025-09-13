@@ -1,19 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @import url('https://fonts.googleapis.com/css2?family=Chocolate+Classical+Sans&display=swap');
 
 /* Global CSS Variables */
 :root {
-    --primary-header-color: #cce6ff;
-    --primary-bg-color: #fffcfc;
-    --primary-button-color: #b6e4b7;
-    --secondary-button-color: #d2f3d1;
-    --border-color: #c5c5c5;
+    --primary-header-color: #9bc2c3;
+    --primary-bg-color: #fbf7f5;
     --error-color: #c46666;
     --button-text-color: white;
-    --button-border-color: #121612;
     --primary-font: "Plus Jakarta Sans", sans-serif;
     --font-size-title: 40px;
     --font-size-medium: 16px;
-    --font-size-large: 24px;
     --font-weight-bold: bold;
     --letter-spacing: 1.25px;
     --line-height: 1.5;
@@ -21,8 +20,6 @@
     --spacing-medium: 20px;
     --spacing-large: 40px;
     --border-radius: 5px;
-    --border-style-solid: solid;
-    --margin-top-medium: 10%;
 }
 
 /* Global body styling */
@@ -51,7 +48,6 @@ html {
     max-width: 600px;
     margin: 0 auto;
     gap: var(--spacing-small);
-    /* margin-top: var(--margin-top-medium); */
 }
 
 .centered-content-global {
