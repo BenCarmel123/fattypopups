@@ -38,7 +38,7 @@ catch (err) {
 app.post('/api/events', async (req, res) => {
     let Ai_response = await generateEventDescriptions(req.body.chef_names, req.body.venue_address);
     let descriptionJSON = JSON.parse(Ai_response.output_text);
-    const description = descriptionJSON.english_description;
+    const description = descriptionJSON.english_description + "\n\n" + descriptionJSON.hebrew_description;
     const { title ,start_datetime, end_datetime, venue_instagram, venue_address, chef_names, chef_instagrams, image_url, reservation_url } = req.body;
     try {
         const newEvent = await pool.query(

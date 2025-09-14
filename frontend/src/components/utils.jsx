@@ -45,7 +45,21 @@ export default function validateEvent(event) {
 // Helper to format date ranges from start and end dates of events
 export function formatDateRange(start, end) {
     if (start && end) {
-        return `${new Date(start).toLocaleDateString(undefined, { month: 'long', day: 'numeric' })} - ${new Date(end).toLocaleDateString(undefined, { month: 'long', day: 'numeric' })}`;
+        const startDate = new Date(start);
+        const endDate = new Date(end);
+        const sameDay = startDate.getDate() === endDate.getDate() && startDate.getMonth() === endDate.getMonth() && startDate.getFullYear() === endDate.getFullYear();
+        if (sameDay) {
+            // e.g. September 15
+            return startDate.toLocaleDateString(undefined, { month: 'long', day: 'numeric' });
+        }
+        const sameMonth = startDate.getMonth() === endDate.getMonth() && startDate.getFullYear() === endDate.getFullYear();
+        if (sameMonth) {
+            // e.g. September 15-17
+            return `${startDate.toLocaleDateString(undefined, { month: 'long' })} ${startDate.getDate()}-${endDate.getDate()}`;
+        } else {
+            // e.g. September 29 - October 2
+            return `${startDate.toLocaleDateString(undefined, { month: 'long' })} ${startDate.getDate()} - ${endDate.toLocaleDateString(undefined, { month: 'long' })} ${endDate.getDate()}`;
+        }
     } else if (start) {
         return new Date(start).toLocaleDateString(undefined, { month: 'long', day: 'numeric' });
     } else {

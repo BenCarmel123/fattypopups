@@ -5,18 +5,20 @@ import { IoAdd } from "react-icons/io5";
 import { AspectRatio } from '@chakra-ui/react';
 import { formatDateRange, handleMaps, handleWhatsApp, handleInstagram, handleCalendar } from './utils';
 import styles from '../pages/home/home.module.css';
+import { HEADER_COLOR } from '../Config';
+
 
 // Helper for footer icons
 const Footer = ({ event }) => {
   return (
     <div style={{ display: 'flex', gap: '3rem' }}>
-      <IconButton variant="outline" size="2xl" rounded="2xl" onClick={() => handleMaps(event.venue_address)}>
+      <IconButton variant="outline" size="3xl" rounded="2xl" onClick={() => handleMaps(event.venue_address)}>
         <SiGooglecalendar />
       </IconButton>
-      <IconButton variant="outline" size="2xl" rounded="2xl" onClick={() => handleWhatsApp(event)}>
+      <IconButton variant="outline" size="3xl" rounded="2xl" onClick={() => handleWhatsApp(event)}>
         <SiWhatsapp />
       </IconButton>
-      <IconButton variant="outline" size="2xl" rounded="2xl" onClick={() => handleInstagram(event.venue_instagram)}>
+      <IconButton variant="outline" size="3xl" rounded="2xl" onClick={() => handleInstagram(event.venue_instagram)}>
         <SiInstagram />
       </IconButton>
     </div>
@@ -31,10 +33,12 @@ const Details = ({ eventDetails, eventTitle }) => {
         <Drawer.Trigger asChild>
          <Button
            variant="subtle"
-           size="md" // smaller button
+           size="xl" // even larger
            rounded="xl"
-           className="detailsDrawerButton bg-blue-200 hover:bg-blue-300 text-blue-900 shadow-lg border-2 border-blue-400 transition-all duration-200 px-3 py-2 text-lg flex items-center gap-2"
-           style={{ minHeight: '2.2rem', minWidth: '2.2rem' }}
+           className="detailsDrawerButton"
+           style={{ minHeight: '2.2rem', minWidth: '2.2rem', background: '#e0e4dd', borderColor: '#58565d', borderWidth: 2, transition: 'background 0.18s' }}
+           onMouseOver={e => e.currentTarget.style.background = '#d1d4cc'}
+           onMouseOut={e => e.currentTarget.style.background = '#e0e4dd'}
          >
           <IoAdd style={{ marginRight: '0.3rem', fontSize: '1.2rem' }} />
          </Button>
@@ -62,7 +66,7 @@ const Details = ({ eventDetails, eventTitle }) => {
 
 export default function EventCard({ event }) {
   return (
-    <Card.Root className={styles.carouselCard} size="md" overflow="hidden" rounded="lg" style={{ width: '100%', maxWidth: '400px', minWidth: 0, boxSizing: 'border-box' }}>
+    <Card.Root className={styles.carouselCard} size="md" overflow="hidden" rounded="lg" style={{ width: '100%', maxWidth: '400px', minWidth: 0, boxSizing: 'border-box', border: '2px solid #e0e4dd', borderRadius: '3rem 3rem 3rem 3rem' }}> 
       <AspectRatio ratio={12 / 12}>
         <img
           src={event.image_url}
@@ -76,35 +80,40 @@ export default function EventCard({ event }) {
           }}
         />
       </AspectRatio>
-      <Card.Body gap="2" padding="4">
-        <Card.Title fontSize="xl"> {event.title} </Card.Title>
+      <Card.Body gap="2" padding="4" bg="#fffbf1" style={{ lineHeight: 3.1 }}> 
+        <Card.Title fontSize="2xl" fontWeight="bold" mt={2} mb={1}> {event.title} </Card.Title>
         <Card.Description fontSize="md" color="gray.600">
-          {event.chef_names && Array.isArray(event.chef_names) ? event.chef_names.join(' X ') : ''}
-          <br/>
-          <p
-            className="underline cursor-pointer"
-            onClick={() => handleMaps(event.venue_address)}
-          >
-            {event.venue_address}
-          </p>
+          {event.chef_names && Array.isArray(event.chef_names) && Array.isArray(event.chef_instagrams)
+            ? event.chef_names.map((name, idx) => (
+                <span
+                  key={name}
+                  style={{ textDecoration: 'underline', cursor: 'pointer', marginRight: idx < event.chef_names.length - 1 ? 4 : 0 }}
+                  onClick={() => handleInstagram(event.chef_instagrams[idx])}
+                >
+                  {name}
+                </span>
+              )).reduce((prev, curr, idx) => prev === null ? [curr] : [...prev, <span key={`x-${idx}`}> X </span>, curr], null)
+            : ''}
           <br/>
           {formatDateRange(event.start_datetime, event.end_datetime)}
+          <br/>
+          <span className="underline cursor-pointer" onClick={() => handleMaps(event.venue_address)}>
+            {event.venue_address}
+          </span>
         </Card.Description>
         <Text textStyle="lg" fontWeight="medium" letterSpacing="tight" mt="2">
         </Text>
       </Card.Body>
-      <Card.Footer gap="2" className={styles.carouselFooterIcons} style={{ justifyContent: 'flex-start', padding: '0 1.5rem 1.5rem 1.5rem' }}>
-        <div style={{ display: 'flex', gap: '2rem', alignItems: 'center', marginRight: '0.5rem' }}>
-          <IconButton variant="outline" size="2xl" rounded="2xl" onClick={() => handleCalendar(event)}>
+      <div style={{ width: '100%', height: '2px', background: '#e0e4dd' }} />
+      <Card.Footer gap="2" className={styles.carouselFooterIcons} style={{ justifyContent: 'space-between', padding: '1.25rem 2.5rem 1rem 2.5rem', backgroundColor: '#e0e4dd'}}> 
+        <div style={{ display: 'flex', gap: '1.2rem', alignItems: 'center', width: '100%', justifyContent: 'space-between', marginRight: 0 }}>
+          <IconButton variant="outline" size="3xl" rounded="2xl" onClick={() => handleCalendar(event)}>
             <SiGooglecalendar />
           </IconButton>
-          <IconButton variant="outline" size="2xl" rounded="2xl" onClick={() => handleWhatsApp(event)}>
+          <IconButton variant="outline" size="3xl" rounded="2xl" onClick={() => handleWhatsApp(event)}>
             <SiWhatsapp />
           </IconButton>
-          <IconButton variant="outline" size="2xl" rounded="2xl" onClick={() => handleInstagram(event)}>
-            <SiInstagram />
-          </IconButton>
-          <div style={{ display: 'flex', alignItems: 'center', height: '100%', marginRight: '-1rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
             <Details eventDetails={event.description} eventTitle={event.title}/>
           </div>
         </div>
