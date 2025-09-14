@@ -34,8 +34,8 @@ export default function LoginForm( {handleClick} ) {
             <form onSubmit={handleLogin}>
         <Card.Root maxW="lg" w="100%" minW="400px" padding={8} boxShadow="2xl" borderRadius="2xl">
             <Card.Header>
-                <div style={{ marginBottom: 16, color: '#2596be', fontSize: 20 }}>Hey Benji</div>
-                <div style={{ fontWeight: 700, fontSize: 32 }}>Login</div>
+                <div style={{ marginBottom: 16, color: '#2596be', fontSize: 24, textDecoration: "underline" }}>Hey Hallee / Benji ! </div>
+                <div style={{ fontWeight: 700, fontSize: 32 }}></div>
             </Card.Header>
             <Card.Body>
                 <Stack gap={6} w="full">
@@ -50,7 +50,26 @@ export default function LoginForm( {handleClick} ) {
                 </Stack>
             </Card.Body>
             <Card.Footer justifyContent="flex-end" paddingTop={6}>
-                <Button variant="subtle" colorPalette="blue" ml={4} size="lg" type="submit">Login</Button>
+                <Button 
+                    variant="solid" 
+                    colorScheme="blue" 
+                    ml={4} 
+                    size="md" 
+                    type="submit"
+                    fontWeight="bold"
+                    fontSize={18}
+                    px={7}
+                    py={5}
+                    boxShadow="md"
+                    _hover={{
+                        bg: '#1976d2',
+                        color: 'white',
+                        boxShadow: 'xl',
+                        transform: 'scale(1.04)'
+                    }}
+                >
+                    Login
+                </Button>
             </Card.Footer>
         </Card.Root>
         </form>

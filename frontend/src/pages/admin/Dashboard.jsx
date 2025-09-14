@@ -57,9 +57,14 @@ const Dashboard = ({ handleClick }) => {
     >
       <Table.Cell>
         <Checkbox.Root
-          size="sm"
+          size="lg"
           mt="0.5"
           aria-label="Select row"
+          borderColor="#bbb"
+          borderWidth={2}
+          _checked={{ borderColor: '#bbb', bg: '#bbb' }}
+          _focus={{ boxShadow: '0 0 0 2px #bbb' }}
+          style={{ boxShadow: '0 0 0 2px #bbb', borderRadius: '0.5rem' }}
           checked={selection.includes(event.title)}
           onCheckedChange={(changes) => {
             setSelection((prev) =>
@@ -76,7 +81,6 @@ const Dashboard = ({ handleClick }) => {
       <Table.Cell>{event.title}</Table.Cell>
       <Table.Cell>{event.description}</Table.Cell>
       <Table.Cell>{event.venue_address}</Table.Cell>
-      <Table.Cell> {event.id} </Table.Cell>
     </Table.Row>
   ))
 
