@@ -60,13 +60,11 @@ export default function LoginForm( {handleClick} ) {
 export function EventForm({ handleClick, event } ) {
     const [alert, setAlert] = useState(undefined);
 
-
     function handleEvent(e) {
         e.preventDefault(); 
         const form = e.target; // e.target is the form when using onSubmit
-        const event = {
+        const event = { // No description field
             title: form.title.value,
-            description: form.description.value,
             start_datetime: form.start_datetime.value,
             end_datetime: form.end_datetime.value,
             venue_instagram: form.venue_instagram.value,
@@ -78,7 +76,7 @@ export function EventForm({ handleClick, event } ) {
         };
         const validation = validateEvent(event);
         if (!validation.valid) {
-           alert({ status: "error", title: "Validation Error", description: validation.error });
+           setAlert({ status: "error", title: "Validation Error", description: validation.error });
             return;
         }
         fetch("http://localhost:5000/api/events", {
@@ -95,11 +93,11 @@ export function EventForm({ handleClick, event } ) {
         })
         .then(() => {
             // handle success (e.g., show a message, reset form, etc.)
-            alert("Event created!");
+            setAlert("Event created!");
         })
         .catch((err) => {
             // handle error
-            alert("Error creating event: " + err.message);
+            setAlert("Error creating event: " + err.message);
         });
     }
     return (
@@ -122,17 +120,18 @@ export function EventForm({ handleClick, event } ) {
                                 <Field.Label color="#2596be">Title</Field.Label>
                                 <Input name="title" defaultValue={event?.title || ""} />
                             </Field.Root>
-                            <Field.Root>
+                            { /* Description field removed */}
+                            {/* <Field.Root> 
                                 <Field.Label color="#2596be">Description</Field.Label>
                                 <Input name="description" defaultValue={event?.description || ""} />
-                            </Field.Root>
+                            </Field.Root> */}
                             <Field.Root>
                                 <Field.Label color="#2596be">Start Date & Time</Field.Label>
-                                <Input type="datetime-local" name="start_datetime" defaultValue={event?.start_datetime || ""} />
+                                <Input type="date" name="start_datetime" defaultValue={event?.start_datetime || ""} />
                             </Field.Root>
                             <Field.Root>
                                 <Field.Label color="#2596be">End Date & Time</Field.Label>
-                                <Input type="datetime-local" name="end_datetime" defaultValue={event?.end_datetime || ""} />
+                                <Input type="date" name="end_datetime" defaultValue={event?.end_datetime || ""} />
                             </Field.Root>
                             <Field.Root>
                                 <Field.Label color="#2596be">Venue Instagram</Field.Label>

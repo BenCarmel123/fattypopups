@@ -75,9 +75,9 @@ export default function HomePage() {
     <Header />
     <Admin />
     {/* Event cards */}
-    <div style={{ marginTop: '0.5rem', width: '100vw', maxWidth: '100vw', boxSizing: 'border-box', padding: 0 }}>
+    <div className="mt-2 w-full flex flex-col items-center px-2 sm:px-4 md:px-8 box-border">
       {events.map(evt => (
-        <div key={evt.title} style={{ marginBottom: '2rem', width: '80', maxWidth: '100vw', boxSizing: 'border-box', padding: 0 }}>
+        <div key={evt.title} className="mb-8 w-full max-w-xl">
           <EventCard event={evt} />
         </div>
       ))}

@@ -1,8 +1,9 @@
 // Config and imports
-const { ADMIN_ROUTE } = require('../frontend/src/adminRoute');
+const { ADMIN_ROUTE } = require('../frontend/src/adminRoute.js');
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
+const { generateEventDescriptions } = require('./agent.js');
 
 // Initialize Express app
 const app = express();
@@ -35,22 +36,16 @@ catch (err) {
 
 // Add new event
 app.post('/api/events', async (req, res) => {
-    const { title, description, start_datetime, end_datetime, venue_instagram, venue_address, chef_names, chef_instagrams, image_url, reservation_url } = req.body;
+    let Ai_response = await generateEventDescriptions(req.body.chef_names, req.body.venue_address);
+    let descriptionJSON = JSON.parse(Ai_response.output_text);
+    const description = descriptionJSON.english_description;
+    const { title ,start_datetime, end_datetime, venue_instagram, venue_address, chef_names, chef_instagrams, image_url, reservation_url } = req.body;
     try {
         const newEvent = await pool.query(
             'INSERT INTO events (title, description, start_datetime, end_datetime, venue_instagram, venue_address, chef_names, chef_instagrams, image_url, reservation_url) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *',
             [title, description, start_datetime, end_datetime, venue_instagram, venue_address, chef_names, chef_instagrams, image_url, reservation_url]
         );
         res.json(newEvent.rows[0]);
-
-        // // Increment counter in counters table
-        
-        // await pool.query(
-        //     'UPDATE counters SET counter = counter + 1 WHERE name = $1',
-        //     ['events']
-        // );
-        // res.json(newEvent.rows[0]);
-
     } catch (err) {
         res.status(500).json({ error: err.message });
     }

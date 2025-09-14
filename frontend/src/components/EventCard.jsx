@@ -62,35 +62,34 @@ const Details = ({ eventDetails, eventTitle }) => {
 
 export default function EventCard({ event }) {
   return (
-    <Card.Root className={styles.carouselCard} size="2xl" overflow="hidden" rounded="lg" style={{ width: '100vw', maxWidth: '100vw', minWidth: 0, boxSizing: 'border-box' }}>
+    <Card.Root className={styles.carouselCard} size="md" overflow="hidden" rounded="lg" style={{ width: '100%', maxWidth: '400px', minWidth: 0, boxSizing: 'border-box' }}>
       <Details eventDetails={event.description} eventTitle={event.title}/>
       <AspectRatio ratio={12 / 12}>
         <img
           src={event.image_url}
           alt={event.title}
           style={{
-            width: '100vw',
-            maxWidth: '100vw',
+            width: '100%',
+            maxWidth: '400px',
             minWidth: 0,
-            height: '300px',
             objectFit: 'cover',
             display: 'block'
           }}
         />
       </AspectRatio>
-      <Card.Body gap="2" padding="6">
-        <Card.Title fontSize="2xl"> {event.title} </Card.Title>
-        <Card.Description fontSize="lg" color="gray.600">
+      <Card.Body gap="2" padding="4">
+        <Card.Title fontSize="xl"> {event.title} </Card.Title>
+        <Card.Description fontSize="md" color="gray.600">
           {event.chef_names && Array.isArray(event.chef_names) ? event.chef_names.join(' X ') : ''}
           <br/>
           <p className={styles.eventLocation} onClick={() => handleMaps(event.venue_address)}>{event.venue_address}</p>
           <br/>
           {formatDateRange(event.start_datetime, event.end_datetime)}
         </Card.Description>
-        <Text textStyle="2xl" fontWeight="medium" letterSpacing="tight" mt="2">
+        <Text textStyle="lg" fontWeight="medium" letterSpacing="tight" mt="2">
         </Text>
       </Card.Body>
-      <Card.Footer gap="2" className={styles.carouselFooterIcons} style={{ justifyContent: 'flex-start', padding: '0 2.5rem 2.5rem 2.5rem' }}>
+      <Card.Footer gap="2" className={styles.carouselFooterIcons} style={{ justifyContent: 'flex-start', padding: '0 1.5rem 1.5rem 1.5rem' }}>
         <Footer event={event}/>
       </Card.Footer>
     </Card.Root>

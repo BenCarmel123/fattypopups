@@ -4,21 +4,21 @@ import { MyAlert } from './CustomAlert.jsx';
 
 // Helper to validate event data
 export default function validateEvent(event) {
-    const { title, description, start_datetime, end_datetime, venue_instagram, venue_address, chef_names, chef_instagrams, image_url, reservation_url } = event;
+    const { title, start_datetime, end_datetime, venue_instagram, venue_address, chef_names, chef_instagrams, image_url, reservation_url } = event; // No description field
     
     if (!title || !validator.isLength(title.trim(), { min: 1 })) {
         return { valid: false, error: 'Title is required and must be a non-empty string.' };
     }
-    if (!description || !validator.isLength(description.trim(), { min: 1 })) {
-        return { valid: false, error: 'Description is required and must be a non-empty string.' };
-    }
+    // if (!description || !validator.isLength(description.trim(), { min: 1 })) {
+    //     return { valid: false, error: 'Description is required and must be a non-empty string.' };
+    // }
     if (!start_datetime || isNaN(Date.parse(start_datetime))) {
         return { valid: false, error: 'Start datetime is required and must be a valid date.' };
     }
     if (!end_datetime || isNaN(Date.parse(end_datetime))) {
         return { valid: false, error: 'End datetime is required and must be a valid date.' };
     }
-    if (new Date(start_datetime) >= new Date(end_datetime)) {
+    if (new Date(start_datetime) > new Date(end_datetime)) {
         return { valid: false, error: 'Start datetime must be before end datetime.' };
     }
     if (!venue_instagram || !validator.isLength(venue_instagram.trim(), { min: 1 })) {

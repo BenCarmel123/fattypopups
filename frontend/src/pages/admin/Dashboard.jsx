@@ -76,6 +76,7 @@ const Dashboard = ({ handleClick }) => {
       <Table.Cell>{event.title}</Table.Cell>
       <Table.Cell>{event.description}</Table.Cell>
       <Table.Cell>{event.venue_address}</Table.Cell>
+      <Table.Cell> {event.id} </Table.Cell>
     </Table.Row>
   ))
 
