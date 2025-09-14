@@ -1,12 +1,10 @@
 import styles from '../home/home.module.css';
 import React, { useState, useEffect } from "react"
-import { APP_NAME, INSTA_TEXT, SERVER_URL } from '../../Config';
+import { SERVER_URL } from '../../Config';
 import { ADMIN_ROUTE } from '../../adminRoute';
 import { Button, Text } from '@chakra-ui/react';
-import { SiInstagram} from "react-icons/si";
 import { RiMailLine } from "react-icons/ri";
 import EventCard from '../../components/EventCard';
-import { Instagram } from 'lucide-react';
 
 const Admin = () => {
   
@@ -32,11 +30,11 @@ const Admin = () => {
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-50 bg-[#e0e4dd] border-b border-white-100 px-8 py-4">
+    <header className="sticky top-0 z-50 bg-[#e0e4dd] border-b border-white-100 px-16 py-8">
       <div className="flex items-center justify-between max-w-3xl mx-auto">
-        <h1 className="text-2xl font-extrabold bg-[#9bc2c3] bg-clip-text text-transparent tracking-normal">
+        {/* <h1 className="text-2xl font-extrabold bg-[#9bc2c3] bg-clip-text text-transparent tracking-normal">
           fattypopups
-        </h1>
+        </h1> */}
         
         {/* <Button
           variant="ghost"

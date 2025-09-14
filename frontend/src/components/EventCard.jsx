@@ -6,6 +6,7 @@ import { AspectRatio } from '@chakra-ui/react';
 import { formatDateRange, handleMaps, handleWhatsApp, handleInstagram, handleCalendar } from './utils';
 import styles from '../pages/home/home.module.css';
 import { HEADER_COLOR } from '../Config';
+import { color } from 'framer-motion';
 
 
 // Helper for footer icons
@@ -46,13 +47,13 @@ const Details = ({ eventDetails, eventTitle }) => {
         <Drawer.Backdrop pos="absolute" boxSize="full" />
         <Drawer.Positioner pos="absolute" boxSize="full" padding="2">
           <Drawer.Content>
-            <Drawer.Header style={{ position: 'relative', paddingLeft: '2.5rem' }}>
+            <Drawer.Header style={{ position: 'relative', paddingLeft: '2.5rem', backgroundColor: HEADER_COLOR }}>
               <Drawer.CloseTrigger asChild>
-                <CloseButton size="lg" style={{ position: 'absolute', left: '0.5rem', top: '0.5rem', marginRight: '1.5rem' }} />
+                <CloseButton size="xs" style={{ position: 'absolute', left: '0.5rem', top: '0.5rem', marginRight: '20rem', backgroundColor: '#8b0000', color: 'white'}} />
               </Drawer.CloseTrigger>
             </Drawer.Header>
-            <Drawer.Body>
-              <p className={styles.detailsDrawerText}>
+            <Drawer.Body color='gray.600'>
+              <p style={{ whiteSpace: 'pre-line', fontSize: '1.5rem', lineHeight: 1.5, padding: '0 1rem', fontWeight: "bolder" }}>
                 {eventDetails}
               </p>
             </Drawer.Body>
@@ -80,9 +81,9 @@ export default function EventCard({ event }) {
           }}
         />
       </AspectRatio>
-      <Card.Body gap="2" padding="4" bg="#fffbf1" style={{ lineHeight: 3.1 }}> 
-        <Card.Title fontSize="2xl" fontWeight="bold" mt={2} mb={1}> {event.title} </Card.Title>
-        <Card.Description fontSize="md" color="gray.600">
+      <Card.Body gap="2" padding="4" bg="#fffbf1" style={{ lineHeight: 2.5 }}> 
+        <Card.Title fontSize="2xl" fontWeight="bolder" mt={2} mb={1}> {event.title} </Card.Title>
+        <Card.Description fontSize="xl" color="gray.600" fontWeight="bold">
           {event.chef_names && Array.isArray(event.chef_names) && Array.isArray(event.chef_instagrams)
             ? event.chef_names.map((name, idx) => (
                 <span
@@ -101,16 +102,14 @@ export default function EventCard({ event }) {
             {event.venue_address}
           </span>
         </Card.Description>
-        <Text textStyle="lg" fontWeight="medium" letterSpacing="tight" mt="2">
-        </Text>
       </Card.Body>
       <div style={{ width: '100%', height: '2px', background: '#e0e4dd' }} />
       <Card.Footer gap="2" className={styles.carouselFooterIcons} style={{ justifyContent: 'space-between', padding: '1.25rem 2.5rem 1rem 2.5rem', backgroundColor: '#e0e4dd'}}> 
         <div style={{ display: 'flex', gap: '1.2rem', alignItems: 'center', width: '100%', justifyContent: 'space-between', marginRight: 0 }}>
-          <IconButton variant="outline" size="3xl" rounded="2xl" onClick={() => handleCalendar(event)}>
+          <IconButton variant="outline" size="2xl" rounded="xl" onClick={() => handleCalendar(event)}>
             <SiGooglecalendar />
           </IconButton>
-          <IconButton variant="outline" size="3xl" rounded="2xl" onClick={() => handleWhatsApp(event)}>
+          <IconButton variant="outline" size="2xl" rounded="2xl" onClick={() => handleWhatsApp(event)}>
             <SiWhatsapp />
           </IconButton>
           <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>

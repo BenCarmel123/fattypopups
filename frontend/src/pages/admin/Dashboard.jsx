@@ -80,7 +80,6 @@ const Dashboard = ({ handleClick }) => {
       </Table.Cell>
       <Table.Cell>{event.title}</Table.Cell>
       <Table.Cell>{event.description}</Table.Cell>
-      <Table.Cell>{event.venue_address}</Table.Cell>
     </Table.Row>
   ))
 
@@ -93,7 +92,6 @@ const Dashboard = ({ handleClick }) => {
             <Table.ColumnHeader w="6" />
             <Table.ColumnHeader>Event</Table.ColumnHeader>
             <Table.ColumnHeader>Description</Table.ColumnHeader>
-            <Table.ColumnHeader>Location</Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
         <Table.Body>{rows}</Table.Body>
