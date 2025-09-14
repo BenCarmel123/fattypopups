@@ -95,10 +95,10 @@ const Dashboard = ({ handleClick }) => {
         <Table.Body>{rows}</Table.Body>
       </Table.Root>
       <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', marginTop: '2.5rem' }}>
-        <Button colorPalette="blue" variant="subtle" size="lg" onClick={ handleClick(ADD, undefined) }>Add</Button>
-        <Button colorPalette="blue" variant="subtle" size="lg" onClick={ handleEditEvents }>Edit</Button>
-        <Button colorPalette="blue" variant="subtle" size="lg" onClick={handleDeleteEvents}>Delete</Button>
-        <Button colorPalette="blue" variant="subtle" size="lg" onClick={backToFatty}>Back</Button>
+        <Button colorScheme="blue" variant="solid" size="lg" fontWeight="bold" px={8} py={6} boxShadow="md" borderRadius="xl" _hover={{ bg: '#3182ce', color: 'white', transform: 'scale(1.05)' }} transition="all 0.15s" onClick={ handleClick(ADD, undefined) }>Add</Button>
+        <Button colorScheme="yellow" variant="solid" size="lg" fontWeight="bold" px={8} py={6} boxShadow="md" borderRadius="xl" _hover={{ bg: '#ecc94b', color: 'black', transform: 'scale(1.05)' }} transition="all 0.15s" onClick={ handleEditEvents }>Edit</Button>
+        <Button colorScheme="red" variant="solid" size="lg" fontWeight="bold" px={8} py={6} boxShadow="md" borderRadius="xl" _hover={{ bg: '#e53e3e', color: 'white', transform: 'scale(1.05)' }} transition="all 0.15s" onClick={handleDeleteEvents}>Delete</Button>
+        <Button colorScheme="gray" variant="outline" size="lg" fontWeight="bold" px={8} py={6} borderRadius="xl" _hover={{ bg: '#edf2f7', color: '#2d3748', transform: 'scale(1.05)' }} transition="all 0.15s" onClick={backToFatty}>Back</Button>
       </div>
     </div>
   )

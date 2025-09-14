@@ -68,12 +68,25 @@ export function handleMaps(address) {
 }
 
 // Function to open WhatsApp with pre-filled message
- export function handleWhatsApp(description) {
+export function handleWhatsApp(description) {
         const desc = description || '';
         window.open(`https://wa.me/?text=${encodeURIComponent(`${window.location.href}\n\n${desc}`)}`, '_blank');
     }
 
 export function handleInstagram(instagram) {
-    const instagramHandle = instagram.startsWith('@') ? instagram.slice(1) : instagram;
+    let instagramHandle = instagram;
+    if (typeof instagram === 'string' && instagram.length > 0 && instagram[0] === '@') {
+        instagramHandle = instagram.slice(1);
+    }
     window.open(`https://www.instagram.com/${instagramHandle}`, '_blank', 'noopener,noreferrer');
+}
+
+export function handleCalendar(event) {
+    const { title, start_datetime, end_datetime, venue_address, reservation_url } = event;
+    const start = new Date(start_datetime).toISOString().replace(/-|:|\.\d\d\d/g,"");
+    const end = new Date(end_datetime).toISOString().replace(/-|:|\.\d\d\d/g,"");
+    const details = `For reservations, visit: ${reservation_url}`;
+    const location = venue_address;
+    const calendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${start}/${end}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(location)}&sf=true&output=xml`;
+    window.open(calendarUrl, '_blank', 'noopener,noreferrer');
 }

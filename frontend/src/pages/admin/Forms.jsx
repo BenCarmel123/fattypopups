@@ -41,11 +41,11 @@ export default function LoginForm( {handleClick} ) {
                 <Stack gap={6} w="full">
                     <Field.Root>
                         <Field.Label color="#2596be" fontSize={18}>Username</Field.Label>
-                        <Input name="username" size="lg" padding={6} fontSize={18} />
+                        <Input name="username" size="lg" padding={6} fontSize={18} borderColor="#bbb" borderWidth={2} _focus={{ borderColor: '#2596be' }} />
                     </Field.Root>
                     <Field.Root>
                         <Field.Label color="#2596be" fontSize={18}>Password</Field.Label>
-                        <Input type="password" name="password" size="lg" padding={6} fontSize={18} />
+                        <Input type="password" name="password" size="lg" padding={6} fontSize={18} borderColor="#bbb" borderWidth={2} _focus={{ borderColor: '#2596be' }} />
                     </Field.Root>
                 </Stack>
             </Card.Body>
@@ -118,7 +118,7 @@ export function EventForm({ handleClick, event } ) {
                         <Stack gap={4} w="full">
                             <Field.Root>
                                 <Field.Label color="#2596be">Title</Field.Label>
-                                <Input name="title" defaultValue={event?.title || ""} />
+                                <Input name="title" defaultValue={event?.title || ""} borderColor="#bbb" borderWidth={2} _focus={{ borderColor: '#2596be' }} />
                             </Field.Root>
                             { /* Description field removed */}
                             {/* <Field.Root> 
@@ -127,35 +127,35 @@ export function EventForm({ handleClick, event } ) {
                             </Field.Root> */}
                             <Field.Root>
                                 <Field.Label color="#2596be">Start Date & Time</Field.Label>
-                                <Input type="date" name="start_datetime" defaultValue={event?.start_datetime || ""} />
+                                <Input type="date" name="start_datetime" defaultValue={event?.start_datetime || ""} borderColor="#bbb" borderWidth={2} _focus={{ borderColor: '#2596be' }} />
                             </Field.Root>
                             <Field.Root>
                                 <Field.Label color="#2596be">End Date & Time</Field.Label>
-                                <Input type="date" name="end_datetime" defaultValue={event?.end_datetime || ""} />
+                                <Input type="date" name="end_datetime" defaultValue={event?.end_datetime || ""} borderColor="#bbb" borderWidth={2} _focus={{ borderColor: '#2596be' }} />
                             </Field.Root>
                             <Field.Root>
                                 <Field.Label color="#2596be">Venue Instagram</Field.Label>
-                                <Input name="venue_instagram" defaultValue={event?.venue_instagram || ""} />
+                                <Input name="venue_instagram" defaultValue={event?.venue_instagram || ""} borderColor="#bbb" borderWidth={2} _focus={{ borderColor: '#2596be' }} />
                             </Field.Root>
                             <Field.Root>
                                 <Field.Label color="#2596be">Venue Address</Field.Label>
-                                <Input name="venue_address" defaultValue={event?.venue_address || ""} />
+                                <Input name="venue_address" defaultValue={event?.venue_address || ""} borderColor="#bbb" borderWidth={2} _focus={{ borderColor: '#2596be' }} />
                             </Field.Root>
                             <Field.Root>
                                 <Field.Label color="#2596be">Chef Names (comma separated)</Field.Label>
-                                <Input name="chef_names" placeholder="e.g. Ori Salama, Ido Kablan" defaultValue={event?.chef_names ? event.chef_names.join(', ') : ""} />
+                                <Input name="chef_names" placeholder="e.g. Ori Salama, Ido Kablan" defaultValue={event?.chef_names ? event.chef_names.join(', ') : ""} borderColor="#bbb" borderWidth={2} _focus={{ borderColor: '#2596be' }} />
                             </Field.Root>
                             <Field.Root>
                                 <Field.Label color="#2596be">Chef Instagrams (comma separated)</Field.Label>
-                                <Input name="chef_instagrams" placeholder="e.g. @ori, @ido" defaultValue={event?.chef_instagrams ? event.chef_instagrams.join(', ') : ""} />
+                                <Input name="chef_instagrams" placeholder="e.g. @ori, @ido" defaultValue={event?.chef_instagrams ? event.chef_instagrams.join(', ') : ""} borderColor="#bbb" borderWidth={2} _focus={{ borderColor: '#2596be' }} />
                             </Field.Root>
                             <Field.Root>
                                 <Field.Label color="#2596be">Image URL</Field.Label>
-                                <Input name="image_url" defaultValue={event?.image_url || ""} />
+                                <Input name="image_url" defaultValue={event?.image_url || ""} borderColor="#bbb" borderWidth={2} _focus={{ borderColor: '#2596be' }} />
                             </Field.Root>
                             <Field.Root>
                                 <Field.Label color="#2596be">Reservation URL</Field.Label>
-                                <Input name="reservation_url" defaultValue={event?.reservation_url || ""} />
+                                <Input name="reservation_url" defaultValue={event?.reservation_url || ""} borderColor="#bbb" borderWidth={2} _focus={{ borderColor: '#2596be' }} />
                             </Field.Root>
                         </Stack>
                     </Card.Body>
