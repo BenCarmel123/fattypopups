@@ -130,7 +130,7 @@ export function EventForm({ handleClick, event } ) {
             )}
             <Card.Root maxW="md" w="100%" minW="350px">
                 <Card.Header>
-                    <div style={{ marginBottom: 8, color: '#888' }}>Add New Event</div>
+                    <div style={{ marginBottom: 8, color: '#888' }}>Event Details</div>
                 </Card.Header>
                 <form onSubmit={handleEvent}>
                     <Card.Body>
@@ -139,11 +139,11 @@ export function EventForm({ handleClick, event } ) {
                                 <Field.Label color="#2596be">Title</Field.Label>
                                 <Input name="title" defaultValue={event?.title || ""} borderColor="#bbb" borderWidth={2} _focus={{ borderColor: '#2596be' }} />
                             </Field.Root>
-                            { /* Description field removed */}
+                            {/* { /* Description field removed */}
                             {/* <Field.Root> 
                                 <Field.Label color="#2596be">Description</Field.Label>
                                 <Input name="description" defaultValue={event?.description || ""} />
-                            </Field.Root> */}
+                            </Field.Root> */} 
                             <Field.Root>
                                 <Field.Label color="#2596be">Start Date & Time</Field.Label>
                                 <Input type="date" name="start_datetime" defaultValue={event?.start_datetime || ""} borderColor="#bbb" borderWidth={2} _focus={{ borderColor: '#2596be' }} />

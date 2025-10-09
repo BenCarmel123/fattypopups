@@ -1,13 +1,13 @@
 import React from 'react';
 import { Card, Text, IconButton, Button, Drawer, CloseButton } from '@chakra-ui/react';
-import { SiInstagram, SiGooglecalendar, SiWhatsapp } from "react-icons/si";
+import { SiInstagram, SiGooglecalendar } from "react-icons/si";
+import { FaRegShareFromSquare } from "react-icons/fa6";
+import { FaCalendarCheck } from "react-icons/fa";
 import { IoAdd } from "react-icons/io5";
 import { AspectRatio } from '@chakra-ui/react';
 import { formatDateRange, handleMaps, handleWhatsApp, handleInstagram, handleCalendar } from './utils';
 import styles from '../pages/home/home.module.css';
 import { HEADER_COLOR } from '../Config';
-import { color } from 'framer-motion';
-
 
 // Helper for footer icons
 const Footer = ({ event }) => {
@@ -17,7 +17,7 @@ const Footer = ({ event }) => {
         <SiGooglecalendar />
       </IconButton>
       <IconButton variant="outline" size="3xl" rounded="2xl" onClick={() => handleWhatsApp(event)}>
-        <SiWhatsapp />
+        <FaRegShareFromSquare />
       </IconButton>
       <IconButton variant="outline" size="3xl" rounded="2xl" onClick={() => handleInstagram(event.venue_instagram)}>
         <SiInstagram />
@@ -109,8 +109,11 @@ export default function EventCard({ event }) {
           <IconButton variant="outline" size="2xl" rounded="xl" onClick={() => handleCalendar(event)}>
             <SiGooglecalendar />
           </IconButton>
+          <IconButton variant="outline" size="2xl" rounded="xl" onClick={() => window.open(event.reservation_url, '_blank', 'noopener,noreferrer')}>
+            <FaCalendarCheck />
+          </IconButton>
           <IconButton variant="outline" size="2xl" rounded="2xl" onClick={() => handleWhatsApp(event)}>
-            <SiWhatsapp />
+            <FaRegShareFromSquare />
           </IconButton>
           <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
             <Details eventDetails={event.description} eventTitle={event.title}/>
