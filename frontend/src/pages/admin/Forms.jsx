@@ -1,9 +1,11 @@
-import { Button, Card, Stack, Input, Field } from "@chakra-ui/react";
+import { Button, Card, Stack, Input, Field, Float, useFileUploadContext } from "@chakra-ui/react";
 import { DASHBOARD } from "../../components/strings.jsx";
 import validateEvent from "../../components/utils.jsx";
 import { ADMIN_USERNAME, ADMIN_PASSWORD } from "../../adminRoute.js";
 import  MyAlert  from "../../components/CustomAlert.jsx";
 import { useState } from "react";
+import FileUpload from "../../components/FileUpload.jsx";
+
 
 export default function LoginForm( {handleClick} ) {
     const [alert, setAlert] = useState(undefined);
@@ -119,6 +121,7 @@ export function EventForm({ handleClick, event } ) {
             setAlert("Error creating event: " + err.message);
         });
     }
+
     return (
         <div className="centered-content-global" style={{ position: 'relative' }}>
             {alert && (
@@ -175,6 +178,9 @@ export function EventForm({ handleClick, event } ) {
                             <Field.Root>
                                 <Field.Label color="#2596be">Reservation URL</Field.Label>
                                 <Input name="reservation_url" defaultValue={event?.reservation_url || ""} borderColor="#bbb" borderWidth={2} _focus={{ borderColor: '#2596be' }} />
+                            </Field.Root>
+                            <Field.Root>
+                                <FileUpload />
                             </Field.Root>
                         </Stack>
                     </Card.Body>
