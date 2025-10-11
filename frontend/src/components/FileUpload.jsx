@@ -32,7 +32,7 @@ function FileUploadList()
 // renamed to avoid shadowing the imported `FileUpload`
 export default function FileUpload() {
     return (
-        <ChakraFileUpload.Root accept="image/*" maxFiles={1}>
+        <ChakraFileUpload.Root name="poster" accept="image/*" maxFiles={1}>
             <ChakraFileUpload.HiddenInput />
             <ChakraFileUpload.Trigger asChild>
                 <Button variant="outline" size="sm">

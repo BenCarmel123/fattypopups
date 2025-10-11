@@ -84,28 +84,25 @@ export function EventForm({ handleClick, event } ) {
     function handleEvent(e) {
         e.preventDefault(); 
         const form = e.target; // e.target is the form when using onSubmit
-        const event = { // No description field
-            title: form.title.value,
-            start_datetime: form.start_datetime.value,
-            end_datetime: form.end_datetime.value,
-            venue_instagram: form.venue_instagram.value,
-            venue_address: form.venue_address.value,
-            chef_names: form.chef_names.value.split(',').map(s => s.trim()),
-            chef_instagrams: form.chef_instagrams.value.split(',').map(s => s.trim()),
-            image_url: form.image_url.value,
-            reservation_url: form.reservation_url.value,
-            english_description: form.english_description.value,
-            hebrew_description: form.hebrew_description.value
-        };
-        const validation = validateEvent(event);
-        if (!validation.valid) {
-           setAlert({ status: "error", title: "Validation Error", description: validation.error });
-            return;
+        const formData = new FormData();
+        formData.append('title', form.title.value);
+        formData.append('start_datetime', form.start_datetime.value);
+        formData.append('end_datetime', form.end_datetime.value);
+        formData.append('venue_instagram', form.venue_instagram.value);
+        formData.append('venue_address', form.venue_address.value);
+        formData.append('chef_names', form.chef_names.value);
+        formData.append('chef_instagrams', form.chef_instagrams.value);
+        formData.append('reservation_url', form.reservation_url.value);
+        formData.append('english_description', form.english_description.value);
+        formData.append('hebrew_description', form.hebrew_description.value);
+        if (form.poster.files[0]) {
+            console.log("Appending poster file:", form.poster.files[0]);
+            formData.append('poster', form.poster.files[0]);
         }
+
         fetch("http://localhost:5000/api/events", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(event),
+            body: formData,
         })
         .then(async res => {
             if (!res.ok) {
@@ -145,11 +142,11 @@ export function EventForm({ handleClick, event } ) {
                                 <Input name="title" defaultValue={event?.title || ""} borderColor="#bbb" borderWidth={2} _focus={{ borderColor: '#2596be' }} />
                             </Field.Root>
                             <Field.Root>
-                                <Field.Label color="#2596be">Start Date & Time</Field.Label>
+                                <Field.Label color="#2596be">Start Date</Field.Label>
                                 <Input type="date" name="start_datetime" defaultValue={event?.start_datetime || ""} borderColor="#bbb" borderWidth={2} _focus={{ borderColor: '#2596be' }} />
                             </Field.Root>
                             <Field.Root>
-                                <Field.Label color="#2596be">End Date & Time</Field.Label>
+                                <Field.Label color="#2596be">End Date</Field.Label>
                                 <Input type="date" name="end_datetime" defaultValue={event?.end_datetime || ""} borderColor="#bbb" borderWidth={2} _focus={{ borderColor: '#2596be' }} />
                             </Field.Root>
                             <Field.Root>
@@ -169,23 +166,19 @@ export function EventForm({ handleClick, event } ) {
                                 <Input name="chef_instagrams" placeholder="e.g. @ori, @ido" defaultValue={event?.chef_instagrams ? event.chef_instagrams.join(', ') : ""} borderColor="#bbb" borderWidth={2} _focus={{ borderColor: '#2596be' }} />
                             </Field.Root>
                             <Field.Root>
-                                <Field.Label color="#2596be">Image URL</Field.Label>
-                                <Input name="image_url" defaultValue={event?.image_url || ""} borderColor="#bbb" borderWidth={2} _focus={{ borderColor: '#2596be' }} />
-                            </Field.Root>
-                            <Field.Root>
                                 <Field.Label color="#2596be">Reservation URL</Field.Label>
                                 <Input name="reservation_url" defaultValue={event?.reservation_url || ""} borderColor="#bbb" borderWidth={2} _focus={{ borderColor: '#2596be' }} />
                             </Field.Root>
                             <Field.Root>
-                                <FileUpload />
-                            </Field.Root>
-                            <Field.Root>
-                                <Field.Label color="#2596be">English Description (optional)</Field.Label>
+                                <Field.Label color="#2596be">English Description</Field.Label>
                                 <Input name="english_description" defaultValue={event?.english_description || ""} borderColor="#bbb" borderWidth={2} _focus={{ borderColor: '#2596be' }} />
                             </Field.Root>
                             <Field.Root>
-                                <Field.Label color="#2596be">Hebrew Description (optional)</Field.Label>
+                                <Field.Label color="#2596be">Hebrew Description</Field.Label>
                                 <Input name="hebrew_description" defaultValue={event?.hebrew_description || ""} borderColor="#bbb" borderWidth={2} _focus={{ borderColor: '#2596be' }} />
+                            </Field.Root>
+                            <Field.Root>
+                                <FileUpload />
                             </Field.Root>
                         </Stack>
                     </Card.Body>
