@@ -4,14 +4,12 @@ import { MyAlert } from './CustomAlert.jsx';
 
 // Helper to validate event data
 export default function validateEvent(event) {
-    const { title, start_datetime, end_datetime, venue_instagram, venue_address, chef_names, chef_instagrams, image_url, reservation_url } = event; // No description field
+    const { title, start_datetime, end_datetime, venue_instagram, venue_address, chef_names, chef_instagrams, image_url, reservation_url, english_description, hebrew_description } = event; // Added descriptions
     
     if (!title || !validator.isLength(title.trim(), { min: 1 })) {
         return { valid: false, error: 'Title is required and must be a non-empty string.' };
     }
-    // if (!description || !validator.isLength(description.trim(), { min: 1 })) {
-    //     return { valid: false, error: 'Description is required and must be a non-empty string.' };
-    // }
+
     if (!start_datetime || isNaN(Date.parse(start_datetime))) {
         return { valid: false, error: 'Start datetime is required and must be a valid date.' };
     }
@@ -39,6 +37,15 @@ export default function validateEvent(event) {
     if (!reservation_url || !validator.isURL(reservation_url)) {
         return { valid: false, error: 'Reservation URL is required and must be a valid URL.' };
     }
+    // Validate English description
+    if (english_description && !/^[a-zA-Z0-9 .,!?\'"\-]+$/.test(english_description)) {
+        return { valid: false, error: 'English description must only contain English characters and valid punctuation.' };
+    }
+    // Validate Hebrew description
+    if (hebrew_description && !/^[\u0590-\u05FF .,!?\'"\-]+$/.test(hebrew_description)) {
+        return { valid: false, error: 'Hebrew description must only contain Hebrew characters and valid punctuation.' };
+    }
+    
     return { valid: true };
 }
 

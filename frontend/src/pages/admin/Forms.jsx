@@ -93,7 +93,9 @@ export function EventForm({ handleClick, event } ) {
             chef_names: form.chef_names.value.split(',').map(s => s.trim()),
             chef_instagrams: form.chef_instagrams.value.split(',').map(s => s.trim()),
             image_url: form.image_url.value,
-            reservation_url: form.reservation_url.value
+            reservation_url: form.reservation_url.value,
+            english_description: form.english_description.value,
+            hebrew_description: form.hebrew_description.value
         };
         const validation = validateEvent(event);
         if (!validation.valid) {
@@ -142,11 +144,6 @@ export function EventForm({ handleClick, event } ) {
                                 <Field.Label color="#2596be">Title</Field.Label>
                                 <Input name="title" defaultValue={event?.title || ""} borderColor="#bbb" borderWidth={2} _focus={{ borderColor: '#2596be' }} />
                             </Field.Root>
-                            {/* { /* Description field removed */}
-                            {/* <Field.Root> 
-                                <Field.Label color="#2596be">Description</Field.Label>
-                                <Input name="description" defaultValue={event?.description || ""} />
-                            </Field.Root> */} 
                             <Field.Root>
                                 <Field.Label color="#2596be">Start Date & Time</Field.Label>
                                 <Input type="date" name="start_datetime" defaultValue={event?.start_datetime || ""} borderColor="#bbb" borderWidth={2} _focus={{ borderColor: '#2596be' }} />
@@ -181,6 +178,14 @@ export function EventForm({ handleClick, event } ) {
                             </Field.Root>
                             <Field.Root>
                                 <FileUpload />
+                            </Field.Root>
+                            <Field.Root>
+                                <Field.Label color="#2596be">English Description (optional)</Field.Label>
+                                <Input name="english_description" defaultValue={event?.english_description || ""} borderColor="#bbb" borderWidth={2} _focus={{ borderColor: '#2596be' }} />
+                            </Field.Root>
+                            <Field.Root>
+                                <Field.Label color="#2596be">Hebrew Description (optional)</Field.Label>
+                                <Input name="hebrew_description" defaultValue={event?.hebrew_description || ""} borderColor="#bbb" borderWidth={2} _focus={{ borderColor: '#2596be' }} />
                             </Field.Root>
                         </Stack>
                     </Card.Body>
