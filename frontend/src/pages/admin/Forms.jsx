@@ -33,7 +33,7 @@ export default function LoginForm( {handleClick} ) {
                 </div>
             </div>
         )}
-            <form onSubmit={handleLogin}>
+        <form onSubmit={handleLogin} enctype="multipart/form-data">
         <Card.Root maxW="lg" w="100%" minW="400px" padding={8} boxShadow="2xl" borderRadius="2xl">
             <Card.Header>
                 <div style={{ marginBottom: 16, color: '#2596be', fontSize: 24, textDecoration: "underline" }}>Hey Hallee / Benji ! </div>
@@ -80,25 +80,42 @@ export default function LoginForm( {handleClick} ) {
 
 export function EventForm({ handleClick, event } ) {
     const [alert, setAlert] = useState(undefined);
-
     function handleEvent(e) {
         e.preventDefault(); 
         const form = e.target; // e.target is the form when using onSubmit
-        const formData = new FormData();
-        formData.append('title', form.title.value);
-        formData.append('start_datetime', form.start_datetime.value);
-        formData.append('end_datetime', form.end_datetime.value);
-        formData.append('venue_instagram', form.venue_instagram.value);
-        formData.append('venue_address', form.venue_address.value);
-        formData.append('chef_names', form.chef_names.value);
-        formData.append('chef_instagrams', form.chef_instagrams.value);
-        formData.append('reservation_url', form.reservation_url.value);
-        formData.append('english_description', form.english_description.value);
-        formData.append('hebrew_description', form.hebrew_description.value);
-        if (form.poster.files[0]) {
-            console.log("Appending poster file:", form.poster.files[0]);
-            formData.append('poster', form.poster.files[0]);
+        const eventData = {
+          title: form.title.value,
+          start_datetime: form.start_datetime.value,
+          end_datetime: form.end_datetime.value,
+          venue_instagram: form.venue_instagram.value,
+          venue_address: form.venue_address.value,
+          chef_names: form.chef_names.value,
+          chef_instagrams: form.chef_instagrams.value, 
+          reservation_url: form.reservation_url.value,
+          english_description: form.english_description.value,
+          hebrew_description: form.hebrew_description.value,
+          poster: form.poster.files[0] // File input
+        };
+        const validation = validateEvent(eventData);
+        if (!validation.valid) {
+            setAlert({ status: "error", title: "Validation Error", description: validation.error });
+            return;
         }
+        // If valid, proceed to submit the form data
+        const formData = new FormData();
+        formData.append('title', eventData.title);
+        formData.append('start_datetime', eventData.start_datetime);
+        formData.append('end_datetime', eventData.end_datetime);
+        formData.append('venue_instagram', eventData.venue_instagram);
+        formData.append('venue_address', eventData.venue_address);
+        formData.append('chef_names', eventData.chef_names);
+        formData.append('chef_instagrams', eventData.chef_instagrams);
+        formData.append('reservation_url', eventData.reservation_url);
+        formData.append('english_description', eventData.english_description);
+        formData.append('hebrew_description', eventData.hebrew_description);
+        formData.append('poster', eventData.poster);
+
+        console.log('Submitting event:', eventData);
 
         fetch("http://localhost:5000/api/events", {
             method: "POST",

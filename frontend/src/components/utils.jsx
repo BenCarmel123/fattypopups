@@ -4,9 +4,9 @@ import { MyAlert } from './CustomAlert.jsx';
 
 // Helper to validate event data
 export default function validateEvent(event) {
-    const { title, start_datetime, end_datetime, venue_instagram, venue_address, chef_names, chef_instagrams, image_url, reservation_url, english_description, hebrew_description } = event; // Added descriptions
-    
-    if (!title || !validator.isLength(title.trim(), { min: 1 })) {
+    const { title, start_datetime, end_datetime, venue_instagram, venue_address, chef_names, chef_instagrams, reservation_url, english_description, hebrew_description, poster } = event;
+
+    if (!title || typeof title !== 'string' || !validator.isLength(title.trim(), { min: 1 })) {
         return { valid: false, error: 'Title is required and must be a non-empty string.' };
     }
 
@@ -19,33 +19,39 @@ export default function validateEvent(event) {
     if (new Date(start_datetime) > new Date(end_datetime)) {
         return { valid: false, error: 'Start datetime must be before end datetime.' };
     }
-    if (!venue_instagram || !validator.isLength(venue_instagram.trim(), { min: 1 })) {
+
+    if (!venue_instagram || typeof venue_instagram !== 'string' || !validator.isLength(venue_instagram.trim(), { min: 1 })) {
         return { valid: false, error: 'Venue Instagram is required and must be a non-empty string.' };
     }
-    if (!venue_address || !validator.isLength(venue_address.trim(), { min: 1 })) {
+
+    if (!venue_address || typeof venue_address !== 'string' || !validator.isLength(venue_address.trim(), { min: 1 })) {
         return { valid: false, error: 'Venue address is required and must be a non-empty string.' };
     }
-    if (!Array.isArray(chef_names) || chef_names.length === 0 || chef_names.some(name => !validator.isLength(name.trim(), { min: 1 }))) {
-        return { valid: false, error: 'Chef names are required and must be an array of non-empty strings.' };
+
+    if (!chef_names || typeof chef_names !== 'string' || !validator.isLength(chef_names.trim(), { min: 1 })) {
+        return { valid: false, error: 'Chef names are required and must be a non-empty string.' };
     }
-    if (!Array.isArray(chef_instagrams) || chef_instagrams.length === 0 || chef_instagrams.some(instagram => !validator.isLength(instagram.trim(), { min: 1 }))) {
-        return { valid: false, error: 'Chef Instagrams are required and must be an array of non-empty strings.' };
+
+    if (!chef_instagrams || typeof chef_instagrams !== 'string' || !validator.isLength(chef_instagrams.trim(), { min: 1 })) {
+        return { valid: false, error: 'Chef Instagrams are required and must be a non-empty string.' };
     }
-    if (!image_url || !validator.isURL(image_url)) {
-        return { valid: false, error: 'Image URL is required and must be a valid URL.' };
-    }
-    if (!reservation_url || !validator.isURL(reservation_url)) {
+
+    if (!reservation_url || typeof reservation_url !== 'string' || !validator.isURL(reservation_url)) {
         return { valid: false, error: 'Reservation URL is required and must be a valid URL.' };
     }
-    // Validate English description
-    if (english_description && !/^[a-zA-Z0-9 .,!?\'"\-]+$/.test(english_description)) {
-        return { valid: false, error: 'English description must only contain English characters and valid punctuation.' };
+
+    if (!english_description || typeof english_description !== 'string' || !validator.isLength(english_description.trim(), { min: 1 })) {
+        return { valid: false, error: 'English description is required and must be a non-empty string.' };
     }
-    // Validate Hebrew description
-    if (hebrew_description && !/^[\u0590-\u05FF .,!?\'"\-]+$/.test(hebrew_description)) {
-        return { valid: false, error: 'Hebrew description must only contain Hebrew characters and valid punctuation.' };
+
+    if (!hebrew_description || typeof hebrew_description !== 'string' || !validator.isLength(hebrew_description.trim(), { min: 1 })) {
+        return { valid: false, error: 'Hebrew description is required and must be a non-empty string.' };
     }
-    
+
+    if (!poster || !(poster instanceof File)) {
+        return { valid: false, error: 'Poster is required and must be a valid file.' };
+    }
+
     return { valid: true };
 }
 
