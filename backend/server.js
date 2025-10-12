@@ -5,6 +5,7 @@ const cors = require('cors');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
 const AWS = require('aws-sdk');
+const { checkDuplicateEvent, insertEvent } = require('./queries');
 require('dotenv').config();
 const { generateEventDescriptions } = require('./agent.js');
 
@@ -21,7 +22,6 @@ app.use((req, res, next) => {
   console.log(`🛰️ Incoming ${req.method} ${req.url}`);
   next();
 });
-
 
 // DB 
 const { Pool } = require('pg');
@@ -61,71 +61,69 @@ catch (err) {
     }
 });
 
-
-// Add new event
+// Add new event 
 app.post('/api/events', upload.single("poster"), async (req, res) => {
-    // Generate event description using AI (stub for now)
-    //let Ai_response = await generateEventDescriptions(req.body.chef_names, req.body.venue_address);
-    //let descriptionJSON = JSON.parse(Ai_response.output_text);
-    //const description = descriptionJSON.english_description + "\n\n" + descriptionJSON.hebrew_description;
-    console.log("🔥 Received POST /api/events");
-    console.log('Request body:', req.body);
-    console.log('Uploaded file:', req.file);
-    const { title ,start_datetime, end_datetime, venue_instagram, venue_address, chef_names, chef_instagrams, reservation_url, english_description, hebrew_description } = req.body;
-    const image_url = req.file.location; // S3 URL of the uploaded image
-    try {
-        // Convert comma-separated strings to PostgreSQL-friendly arrays
-        const chefNamesArray = req.body.chef_names ? req.body.chef_names.split(',').map(name => name.trim()): [];
-        const chefInstagramsArray = req.body.chef_instagrams ? req.body.chef_instagrams.split(',').map(handle => handle.trim()): [];
-        const {
-                title,
-                start_datetime,
-                end_datetime,
-                venue_instagram,
-                venue_address,
-                reservation_url,
-                english_description,
-                hebrew_description
-                } = req.body;
-            // S3 file location
-            const image_url = req.file?.location || null;
-        const newEvent = await pool.query(
-            `INSERT INTO events (
-            title,
-            start_datetime,
-            end_datetime,
-            venue_instagram,
-            venue_address,
-            chef_names,
-            chef_instagrams,
-            image_url,
-            reservation_url,
-            english_description,
-            hebrew_description
-            ) VALUES (
-            $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11
-            ) RETURNING *`,
-            [
-            title,
-            start_datetime,
-            end_datetime,
-            venue_instagram,
-            venue_address,
-            chefNamesArray,
-            chefInstagramsArray,
-            image_url,
-            reservation_url,
-            english_description,
-            hebrew_description
-            ]
-        );
-        console.log("Event successfully added to DB:", newEvent.rows[0]);
-        res.json(newEvent.rows[0]);
-        } catch (err) {
-        console.error("Ben there's an Error adding event:", err);
-        res.status(500).json({ error: err.message });
-        }
-    });
+  console.log("🔥 Received POST /api/events");
+  console.log("Request body:", req.body);
+  console.log("Uploaded file:", req.file);
+
+  const {
+    title,
+    start_datetime,
+    end_datetime,
+    venue_instagram,
+    venue_address,
+    chef_names,
+    chef_instagrams,
+    reservation_url,
+    english_description,
+    hebrew_description
+  } = req.body;
+
+  const chefNamesArray = chef_names
+    ? chef_names.split(',').map(name => name.trim())
+    : [];
+  const chefInstagramsArray = chef_instagrams
+    ? chef_instagrams.split(',').map(handle => handle.trim())
+    : [];
+
+  const image_url = req.file?.location || null;
+
+  try {
+    const duplicateCheck = await pool.query(checkDuplicateEvent, [
+      title,
+      start_datetime,
+      end_datetime
+    ]);
+
+    if (duplicateCheck.rows.length > 0) {
+      console.log("⚠️ Duplicate event detected");
+      return res
+        .status(400)
+        .json({ error: "An event with the same title and dates already exists." });
+    }
+
+    const newEvent = await pool.query(insertEvent, [
+      title,
+      start_datetime,
+      end_datetime,
+      venue_instagram,
+      venue_address,
+      chefNamesArray,
+      chefInstagramsArray,
+      image_url,
+      reservation_url,
+      english_description,
+      hebrew_description
+    ]);
+
+    console.log("✅ Event successfully added:", newEvent.rows[0]);
+    res.json(newEvent.rows[0]);
+  } catch (err) {
+    console.error("❌ Error adding event:", err);
+    res.status(500).json({ error: err.message });
+  }
+});
 
 // Fetch all events
 app.get('/api/events', async (req, res) => {
