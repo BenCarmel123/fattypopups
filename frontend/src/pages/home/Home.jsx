@@ -22,8 +22,7 @@ const Admin = () => {
           colorScheme="teal"
           variant="ghost"
           style={{ position: 'fixed', bottom: '1.5rem', right: '1.5rem', background: 'transparent', boxShadow: 'none', opacity: 0.7 }}
-          onClick={handleAdmin}
-        >
+          onClick={handleAdmin}>
           <RiMailLine /> Admin
         </Button>
       </div>
@@ -36,19 +35,25 @@ const About = () => {
     window.location.href = "/" + ABOUT_ROUTE;
   }
   return (
-    <div className="fixed top-4 right-6 z-50">
+    <div className="absolute top-2 right-6 z-50">
       <Button
-        variant="ghost"
-        colorScheme="teal"
-        size="md"
-        className="bg-transparent shadow-none opacity-70 hover:opacity-100 transition-opacity duration-150"
+        colorScheme="blue"
+        variant="solid"
+        size="lg"
+        fontWeight="bold"
+        px={8}
+        py={6}
+        boxShadow="md"
+        borderRadius="xl"
+        _hover={{ bg: '#3182ce', color: 'white', transform: 'scale(1.05)' }}
+        transition="all 0.15s"
         onClick={handleAbout}
       >
-       About
+        About
       </Button>
     </div>
   );
-}
+};
 
 export function Header() {
   return (

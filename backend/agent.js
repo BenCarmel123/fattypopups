@@ -43,7 +43,7 @@ async function generateEventPoster(chef_names, venue_address, event_description)
 }
 
 // Main function to generate event description and optionally poster (stub for now)
-export default async function generateEvent(chef_names, venue_address, isPoster) {
+export async function generateEvent(chef_names, venue_address, isPoster) {
   event_description = await generateEventDescriptions(chef_names, venue_address);
   if (isPoster) {
     event_poster = await generateEventPoster(chef_names, venue_address, event_description);
@@ -52,3 +52,13 @@ export default async function generateEvent(chef_names, venue_address, isPoster)
   return { event_description }; 
 }
 
+
+// Function to embed and store
+export async function createEventEmbedding(chef_names, venue_address, description) {
+  const embeddingResponse = await openai.embeddings.create({
+    model: "text-embedding-3-small",
+    input: description,
+  });
+  const embedding = embeddingResponse.data[0].embedding;
+  return embedding;
+}

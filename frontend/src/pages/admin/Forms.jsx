@@ -114,9 +114,6 @@ export function EventForm({ handleClick, event } ) {
         formData.append('english_description', eventData.english_description);
         formData.append('hebrew_description', eventData.hebrew_description);
         formData.append('poster', eventData.poster);
-
-        console.log('Submitting event:', eventData);
-
         fetch("http://localhost:5000/api/events", {
             method: "POST",
             body: formData,
@@ -130,11 +127,17 @@ export function EventForm({ handleClick, event } ) {
         })
         .then(() => {
             // handle success (e.g., show a message, reset form, etc.)
-            setAlert("Event created!");
+            setAlert({
+                status: "success",
+                title: "Event Created",
+                description: "The event was successfully added."
+            });
         })
         .catch((err) => {
             // handle error
-            setAlert("Error creating event: " + err.message);
+            setAlert({
+                 status: "error", title: "Submission Error", description: err.message
+        })
         });
     }
 
@@ -148,9 +151,6 @@ export function EventForm({ handleClick, event } ) {
                 </div>
             )}
             <Card.Root maxW="md" w="100%" minW="350px">
-                <Card.Header>
-                    <div style={{ marginBottom: 8, color: '#888' }}>Event Details</div>
-                </Card.Header>
                 <form onSubmit={handleEvent}>
                     <Card.Body>
                         <Stack gap={4} w="full">
@@ -195,13 +195,55 @@ export function EventForm({ handleClick, event } ) {
                                 <Input name="hebrew_description" defaultValue={event?.hebrew_description || ""} borderColor="#bbb" borderWidth={2} _focus={{ borderColor: '#2596be' }} />
                             </Field.Root>
                             <Field.Root>
-                                <FileUpload />
+                                <Button 
+                                    colorScheme="blue" 
+                                    variant="solid" 
+                                    size="lg" 
+                                    fontWeight="bold" 
+                                    px={2} 
+                                    py={2} 
+                                    boxShadow="md" 
+                                    borderRadius="xl" 
+                                    _hover={{ bg: '#3182ce', color: 'white', transform: 'scale(1.05)' }} 
+                                    transition="all 0.15s"
+                                    as="label"
+                                >
+                                    <FileUpload style={{ display: 'none' }} />
+                                </Button>
                             </Field.Root>
                         </Stack>
                     </Card.Body>
                     <Card.Footer justifyContent="flex-end">
-                        <Button variant="ghost" onClick={handleClick(DASHBOARD)} type="button">Cancel</Button>
-                        <Button variant="subtle" colorPalette="blue" ml={2} type="submit">Add Event</Button>
+                        <Button 
+                            colorScheme="gray" 
+                            variant="outline" 
+                            size="lg" 
+                            fontWeight="bold" 
+                            px={8} 
+                            py={6} 
+                            borderRadius="xl" 
+                            _hover={{ bg: '#edf2f7', color: '#2d3748', transform: 'scale(1.05)' }} 
+                            transition="all 0.15s" 
+                            onClick={handleClick(DASHBOARD)} 
+                            type="button"
+                        >
+                            Back
+                        </Button>
+                        <Button 
+                            colorScheme="blue" 
+                            variant="solid" 
+                            size="lg" 
+                            fontWeight="bold" 
+                            px={8} 
+                            py={6} 
+                            boxShadow="md" 
+                            borderRadius="xl" 
+                            _hover={{ bg: '#3182ce', color: 'white', transform: 'scale(1.05)' }} 
+                            transition="all 0.15s" 
+                            type="submit"
+                        >
+                            Add Event
+                        </Button>
                     </Card.Footer>
                 </form>
             </Card.Root>

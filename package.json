@@ -4,6 +4,7 @@
   },
   "dependencies": {
     "aws-sdk": "^2.1692.0",
+    "mathjs": "^15.0.0",
     "multer": "^2.0.2",
     "multer-s3": "^2.10.0",
     "openai": "^5.20.0"

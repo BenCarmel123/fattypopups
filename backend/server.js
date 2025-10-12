@@ -5,9 +5,9 @@ const cors = require('cors');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
 const AWS = require('aws-sdk');
-const { checkDuplicateEvent, insertEvent } = require('./queries');
+const { checkDuplicateEvent, insertEvent, insertEmbedding } = require('./queries');
 require('dotenv').config();
-const { generateEventDescriptions } = require('./agent.js');
+const { generateEventDescriptions, createEventEmbedding } = require('./agent.js');
 
 // Initialize Express app
 const app = express();
@@ -66,7 +66,6 @@ app.post('/api/events', upload.single("poster"), async (req, res) => {
   console.log("🔥 Received POST /api/events");
   console.log("Request body:", req.body);
   console.log("Uploaded file:", req.file);
-
   const {
     title,
     start_datetime,
@@ -97,7 +96,6 @@ app.post('/api/events', upload.single("poster"), async (req, res) => {
     ]);
 
     if (duplicateCheck.rows.length > 0) {
-      console.log("⚠️ Duplicate event detected");
       return res
         .status(400)
         .json({ error: "An event with the same title and dates already exists." });
@@ -116,6 +114,24 @@ app.post('/api/events', upload.single("poster"), async (req, res) => {
       english_description,
       hebrew_description
     ]);
+
+    try {
+        const unified_description = english_description + " " + hebrew_description;
+        const embedding = await createEventEmbedding(
+        chefNamesArray.join(", "),
+        venue_address,
+        english_description
+        );
+
+        await pool.query(insertEmbedding, [
+        chefNamesArray.join(", "),
+        venue_address,
+        unified_description,
+        embedding
+        ]);
+    } catch (embeddingError) {
+        console.error("❌ Error creating embedding:", embeddingError);
+    }
 
     console.log("✅ Event successfully added:", newEvent.rows[0]);
     res.json(newEvent.rows[0]);

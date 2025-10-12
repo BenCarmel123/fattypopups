@@ -23,7 +23,5 @@ const insertEvent = `
   ) RETURNING *
 `;
 
-module.exports = {
-  checkDuplicateEvent,
-  insertEvent
-};
+const insertEmbedding = `INSERT INTO event_embeddings (chef_names, venue_address, description, embedding)
+     VALUES ($1, $2, $3, $4)`;
