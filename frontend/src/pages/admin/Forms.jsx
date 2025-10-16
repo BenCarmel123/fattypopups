@@ -225,8 +225,7 @@ export function EventForm({ handleClick, event } ) {
                             _hover={{ bg: '#edf2f7', color: '#2d3748', transform: 'scale(1.05)' }} 
                             transition="all 0.15s" 
                             onClick={handleClick(DASHBOARD)} 
-                            type="button"
-                        >
+                            type="button">
                             Back
                         </Button>
                         <Button 
@@ -240,8 +239,7 @@ export function EventForm({ handleClick, event } ) {
                             borderRadius="xl" 
                             _hover={{ bg: '#3182ce', color: 'white', transform: 'scale(1.05)' }} 
                             transition="all 0.15s" 
-                            type="submit"
-                        >
+                            type="submit">
                             Add Event
                         </Button>
                     </Card.Footer>

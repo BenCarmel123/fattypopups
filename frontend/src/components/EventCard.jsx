@@ -116,7 +116,7 @@ export default function EventCard({ event }) {
             <FaRegShareFromSquare />
           </IconButton>
           <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
-            <Details eventDetails={event.description} eventTitle={event.title}/>
+            <Details eventDetails={event.english_description} eventTitle={event.title}/>
           </div>
         </div>
       </Card.Footer>
