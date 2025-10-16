@@ -1,7 +1,7 @@
 import { Button, Card, Stack, Input, Field, Float, useFileUploadContext } from "@chakra-ui/react";
 import { DASHBOARD } from "../../components/strings.jsx";
 import validateEvent from "../../components/utils.jsx";
-import { ADMIN_USERNAME, ADMIN_PASSWORD } from "../../adminRoute.js";
+import { ADMIN_USERNAME, ADMIN_PASSWORD } from "../../Config";
 import  MyAlert  from "../../components/CustomAlert.jsx";
 import { useState } from "react";
 import FileUpload from "../../components/FileUpload.jsx";

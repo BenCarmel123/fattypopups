@@ -1,7 +1,6 @@
 import styles from '../home/home.module.css';
 import React, { useState, useEffect } from "react"
-import { SERVER_URL, ABOUT_ROUTE } from '../../Config';
-import { ADMIN_ROUTE } from '../../adminRoute';
+import { SERVER_URL, ABOUT_ROUTE, ADMIN_ROUTE } from '../../Config';
 import { Button, Text } from '@chakra-ui/react';
 import { RiMailLine } from "react-icons/ri";
 import EventCard from '../../components/EventCard';

@@ -6,3 +6,6 @@ export const APP_NAME = 'fattypopups';
 export const SERVER_URL = 'http://localhost:5000';
 export const HEADER_COLOR = '#e0e4dd';
 export const ABOUT_ROUTE = 'about';
+export const ADMIN_ROUTE = 'benji_the_pop_up_guy';
+export const ADMIN_USERNAME = 'admin';
+export const ADMIN_PASSWORD = 'admin';

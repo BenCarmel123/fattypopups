@@ -1,5 +1,4 @@
 // Config and imports
-const { ADMIN_ROUTE } = require('../frontend/src/adminRoute.js');
 const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
@@ -50,7 +49,7 @@ app.listen(PORT, () => {
 });
 
 // Routes
-app.get('/' + ADMIN_ROUTE, async (req, res) => {
+app.get('/' + process.env.ADMIN_ROUTE, async (req, res) => {
     try {
             res.json({ message: 'Admin route reached!' });
             const events = await pool.query('SELECT * FROM events');

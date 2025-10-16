@@ -1,7 +1,7 @@
 import AdminPageHandler from './pages/admin/AdminPageHandler';
 import HomePage from './pages/home/Home';
 import AboutPage from './pages/about/AboutPage';
-import { ADMIN_ROUTE } from './adminRoute.js';
+import { ADMIN_ROUTE } from './Config';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
