@@ -1,11 +1,10 @@
 // Require necessary modules and configure OpenAI client
-import { OpenAI } from "openai";
-import dotenv from "dotenv";
+require('dotenv').config();
 dotenv.config();
 const openai = new OpenAI({
   apiKey: process.env.KEY_2,
 });
-import { writeFile } from 'fs/promises';
+const { writeFile } = require('fs').promises;
 
 // Function to generate event descriptions
 export async function generateEventDescriptions(chef_names, venue_address) {
