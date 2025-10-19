@@ -43,10 +43,10 @@ const upload = multer({
   })
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+app.get('/', (req, res) => {
+  res.send(' FattyPopups backend is running!');
 });
+
 
 // Routes
 app.get('/' + process.env.ADMIN_ROUTE, async (req, res) => {
