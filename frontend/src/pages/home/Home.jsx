@@ -1,7 +1,7 @@
 import styles from '../home/home.module.css';
 import React, { useState, useEffect } from "react"
 import { SERVER_URL, ABOUT_ROUTE, ADMIN_ROUTE } from '../../Config';
-import { Button, Text } from '@chakra-ui/react';
+import { Button, Text, Spinner } from '@chakra-ui/react';
 import { RiMailLine } from "react-icons/ri";
 import EventCard from '../../components/EventCard';
 
@@ -76,7 +76,11 @@ export default function HomePage() {
   
   // While loading
   if (events === null) {
-    return <Text> Ben </Text>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Spinner size="xl" color="blue.500" />
+      </div>
+    );
   }
   // If no events, show message
   if (events.length === 0) {
