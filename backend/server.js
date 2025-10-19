@@ -1,6 +1,8 @@
 // Config and imports
 const express = require('express');
 const cors = require('cors');
+const dns = require('dns');
+dns.setDefaultResultOrder('ipv4first');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
 const AWS = require('aws-sdk');
@@ -10,10 +12,15 @@ const createEventEmbedding  = require('./agent.js');
 
 // Initialize Express app
 const app = express();
-const PORT = process.env.PORT || 5000;
-
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on port ${PORT}`);
+});
 // Middleware
 app.use(cors());
+app.use(cors({
+  origin: [process.env.FRONTEND_URL, process.env.FRONTEND_PROD_URL],
+}));
 app.use(express.json()); // Parse JSON bodies
 
 // Logging middleware
@@ -23,9 +30,12 @@ app.use((req, res, next) => {
 });
 
 // DB 
-const { Pool } = require('pg');
-const pool = new Pool({connectionString: process.env.DATABASE_URL,}); 
 
+const { Pool } = require('pg');
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false },
+});
 // AWS S3 setup
 const s3 = new AWS.S3({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID, 
