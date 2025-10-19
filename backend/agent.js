@@ -1,13 +1,13 @@
 // Require necessary modules and configure OpenAI client
 require('dotenv').config();
-dotenv.config();
+const { OpenAI } = require('openai');
 const openai = new OpenAI({
   apiKey: process.env.KEY_2,
 });
 const { writeFile } = require('fs').promises;
 
 // Function to generate event descriptions
-export async function generateEventDescriptions(chef_names, venue_address) {
+async function generateEventDescriptions(chef_names, venue_address) {
   const response = await openai.responses.create({
     model: "gpt-4o",
     input: "chef names: " + chef_names + ", venue address: " + venue_address,
@@ -42,7 +42,7 @@ async function generateEventPoster(chef_names, venue_address, event_description)
 }
 
 // Main function to generate event description and optionally poster (stub for now)
-export async function generateEvent(chef_names, venue_address, isPoster) {
+async function generateEvent(chef_names, venue_address, isPoster) {
   event_description = await generateEventDescriptions(chef_names, venue_address);
   if (isPoster) {
     event_poster = await generateEventPoster(chef_names, venue_address, event_description);
@@ -53,7 +53,7 @@ export async function generateEvent(chef_names, venue_address, isPoster) {
 
 
 // Function to embed and store
-export async function createEventEmbedding(chef_names, venue_address, description) {
+async function createEventEmbedding(chef_names, venue_address, description) {
   const embeddingResponse = await openai.embeddings.create({
     model: "text-embedding-3-small",
     input: description,
@@ -61,3 +61,8 @@ export async function createEventEmbedding(chef_names, venue_address, descriptio
   const embedding = embeddingResponse.data[0].embedding;
   return embedding;
 }
+
+module.exports = {
+  createEventEmbedding
+};
+
