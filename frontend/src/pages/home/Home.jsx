@@ -75,15 +75,16 @@ export default function HomePage() {
   }, []);
   
   // While loading
-  if (events === null) {
+  /* if (events === null) {
     return (
       <div className="flex justify-center items-center h-screen">
         <Spinner size="xl" color="blue.500" />
       </div>
     );
   }
+  */
   // If no events, show message
-  if (events.length === 0) {
+  if (events.length === 0 || events === undefined || events === null) {
     return <Text>No events available.</Text>;
   } 
   
