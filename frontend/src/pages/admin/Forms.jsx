@@ -114,7 +114,7 @@ export function EventForm({ handleClick, event } ) {
         formData.append('english_description', eventData.english_description);
         formData.append('hebrew_description', eventData.hebrew_description);
         formData.append('poster', eventData.poster);
-        fetch("http://localhost:5000/api/events", {
+        fetch("http://localhost:5001/api/events", {
             method: "POST",
             body: formData,
         })

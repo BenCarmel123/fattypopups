@@ -1,27 +1,24 @@
 // Config and imports
 const express = require('express');
 const cors = require('cors');
-const dns = require('dns');
-dns.setDefaultResultOrder('ipv4first');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
 const AWS = require('aws-sdk');
 const { checkDuplicateEvent, insertEvent, insertEmbedding } = require('./queries');
-/* require('dotenv').config({ path: '../.env' }); */ // Only needed when not in production
+require('dotenv').config({ path: '../.env' });
 const createEventEmbedding  = require('./agent.js');
-const { createClient } = require('@supabase/supabase-js');
 
 // Initialize Express app
 const app = express();
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, '0.0.0.0', () => {
+const PORT = process.env.PORT || 5001;
+
+
+app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
 // Middleware
 app.use(cors());
-app.use(cors({
-  origin: [process.env.FRONTEND_URL, process.env.FRONTEND_PROD_URL],
-}));
 app.use(express.json()); // Parse JSON bodies
 
 // Logging middleware
@@ -31,8 +28,9 @@ app.use((req, res, next) => {
 });
 
 // DB 
+const { Pool } = require('pg');
+const pool = new Pool({connectionString: process.env.DATABASE_LOCAL_URL,}); 
 
-const supabase = createClient(process.env.DATABASE_URL, process.env.SUPABASE_KEY);
 // AWS S3 setup
 const s3 = new AWS.S3({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID, 
@@ -49,11 +47,6 @@ const upload = multer({
     }
   })
 });
-
-app.get('/', (req, res) => {
-  res.send(' FattyPopups backend is running!');
-});
-
 
 // Routes
 app.get('/' + process.env.ADMIN_ROUTE, async (req, res) => {
@@ -95,67 +88,52 @@ app.post('/api/events', upload.single("poster"), async (req, res) => {
   const image_url = req.file?.location || null;
 
   try {
-    const { data: duplicateCheck, error: duplicateError } = await supabase
-      .from('events')
-      .select('*')
-      .eq('title', title)
-      .eq('start_datetime', start_datetime)
-      .eq('end_datetime', end_datetime);
+    const duplicateCheck = await pool.query(checkDuplicateEvent, [
+      title,
+      start_datetime,
+      end_datetime
+    ]);
 
-    if (duplicateError) throw duplicateError;
-
-    if (duplicateCheck.length > 0) {
+    if (duplicateCheck.rows.length > 0) {
       return res
         .status(400)
         .json({ error: "An event with the same title and dates already exists." });
     }
 
-    const { data: newEvent, error: insertError } = await supabase
-      .from('events')
-      .insert([
-        {
-          title,
-          start_datetime,
-          end_datetime,
-          venue_instagram,
-          venue_address,
-          chef_names: chefNamesArray,
-          chef_instagrams: chefInstagramsArray,
-          image_url,
-          reservation_url,
-          english_description,
-          hebrew_description
-        }
-      ]);
-
-    if (insertError) throw insertError;
+    const newEvent = await pool.query(insertEvent, [
+      title,
+      start_datetime,
+      end_datetime,
+      venue_instagram,
+      venue_address,
+      chefNamesArray,
+      chefInstagramsArray,
+      image_url,
+      reservation_url,
+      english_description,
+      hebrew_description
+    ]);
 
     try {
-      const unified_description = english_description + " " + hebrew_description;
-      const embedding = await createEventEmbedding(
+        const unified_description = english_description + " " + hebrew_description;
+        const embedding = await createEventEmbedding(
         chefNamesArray.join(", "),
         venue_address,
         english_description
-      );
+        );
 
-      const { error: embeddingError } = await supabase
-        .from('embeddings')
-        .insert([
-          {
-            chef_names: chefNamesArray.join(", "),
-            venue_address,
-            unified_description,
-            embedding
-          }
+        await pool.query(insertEmbedding, [
+        chefNamesArray.join(", "),
+        venue_address,
+        unified_description,
+        embedding
         ]);
-
-      if (embeddingError) throw embeddingError;
     } catch (embeddingError) {
-      console.error("❌ Error creating embedding:", embeddingError);
+        console.error("❌ Error creating embedding:", embeddingError);
     }
 
-    console.log("✅ Event successfully added:", newEvent);
-    res.json(newEvent);
+    console.log("✅ Event successfully added:", newEvent.rows[0]);
+    res.json(newEvent.rows[0]);
   } catch (err) {
     console.error("❌ Error adding event:", err);
     res.status(500).json({ error: err.message });
@@ -164,37 +142,28 @@ app.post('/api/events', upload.single("poster"), async (req, res) => {
 
 // Fetch all events
 app.get('/api/events', async (req, res) => {
-  try {
-    const { data: events, error } = await supabase
-      .from('events')
-      .select('*')
-      .order('start_datetime', { ascending: true });
-
-    if (error) throw error;
-
-    res.json(events);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+    try {
+        const events = await pool.query('SELECT * FROM events ORDER BY start_datetime ASC');
+        console.log('Fetched events:', events.rows); // Debugging log
+        res.json(events.rows);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 });
 
 // Delete events by titles
 app.delete('/api/events', async (req, res) => {
-  const { titles } = req.body; 
-  if (!Array.isArray(titles) || titles.length === 0) {
-    return res.status(400).json({ error: 'Titles must be a non-empty array' });
-  }
-  try {
-    const { data, error } = await supabase
-      .from('events')
-      .delete()
-      .in('title', titles);
-
-    if (error) throw error;
-
-    res.status(200).json({ message: 'Events deleted successfully', events: titles });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+    const { titles } = req.body; 
+    if (!Array.isArray(titles) || titles.length === 0) {
+        return res.status(400).json({ error: 'Titles must be a non-empty array' });
+    }
+    try {
+        const deleteQuery = 'DELETE FROM events WHERE title = ANY($1::text[])';
+        await pool.query(deleteQuery, [titles]);
+        res.status(200).json(
+            { message: 'Events deleted successfully', 
+                events: titles});
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 });
-
