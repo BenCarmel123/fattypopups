@@ -47,7 +47,7 @@ const Details = ({ eventDetails, eventTitle }) => {
         <Drawer.Backdrop pos="absolute" boxSize="full" />
         <Drawer.Positioner pos="absolute" boxSize="full" padding="2">
           <Drawer.Content>
-            <Drawer.Header style={{ position: 'relative', paddingLeft: '2.5rem', backgroundColor: HEADER_COLOR }}>
+            <Drawer.Header style={{ position: 'relative', paddingLeft: '2.5rem', backgroundColor: '#e0e4dd' }}>
               <Drawer.CloseTrigger asChild>
                 <CloseButton size="xs" style={{ position: 'absolute', left: '0.5rem', top: '0.5rem', marginRight: '20rem', backgroundColor: '#8b0000', color: 'white'}} />
               </Drawer.CloseTrigger>

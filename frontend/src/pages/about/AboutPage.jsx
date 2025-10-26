@@ -1,6 +1,8 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { INSTA_LINK_HALLIE, INSTA_LINK_BEN } from '../../Config';
+
+const INSTA_LINK_HALLIE = process.env.REACT_APP_INSTA_LINK_HALLIE;
+const INSTA_LINK_BEN = process.env.REACT_APP_INSTA_LINK_BEN;
 
 export default function AboutPage() {
   const creators = [

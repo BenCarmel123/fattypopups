@@ -1,11 +1,13 @@
 import { Button, Card, Stack, Input, Field, Float, useFileUploadContext } from "@chakra-ui/react";
 import { DASHBOARD } from "../../components/strings.jsx";
 import validateEvent from "../../components/utils.jsx";
-import { ADMIN_USERNAME, ADMIN_PASSWORD, SERVER_URL } from "../../Config";
 import  MyAlert  from "../../components/CustomAlert.jsx";
 import { useState } from "react";
 import FileUpload from "../../components/FileUpload.jsx";
 
+const ADMIN_USERNAME = process.env.REACT_APP_ADMIN_USERNAME;
+const ADMIN_PASSWORD = process.env.REACT_APP_ADMIN_PASSWORD;
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 export default function LoginForm( {handleClick} ) {
     const [alert, setAlert] = useState(undefined);

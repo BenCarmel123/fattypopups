@@ -1,9 +1,13 @@
 import styles from '../home/home.module.css';
 import React, { useState, useEffect } from "react"
-import { SERVER_URL, ABOUT_ROUTE, ADMIN_ROUTE } from '../../Config';
 import { Button, Text, Spinner } from '@chakra-ui/react';
 import { RiMailLine } from "react-icons/ri";
 import EventCard from '../../components/EventCard';
+
+// Replace imports from Config.jsx with process.env variables
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+const ABOUT_ROUTE = process.env.REACT_APP_ABOUT_ROUTE;
+const ADMIN_ROUTE = process.env.REACT_APP_ADMIN_ROUTE;
 
 function handleRoute(route) {
   window.location.href = "/" + route;

@@ -1,8 +1,9 @@
 import { Checkbox, Table, Button } from "@chakra-ui/react"
 import { useState, useEffect } from "react"
 import { ADD, EDIT } from "../../components/strings"
-import { SERVER_URL } from "../../Config"
 import MyAlert from "../../components/CustomAlert.jsx"; 
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const Dashboard = ({ handleClick }) => {
   const [selection, setSelection] = useState([])
