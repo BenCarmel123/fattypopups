@@ -1,7 +1,7 @@
 import { Button, Card, Stack, Input, Field, Float, useFileUploadContext } from "@chakra-ui/react";
 import { DASHBOARD } from "../../components/strings.jsx";
 import validateEvent from "../../components/utils.jsx";
-import { ADMIN_USERNAME, ADMIN_PASSWORD } from "../../Config";
+import { ADMIN_USERNAME, ADMIN_PASSWORD, SERVER_URL } from "../../Config";
 import  MyAlert  from "../../components/CustomAlert.jsx";
 import { useState } from "react";
 import FileUpload from "../../components/FileUpload.jsx";
@@ -114,7 +114,7 @@ export function EventForm({ handleClick, event } ) {
         formData.append('english_description', eventData.english_description);
         formData.append('hebrew_description', eventData.hebrew_description);
         formData.append('poster', eventData.poster);
-        fetch("http://localhost:5000/api/events", {
+        fetch(`${SERVER_URL}/api/events`, {
             method: "POST",
             body: formData,
         })
