@@ -1,9 +1,9 @@
 // Require necessary modules and configure OpenAI client
 require('dotenv').config();
 const { OpenAI } = require('openai');
-const openai = new OpenAI({
-  apiKey: process.env.KEY_2,
-});
+const openai = process.env.KEY_2
+  ? new OpenAI({ apiKey: process.env.KEY_2 })
+  : null;
 const { writeFile } = require('fs').promises;
 
 // Function to generate event descriptions
@@ -54,6 +54,10 @@ async function generateEvent(chef_names, venue_address, isPoster) {
 
 // Function to embed and store
 async function createEventEmbedding(chef_names, venue_address, description) {
+  if (!openai) {
+    console.warn("OpenAI client is not initialized. Skipping embedding creation.");
+    return null; // Return a fallback value or handle gracefully
+  }
   const embeddingResponse = await openai.embeddings.create({
     model: "text-embedding-3-small",
     input: description,

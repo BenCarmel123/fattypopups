@@ -19,9 +19,8 @@ app.listen(PORT, '0.0.0.0', () => {
 });
 
 // Middleware
-app.use(cors());
 app.use(cors({
-  origin: [process.env.FRONTEND_URL, process.env.FRONTEND_PROD_URL],
+  origin: [process.env.FRONTEND_LOCAL_URL, process.env.FRONTEND_PROD_URL],
 }));
 app.use(express.json()); // Parse JSON bodies
 
