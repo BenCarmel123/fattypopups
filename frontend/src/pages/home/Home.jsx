@@ -70,21 +70,26 @@ export default function HomePage() {
   useEffect(() => {
     fetch(`${SERVER_URL}/api/events`)
       .then(res => res.json())
-      .then(data => setEvents(data))
-      .catch(err => console.error('Error fetching events:', err));
+      .then(data => {
+        console.log('Fetched events:', data); // Debugging log
+        setEvents(Array.isArray(data) ? data : []);
+      })
+      .catch(err => {
+        console.error('Error fetching events:', err);
+        setEvents([]); // Fallback to an empty array on error
+      });
   }, []);
   
   // While loading
-  /* if (events === null) {
+  if (events === null) {
     return (
       <div className="flex justify-center items-center h-screen">
         <Spinner size="xl" color="blue.500" />
       </div>
     );
   }
-  */
   // If no events, show message
-  if (events.length === 0 || events === undefined || events === null) {
+  if (events.length === 0) {
     return <Text>No events available.</Text>;
   } 
   

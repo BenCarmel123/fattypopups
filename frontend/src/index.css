@@ -2,7 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Chocolate+Classical+Sans&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap');
 
 /* Global CSS Variables */
 :root {
@@ -10,7 +11,7 @@
     --primary-bg-color: #fffaee;
     --error-color: #c46666;
     --button-text-color: white;
-    --primary-font: "Plus Jakarta Sans", sans-serif;
+    --primary-font: 'Comfortaa', sans-serif;
     --font-size-title: 40px;
     --font-size-medium: 16px;
     --font-weight-bold: bold;
@@ -25,7 +26,7 @@
 /* Global body styling */
 body {
     background-color: var(--primary-bg-color);
-    font-family: 'Chocolate Classical Sans', Arial, sans-serif;
+    font-family: var(--primary-font);
     margin: 0;
     padding: 0;
     min-height: 50vh;

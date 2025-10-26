@@ -17,6 +17,7 @@ const PORT = process.env.PORT || 8080;
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
 });
+
 // Middleware
 app.use(cors());
 app.use(cors({
@@ -31,8 +32,7 @@ app.use((req, res, next) => {
 });
 
 // DB 
-
-const supabase = createClient(process.env.DATABASE_URL, process.env.SUPABASE_KEY);
+const supabase = createClient(process.env.DATABASE_PROD_URL, process.env.SUPABASE_KEY);
 // AWS S3 setup
 const s3 = new AWS.S3({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID, 
@@ -195,6 +195,23 @@ app.delete('/api/events', async (req, res) => {
     res.status(200).json({ message: 'Events deleted successfully', events: titles });
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+});
+
+// Test route to verify Supabase connection
+app.get('/api/test-supabase', async (req, res) => {
+  try {
+    const { data, error } = await supabase.from('events').select('*').limit(1);
+
+    if (error) {
+      console.error('❌ Supabase connection error:', error);
+      return res.status(500).json({ error: 'Supabase connection failed', details: error.message });
+    }
+
+    res.status(200).json({ message: 'Supabase connection successful', data });
+  } catch (err) {
+    console.error('❌ Unexpected error during Supabase test:', err);
+    res.status(500).json({ error: 'Unexpected error', details: err.message });
   }
 });
 
