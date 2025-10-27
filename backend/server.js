@@ -192,14 +192,23 @@ app.delete('/api/events', async (req, res) => {
     return res.status(400).json({ error: 'Titles must be a non-empty array' });
   }
   try {
-    const { data, error } = await supabase
+    // Delete the specified events
+    const { error } = await supabase
       .from('events')
       .delete()
       .in('title', titles);
 
     if (error) throw error;
 
-    res.status(200).json({ message: 'Events deleted successfully', events: titles });
+    // Fetch the updated list of events
+    const { data: updatedEvents, error: fetchError } = await supabase
+      .from('events')
+      .select('*')
+      .order('start_datetime', { ascending: true });
+
+    if (fetchError) throw fetchError;
+
+    res.status(200).json({ message: 'Events deleted successfully', events: updatedEvents });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
