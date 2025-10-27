@@ -67,13 +67,13 @@ const Dashboard = ({ handleClick }) => {
           _focus={{ boxShadow: '0 0 0 2px #bbb' }}
           style={{ boxShadow: '0 0 0 2px #bbb', borderRadius: '0.5rem' }}
           checked={selection.includes(event.title)}
-          onCheckedChange={(changes) => {
-            setSelection((prev) =>
-              changes.checked
-                ? [...prev, event.title]
-                : selection.filter((title) => title !== event.title),
-            )
-          }}
+          onCheckedChange={(checked) => {
+          setSelection((prev) =>
+            checked
+              ? [...prev, event.title]
+              : prev.filter((title) => title !== event.title),
+          );
+        }}
         >
           <Checkbox.HiddenInput />
           <Checkbox.Control />

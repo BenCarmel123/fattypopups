@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { Button, Text, Spinner } from '@chakra-ui/react';
+import { Button, Spinner } from '@chakra-ui/react';
 import { RiMailLine } from "react-icons/ri";
 import EventCard from '../../components/EventCard';
 
@@ -90,9 +90,9 @@ export default function HomePage() {
       </div>
     );
   }
-  // If no events, show message
+  // If no events, blank page
   if (events.length === 0) {
-    return <Text>No events available.</Text>;
+    return <></>;
   } 
   
   return (

@@ -28,6 +28,8 @@ app.use(cors({
   credentials: true
 }));
 
+app.use(express.json());
+
 // Logging middleware
 app.use((req, res, next) => {
   console.log(` Incoming ${req.method} ${req.url}`);
