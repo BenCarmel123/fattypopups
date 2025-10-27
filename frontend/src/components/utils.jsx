@@ -1,6 +1,5 @@
 import validator from 'validator';
 import { SMALL, MEDIUM, LARGE } from './strings';
-import { MyAlert } from './CustomAlert.jsx';
 
 // Helper to validate event data
 export default function validateEvent(event) {
