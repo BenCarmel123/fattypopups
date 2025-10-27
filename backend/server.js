@@ -5,7 +5,7 @@ const dns = require('dns');
 dns.setDefaultResultOrder('ipv4first');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
-const AWS = require('aws-sdk');
+const { S3Client } = require('@aws-sdk/client-s3');
 const { checkDuplicateEvent, insertEvent, insertEmbedding } = require('./queries');
 const createEventEmbedding  = require('./agent.js');
 const { createClient } = require('@supabase/supabase-js');
@@ -37,10 +37,12 @@ app.use((req, res, next) => {
 // DB 
 const supabase = createClient(process.env.DATABASE_PROD_URL, process.env.SUPABASE_KEY);
 // AWS S3 setup
-const s3 = new AWS.S3({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID, 
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  region: process.env.AWS_REGION
+const s3 = new S3Client({
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  },
+  region: process.env.AWS_REGION,
 });
 
 const upload = multer({
