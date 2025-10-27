@@ -169,6 +169,61 @@ app.post('/api/events', upload.single("poster"), async (req, res) => {
   }
 });
 
+app.put('/api/events/:id', upload.single("poster"), async (req, res) => {
+  console.log("🔥 Received PUT /api/events/:id");
+  console.log("Request body:", req.body);
+  console.log("Uploaded file:", req.file);
+
+  const {
+    title,
+    start_datetime,
+    end_datetime,
+    venue_instagram,
+    venue_address,
+    chef_names,
+    chef_instagrams,
+    reservation_url,
+    english_description,
+    hebrew_description
+  } = req.body;
+
+  const chefNamesArray = chef_names
+    ? chef_names.split(',').map(name => name.trim())
+    : [];
+  const chefInstagramsArray = chef_instagrams
+    ? chef_instagrams.split(',').map(handle => handle.trim())
+    : [];
+
+  const image_url = req.file?.location || null;
+
+  try {
+    const { data: updatedEvent, error: updateError } = await supabase
+      .from('events')
+      .update({
+        title,
+        start_datetime,
+        end_datetime,
+        venue_instagram,
+        venue_address,
+        chef_names: chefNamesArray,
+        chef_instagrams: chefInstagramsArray,
+        image_url,
+        reservation_url,
+        english_description,
+        hebrew_description
+      })
+      .eq('id', req.params.id);
+
+    if (updateError) throw updateError;
+
+    console.log("✅ Event successfully updated:", updatedEvent);
+    res.json(updatedEvent);
+  } catch (err) {
+    console.error("❌ Error updating event:", err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Fetch all events
 app.get('/api/events', async (req, res) => {
   try {

@@ -80,7 +80,7 @@ export default function LoginForm( {handleClick} ) {
     </div>);
 }
 
-export function EventForm({ handleClick, event } ) {
+export function EventForm({ handleClick, event, isEdit } ) {
     const [alert, setAlert] = useState(undefined);
     function handleEvent(e) {
         e.preventDefault(); 
@@ -103,6 +103,9 @@ export function EventForm({ handleClick, event } ) {
             setAlert({ status: "error", title: "Validation Error", description: validation.error });
             return;
         }
+        const method = isEdit ? "PUT" : "POST";
+        const url = isEdit ? `${SERVER_URL}/api/events/${event.id}` : `${SERVER_URL}/api/events`;
+
         // If valid, proceed to submit the form data
         const formData = new FormData();
         formData.append('title', eventData.title);
@@ -116,8 +119,8 @@ export function EventForm({ handleClick, event } ) {
         formData.append('english_description', eventData.english_description);
         formData.append('hebrew_description', eventData.hebrew_description);
         formData.append('poster', eventData.poster);
-        fetch(`${SERVER_URL}/api/events`, {
-            method: "POST",
+        fetch(url, {
+            method: method,
             body: formData,
         })
         .then(async res => {
@@ -131,15 +134,15 @@ export function EventForm({ handleClick, event } ) {
             // handle success (e.g., show a message, reset form, etc.)
             setAlert({
                 status: "success",
-                title: "Event Created",
-                description: "The event was successfully added."
+                title: isEdit ? "Event Updated" : "Event Created",
+                description: isEdit ? "The event was successfully updated." : "The event was successfully added."
             });
         })
         .catch((err) => {
             // handle error
             setAlert({
-                 status: "error", title: "Submission Error", description: err.message
-        })
+                status: "error", title: "Submission Error", description: err.message
+            });
         });
     }
 
