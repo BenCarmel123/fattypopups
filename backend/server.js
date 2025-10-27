@@ -7,9 +7,9 @@ const multer = require('multer');
 const multerS3 = require('multer-s3');
 const AWS = require('aws-sdk');
 const { checkDuplicateEvent, insertEvent, insertEmbedding } = require('./queries');
-/* require('dotenv').config({ path: '../.env' }); */ // Only needed when not in production
 const createEventEmbedding  = require('./agent.js');
 const { createClient } = require('@supabase/supabase-js');
+require('dotenv').config();
 
 // Initialize Express app
 const app = express();
