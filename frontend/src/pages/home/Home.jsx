@@ -1,4 +1,3 @@
-import styles from '../home/home.module.css';
 import React, { useState, useEffect } from "react"
 import { Button, Text, Spinner } from '@chakra-ui/react';
 import { RiMailLine } from "react-icons/ri";
@@ -19,9 +18,8 @@ const Admin = () => {
   }
   return (
     <>
-      <div className={styles.adminCorner}>
+      <div>
         <Button
-          className={styles.adminCornerButton}
           colorScheme="teal"
           variant="ghost"
           style={{ position: 'fixed', bottom: '1.5rem', right: '1.5rem', background: 'transparent', boxShadow: 'none', opacity: 0.7 }}

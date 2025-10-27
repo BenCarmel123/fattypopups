@@ -1,30 +1,11 @@
 import React from 'react';
 import { Card, Text, IconButton, Button, Drawer, CloseButton } from '@chakra-ui/react';
-import { SiInstagram, SiGooglecalendar } from "react-icons/si";
+import { SiGooglecalendar } from "react-icons/si";
 import { FaRegShareFromSquare } from "react-icons/fa6";
 import { FaCalendarCheck } from "react-icons/fa";
 import { IoAdd } from "react-icons/io5";
 import { AspectRatio } from '@chakra-ui/react';
 import { formatDateRange, handleMaps, handleWhatsApp, handleInstagram, handleCalendar } from './utils';
-import styles from '../pages/home/home.module.css';
-import { HEADER_COLOR } from '../Config';
-
-// Helper for footer icons
-const Footer = ({ event }) => {
-  return (
-    <div style={{ display: 'flex', gap: '3rem' }}>
-      <IconButton variant="outline" size="3xl" rounded="2xl" onClick={() => handleMaps(event.venue_address)}>
-        <SiGooglecalendar />
-      </IconButton>
-      <IconButton variant="outline" size="3xl" rounded="2xl" onClick={() => handleWhatsApp(event)}>
-        <FaRegShareFromSquare />
-      </IconButton>
-      <IconButton variant="outline" size="3xl" rounded="2xl" onClick={() => handleInstagram(event.venue_instagram)}>
-        <SiInstagram />
-      </IconButton>
-    </div>
-  );
-}
 
 // Details drawer component
 const Details = ({ eventDetails, eventTitle }) => { 
@@ -67,7 +48,7 @@ const Details = ({ eventDetails, eventTitle }) => {
 
 export default function EventCard({ event }) {
   return (
-    <Card.Root className={styles.carouselCard} size="md" overflow="hidden" rounded="lg" style={{ width: '100%', maxWidth: '400px', minWidth: 0, boxSizing: 'border-box', border: '2px solid #e0e4dd', borderRadius: '3rem 3rem 3rem 3rem' }}> 
+    <Card.Root size="md" overflow="hidden" rounded="lg" style={{ width: '100%', maxWidth: '400px', minWidth: 0, boxSizing: 'border-box', border: '2px solid #e0e4dd', borderRadius: '3rem 3rem 3rem 3rem' }}> 
       <AspectRatio ratio={12 / 12}>
         <img
           src={event.image_url}
@@ -104,7 +85,7 @@ export default function EventCard({ event }) {
         </Card.Description>
       </Card.Body>
       <div style={{ width: '100%', height: '2px', background: '#e0e4dd' }} />
-      <Card.Footer gap="2" className={styles.carouselFooterIcons} style={{ justifyContent: 'space-between', padding: '1.25rem 2.5rem 1rem 2.5rem', backgroundColor: '#e0e4dd'}}> 
+      <Card.Footer gap="2" style={{ justifyContent: 'space-between', padding: '1.25rem 2.5rem 1rem 2.5rem', backgroundColor: '#e0e4dd'}}> 
         <div style={{ display: 'flex', gap: '1.2rem', alignItems: 'center', width: '100%', justifyContent: 'space-between', marginRight: 0 }}>
           <IconButton variant="outline" size="2xl" rounded="xl" onClick={() => handleCalendar(event)}>
             <SiGooglecalendar />
