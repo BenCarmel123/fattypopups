@@ -76,7 +76,7 @@ catch (err) {
 
 // Add new event 
 app.post('/api/events', upload.single("poster"), async (req, res) => {
-  console.log("🔥 Received POST /api/events");
+  console.log("Received POST /api/events");
   console.log("Request body:", req.body);
   console.log("Uploaded file:", req.file);
   const {
@@ -158,19 +158,19 @@ app.post('/api/events', upload.single("poster"), async (req, res) => {
 
       if (embeddingError) throw embeddingError;
     } catch (embeddingError) {
-      console.error("❌ Error creating embedding:", embeddingError);
+      console.error("Error creating embedding:", embeddingError);
     }
 
-    console.log("✅ Event successfully added:", newEvent);
+    console.log("Event successfully added:", newEvent);
     res.json(newEvent);
   } catch (err) {
-    console.error("❌ Error adding event:", err);
+    console.error("Error adding event:", err);
     res.status(500).json({ error: err.message });
   }
 });
 
 app.put('/api/events/:id', upload.single("poster"), async (req, res) => {
-  console.log("🔥 Received PUT /api/events/:id");
+  console.log("Received PUT /api/events/:id");
   console.log("Request body:", req.body);
   console.log("Uploaded file:", req.file);
 
@@ -216,10 +216,10 @@ app.put('/api/events/:id', upload.single("poster"), async (req, res) => {
 
     if (updateError) throw updateError;
 
-    console.log("✅ Event successfully updated:", updatedEvent);
+    console.log("Event successfully updated:", updatedEvent);
     res.json(updatedEvent);
   } catch (err) {
-    console.error("❌ Error updating event:", err);
+    console.error("Error updating event:", err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -269,20 +269,5 @@ app.delete('/api/events', async (req, res) => {
   }
 });
 
-// Test route to verify Supabase connection
-app.get('/api/test-supabase', async (req, res) => {
-  try {
-    const { data, error } = await supabase.from('events').select('*').limit(1);
 
-    if (error) {
-      console.error('❌ Supabase connection error:', error);
-      return res.status(500).json({ error: 'Supabase connection failed', details: error.message });
-    }
-
-    res.status(200).json({ message: 'Supabase connection successful', data });
-  } catch (err) {
-    console.error('❌ Unexpected error during Supabase test:', err);
-    res.status(500).json({ error: 'Unexpected error', details: err.message });
-  }
-});
 
