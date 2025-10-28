@@ -6,6 +6,7 @@ import { FaCalendarCheck } from "react-icons/fa";
 import { IoAdd } from "react-icons/io5";
 import { AspectRatio } from '@chakra-ui/react';
 import { formatDateRange, handleMaps, handleWhatsApp, handleInstagram, handleCalendar } from './utils';
+import {CENTER, FLEX} from './config/strings';
 
 // Details drawer component
 const Details = ({ eventDetails, eventTitle }) => { 
@@ -86,7 +87,7 @@ export default function EventCard({ event }) {
       </Card.Body>
       <div style={{ width: '100%', height: '2px', background: '#e0e4dd' }} />
       <Card.Footer gap="2" style={{ justifyContent: 'space-between', padding: '1.25rem 2.5rem 1rem 2.5rem', backgroundColor: '#e0e4dd'}}> 
-        <div style={{ display: 'flex', gap: '1.2rem', alignItems: 'center', width: '100%', justifyContent: 'space-between', marginRight: 0 }}>
+        <div style={{ display: FLEX, gap: '1.2rem', alignItems: CENTER, width: '100%', justifyContent: 'space-between', marginRight: 0 }}>
           <IconButton variant="outline" size="2xl" rounded="xl" onClick={() => handleCalendar(event)}>
             <SiGooglecalendar />
           </IconButton>
@@ -96,7 +97,7 @@ export default function EventCard({ event }) {
           <IconButton variant="outline" size="2xl" rounded="2xl" onClick={() => handleWhatsApp(event)}>
             <FaRegShareFromSquare />
           </IconButton>
-          <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
+          <div style={{ display: FLEX, alignItems: CENTER, height: '100%' }}>
             <Details eventDetails={event.english_description} eventTitle={event.title}/>
           </div>
         </div>

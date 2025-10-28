@@ -1,6 +1,6 @@
 import { useState } from "react";
 import LoginForm, { EventForm } from "./Forms.jsx";
-import { ADD, EDIT, LOGIN, DASHBOARD } from "../../components/strings.jsx";
+import { ADD, EDIT, LOGIN, DASHBOARD } from "../../components/config/strings.jsx";
 import Dashboard from "./Dashboard.jsx";
 
 export default function AdminPageHandler( ) {

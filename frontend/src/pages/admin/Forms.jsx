@@ -1,9 +1,11 @@
-import { Button, Card, Stack, Input, Field, Float, useFileUploadContext } from "@chakra-ui/react";
-import { DASHBOARD } from "../../components/strings.jsx";
+import { Button, Card, Stack, Input, Field, Float, useFileUploadContext, Textarea } from "@chakra-ui/react";
+import { DASHBOARD } from "../../components/config/strings.jsx";
 import validateEvent from "../../components/utils.jsx";
 import  MyAlert  from "../../components/CustomAlert.jsx";
 import { useState } from "react";
 import FileUpload from "../../components/FileUpload.jsx";
+import { FORM_FIELD_COLOR, TEXT_AREA_COLOR } from "../../components/config/colors.jsx"; 
+import { CENTER, FLEX } from "../../components/config/strings.jsx";
 
 const ADMIN_USERNAME = process.env.REACT_APP_ADMIN_USERNAME;
 const ADMIN_PASSWORD = process.env.REACT_APP_ADMIN_PASSWORD;
@@ -27,9 +29,9 @@ export default function LoginForm( {handleClick} ) {
         }
     }
 
-    return (<div className="centered-content-global" style={{ position: 'relative' }}>
+    return (<div className={CENTER} style={{ position: 'relative' }}>
          {alert && (
-            <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 2000, display: 'flex', justifyContent: 'center', pointerEvents: 'none' }}>
+            <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 2000, display: FLEX, justifyContent: 'center', pointerEvents: 'none' }}>
                 <div style={{ pointerEvents: 'auto', width: 'fit-content' }}>
                     <MyAlert {...alert} onClose={() => setAlert(null)} />
                 </div>
@@ -38,18 +40,18 @@ export default function LoginForm( {handleClick} ) {
         <form onSubmit={handleLogin} enctype="multipart/form-data">
         <Card.Root maxW="lg" w="100%" minW="400px" padding={8} boxShadow="2xl" borderRadius="2xl">
             <Card.Header>
-                <div style={{ marginBottom: 16, color: '#2596be', fontSize: 24, textDecoration: "underline" }}>Hey Hallee / Benji ! </div>
+                <div style={{ marginBottom: 16, color: {FORM_FIELD_COLOR}, fontSize: 24, textDecoration: "underline" }}>Hey Hallee / Benji ! </div>
                 <div style={{ fontWeight: 700, fontSize: 32 }}></div>
             </Card.Header>
             <Card.Body>
                 <Stack gap={6} w="full">
                     <Field.Root>
-                        <Field.Label color="#2596be" fontSize={18}>Username</Field.Label>
-                        <Input name="username" size="lg" padding={6} fontSize={18} borderColor="#bbb" borderWidth={2} _focus={{ borderColor: '#2596be' }} />
+                        <Field.Label color={FORM_FIELD_COLOR} fontSize={18}>Username</Field.Label>
+                        <Input name="username" size="lg" padding={6} fontSize={18} borderColor={TEXT_AREA_COLOR} borderWidth={2} _focus={{ borderColor: FORM_FIELD_COLOR }} />
                     </Field.Root>
                     <Field.Root>
-                        <Field.Label color="#2596be" fontSize={18}>Password</Field.Label>
-                        <Input type="password" name="password" size="lg" padding={6} fontSize={18} borderColor="#bbb" borderWidth={2} _focus={{ borderColor: '#2596be' }} />
+                        <Field.Label color={FORM_FIELD_COLOR} fontSize={18}>Password</Field.Label>
+                        <Input type="password" name="password" size="lg" padding={6} fontSize={18} borderColor={TEXT_AREA_COLOR} borderWidth={2} _focus={{ borderColor: FORM_FIELD_COLOR }} />
                     </Field.Root>
                 </Stack>
             </Card.Body>
@@ -147,9 +149,9 @@ export function EventForm({ handleClick, event, isEdit } ) {
     }
 
     return (
-        <div className="centered-content-global" style={{ position: 'relative' }}>
+        <div className={CENTER} style={{ position: 'relative' }}>
             {alert && (
-                <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 2000, display: 'flex', justifyContent: 'center', pointerEvents: 'none' }}>
+                <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 2000, display: FLEX, justifyContent: 'center', pointerEvents: 'none' }}>
                     <div style={{ pointerEvents: 'auto', width: 'fit-content' }}>
                         <MyAlert {...alert} onClose={() => setAlert(null)} />
                     </div>
@@ -160,44 +162,62 @@ export function EventForm({ handleClick, event, isEdit } ) {
                     <Card.Body>
                         <Stack gap={4} w="full">
                             <Field.Root>
-                                <Field.Label color="#2596be">Title</Field.Label>
-                                <Input name="title" defaultValue={event?.title || ""} borderColor="#bbb" borderWidth={2} _focus={{ borderColor: '#2596be' }} />
+                                <Field.Label color={FORM_FIELD_COLOR}>Title</Field.Label>
+                                <Input name="title" defaultValue={event?.title || ""} borderColor={TEXT_AREA_COLOR} borderWidth={2} _focus={{ borderColor: FORM_FIELD_COLOR }} />
                             </Field.Root>
                             <Field.Root>
-                                <Field.Label color="#2596be">Start Date</Field.Label>
-                                <Input type="date" name="start_datetime" defaultValue={event?.start_datetime || ""} borderColor="#bbb" borderWidth={2} _focus={{ borderColor: '#2596be' }} />
+                                <Field.Label color={FORM_FIELD_COLOR}>Start Date</Field.Label>
+                                <Input type="date" name="start_datetime" defaultValue={event?.start_datetime || ""} borderColor={TEXT_AREA_COLOR} borderWidth={2} _focus={{ borderColor: FORM_FIELD_COLOR }} />
                             </Field.Root>
                             <Field.Root>
-                                <Field.Label color="#2596be">End Date</Field.Label>
-                                <Input type="date" name="end_datetime" defaultValue={event?.end_datetime || ""} borderColor="#bbb" borderWidth={2} _focus={{ borderColor: '#2596be' }} />
+                                <Field.Label color={FORM_FIELD_COLOR}>End Date</Field.Label>
+                                <Input type="date" name="end_datetime" defaultValue={event?.end_datetime || ""} borderColor={TEXT_AREA_COLOR} borderWidth={2} _focus={{ borderColor: FORM_FIELD_COLOR }} />
                             </Field.Root>
                             <Field.Root>
-                                <Field.Label color="#2596be">Venue Instagram</Field.Label>
-                                <Input name="venue_instagram" defaultValue={event?.venue_instagram || ""} borderColor="#bbb" borderWidth={2} _focus={{ borderColor: '#2596be' }} />
+                                <Field.Label color={FORM_FIELD_COLOR}>Venue Instagram</Field.Label>
+                                <Input name="venue_instagram" defaultValue={event?.venue_instagram || ""} borderColor={TEXT_AREA_COLOR} borderWidth={2} _focus={{ borderColor: FORM_FIELD_COLOR }} />
                             </Field.Root>
                             <Field.Root>
-                                <Field.Label color="#2596be">Venue Address</Field.Label>
-                                <Input name="venue_address" defaultValue={event?.venue_address || ""} borderColor="#bbb" borderWidth={2} _focus={{ borderColor: '#2596be' }} />
+                                <Field.Label color={FORM_FIELD_COLOR}>Venue Address</Field.Label>
+                                <Input name="venue_address" defaultValue={event?.venue_address || ""} borderColor={TEXT_AREA_COLOR} borderWidth={2} _focus={{ borderColor: FORM_FIELD_COLOR }} />
                             </Field.Root>
                             <Field.Root>
-                                <Field.Label color="#2596be">Chef Names (comma separated)</Field.Label>
-                                <Input name="chef_names" placeholder="e.g. Ori Salama, Ido Kablan" defaultValue={event?.chef_names ? event.chef_names.join(', ') : ""} borderColor="#bbb" borderWidth={2} _focus={{ borderColor: '#2596be' }} />
+                                <Field.Label color={FORM_FIELD_COLOR}>Chef Names (comma separated)</Field.Label>
+                                <Input name="chef_names" placeholder="e.g. Ori Salama, Ido Kablan" defaultValue={event?.chef_names ? event.chef_names.join(', ') : ""} borderColor={TEXT_AREA_COLOR} borderWidth={2} _focus={{ borderColor: FORM_FIELD_COLOR }} />
                             </Field.Root>
                             <Field.Root>
-                                <Field.Label color="#2596be">Chef Instagrams (comma separated)</Field.Label>
-                                <Input name="chef_instagrams" placeholder="e.g. @ori, @ido" defaultValue={event?.chef_instagrams ? event.chef_instagrams.join(', ') : ""} borderColor="#bbb" borderWidth={2} _focus={{ borderColor: '#2596be' }} />
+                                <Field.Label color={FORM_FIELD_COLOR}>Chef Instagrams (comma separated)</Field.Label>
+                                <Input name="chef_instagrams" placeholder="e.g. @ori, @ido" defaultValue={event?.chef_instagrams ? event.chef_instagrams.join(', ') : ""} borderColor={TEXT_AREA_COLOR} borderWidth={2} _focus={{ borderColor: FORM_FIELD_COLOR }} />
                             </Field.Root>
                             <Field.Root>
-                                <Field.Label color="#2596be">Reservation URL</Field.Label>
-                                <Input name="reservation_url" defaultValue={event?.reservation_url || ""} borderColor="#bbb" borderWidth={2} _focus={{ borderColor: '#2596be' }} />
+                                <Field.Label color={FORM_FIELD_COLOR}>Reservation URL</Field.Label>
+                                <Input name="reservation_url" defaultValue={event?.reservation_url || ""} borderColor={TEXT_AREA_COLOR} borderWidth={2} _focus={{ borderColor: FORM_FIELD_COLOR }} />
                             </Field.Root>
                             <Field.Root>
-                                <Field.Label color="#2596be">English Description</Field.Label>
-                                <Input name="english_description" defaultValue={event?.english_description || ""} borderColor="#bbb" borderWidth={2} _focus={{ borderColor: '#2596be' }} />
+                                <Field.Label color={FORM_FIELD_COLOR}>English Description</Field.Label>
+                                <Textarea
+                                    name="english_description"
+                                    defaultValue={event?.english_description || ""}
+                                    borderColor={TEXT_AREA_COLOR}
+                                    borderWidth={2}
+                                    _focus={{ borderColor: FORM_FIELD_COLOR }}
+                                    resize="vertical"
+                                    minH="100px"
+                                    onInput={(e) => e.target.style.height = `${e.target.scrollHeight}px`}
+                                />
                             </Field.Root>
                             <Field.Root>
-                                <Field.Label color="#2596be">Hebrew Description</Field.Label>
-                                <Input name="hebrew_description" defaultValue={event?.hebrew_description || ""} borderColor="#bbb" borderWidth={2} _focus={{ borderColor: '#2596be' }} />
+                                <Field.Label color={FORM_FIELD_COLOR}>Hebrew Description</Field.Label>
+                                <Textarea
+                                    name="hebrew_description"
+                                    defaultValue={event?.hebrew_description || ""}
+                                    borderColor={TEXT_AREA_COLOR}
+                                    borderWidth={2}
+                                    _focus={{ borderColor: FORM_FIELD_COLOR }}
+                                    resize="vertical"
+                                    minH="100px"
+                                    onInput={(e) => e.target.style.height = `${e.target.scrollHeight}px`}
+                                />
                             </Field.Root>
                             <Field.Root>
                                 <Button 

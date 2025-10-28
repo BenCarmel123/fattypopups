@@ -1,5 +1,5 @@
 import validator from 'validator';
-import { SMALL, MEDIUM, LARGE } from './strings';
+import { SMALL, MEDIUM, LARGE } from './config/strings';
 
 // Helper to validate event data
 export default function validateEvent(event) {

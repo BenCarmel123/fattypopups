@@ -5,3 +5,5 @@ export const DASHBOARD = "DASHBOARD";
 export const SMALL = "SMALL";
 export const MEDIUM = "MEDIUM";
 export const LARGE = "LARGE";
+export const CENTER = 'center';
+export const FLEX = 'flex';

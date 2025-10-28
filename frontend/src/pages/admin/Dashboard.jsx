@@ -1,6 +1,6 @@
 import { Checkbox, Table, Button } from "@chakra-ui/react"
 import { useState, useEffect } from "react"
-import { ADD, EDIT } from "../../components/strings"
+import { ADD, EDIT } from "../../components/config/strings"
 import MyAlert from "../../components/CustomAlert.jsx"; 
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
