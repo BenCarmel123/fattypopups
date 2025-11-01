@@ -4,6 +4,7 @@
 
 
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
 
 /* Global CSS Variables */
 :root {
@@ -11,7 +12,7 @@
     --primary-bg-color: #fffaee;
     --error-color: #c46666;
     --button-text-color: white;
-    --primary-font: 'Comfortaa', sans-serif;
+    --primary-font: 'Quicksand', sans-serif;
     --font-size-title: 40px;
     --font-size-medium: 16px;
     --font-weight-bold: bold;

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 import { Button, Spinner } from '@chakra-ui/react';
 import { RiMailLine } from "react-icons/ri";
 import EventCard from '../../components/EventCard';
+import { SECONDARY_COLOR, BLACK } from '../../components/config/colors.jsx';
 
 // Replace imports from Config.jsx with process.env variables
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
@@ -20,9 +21,8 @@ const Admin = () => {
     <>
       <div>
         <Button
-          colorScheme="teal"
-          variant="ghost"
-          style={{ position: 'fixed', bottom: '1.5rem', right: '1.5rem', background: 'transparent', boxShadow: 'none', opacity: 0.7 }}
+          variant="subtle"
+          style={{ position: 'fixed', bottom: '1.5rem', right: '1.5rem', background: 'transparent', boxShadow: 'none', opacity: 0.7, _hover: { background: SECONDARY_COLOR, color: 'white' } }}
           onClick={handleAdmin}>
           <RiMailLine /> Admin
         </Button>
@@ -38,15 +38,16 @@ const About = () => {
   return (
     <div className="absolute top-2 right-6 z-50">
       <Button
-        colorScheme="blue"
         variant="solid"
         size="lg"
+        color={BLACK}
         fontWeight="bold"
         px={8}
         py={6}
         boxShadow="md"
         borderRadius="xl"
-        _hover={{ bg: '#3182ce', color: 'white', transform: 'scale(1.05)' }}
+        _hover={{ bg: SECONDARY_COLOR, color: 'white', transform: 'scale(1.05)' }}
+        _click={{ bg: SECONDARY_COLOR, color: 'white', transform: 'scale(1.05)' }}
         transition="all 0.15s"
         onClick={handleAbout}
       >
