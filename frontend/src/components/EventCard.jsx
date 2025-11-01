@@ -1,12 +1,13 @@
 import React from 'react';
-import { Card, Text, IconButton, Button, Drawer, CloseButton } from '@chakra-ui/react';
+import { Card, Text, IconButton, Button, Drawer } from '@chakra-ui/react';
 import { SiGooglecalendar } from "react-icons/si";
-import { FaRegShareFromSquare } from "react-icons/fa6";
-import { FaCalendarCheck } from "react-icons/fa";
-import { IoAdd } from "react-icons/io5";
+import { FaRegCalendarCheck } from "react-icons/fa";
+import { TbSend } from "react-icons/tb";
 import { AspectRatio } from '@chakra-ui/react';
+import { LuSquarePlus } from "react-icons/lu";
 import { formatDateRange, handleMaps, handleWhatsApp, handleInstagram, handleCalendar } from './utils';
-import {CENTER, FLEX} from './config/strings';
+import { PRIMARY_COLOR, BLACK, WHITE, BACKGROUND_COLOR} from './config/colors.jsx';
+
 
 // Details drawer component
 const Details = ({ eventDetails, eventTitle }) => { 
@@ -16,30 +17,29 @@ const Details = ({ eventDetails, eventTitle }) => {
         <Drawer.Trigger asChild>
          <Button
            variant="subtle"
-           size="xl" // even larger
-           rounded="xl"
+           size="2xl" 
+           rounded="2xl"
            className="detailsDrawerButton"
-           style={{ minHeight: '2.2rem', minWidth: '2.2rem', background: '#e0e4dd', borderColor: '#58565d', borderWidth: 2, transition: 'background 0.18s' }}
+           style={{ minHeight: '2.2rem', minWidth: '2.2rem', background: PRIMARY_COLOR, transition: 'background 0.18s' }}
            onMouseOver={e => e.currentTarget.style.background = '#d1d4cc'}
-           onMouseOut={e => e.currentTarget.style.background = '#e0e4dd'}
+           onMouseOut={e => e.currentTarget.style.background = PRIMARY_COLOR}
          >
-          <IoAdd style={{ marginRight: '0.3rem', fontSize: '1.2rem' }} />
+          <LuSquarePlus style={{ fontSize: '1.25rem' }} />
          </Button>
         </Drawer.Trigger>
-        <Drawer.Backdrop pos="absolute" boxSize="full" />
+        <Drawer.Backdrop pos="fixed" boxSize="full" />
         <Drawer.Positioner pos="absolute" boxSize="full" padding="2">
           <Drawer.Content>
-            <Drawer.Header style={{ position: 'relative', paddingLeft: '2.5rem', backgroundColor: '#e0e4dd' }}>
+            <Drawer.Header style={{ position: 'relative', paddingLeft: '2.5rem', backgroundColor: PRIMARY_COLOR }}>
               <Drawer.CloseTrigger asChild>
-                <CloseButton size="xs" style={{ position: 'absolute', left: '0.5rem', top: '0.5rem', marginRight: '20rem', backgroundColor: '#8b0000', color: 'white'}} />
               </Drawer.CloseTrigger>
             </Drawer.Header>
-            <Drawer.Body color='gray.600'>
+            <Drawer.Body color='gray.600' backgroundColor={BACKGROUND_COLOR} style={{ padding: '2rem', maxHeight: '80vh', overflowY: 'auto' }}>
               <p style={{ whiteSpace: 'pre-line', fontSize: '1.5rem', lineHeight: 1.5, padding: '0 1rem', fontWeight: "bolder" }}>
                 {eventDetails}
               </p>
             </Drawer.Body>
-            <Drawer.Footer>
+            <Drawer.Footer bg={BACKGROUND_COLOR} >
             </Drawer.Footer>
           </Drawer.Content>
         </Drawer.Positioner>
@@ -49,7 +49,7 @@ const Details = ({ eventDetails, eventTitle }) => {
 
 export default function EventCard({ event }) {
   return (
-    <Card.Root size="md" overflow="hidden" rounded="lg" style={{ width: '100%', maxWidth: '400px', minWidth: 0, boxSizing: 'border-box', border: '2px solid #e0e4dd', borderRadius: '3rem 3rem 3rem 3rem' }}> 
+  <Card.Root size="md" overflow="hidden" rounded="lg" style={{ width: '100%', maxWidth: 'clamp(260px, 86vw, 400px)', minWidth: 0, boxSizing: 'border-box', border: '2px solid #e0e4dd', borderRadius: 'clamp(0.75rem, 6vw, 3rem)' }}> 
       <AspectRatio ratio={12 / 12}>
         <img
           src={event.image_url}
@@ -63,8 +63,8 @@ export default function EventCard({ event }) {
           }}
         />
       </AspectRatio>
-      <Card.Body gap="2" padding="4" bg="#fffbf1" style={{ lineHeight: 2.5 }}> 
-        <Card.Title fontSize="2xl" fontWeight="bolder" mt={2} mb={1}> {event.title} </Card.Title>
+      <Card.Body gap="2" padding="4" bg="#fffbf1"  style={{ lineHeight: 2.5 }}> 
+        <Card.Title fontSize="2xl" fontWeight="bolder" color={BLACK} mt={2} mb={1}> {event.title} </Card.Title>
         <Card.Description fontSize="xl" color="gray.600" fontWeight="bold">
           {event.chef_names && Array.isArray(event.chef_names) && Array.isArray(event.chef_instagrams)
             ? event.chef_names.map((name, idx) => (
@@ -85,21 +85,27 @@ export default function EventCard({ event }) {
           </span>
         </Card.Description>
       </Card.Body>
-      <div style={{ width: '100%', height: '2px', background: '#e0e4dd' }} />
-      <Card.Footer gap="2" style={{ justifyContent: 'space-between', padding: '1.25rem 2.5rem 1rem 2.5rem', backgroundColor: '#e0e4dd'}}> 
-        <div style={{ display: FLEX, gap: '1.2rem', alignItems: CENTER, width: '100%', justifyContent: 'space-between', marginRight: 0 }}>
-          <IconButton variant="outline" size="2xl" rounded="xl" onClick={() => handleCalendar(event)}>
+      <div style={{ width: '100%', height: '2px', background: PRIMARY_COLOR }} />
+      <Card.Footer gap="2" style={{ padding: '1.25rem 2.5rem 1rem 2.5rem', backgroundColor: PRIMARY_COLOR }}> 
+        {/* Left group: first three icons aligned to left */}
+  <div style={{ display: 'flex', alignItems: 'flex-end', gap: '0rem', justifyContent: 'flex-start' }}>
+          <IconButton variant="subtle" size="2xl" rounded="2xl" color={BLACK} onClick={() => handleCalendar(event)}>
             <SiGooglecalendar />
           </IconButton>
-          <IconButton variant="outline" size="2xl" rounded="xl" onClick={() => window.open(event.reservation_url, '_blank', 'noopener,noreferrer')}>
-            <FaCalendarCheck />
+          <IconButton variant="subtle" size="2xl" rounded="2xl" color={BLACK} onClick={() => window.open(event.reservation_url, '_blank', 'noopener,noreferrer')}>
+            <FaRegCalendarCheck />
           </IconButton>
-          <IconButton variant="outline" size="2xl" rounded="2xl" onClick={() => handleWhatsApp(event)}>
-            <FaRegShareFromSquare />
+          <IconButton variant="subtle" size="2xl" rounded="2xl" color={BLACK} onClick={() => handleWhatsApp(event)}>
+            <TbSend />
           </IconButton>
-          <div style={{ display: FLEX, alignItems: CENTER, height: '100%' }}>
-            <Details eventDetails={event.english_description} eventTitle={event.title}/>
-          </div>
+        </div>
+
+        {/* Spacer pushes the right group to the far right */}
+        <div style={{ flex: 1 }} />
+
+        {/* Right group: details drawer aligned to right */}
+        <div style={{ display: 'flex', alignItems: 'center', height: '100%', color: BLACK }}>
+          <Details eventDetails={event.english_description} eventTitle={event.title}/>
         </div>
       </Card.Footer>
     </Card.Root>

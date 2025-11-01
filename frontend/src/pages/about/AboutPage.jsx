@@ -1,19 +1,24 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { GiKnifeFork } from "react-icons/gi";
+import { SECONDARY_COLOR } from "../../components/config/colors.jsx";
+import { ABOUT_CREATORS_1, ABOUT_CREATORS_2 } from "../../components/config/strings.jsx";
 
 const INSTA_LINK_HALLIE = process.env.REACT_APP_INSTA_LINK_HALLIE;
 const INSTA_LINK_BEN = process.env.REACT_APP_INSTA_LINK_BEN;
+const BEN_PIC_URL = process.env.REACT_APP_BEN_PIC_URL;
+const HALLIE_PIC_URL = process.env.REACT_APP_HALLIE_PIC_URL;
 
 export default function AboutPage() {
   const creators = [
     {
-      name: "Creator One",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop",
+      name: "Ben",
+      image: BEN_PIC_URL,
       instagram: INSTA_LINK_BEN
     },
     {
-      name: "Creator Two",
-      image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop",
+      name: "Hallie",
+      image: HALLIE_PIC_URL,
       instagram: INSTA_LINK_HALLIE
     }
   ];
@@ -24,9 +29,14 @@ export default function AboutPage() {
         <h1 className="text-5xl md:text-6xl font-extralight text-gray-900 text-center tracking-tight" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
           About
         </h1>
-        
-        <div className="h-px bg-gray-200 w-16 mx-auto" />
-        
+        <h1 className="text-5xl md:text-6xl font-extralight text-gray-900 text-center tracking-tight" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', marginTop: '0.5rem', fontStyle: 'italic', fontWeight: '300', color: SECONDARY_COLOR }}>
+          fatty popups
+        </h1>
+
+      <div className="flex justify-center">
+        <GiKnifeFork className="text-6xl text-gray-900" />
+      </div>
+
         {/* Profile Pictures */}
         <div className="flex justify-center gap-8 py-8">
           {creators.map((creator, index) => (
@@ -48,36 +58,40 @@ export default function AboutPage() {
               }}
               className="group cursor-pointer"
             >
-              <div className="relative">
-                <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden ring-2 ring-gray-100 group-hover:ring-4 group-hover:ring-gray-200 transition-all duration-300">
-                  <img 
-                    src={creator.image}
-                    alt={creator.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
+               <div className="relative">
+                  <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden ring-2 ring-gray-100 group-hover:ring-4 group-hover:ring-gray-200 transition-all duration-300">
+                    <img 
+                      src={creator.image}
+                      alt={creator.name}
+                      className={creator.name === "Ben"
+                        ? "w-full h-full object-cover object-center scale-110 group-hover:scale-115 transition-transform duration-500"
+                        : "w-full h-full object-cover object-center scale-125 group-hover:scale-130 transition-transform duration-500"
+                      }
+                      style={creator.name === "Ben" ? { objectPosition: '10% 5%' } : undefined}
+                    />
+                  </div>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    whileHover={{ opacity: 1 }}
+                    className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap text-sm text-gray-400"
+                  >
+                    @{creator.name.toLowerCase().replace(' ', '')}
+                  </motion.div>
                 </div>
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  whileHover={{ opacity: 1 }}
-                  className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap text-sm text-gray-400"
-                >
-                  @{creator.name.toLowerCase().replace(' ', '')}
-                </motion.div>
-              </div>
             </motion.a>
           ))}
         </div>
-        
-        <div className="space-y-6 text-lg text-gray-600 leading-relaxed text-center pt-8" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
+
+        <div className="space-y-10 text-lg text-gray-600 leading-relaxed text-center pt-8" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', marginTop: '1rem' }}>
           <p className="font-light">
-            This app was created by two passionate creators to help make your workflow smoother and more efficient.
+            {ABOUT_CREATORS_1}
           </p>
-          
+         
           <p className="font-light">
-            Built with attention to detail, our goal is to provide a simple, elegant solution that makes your life easier.
+            {ABOUT_CREATORS_2}
           </p>
-          
-          <p className="text-sm text-gray-400 pt-4 font-light">
+
+          <p className="text-sm text-gray-400 pt-4 font-light" style={{ color: SECONDARY_COLOR }}>
             Questions or feedback? We'd love to hear from you.
           </p>
         </div>
