@@ -1,0 +1,12 @@
+# Backend module .gitignore
+# Ignore environment files
+.env
+.env.*
+
+# Node artifacts
+node_modules/
+npm-debug.log*
+dist/
+
+# macOS
+.DS_Store
