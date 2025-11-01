@@ -1,8 +1,8 @@
 // Require necessary modules and configure OpenAI client
 require('dotenv').config();
 const { OpenAI } = require('openai');
-const openai = process.env.KEY_2
-  ? new OpenAI({ apiKey: process.env.KEY_2 })
+const openai = process.env.OPENAI_PROD_KEY
+  ? new OpenAI({ apiKey: process.env.OPENAI_PROD_KEY })
   : null;
 const { writeFile } = require('fs').promises;
 
