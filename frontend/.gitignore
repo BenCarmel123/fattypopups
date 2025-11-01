@@ -1,0 +1,13 @@
+# Frontend module .gitignore
+# Ignore environment files
+.env
+.env.*
+
+# Node artifacts and build outputs
+node_modules/
+build/
+dist/
+npm-debug.log*
+
+# macOS
+.DS_Store

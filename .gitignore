@@ -1,0 +1,8 @@
+# Root .gitignore
+# Ignore shell scripts in the repository root and any shell script files
+*.sh
+/git_workflow.sh
+/start
+
+# macOS metadata
+.DS_Store
