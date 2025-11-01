@@ -1,18 +1,19 @@
-# Stage: Development environment
-FROM node:20-alpine
-
+# Stage 1: Build React app
+FROM node:18-alpine AS build
 WORKDIR /app
-
-# Install dependencies
 COPY package*.json ./
 RUN npm install
-
-# Copy all project files
 COPY . .
+RUN npm run build
 
-# Enable live reloading
-ENV CHOKIDAR_USEPOLLING=true
-EXPOSE 3000
+# Stage 2: Serve with Nginx
+FROM nginx:alpine
 
-# Run the React dev server
-CMD ["npm", "start"]
+# Copy build output to Nginx's default html folder
+COPY --from=build /app/build /usr/share/nginx/html
+
+# Copy a custom Nginx config to support React Router
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
