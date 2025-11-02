@@ -7,3 +7,4 @@ export const BACKGROUND_COLOR = '#fffaee';
 export const BLACK = '#000000';
 export const WHITE = '#ffffff';
 export const BLUE = '#0000ff';
+export const TRANSPARENT = 'transparent';
