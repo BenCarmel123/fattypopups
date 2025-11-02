@@ -1,13 +1,15 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { GiKnifeFork } from "react-icons/gi";
+import { AiOutlineMail } from "react-icons/ai";
 import { SECONDARY_COLOR } from "../../components/config/colors.jsx";
-import { ABOUT_CREATORS_1, ABOUT_CREATORS_2 } from "../../components/config/strings.jsx";
+import { ABOUT_CREATORS_1, ABOUT_CREATORS_2, CONTACT } from "../../components/config/strings.jsx";
 
 const INSTA_LINK_HALLIE = process.env.REACT_APP_INSTA_LINK_HALLIE;
 const INSTA_LINK_BEN = process.env.REACT_APP_INSTA_LINK_BEN;
 const BEN_PIC_URL = process.env.REACT_APP_BEN_PIC_URL;
 const HALLIE_PIC_URL = process.env.REACT_APP_HALLIE_PIC_URL;
+const BEN_EMAIL = process.env.REACT_APP_BEN_EMAIL;
 
 export default function AboutPage() {
   const creators = [
@@ -48,8 +50,8 @@ export default function AboutPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ 
-                duration: 0.8, 
-                delay: index * 0.2,
+                duration: 0.5, 
+                delay: index * 0.1,
                 ease: [0.25, 0.1, 0.25, 1]
               }}
               whileHover={{ 
@@ -59,7 +61,7 @@ export default function AboutPage() {
               className="group cursor-pointer"
             >
                <div className="relative">
-                  <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden ring-2 ring-gray-100 group-hover:ring-4 group-hover:ring-gray-200 transition-all duration-300">
+                  <div className="w-[7.7rem] h-[7.7rem] md:w-[9.9rem] md:h-[9.9rem] rounded-full overflow-hidden ring-2 ring-gray-100 group-hover:ring-4 group-hover:ring-gray-200 transition-all duration-300">
                     <img 
                       src={creator.image}
                       alt={creator.name}
@@ -75,14 +77,13 @@ export default function AboutPage() {
                     whileHover={{ opacity: 1 }}
                     className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap text-sm text-gray-400"
                   >
-                    @{creator.name.toLowerCase().replace(' ', '')}
                   </motion.div>
                 </div>
             </motion.a>
           ))}
         </div>
 
-        <div className="space-y-10 text-lg text-gray-600 leading-relaxed text-center pt-8" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', marginTop: '1rem' }}>
+  <div className="space-y-6 text-lg text-gray-600 leading-relaxed text-center pt-8" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', marginTop: '1rem' }}>
           <p className="font-light">
             {ABOUT_CREATORS_1}
           </p>
@@ -91,8 +92,17 @@ export default function AboutPage() {
             {ABOUT_CREATORS_2}
           </p>
 
-          <p className="text-sm text-gray-400 pt-4 font-light" style={{ color: SECONDARY_COLOR }}>
-            Questions or feedback? We'd love to hear from you.
+          <p className="text-md text-gray-400 pt-4 font-light" style={{ color: SECONDARY_COLOR }}>
+            {CONTACT}
+          </p>
+
+          <p className="text-sm text-gray-400 font-bold mt-0" style={{ color: SECONDARY_COLOR }}>
+              <span className="inline-flex items-center gap-2" style={{ color: SECONDARY_COLOR }}>
+                <AiOutlineMail className="inline-block" style={{ verticalAlign: 'middle', color: SECONDARY_COLOR }} />
+                <a href={`mailto:${BEN_EMAIL}`} className="underline" style={{ color: SECONDARY_COLOR }}>
+                  {BEN_EMAIL}
+                </a>
+              </span>
           </p>
         </div>
       </div>

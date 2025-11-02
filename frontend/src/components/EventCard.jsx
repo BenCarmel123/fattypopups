@@ -1,45 +1,53 @@
 import React from 'react';
-import { Card, Text, IconButton, Button, Drawer } from '@chakra-ui/react';
+import { Card, Text, Button, Drawer } from '@chakra-ui/react';
 import { SiGooglecalendar } from "react-icons/si";
-import { FaRegCalendarCheck } from "react-icons/fa";
-import { TbSend } from "react-icons/tb";
 import { AspectRatio } from '@chakra-ui/react';
-import { LuSquarePlus } from "react-icons/lu";
 import { formatDateRange, handleMaps, handleWhatsApp, handleInstagram, handleCalendar } from './utils';
-import { PRIMARY_COLOR, BLACK, WHITE, BACKGROUND_COLOR} from './config/colors.jsx';
+import { PRIMARY_COLOR, BACKGROUND_COLOR, SECONDARY_COLOR, BLACK} from './config/colors.jsx';
+import { RiInstagramFill } from "react-icons/ri";
+import { SiGooglemaps } from "react-icons/si";
+import { RESERVE, DETAILS, SHARE } from './config/strings';
 
 
 // Details drawer component
+function ActionButton({ children, onClick, ariaLabel, className = '' }) {
+  return (
+    <Button
+      variant="subtle"
+      size="xl"
+      rounded="2xl"
+      className={`detailsDrawerButton ${className}`}
+    style={{ color: SECONDARY_COLOR, minHeight: '2.6rem', minWidth: '2.2rem', padding: '0.35rem 0.85rem', background: PRIMARY_COLOR, transition: 'background 0.18s' }}
+      onMouseOver={e => { e.currentTarget.style.background = '#d1d4cc'; e.currentTarget.style.color = BLACK; }}
+      onMouseOut={e => { e.currentTarget.style.background = PRIMARY_COLOR; e.currentTarget.style.color = SECONDARY_COLOR; }}
+      onClick={onClick}
+      aria-label={ariaLabel}
+    >
+      {children}
+    </Button>
+  );
+}
+
 const Details = ({ eventDetails, eventTitle }) => { 
   return (
     <Drawer.Root> 
         <Text></Text>
         <Drawer.Trigger asChild>
-         <Button
-           variant="subtle"
-           size="2xl" 
-           rounded="2xl"
-           className="detailsDrawerButton"
-           style={{ minHeight: '2.2rem', minWidth: '2.2rem', background: PRIMARY_COLOR, transition: 'background 0.18s' }}
-           onMouseOver={e => e.currentTarget.style.background = '#d1d4cc'}
-           onMouseOut={e => e.currentTarget.style.background = PRIMARY_COLOR}
-         >
-          <LuSquarePlus style={{ fontSize: '1.25rem' }} />
-         </Button>
+         <ActionButton ariaLabel="Details">
+           <p className="eventcard-action-text">{DETAILS}</p>
+         </ActionButton>
         </Drawer.Trigger>
         <Drawer.Backdrop pos="fixed" boxSize="full" />
         <Drawer.Positioner pos="absolute" boxSize="full" padding="2">
           <Drawer.Content>
             <Drawer.Header style={{ position: 'relative', paddingLeft: '2.5rem', backgroundColor: PRIMARY_COLOR }}>
-              <Drawer.CloseTrigger asChild>
-              </Drawer.CloseTrigger>
             </Drawer.Header>
             <Drawer.Body color='gray.600' backgroundColor={BACKGROUND_COLOR} style={{ padding: '2rem', maxHeight: '80vh', overflowY: 'auto' }}>
-              <p style={{ whiteSpace: 'pre-line', fontSize: '1.5rem', lineHeight: 1.5, padding: '0 1rem', fontWeight: "bolder" }}>
+              <p style={{ whiteSpace: 'pre-line', fontSize: '16px', lineHeight: 1.2, padding: '0 0rem', fontWeight: "bolder" }}>
                 {eventDetails}
               </p>
             </Drawer.Body>
-            <Drawer.Footer bg={BACKGROUND_COLOR} >
+            <Drawer.Footer bg={PRIMARY_COLOR} >
             </Drawer.Footer>
           </Drawer.Content>
         </Drawer.Positioner>
@@ -49,65 +57,79 @@ const Details = ({ eventDetails, eventTitle }) => {
 
 export default function EventCard({ event }) {
   return (
-  <Card.Root size="md" overflow="hidden" rounded="lg" style={{ width: '100%', maxWidth: 'clamp(260px, 86vw, 400px)', minWidth: 0, boxSizing: 'border-box', border: '2px solid #e0e4dd', borderRadius: 'clamp(0.75rem, 6vw, 3rem)' }}> 
+    <>
+      <style>{`
+        .eventcard-actions{ display:flex; align-items:center; justify-content:flex-start; gap:0.64rem; width:100%; }
+        .eventcard-action-text{ font-weight:700; font-size:20px; margin:0; }
+        @media (max-width: 767px){
+          .eventcard-actions{ gap:calc(0.64rem * 0.9); }
+          .eventcard-action-text{ font-size:calc(20px * 0.8); }
+        }
+      `}</style>
+      <Card.Root size="md" overflow="hidden" rounded="lg" style={{ margin: '0 auto', width: '100%', maxWidth: 'clamp(234px, 77.4vw, 360px)', minWidth: 0, boxSizing: 'border-box', border: '2px solid #e0e4dd', borderRadius: 'clamp(0.675rem, 5.4vw, 2.7rem)' }}> 
       <AspectRatio ratio={12 / 12}>
         <img
           src={event.image_url}
           alt={event.title}
           style={{
             width: '100%',
-            maxWidth: '400px',
+            maxWidth: '360px',
             minWidth: 0,
             objectFit: 'cover',
             display: 'block'
           }}
         />
       </AspectRatio>
-      <Card.Body gap="2" padding="4" bg="#fffbf1"  style={{ lineHeight: 2.5 }}> 
-        <Card.Title fontSize="2xl" fontWeight="bolder" color={BLACK} mt={2} mb={1}> {event.title} </Card.Title>
-        <Card.Description fontSize="xl" color="gray.600" fontWeight="bold">
+      <Card.Body gap="2" padding="4" bg="#fffbf1"  style={{ lineHeight: 2.0 }}> 
+  <Card.Title textAlign="center" fontSize="2xl" fontWeight="bolder" color="gray.600" mt={-1} mb={1}> {event.title} </Card.Title>
+        <Card.Description fontSize="xl" color="gray.600" borderTop="3px solid #e0e4dd" pt={2}>
           {event.chef_names && Array.isArray(event.chef_names) && Array.isArray(event.chef_instagrams)
             ? event.chef_names.map((name, idx) => (
                 <span
                   key={name}
-                  style={{ textDecoration: 'underline', cursor: 'pointer', marginRight: idx < event.chef_names.length - 1 ? 4 : 0 }}
+                  style={{ cursor: 'pointer', marginRight: idx < event.chef_names.length - 1 ? 4 : 0 }}
                   onClick={() => handleInstagram(event.chef_instagrams[idx])}
                 >
-                  {name}
+                  {(event.chef_names.length === 1 || idx === 0) && (
+                    <RiInstagramFill className="inline-block"> </RiInstagramFill>
+                  )}
+                  <span>  {name} </span>
                 </span>
               )).reduce((prev, curr, idx) => prev === null ? [curr] : [...prev, <span key={`x-${idx}`}> X </span>, curr], null)
             : ''}
           <br/>
-          {formatDateRange(event.start_datetime, event.end_datetime)}
+          <SiGooglecalendar className="inline-block mr-1" />
+          <span className="cursor-pointer text-[20px] relative" onClick={() => handleCalendar(event)}>
+            {formatDateRange(event.start_datetime, event.end_datetime)}
+          </span>
           <br/>
-          <span className="underline cursor-pointer" onClick={() => handleMaps(event.venue_address)}>
+          <div> 
+            <SiGooglemaps className="inline-block mr-1.5" />
+            <span
+              className="cursor-pointer text-[20px] relative"
+              style={{ top: '2px' }}
+              onClick={() => handleMaps(event.venue_address)}
+            >
             {event.venue_address}
           </span>
+           </div>
         </Card.Description>
       </Card.Body>
       <div style={{ width: '100%', height: '2px', background: PRIMARY_COLOR }} />
-      <Card.Footer gap="2" style={{ padding: '1.25rem 2.5rem 1rem 2.5rem', backgroundColor: PRIMARY_COLOR }}> 
-        {/* Left group: first three icons aligned to left */}
-  <div style={{ display: 'flex', alignItems: 'flex-end', gap: '0rem', justifyContent: 'flex-start' }}>
-          <IconButton variant="subtle" size="2xl" rounded="2xl" color={BLACK} onClick={() => handleCalendar(event)}>
-            <SiGooglecalendar />
-          </IconButton>
-          <IconButton variant="subtle" size="2xl" rounded="2xl" color={BLACK} onClick={() => window.open(event.reservation_url, '_blank', 'noopener,noreferrer')}>
-            <FaRegCalendarCheck />
-          </IconButton>
-          <IconButton variant="subtle" size="2xl" rounded="2xl" color={BLACK} onClick={() => handleWhatsApp(event)}>
-            <TbSend />
-          </IconButton>
-        </div>
-
-        {/* Spacer pushes the right group to the far right */}
-        <div style={{ flex: 1 }} />
-
-        {/* Right group: details drawer aligned to right */}
-        <div style={{ display: 'flex', alignItems: 'center', height: '100%', color: BLACK }}>
+  <Card.Footer gap="2" style={{ padding: '1.25rem 2.5rem 1rem 0.5rem', backgroundColor: PRIMARY_COLOR}}> 
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: '0.64rem', width: '100%', marginTop: '-15px', marginBottom: '-10px' }}>
+        <div className="eventcard-actions">
+          <ActionButton onClick={() => window.open(event.reservation_url, '_blank', 'noopener,noreferrer')} ariaLabel="Reserve">
+            <p className="eventcard-action-text">{RESERVE}</p>
+          </ActionButton>
+          <ActionButton onClick={() => handleWhatsApp(event.english_description)} ariaLabel="Share">
+            <p className="eventcard-action-text">{SHARE}</p>
+          </ActionButton>
           <Details eventDetails={event.english_description} eventTitle={event.title}/>
         </div>
-      </Card.Footer>
+    </div>
+  </Card.Footer>
     </Card.Root>
+    </>
   );
 }
