@@ -86,6 +86,17 @@ export function getScreenSize() {
     return LARGE;
 }
 
+// Helper to format event description with English and Hebrew parts
+export function formatEventDescription(event) {
+    return (
+        <div> 
+            <p>{event.english_description}</p>
+            <br />
+            <p style={{ direction: 'rtl', unicodeBidi: 'isolate' }}>{event.hebrew_description}</p>
+        </div>
+    )
+}
+
 // Function to open Google Maps with the given address
 export function handleMaps(address) {
   const query = encodeURIComponent(address);

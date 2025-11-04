@@ -61,7 +61,7 @@ const About = () => {
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-50 bg-[#e0e4dd] border-b border-white-100 px-16 py-8">
+    <header className="sticky top-0 z-50 bg-[#e0e4dd] border-b border-white-100 px-6 md:px-16 py-2 md:py-8">
       <div className="flex items-center justify-between max-w-3xl mx-auto">
         <h1 className="text-[25px] font-bold" style={{ color: SECONDARY_COLOR }}> {APP_NAME} </h1>
         <About />
