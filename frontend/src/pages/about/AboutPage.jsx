@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { GiKnifeFork } from "react-icons/gi";
 import { AiOutlineMail } from "react-icons/ai";
 import { SECONDARY_COLOR } from "../../components/config/colors.jsx";
-import { ABOUT_CREATORS_1, ABOUT_CREATORS_2, CONTACT, BLANK, NO_OPENER } from "../../components/config/strings.jsx";
+import { ABOUT_CREATORS_1, ABOUT_CREATORS_2, CONTACT } from "../../components/config/strings.jsx";
 
 const INSTA_LINK_HALLIE = process.env.REACT_APP_INSTA_LINK_HALLIE;
 const INSTA_LINK_BEN = process.env.REACT_APP_INSTA_LINK_BEN;
@@ -45,8 +45,8 @@ export default function AboutPage() {
             <motion.a
               key={creator.name}
               href={creator.instagram}
-              target={BLANK}
-              rel={NO_OPENER}
+              target="_blank"
+              rel="noopener noreferrer"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ 

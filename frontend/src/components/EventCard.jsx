@@ -1,7 +1,8 @@
 import React from 'react';
-import { Card, Text, Drawer } from '@chakra-ui/react';
+import { Card, Text, Button, Drawer } from '@chakra-ui/react';
+import { SiGooglecalendar } from "react-icons/si";
 import { formatDateRange, handleMaps, handleWhatsApp, handleInstagram, handleCalendar, formatEventDescription } from './utils';
-import { PRIMARY_COLOR, BACKGROUND_COLOR, DRAWER_DETAILS_FONT_COLOR} from './config/colors.jsx';
+import { PRIMARY_COLOR, BACKGROUND_COLOR, SECONDARY_COLOR, BLACK} from './config/colors.jsx';
 import { RiInstagramFill } from "react-icons/ri";
 import { SiGooglemaps } from "react-icons/si";
 import { RESERVE, DETAILS, SHARE } from './config/strings';
@@ -41,7 +42,7 @@ const Details = ({ eventDetails, eventTitle }) => {
           pos="fixed"
           boxSize="full"
           padding="2"
-          style={{ display: FLEX, alignItems: POINTER, justifyContent: POINTER, padding: '1rem' }}
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}
         >
           <Drawer.Content
             style={{
@@ -52,9 +53,9 @@ const Details = ({ eventDetails, eventTitle }) => {
               boxShadow: '0 8px 32px rgba(0,0,0,0.12)'
             }}
           >
-            <Drawer.Header style={{ position: RELATIVE, paddingLeft: '2.5rem', backgroundColor: PRIMARY_COLOR }}>
+            <Drawer.Header style={{ position: 'relative', paddingLeft: '2.5rem', backgroundColor: PRIMARY_COLOR }}>
             </Drawer.Header>
-            <Drawer.Body color={DRAWER_DETAILS_FONT_COLOR} backgroundColor={BACKGROUND_COLOR} style={{ padding: '2rem', maxHeight: '80vh', overflowY: 'auto' }}>
+            <Drawer.Body color='gray.600' backgroundColor={BACKGROUND_COLOR} style={{ padding: '2rem', maxHeight: '80vh', overflowY: 'auto' }}>
               <p style={{ whiteSpace: 'pre-line', fontSize: '16px', lineHeight: 1.2, padding: '0 0rem', fontWeight: "bolder" }}>
                 {eventDetails}
               </p>
@@ -78,43 +79,39 @@ export default function EventCard({ event }) {
           .eventcard-action-text{ font-size:calc(20px * 0.8); }
         }
       `}</style>
-        <Card.Root size="md" overflow="hidden" rounded="lg" style={{ margin: '0 auto', width: MAX, maxWidth: 'clamp(260px, 86vw, 420px)', minWidth: 0, boxSizing: 'border-box', border: '2px solid #e0e4dd', borderRadius: 'clamp(0.675rem, 5.4vw, 2.7rem)' }}> 
-      <div style={{ width: MAX, display: 'block' }}>
+        <Card.Root size="md" overflow="hidden" rounded="lg" style={{ margin: '0 auto', width: '100%', maxWidth: 'clamp(260px, 86vw, 420px)', minWidth: 0, boxSizing: 'border-box', border: '2px solid #e0e4dd', borderRadius: 'clamp(0.675rem, 5.4vw, 2.7rem)' }}> 
+      {/* show the full original image (no cropping) - keep responsive width and scale height automatically */}
+      <div style={{ width: '100%', display: 'block' }}>
         <img
           src={event.image_url}
           alt={event.title}
           style={{
-            width: MAX,
-            height: AUTO,
+            width: '100%',
+            height: 'auto',
             maxWidth: '420px',
             minWidth: 0,
             objectFit: 'contain',
-            display: BLOCK
+            display: 'block'
           }}
         />
       </div>
           <Card.Body gap="2" padding="4" bg="#fffbf1"  style={{ lineHeight: 2.0 }}> 
             <Card.Title
-              textAlign={CENTER}
+              textAlign="center"
               fontSize="2xl"
               fontWeight="900"
-              backgroundColor={PRIMARY_COLOR}
-              padding={DEFAULT_PADDING}
-              borderRadius="lg"
-              color={DRAWER_DETAILS_FONT_COLOR}
+              color="gray.600"
               mt={-1}
               mb={1}
             >
               {event.title}
             </Card.Title>
-        <Card.Description
-              padding={DEFAULT_PADDING}
-              borderRadius="lg" fontSize="xl" color={DRAWER_DETAILS_FONT_COLOR} pt={2}>
+        <Card.Description fontSize="xl" color="gray.600" borderTop="3px solid #e0e4dd" pt={2}>
           {event.chef_names && Array.isArray(event.chef_names) && Array.isArray(event.chef_instagrams)
             ? event.chef_names.map((name, idx) => (
                 <span
                   key={name}
-                  style={{ cursor: POINTER, marginRight: idx < event.chef_names.length - 1 ? 4 : 0 }}
+                  style={{ cursor: 'pointer', marginRight: idx < event.chef_names.length - 1 ? 4 : 0 }}
                   onClick={() => handleInstagram(event.chef_instagrams[idx])}
                 >
                   {(event.chef_names.length === 1 || idx === 0) && (
@@ -125,15 +122,15 @@ export default function EventCard({ event }) {
               )).reduce((prev, curr, idx) => prev === null ? [curr] : [...prev, <span key={`x-${idx}`}> X </span>, curr], null)
             : ''}
           <br/>
-          <SiGooglecalendar className={ACTION_SEPARATOR} />
-          <span className={ACTION_CLASSNAME} onClick={() => handleCalendar(event)}>
+          <SiGooglecalendar className="inline-block mr-2.5" />
+          <span className="cursor-pointer text-[20px] relative" onClick={() => handleCalendar(event)}>
             {formatDateRange(event.start_datetime, event.end_datetime)}
           </span>
           <br/>
           <div> 
-            <SiGooglemaps className={ACTION_SEPARATOR} />
+            <SiGooglemaps className="inline-block mr-2.5" />
             <span
-              className={ACTION_CLASSNAME}
+              className="cursor-pointer text-[20px] relative"
               style={{ top: '2px' }}
               onClick={() => handleMaps(event.venue_address)}
             >

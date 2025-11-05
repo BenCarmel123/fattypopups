@@ -1,6 +1,6 @@
 import { Checkbox, Table, Button } from "@chakra-ui/react"
 import { useState, useEffect } from "react"
-import { ADD, EDIT, FLEX, BOLD} from "../../components/config/strings"
+import { ADD, EDIT } from "../../components/config/strings"
 import MyAlert from "../../components/CustomAlert.jsx"; 
 import { SECONDARY_COLOR } from "../../components/config/colors";
 
@@ -86,7 +86,7 @@ const Dashboard = ({ handleClick }) => {
   ))
 
   return (
-    <div className="centered-content-global" style={{ display: FLEX, flexDirection: 'column', alignItems: 'stretch', maxWidth: '1200px', minWidth: '400px', margin: '0 auto', padding: '2rem', borderRadius: '2rem' }}>
+    <div className="centered-content-global" style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch', maxWidth: '1200px', minWidth: '400px', margin: '0 auto', padding: '2rem', borderRadius: '2rem' }}>
       {alert && <MyAlert {...alert} onClose={() => setAlert(null)} />}
       <Table.Root interactive stickyHeader size="lg">
         <Table.Header>
@@ -99,10 +99,10 @@ const Dashboard = ({ handleClick }) => {
         <Table.Body>{rows}</Table.Body>
       </Table.Root>
       <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', marginTop: '2.5rem' }}>
-        <Button colorScheme="blue" variant="solid" size="lg" fontWeight={BOLD} px={8} py={6} boxShadow="md" borderRadius="xl" _hover={{ bg: {SECONDARY_COLOR}, transform: 'scale(1.05)' }} transition="all 0.15s" onClick={ handleClick(ADD, undefined) }>Add</Button>
-        <Button colorScheme="yellow" variant="solid" size="lg" fontWeight={BOLD} px={8} py={6} boxShadow="md" borderRadius="xl" _hover={{ bg: {SECONDARY_COLOR}, transform: 'scale(1.05)' }} transition="all 0.15s" onClick={ handleEditEvents }>Edit</Button>
-        <Button colorScheme="red" variant="solid" size="lg" fontWeight={BOLD} px={8} py={6} boxShadow="md" borderRadius="xl" _hover={{ bg: {SECONDARY_COLOR}, transform: 'scale(1.05)' }} transition="all 0.15s" onClick={handleDeleteEvents}>Delete</Button>
-        <Button colorScheme="gray" variant="outline" size="lg" fontWeight={BOLD} px={8} py={6} borderRadius="xl" _hover={{ bg: '#edf2f7', color: '#2d3748', transform: 'scale(1.05)' }} transition="all 0.15s" onClick={backToFatty}>Back</Button>
+        <Button colorScheme="blue" variant="solid" size="lg" fontWeight="bold" px={8} py={6} boxShadow="md" borderRadius="xl" _hover={{ bg: {SECONDARY_COLOR}, transform: 'scale(1.05)' }} transition="all 0.15s" onClick={ handleClick(ADD, undefined) }>Add</Button>
+        <Button colorScheme="yellow" variant="solid" size="lg" fontWeight="bold" px={8} py={6} boxShadow="md" borderRadius="xl" _hover={{ bg: {SECONDARY_COLOR}, transform: 'scale(1.05)' }} transition="all 0.15s" onClick={ handleEditEvents }>Edit</Button>
+        <Button colorScheme="red" variant="solid" size="lg" fontWeight="bold" px={8} py={6} boxShadow="md" borderRadius="xl" _hover={{ bg: {SECONDARY_COLOR}, transform: 'scale(1.05)' }} transition="all 0.15s" onClick={handleDeleteEvents}>Delete</Button>
+        <Button colorScheme="gray" variant="outline" size="lg" fontWeight="bold" px={8} py={6} borderRadius="xl" _hover={{ bg: '#edf2f7', color: '#2d3748', transform: 'scale(1.05)' }} transition="all 0.15s" onClick={backToFatty}>Back</Button>
       </div>
     </div>
   )

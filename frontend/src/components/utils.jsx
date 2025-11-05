@@ -1,6 +1,5 @@
 import validator from 'validator';
-import { SMALL, MEDIUM, LARGE, BLANK, NO_OPENER } from './config/strings';
-import { PRIMARY_COLOR } from './config/colors';
+import { SMALL, MEDIUM, LARGE } from './config/strings';
 
 // Helper to validate event data
 export default function validateEvent(event) {
@@ -91,7 +90,7 @@ export function getScreenSize() {
 export function formatEventDescription(event) {
     return (
         <div> 
-            <p style={{borderBottom: `3px solid ${PRIMARY_COLOR}`, paddingBottom: '1rem'}}>{event.english_description}</p>
+            <p>{event.english_description}</p>
             <br />
             <p style={{ direction: 'rtl', unicodeBidi: 'isolate' }}>{event.hebrew_description}</p>
         </div>
@@ -102,13 +101,13 @@ export function formatEventDescription(event) {
 export function handleMaps(address) {
   const query = encodeURIComponent(address);
   const url = `https://www.google.com/maps/search/?api=1&query=${query}`;
-  window.open(url, BLANK, NO_OPENER);
+  window.open(url, '_blank', 'noopener,noreferrer');
 }
 
 // Function to open WhatsApp with pre-filled message
 export function handleWhatsApp(description) {
         const desc = description || '';
-        window.open(`https://wa.me/?text=${encodeURIComponent(`${window.location.href}\n\n${desc}`)}`, BLANK);
+        window.open(`https://wa.me/?text=${encodeURIComponent(`${window.location.href}\n\n${desc}`)}`, '_blank');
     }
 
 export function handleInstagram(instagram) {
@@ -116,7 +115,7 @@ export function handleInstagram(instagram) {
     if (typeof instagram === 'string' && instagram.length > 0 && instagram[0] === '@') {
         instagramHandle = instagram.slice(1);
     }
-    window.open(`https://www.instagram.com/${instagramHandle}`, BLANK, NO_OPENER);
+    window.open(`https://www.instagram.com/${instagramHandle}`, '_blank', 'noopener,noreferrer');
 }
 
 export function handleCalendar(event) {
@@ -126,5 +125,5 @@ export function handleCalendar(event) {
     const details = `For reservations, visit: ${reservation_url}`;
     const location = venue_address;
     const calendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${start}/${end}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(location)}&sf=true&output=xml`;
-    window.open(calendarUrl, BLANK, NO_OPENER);
+    window.open(calendarUrl, '_blank', 'noopener,noreferrer');
 }
