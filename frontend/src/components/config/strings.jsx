@@ -14,4 +14,14 @@ export const RESERVE = "Reserve";
 export const SHARE = "Share";
 export const APP_NAME = "fatty popups";
 export const CONTACT = "Questions or feedback? We'd love to hear from you.";
-
+export const DEFAULT_PADDING = '0.25 rem 0.25rem 0.25 rem 0.25rem';
+export const MAX = '100%';
+export const ACTION_SEPARATOR = 'inline-block mr-2.5';
+export const ACTION_CLASSNAME = 'cursor-pointer text-[20px] relative';
+export const POINTER = 'pointer';
+export const BLANK = '_blank';
+export const NO_OPENER = 'noopener,noreferrer';
+export const AUTO = 'auto';
+export const RELATIVE = 'relative';
+export const BOLD = 'bold';
+export const BLOCK = 'block';

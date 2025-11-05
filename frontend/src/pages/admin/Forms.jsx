@@ -4,8 +4,9 @@ import validateEvent from "../../components/utils.jsx";
 import  MyAlert  from "../../components/CustomAlert.jsx";
 import { useState } from "react";
 import FileUpload from "../../components/FileUpload.jsx";
-import { FORM_FIELD_COLOR, TEXT_AREA_COLOR } from "../../components/config/colors.jsx"; 
-import { CENTER, FLEX } from "../../components/config/strings.jsx";
+import { BLUE, FORM_FIELD_COLOR, TEXT_AREA_COLOR, WHITE } from "../../components/config/colors.jsx"; 
+import { CENTER, FLEX, BOLD } from "../../components/config/strings.jsx";
+import { MAX } from "../../components/config/strings.jsx";
 
 const ADMIN_USERNAME = process.env.REACT_APP_ADMIN_USERNAME;
 const ADMIN_PASSWORD = process.env.REACT_APP_ADMIN_PASSWORD;
@@ -31,14 +32,14 @@ export default function LoginForm( {handleClick} ) {
 
     return (<div className={CENTER} style={{ position: 'relative' }}>
          {alert && (
-            <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 2000, display: FLEX, justifyContent: 'center', pointerEvents: 'none' }}>
+            <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 2000, display: FLEX, justifyContent: CENTER, pointerEvents: 'none' }}>
                 <div style={{ pointerEvents: 'auto', width: 'fit-content' }}>
                     <MyAlert {...alert} onClose={() => setAlert(null)} />
                 </div>
             </div>
         )}
         <form onSubmit={handleLogin} enctype="multipart/form-data">
-        <Card.Root maxW="lg" w="100%" minW="400px" padding={8} boxShadow="2xl" borderRadius="2xl">
+        <Card.Root maxW="lg" w={MAX} minW="400px" padding={8} boxShadow="2xl" borderRadius="2xl">
             <Card.Header>
                 <div style={{ marginBottom: 16, color: {FORM_FIELD_COLOR}, fontSize: 24, textDecoration: "underline" }}>Hey Hallee / Benji ! </div>
                 <div style={{ fontWeight: 700, fontSize: 32 }}></div>
@@ -58,7 +59,7 @@ export default function LoginForm( {handleClick} ) {
             <Card.Footer justifyContent="flex-end" paddingTop={6}>
                 <Button 
                     variant="solid" 
-                    colorScheme="blue" 
+                    colorScheme={BLUE} 
                     ml={4} 
                     size="md" 
                     type="submit"
@@ -69,7 +70,7 @@ export default function LoginForm( {handleClick} ) {
                     boxShadow="md"
                     _hover={{
                         bg: '#1976d2',
-                        color: 'white',
+                        color: {WHITE},
                         boxShadow: 'xl',
                         transform: 'scale(1.04)'
                     }}
@@ -151,13 +152,13 @@ export function EventForm({ handleClick, event, isEdit } ) {
     return (
         <div className={CENTER} style={{ position: 'relative' }}>
             {alert && (
-                <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 2000, display: FLEX, justifyContent: 'center', pointerEvents: 'none' }}>
+                <div style={{ position: 'fixed', top: 0, left: 0, width: MAX, zIndex: 2000, display: FLEX, justifyContent: CENTER, pointerEvents: 'none' }}>
                     <div style={{ pointerEvents: 'auto', width: 'fit-content' }}>
                         <MyAlert {...alert} onClose={() => setAlert(null)} />
                     </div>
                 </div>
             )}
-            <Card.Root maxW="md" w="100%" minW="350px">
+            <Card.Root maxW="md" w={MAX} minW="350px">
                 <form onSubmit={handleEvent}>
                     <Card.Body>
                         <Stack gap={4} w="full">
@@ -221,7 +222,7 @@ export function EventForm({ handleClick, event, isEdit } ) {
                             </Field.Root>
                             <Field.Root>
                                 <Button 
-                                    colorScheme="blue" 
+                                    colorScheme={BLUE} 
                                     variant="solid" 
                                     size="lg" 
                                     fontWeight="bold" 
@@ -229,7 +230,7 @@ export function EventForm({ handleClick, event, isEdit } ) {
                                     py={2} 
                                     boxShadow="md" 
                                     borderRadius="xl" 
-                                    _hover={{ bg: '#3182ce', color: 'white', transform: 'scale(1.05)' }} 
+                                    _hover={{ bg: '#3182ce', color: {WHITE}, transform: 'scale(1.05)' }} 
                                     transition="all 0.15s"
                                     as="label"
                                 >
@@ -240,29 +241,29 @@ export function EventForm({ handleClick, event, isEdit } ) {
                     </Card.Body>
                     <Card.Footer justifyContent="flex-end">
                         <Button 
-                            colorScheme="gray" 
+                            colorScheme='gray'
                             variant="outline" 
                             size="lg" 
-                            fontWeight="bold" 
+                            fontWeight={BOLD} 
                             px={8} 
                             py={6} 
                             borderRadius="xl" 
-                            _hover={{ bg: '#edf2f7', color: '#2d3748', transform: 'scale(1.05)' }} 
+                            _hover={{ bg: '#edf2f7', color: 'gray', transform: 'scale(1.05)' }} 
                             transition="all 0.15s" 
                             onClick={handleClick(DASHBOARD)} 
                             type="button">
                             Back
                         </Button>
                         <Button 
-                            colorScheme="blue" 
+                            colorScheme={BLUE} 
                             variant="solid" 
                             size="lg" 
-                            fontWeight="bold" 
+                            fontWeight={BOLD} 
                             px={8} 
                             py={6} 
                             boxShadow="md" 
                             borderRadius="xl" 
-                            _hover={{ bg: '#3182ce', color: 'white', transform: 'scale(1.05)' }} 
+                            _hover={{ bg: '#3182ce', color: {WHITE}, transform: 'scale(1.05)' }} 
                             transition="all 0.15s" 
                             type="submit">
                             Add Event

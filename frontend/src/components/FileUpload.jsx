@@ -1,5 +1,6 @@
 import { Button, Float, useFileUploadContext, FileUpload as ChakraFileUpload } from "@chakra-ui/react";
 import { LuFileImage, LuX } from "react-icons/lu";
+import { AUTO } from './config/strings.jsx';
 
 // FileUpload helper components 
 function FileUploadList()
@@ -11,7 +12,7 @@ function FileUploadList()
         <ChakraFileUpload.ItemGroup>
             {files.map((file) => (
                 <ChakraFileUpload.Item
-                    w="auto"
+                    w={AUTO}
                     boxSize="20"
                     p="2"
                     file={file}

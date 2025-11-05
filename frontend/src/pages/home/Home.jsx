@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import { Button, Spinner } from '@chakra-ui/react';
 import { RiMailLine } from "react-icons/ri";
 import EventCard from '../../components/EventCard';
-import { SECONDARY_COLOR, BLACK } from '../../components/config/colors.jsx';
+import { SECONDARY_COLOR, DRAWER_DETAILS_FONT_COLOR } from '../../components/config/colors.jsx';
 import { APP_NAME } from '../../components/config/strings.jsx';
 
 
@@ -10,6 +10,8 @@ import { APP_NAME } from '../../components/config/strings.jsx';
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 const ABOUT_ROUTE = process.env.REACT_APP_ABOUT_ROUTE;
 const ADMIN_ROUTE = process.env.REACT_APP_ADMIN_ROUTE;
+const LOGO_URL = process.env.REACT_APP_LOGO;
+
 
 function handleRoute(route) {
   window.location.href = "/" + route;
@@ -41,14 +43,13 @@ const About = () => {
   return (
     <div className="flex items-center">
       <Button
-        variant="solid"
-        size="md"
-        color={BLACK}
+        variant="subtle"
+        color={DRAWER_DETAILS_FONT_COLOR}
         fontWeight="bold"
-        px={8}
-        py={6}
+        px={5}
+        py={3}
         boxShadow="sm"
-        borderRadius="xl"
+        borderRadius="2xl"
         _hover={{ bg: SECONDARY_COLOR, color: 'white', transform: 'scale(1.05)' }}
         transition="all 0.15s"
         onClick={handleAbout}
@@ -61,10 +62,21 @@ const About = () => {
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-50 bg-[#e0e4dd] border-b border-white-100 px-6 md:px-16 py-2 md:py-8">
-      <div className="flex items-center justify-between max-w-3xl mx-auto">
-        <h1 className="text-[25px] font-bold" style={{ color: SECONDARY_COLOR }}> {APP_NAME} </h1>
-        <About />
+  <header className="sticky top-0 z-50 bg-[#e0e4dd] border-b border-white-100 px-6 md:px-16 py-[0.01rem] md:py-[0.35rem]">
+      <div className="flex items-center justify-between max-w-3xl mx-auto w-full">
+        <div className="flex items-center">
+          {LOGO_URL ? (
+            <a aria-label={APP_NAME} className="flex items-center">
+              <img src={LOGO_URL} alt={APP_NAME} className="h-42 w-40 object-contain" />
+            </a>
+          ) : (
+            <a href="/" className="text-lg font-bold" aria-label={APP_NAME}>{APP_NAME}</a>
+          )}
+        </div>
+
+        <div>
+          <About />
+        </div>
       </div>
     </header>
   );
