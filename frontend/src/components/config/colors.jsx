@@ -19,8 +19,8 @@ export const EVENT_TITLE_PADDING_COLOR = '#e0e4dd';
 
 // Misc colors / tokens
 export const FORM_FIELD_COLOR = '#2596be';
-export const TEXT_AREA_COLOR = 'bbb';
-export const CHECKBOX_COLOR = "bbb";
+export const TEXT_AREA_COLOR = '#bbb';
+export const CHECKBOX_COLOR = '#bbb';
 
 // Utility colors
 export const BLUE = '#0000ff';

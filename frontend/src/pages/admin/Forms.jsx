@@ -1,11 +1,11 @@
 import { Button, Card, Stack, Input, Field, Float, useFileUploadContext, Textarea } from "@chakra-ui/react";
-import { DASHBOARD } from "../../components/config/strings.jsx";
+import { DASHBOARD, MINIMAL_TRANSITION } from "../../components/config/strings.jsx";
 import validateEvent from "../../components/utils.jsx";
 import  MyAlert  from "../../components/CustomAlert.jsx";
 import { useState } from "react";
 import FileUpload from "../../components/FileUpload.jsx";
-import { FORM_FIELD_COLOR, TEXT_AREA_COLOR, WHITE } from "../../components/config/colors.jsx"; 
-import { CENTER, FLEX, RELATIVE, FIXED, MAX, NONE, AUTO, LARGE, XL, MEDIUM, SOLID, OUTLINE } from "../../components/config/strings.jsx";
+import { FORM_FIELD_COLOR, SECONDARY_COLOR, TEXT_AREA_COLOR, WHITE } from "../../components/config/colors.jsx"; 
+import { CENTER, FLEX, RELATIVE, FIXED, MAX, NONE, AUTO, LARGE, XL, MEDIUM, SOLID, OUTLINE, MINIMAL_TRANSFORM, BOLD } from "../../components/config/strings.jsx";
 
 const ADMIN_USERNAME = process.env.REACT_APP_ADMIN_USERNAME;
 const ADMIN_PASSWORD = process.env.REACT_APP_ADMIN_PASSWORD;
@@ -29,7 +29,7 @@ export default function LoginForm( {handleClick} ) {
         }
     }
 
-    return (<div className={CENTER} style={{ position: RELATIVE }}>
+    return (<div className={CENTER} style={{ position: RELATIVE, display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
          {alert && (
             <div style={{ position: FIXED, top: 0, left: 0, width: MAX, zIndex: 2000, display: FLEX, justifyContent: CENTER, pointerEvents: NONE }}>
                 <div style={{ pointerEvents: AUTO, width: 'fit-content' }}>
@@ -62,16 +62,16 @@ export default function LoginForm( {handleClick} ) {
                     ml={4} 
                     size={MEDIUM} 
                     type="submit"
-                    fontWeight="bold"
+                    fontWeight={BOLD}
                     fontSize={18}
                     px={7}
                     py={5}
                     boxShadow={MEDIUM}
                     _hover={{
-                        bg: '#1976d2',
+                        bg: SECONDARY_COLOR,
                         color: WHITE,
                         boxShadow: XL,
-                        transform: 'scale(1.04)'
+                        transform: MINIMAL_TRANSFORM
                     }}
                 >
                     Login
@@ -149,7 +149,7 @@ export function EventForm({ handleClick, event, isEdit } ) {
     }
 
     return (
-        <div className={CENTER} style={{ position: RELATIVE }}>
+        <div className={CENTER} style={{ position: RELATIVE, display: FLEX, alignItems: CENTER, justifyContent: CENTER, minHeight: '100vh' }}>
             {alert && (
                 <div style={{ position: FIXED, top: 0, left: 0, width: MAX, zIndex: 2000, display: FLEX, justifyContent: CENTER, pointerEvents: NONE }}>
                     <div style={{ pointerEvents: AUTO, width: 'fit-content' }}>
@@ -224,13 +224,13 @@ export function EventForm({ handleClick, event, isEdit } ) {
                                     colorScheme="blue"
                                     variant={SOLID}
                                         size={LARGE}
-                                        fontWeight="bold"
+                                        fontWeight={BOLD}
                                     px={2} 
                                     py={2} 
                                     boxShadow={MEDIUM}
                                     borderRadius={XL} 
-                                    _hover={{ bg: '#3182ce', color: WHITE, transform: 'scale(1.05)' }} 
-                                    transition="all 0.15s"
+                                    _hover={{ bg: '#3182ce', color: WHITE, transform: MINIMAL_TRANSFORM }} 
+                                    transition={MINIMAL_TRANSITION}
                                     as="label"
                                 >
                                     <FileUpload style={{ display: 'none' }} />
@@ -243,12 +243,12 @@ export function EventForm({ handleClick, event, isEdit } ) {
                             colorScheme="gray" 
                             variant={OUTLINE} 
                             size={LARGE} 
-                            fontWeight="bold" 
+                            fontWeight={BOLD} 
                             px={8} 
                             py={6} 
                             borderRadius={XL} 
-                            _hover={{ bg: '#edf2f7', color: '#2d3748', transform: 'scale(1.05)' }} 
-                            transition="all 0.15s" 
+                            _hover={{ bg: '#edf2f7', color: '#2d3748', transform: MINIMAL_TRANSFORM }} 
+                            transition={MINIMAL_TRANSITION} 
                             onClick={handleClick(DASHBOARD)} 
                             type="button">
                             Back
@@ -257,13 +257,13 @@ export function EventForm({ handleClick, event, isEdit } ) {
                             colorScheme="blue" 
                             variant={SOLID} 
                             size={LARGE} 
-                            fontWeight="bold" 
+                            fontWeight={BOLD} 
                             px={8} 
                             py={6} 
                             boxShadow={MEDIUM} 
                             borderRadius={XL} 
-                            _hover={{ bg: '#3182ce', color: WHITE, transform: 'scale(1.05)' }} 
-                            transition="all 0.15s" 
+                            _hover={{ bg: '#3182ce', color: WHITE, transform: MINIMAL_TRANSFORM }} 
+                            transition={MINIMAL_TRANSITION} 
                             type="submit">
                             Add Event
                         </Button>

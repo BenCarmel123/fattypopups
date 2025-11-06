@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react"
 import { Button, Spinner } from '@chakra-ui/react';
 import EventCard from '../../components/EventCard';
-import { SECONDARY_COLOR, DRAWER_DETAILS_FONT_COLOR, HEADER_BACKGROUND_COLOR, GRAY } from '../../components/config/colors.jsx';
-import { APP_NAME } from '../../components/config/strings.jsx';
+import { SECONDARY_COLOR, HEADER_BACKGROUND_COLOR, GRAY } from '../../components/config/colors.jsx';
+import { APP_NAME, MINIMAL_TRANSFORM } from '../../components/config/strings.jsx';
 import { GrCircleInformation } from "react-icons/gr";
 
 // Replace imports from Config.jsx with process.env variables
@@ -25,7 +25,7 @@ const About = () => {
         py={6}
         boxShadow="sm"
         borderRadius="xl"
-        _hover={{ bg: SECONDARY_COLOR, color: 'white', transform: 'scale(1.05)' }}
+        _hover={{ bg: SECONDARY_COLOR, color: 'white', transform: MINIMAL_TRANSFORM }}
         transition="all 0.15s"
         onClick={handleAbout}
       >

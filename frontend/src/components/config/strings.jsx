@@ -49,6 +49,8 @@ export const OUTLINE = 'outline';
 export const ACTION_BUTTON_SPACING = "inline-block mr-2.5";
 export const ACTION_BUTTON_HOVER = "cursor-pointer text-[20px] relative"
 export const BOLD = 'bold';
+export const MINIMAL_TRANSFORM = 'scale(1.05)';
+export const MINIMAL_TRANSITION = 'all 0.15s';
 
 // Misc UI tokens
 export const POINTER = 'pointer';
