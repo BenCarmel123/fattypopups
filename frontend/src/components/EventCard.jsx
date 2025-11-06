@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Text, Button, Drawer } from '@chakra-ui/react';
 import { formatDateRange, handleMaps, handleWhatsApp, handleInstagram, handleCalendar, formatEventDescription } from './utils';
-import { PRIMARY_COLOR, GRAY, CARD_BACKGROUND_COLOR, FOOTER_BACKGROUND_COLOR, EVENT_TITLE_PADDING_COLOR, DRAWER_BACKGROUND_COLOR, SECONDARY_COLOR, TRANSPARENT} from './config/colors.jsx';
+import { PRIMARY_COLOR, GRAY, CARD_BACKGROUND_COLOR, FOOTER_BACKGROUND_COLOR, EVENT_TITLE_PADDING_COLOR, DRAWER_BACKGROUND_COLOR, TRANSPARENT, DRAWER_DETAILS_FONT_COLOR} from './config/colors.jsx';
 import { RiInstagramFill } from "react-icons/ri";
 import { SiGooglemaps, SiGooglecalendar } from "react-icons/si";
 import { RESERVE, DETAILS, SHARE, XL, XXL, FLEX, AUTO, CENTER, FIXED, FULL, RELATIVE, ACTION_BUTTON_HOVER, MEDIUM, LARGE, MAX, BLOCK, POINTER, ACTION_BUTTON_SPACING, BLANK, NO_OPENER } from './config/strings';
@@ -57,7 +57,7 @@ const Details = ({ eventDetails, eventTitle }) => {
           >
             <Drawer.Header style={{ position: RELATIVE, paddingLeft: '2.5rem', backgroundColor: PRIMARY_COLOR }}>
             </Drawer.Header>
-            <Drawer.Body color='gray.600' backgroundColor={DRAWER_BACKGROUND_COLOR} style={{ padding: '2rem', maxHeight: '80vh', overflowY: AUTO }}>
+            <Drawer.Body color={DRAWER_DETAILS_FONT_COLOR} backgroundColor={DRAWER_BACKGROUND_COLOR} style={{ padding: '2rem', maxHeight: '80vh', overflowY: AUTO }}>
               <p style={{ whiteSpace: 'pre-line', fontSize: '16px', lineHeight: 1.2, padding: '0 0rem', fontWeight: "bolder" }}>
                 {eventDetails}
               </p>
@@ -99,12 +99,12 @@ export default function EventCard({ event }) {
           }}
         />
       </div>
-          <Card.Body gap="2" padding="4" bg={CARD_BACKGROUND_COLOR} style={{ lineHeight: 2.0}}> 
+          <Card.Body gap="2" padding="5" bg={CARD_BACKGROUND_COLOR} style={{ lineHeight: 2.0}}> 
             <Card.Title
               textAlign={CENTER}
               fontSize={XXL}
-              fontWeight="900"
-              color="gray.600"
+              fontWeight="500"
+              color={DRAWER_DETAILS_FONT_COLOR}
               mt={-1}
               mb={1}
               padding={3}
@@ -113,7 +113,7 @@ export default function EventCard({ event }) {
             >
               {event.title}
             </Card.Title>
-        <Card.Description fontSize={XL} color="gray.600" pt={2} paddingRight={4} paddingLeft={4} lineHeight={2.5} >
+        <Card.Description fontSize={XL} color={DRAWER_DETAILS_FONT_COLOR} paddingRight={4} paddingLeft={4} lineHeight={2.5} >
           {event.chef_names && Array.isArray(event.chef_names) && Array.isArray(event.chef_instagrams)
             ? event.chef_names.map((name, idx) => (
                 <span
@@ -150,7 +150,7 @@ export default function EventCard({ event }) {
   <Card.Footer style={{ padding: '1.25rem 1rem 1rem 1rem', backgroundColor: FOOTER_BACKGROUND_COLOR}}> 
   <div style={{ display: FLEX, alignItems: CENTER, justifyContent: CENTER, width: MAX, marginTop: '-15px', marginBottom: '-10px'}}>
   <div className="eventcard-actions" style={{display: FLEX, alignItems: CENTER, justifyContent: CENTER, gap: '0.01rem', width: MAX, maxWidth: '340px', margin: '0 auto'}}>
-          <ActionButton onClick={() => window.open(event.reservation_url, BLANK, NO_OPENER)} ariaLabel="Reserve">
+          <ActionButton onClick={() => window.open(event.reservation_url, BLANK, NO_OPENER)} ariaLabel={RESERVE}>
             <GiForkKnifeSpoon style={{ verticalAlign: 'middle', marginRight: '-0.3rem' }} />
             <p className="eventcard-action-text" style={{display: 'inline-flex', alignItems: CENTER, whiteSpace: 'nowrap'}}>{RESERVE}</p>
           </ActionButton>
