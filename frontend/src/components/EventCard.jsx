@@ -1,11 +1,13 @@
 import React from 'react';
 import { Card, Text, Button, Drawer } from '@chakra-ui/react';
-import { SiGooglecalendar } from "react-icons/si";
 import { formatDateRange, handleMaps, handleWhatsApp, handleInstagram, handleCalendar, formatEventDescription } from './utils';
-import { PRIMARY_COLOR, BACKGROUND_COLOR, SECONDARY_COLOR, BLACK} from './config/colors.jsx';
+import { PRIMARY_COLOR, GRAY, CARD_BACKGROUND_COLOR, FOOTER_BACKGROUND_COLOR, EVENT_TITLE_PADDING_COLOR, DRAWER_BACKGROUND_COLOR, SECONDARY_COLOR, TRANSPARENT} from './config/colors.jsx';
 import { RiInstagramFill } from "react-icons/ri";
-import { SiGooglemaps } from "react-icons/si";
+import { SiGooglemaps, SiGooglecalendar } from "react-icons/si";
 import { RESERVE, DETAILS, SHARE } from './config/strings';
+import { GiForkKnifeSpoon } from "react-icons/gi";
+import { TbSend } from "react-icons/tb";
+import { LuSquarePlus } from "react-icons/lu";
 
 
 // Details drawer component
@@ -16,9 +18,9 @@ function ActionButton({ children, onClick, ariaLabel, className = '' }) {
       size="xl"
       rounded="2xl"
       className={`detailsDrawerButton ${className}`}
-    style={{ color: SECONDARY_COLOR, minHeight: '2.6rem', minWidth: '2.2rem', padding: '0.35rem 0.85rem', background: PRIMARY_COLOR, transition: 'background 0.18s' }}
-      onMouseOver={e => { e.currentTarget.style.background = '#d1d4cc'; e.currentTarget.style.color = BLACK; }}
-      onMouseOut={e => { e.currentTarget.style.background = PRIMARY_COLOR; e.currentTarget.style.color = SECONDARY_COLOR; }}
+    style={{ color: GRAY, minHeight: '2.6rem', minWidth: '2.2rem', padding: '0.35rem 0.85rem', background: TRANSPARENT, transition: 'background 0.18s' }}
+      onMouseOver={e => { e.currentTarget.style.background = TRANSPARENT }}
+      onMouseOut={e => { e.currentTarget.style.background = TRANSPARENT;}}
       onClick={onClick}
       aria-label={ariaLabel}
     >
@@ -33,11 +35,11 @@ const Details = ({ eventDetails, eventTitle }) => {
         <Text></Text>
         <Drawer.Trigger asChild>
          <ActionButton ariaLabel="Details">
-           <p className="eventcard-action-text">{DETAILS}</p>
+           <LuSquarePlus style={{ verticalAlign: 'middle', marginRight: '-0.1rem' }} />
+           <p className="eventcard-action-text" style={{display: 'inline-flex', alignItems: 'center', gap: '0.12rem', whiteSpace: 'nowrap'}}>{DETAILS}</p>
          </ActionButton>
         </Drawer.Trigger>
         <Drawer.Backdrop pos="fixed" boxSize="full" />
-        {/* center the drawer content in the viewport */}
         <Drawer.Positioner
           pos="fixed"
           boxSize="full"
@@ -55,12 +57,12 @@ const Details = ({ eventDetails, eventTitle }) => {
           >
             <Drawer.Header style={{ position: 'relative', paddingLeft: '2.5rem', backgroundColor: PRIMARY_COLOR }}>
             </Drawer.Header>
-            <Drawer.Body color='gray.600' backgroundColor={BACKGROUND_COLOR} style={{ padding: '2rem', maxHeight: '80vh', overflowY: 'auto' }}>
+            <Drawer.Body color='gray.600' backgroundColor={DRAWER_BACKGROUND_COLOR} style={{ padding: '2rem', maxHeight: '80vh', overflowY: 'auto' }}>
               <p style={{ whiteSpace: 'pre-line', fontSize: '16px', lineHeight: 1.2, padding: '0 0rem', fontWeight: "bolder" }}>
                 {eventDetails}
               </p>
             </Drawer.Body>
-            <Drawer.Footer bg={PRIMARY_COLOR} >
+            <Drawer.Footer bg={FOOTER_BACKGROUND_COLOR} >
             </Drawer.Footer>
           </Drawer.Content>
         </Drawer.Positioner>
@@ -72,10 +74,12 @@ export default function EventCard({ event }) {
   return (
     <>
       <style>{`
-        .eventcard-actions{ display:flex; align-items:center; justify-content:flex-start; gap:0.64rem; width:100%; }
+        /* center the action group and distribute buttons evenly on desktop */
+  .eventcard-actions{ display:flex; align-items:center; justify-content:space-between; gap:0.64rem; width:100%; max-width:420px; margin:0 auto; box-sizing: border-box; }
         .eventcard-action-text{ font-weight:700; font-size:20px; margin:0; }
         @media (max-width: 767px){
-          .eventcard-actions{ gap:calc(0.64rem * 0.9); }
+          /* on small screens keep them grouped and centered */
+          .eventcard-actions{ justify-content:center; gap:calc(0.64rem * 0.9); width:auto; }
           .eventcard-action-text{ font-size:calc(20px * 0.8); }
         }
       `}</style>
@@ -95,7 +99,7 @@ export default function EventCard({ event }) {
           }}
         />
       </div>
-          <Card.Body gap="2" padding="4" bg="#fffbf1"  style={{ lineHeight: 2.0 }}> 
+          <Card.Body gap="2" padding="4" bg={CARD_BACKGROUND_COLOR} style={{ lineHeight: 2.0}}> 
             <Card.Title
               textAlign="center"
               fontSize="2xl"
@@ -103,10 +107,13 @@ export default function EventCard({ event }) {
               color="gray.600"
               mt={-1}
               mb={1}
+              padding={3}
+              backgroundColor={EVENT_TITLE_PADDING_COLOR}
+              borderRadius="2xl"
             >
               {event.title}
             </Card.Title>
-        <Card.Description fontSize="xl" color="gray.600" borderTop="3px solid #e0e4dd" pt={2}>
+        <Card.Description fontSize="xl" color="gray.600" pt={2} paddingRight={4} paddingLeft={4} lineHeight={2.5} >
           {event.chef_names && Array.isArray(event.chef_names) && Array.isArray(event.chef_instagrams)
             ? event.chef_names.map((name, idx) => (
                 <span
@@ -140,14 +147,16 @@ export default function EventCard({ event }) {
         </Card.Description>
       </Card.Body>
       <div style={{ width: '100%', height: '2px', background: PRIMARY_COLOR }} />
-  <Card.Footer gap="2" style={{ padding: '1.25rem 2.5rem 1rem 0.5rem', backgroundColor: PRIMARY_COLOR}}> 
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: '0.64rem', width: '100%', marginTop: '-15px', marginBottom: '-10px' }}>
-        <div className="eventcard-actions">
+  <Card.Footer style={{ padding: '1.25rem 1rem 1rem 1rem', backgroundColor: FOOTER_BACKGROUND_COLOR}}> 
+  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', marginTop: '-15px', marginBottom: '-10px'}}>
+  <div className="eventcard-actions" style={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.1rem', width: '100%', maxWidth: '340px', margin: '0 auto'}}>
           <ActionButton onClick={() => window.open(event.reservation_url, '_blank', 'noopener,noreferrer')} ariaLabel="Reserve">
-            <p className="eventcard-action-text">{RESERVE}</p>
+            <GiForkKnifeSpoon style={{ verticalAlign: 'middle', marginRight: '-0.1rem' }} />
+            <p className="eventcard-action-text" style={{display: 'inline-flex', alignItems: 'center', gap: '0.12rem', whiteSpace: 'nowrap'}}>{RESERVE}</p>
           </ActionButton>
           <ActionButton onClick={() => handleWhatsApp(event.english_description)} ariaLabel="Share">
-            <p className="eventcard-action-text">{SHARE}</p>
+            <TbSend style={{ verticalAlign: 'middle', marginRight: '-0.1rem' }} />
+            <p className="eventcard-action-text" style={{display: 'inline-flex', alignItems: 'center', gap: '0.12rem', whiteSpace: 'nowrap'}}>{SHARE}</p>
           </ActionButton>
           <Details eventDetails={formatEventDescription(event)} eventTitle={event.title}/>
         </div>

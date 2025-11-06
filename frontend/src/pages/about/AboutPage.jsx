@@ -2,8 +2,8 @@ import React from "react";
 import { motion } from "framer-motion";
 import { GiKnifeFork } from "react-icons/gi";
 import { AiOutlineMail } from "react-icons/ai";
-import { SECONDARY_COLOR } from "../../components/config/colors.jsx";
-import { ABOUT_CREATORS_1, ABOUT_CREATORS_2, CONTACT } from "../../components/config/strings.jsx";
+import { SECONDARY_COLOR, ABOUT_PAGE_BACKGROUND_COLOR } from "../../components/config/colors.jsx";
+import { ABOUT_CREATORS_1, ABOUT_CREATORS_2, CONTACT, BLANK, NO_OPENER } from "../../components/config/strings.jsx";
 
 const INSTA_LINK_HALLIE = process.env.REACT_APP_INSTA_LINK_HALLIE;
 const INSTA_LINK_BEN = process.env.REACT_APP_INSTA_LINK_BEN;
@@ -26,7 +26,7 @@ export default function AboutPage() {
   ];
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-6 py-20">
+    <div className="min-h-screen flex items-center justify-center px-6 py-20" style={{ backgroundColor: ABOUT_PAGE_BACKGROUND_COLOR }}>
       <div className="max-w-2xl w-full space-y-12">
         <h1 className="text-5xl md:text-6xl font-extralight text-gray-900 text-center tracking-tight" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
           About
