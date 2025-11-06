@@ -45,8 +45,8 @@ export default function AboutPage() {
             <motion.a
               key={creator.name}
               href={creator.instagram}
-              target="_blank"
-              rel="noopener noreferrer"
+              target={BLANK}
+              rel={NO_OPENER}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ 
