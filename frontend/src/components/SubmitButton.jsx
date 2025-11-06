@@ -1,5 +1,6 @@
 // A file for common UI components
 import styles from './common.module.css';
+import { POINTER, TEXT } from './config/strings';
 
 export function SubmitButton( {text, onClick} ) {
     return (
@@ -15,7 +16,7 @@ export function onButtonHover(e) {
     const hoverColor = rootStyles.getPropertyValue('--secondary-button-color').trim();
     
     e.target.style.backgroundColor = hoverColor;
-    e.target.style.cursor = 'pointer';
+    e.target.style.cursor = POINTER;
     e.target.style.transform = 'scale(1.1)';
 }
 
@@ -29,7 +30,7 @@ export function FormField( {fieldName}) {
     return (
         <div className={styles.formField}>
             <label className={styles.label}> {fieldName} </label>
-            <input type="text" className={styles.input} />
+            <input type={TEXT} className={styles.input} />
         </div>
     );
 }

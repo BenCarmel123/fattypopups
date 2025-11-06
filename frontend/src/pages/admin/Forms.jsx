@@ -4,8 +4,8 @@ import validateEvent from "../../components/utils.jsx";
 import  MyAlert  from "../../components/CustomAlert.jsx";
 import { useState } from "react";
 import FileUpload from "../../components/FileUpload.jsx";
-import { FORM_FIELD_COLOR, TEXT_AREA_COLOR } from "../../components/config/colors.jsx"; 
-import { CENTER, FLEX } from "../../components/config/strings.jsx";
+import { FORM_FIELD_COLOR, TEXT_AREA_COLOR, WHITE } from "../../components/config/colors.jsx"; 
+import { CENTER, FLEX, RELATIVE, FIXED, MAX, NONE, AUTO, LARGE, XL, MEDIUM, SOLID, OUTLINE } from "../../components/config/strings.jsx";
 
 const ADMIN_USERNAME = process.env.REACT_APP_ADMIN_USERNAME;
 const ADMIN_PASSWORD = process.env.REACT_APP_ADMIN_PASSWORD;
@@ -29,48 +29,48 @@ export default function LoginForm( {handleClick} ) {
         }
     }
 
-    return (<div className={CENTER} style={{ position: 'relative' }}>
+    return (<div className={CENTER} style={{ position: RELATIVE }}>
          {alert && (
-            <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 2000, display: FLEX, justifyContent: 'center', pointerEvents: 'none' }}>
-                <div style={{ pointerEvents: 'auto', width: 'fit-content' }}>
+            <div style={{ position: FIXED, top: 0, left: 0, width: MAX, zIndex: 2000, display: FLEX, justifyContent: CENTER, pointerEvents: NONE }}>
+                <div style={{ pointerEvents: AUTO, width: 'fit-content' }}>
                     <MyAlert {...alert} onClose={() => setAlert(null)} />
                 </div>
             </div>
         )}
         <form onSubmit={handleLogin} enctype="multipart/form-data">
-        <Card.Root maxW="lg" w="100%" minW="400px" padding={8} boxShadow="2xl" borderRadius="2xl">
+        <Card.Root maxW={LARGE} w={MAX} minW="400px" padding={8} boxShadow={XL} borderRadius={XL}>
             <Card.Header>
-                <div style={{ marginBottom: 16, color: {FORM_FIELD_COLOR}, fontSize: 24, textDecoration: "underline" }}>Hey Hallee / Benji ! </div>
+                <div style={{ marginBottom: 16, color: FORM_FIELD_COLOR, fontSize: 24, textDecoration: "underline" }}>Hey Hallee / Benji ! </div>
                 <div style={{ fontWeight: 700, fontSize: 32 }}></div>
             </Card.Header>
             <Card.Body>
                 <Stack gap={6} w="full">
                     <Field.Root>
                         <Field.Label color={FORM_FIELD_COLOR} fontSize={18}>Username</Field.Label>
-                        <Input name="username" size="lg" padding={6} fontSize={18} borderColor={TEXT_AREA_COLOR} borderWidth={2} _focus={{ borderColor: FORM_FIELD_COLOR }} />
+                        <Input name="username" size={LARGE} padding={6} fontSize={18} borderColor={TEXT_AREA_COLOR} borderWidth={2} _focus={{ borderColor: FORM_FIELD_COLOR }} />
                     </Field.Root>
                     <Field.Root>
                         <Field.Label color={FORM_FIELD_COLOR} fontSize={18}>Password</Field.Label>
-                        <Input type="password" name="password" size="lg" padding={6} fontSize={18} borderColor={TEXT_AREA_COLOR} borderWidth={2} _focus={{ borderColor: FORM_FIELD_COLOR }} />
+                        <Input type="password" name="password" size={LARGE} padding={6} fontSize={18} borderColor={TEXT_AREA_COLOR} borderWidth={2} _focus={{ borderColor: FORM_FIELD_COLOR }} />
                     </Field.Root>
                 </Stack>
             </Card.Body>
             <Card.Footer justifyContent="flex-end" paddingTop={6}>
                 <Button 
-                    variant="solid" 
+                    variant={SOLID} 
                     colorScheme="blue" 
                     ml={4} 
-                    size="md" 
+                    size={MEDIUM} 
                     type="submit"
                     fontWeight="bold"
                     fontSize={18}
                     px={7}
                     py={5}
-                    boxShadow="md"
+                    boxShadow={MEDIUM}
                     _hover={{
                         bg: '#1976d2',
-                        color: 'white',
-                        boxShadow: 'xl',
+                        color: WHITE,
+                        boxShadow: XL,
                         transform: 'scale(1.04)'
                     }}
                 >
@@ -149,15 +149,15 @@ export function EventForm({ handleClick, event, isEdit } ) {
     }
 
     return (
-        <div className={CENTER} style={{ position: 'relative' }}>
+        <div className={CENTER} style={{ position: RELATIVE }}>
             {alert && (
-                <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 2000, display: FLEX, justifyContent: 'center', pointerEvents: 'none' }}>
-                    <div style={{ pointerEvents: 'auto', width: 'fit-content' }}>
+                <div style={{ position: FIXED, top: 0, left: 0, width: MAX, zIndex: 2000, display: FLEX, justifyContent: CENTER, pointerEvents: NONE }}>
+                    <div style={{ pointerEvents: AUTO, width: 'fit-content' }}>
                         <MyAlert {...alert} onClose={() => setAlert(null)} />
                     </div>
                 </div>
             )}
-            <Card.Root maxW="md" w="100%" minW="350px">
+            <Card.Root maxW={MEDIUM} w={MAX} minW="350px">
                 <form onSubmit={handleEvent}>
                     <Card.Body>
                         <Stack gap={4} w="full">
@@ -221,15 +221,15 @@ export function EventForm({ handleClick, event, isEdit } ) {
                             </Field.Root>
                             <Field.Root>
                                 <Button 
-                                    colorScheme="blue" 
-                                    variant="solid" 
-                                    size="lg" 
-                                    fontWeight="bold" 
+                                    colorScheme="blue"
+                                    variant={SOLID}
+                                        size={LARGE}
+                                        fontWeight="bold"
                                     px={2} 
                                     py={2} 
-                                    boxShadow="md" 
-                                    borderRadius="xl" 
-                                    _hover={{ bg: '#3182ce', color: 'white', transform: 'scale(1.05)' }} 
+                                    boxShadow={MEDIUM}
+                                    borderRadius={XL} 
+                                    _hover={{ bg: '#3182ce', color: WHITE, transform: 'scale(1.05)' }} 
                                     transition="all 0.15s"
                                     as="label"
                                 >
@@ -241,12 +241,12 @@ export function EventForm({ handleClick, event, isEdit } ) {
                     <Card.Footer justifyContent="flex-end">
                         <Button 
                             colorScheme="gray" 
-                            variant="outline" 
-                            size="lg" 
+                            variant={OUTLINE} 
+                            size={LARGE} 
                             fontWeight="bold" 
                             px={8} 
                             py={6} 
-                            borderRadius="xl" 
+                            borderRadius={XL} 
                             _hover={{ bg: '#edf2f7', color: '#2d3748', transform: 'scale(1.05)' }} 
                             transition="all 0.15s" 
                             onClick={handleClick(DASHBOARD)} 
@@ -255,14 +255,14 @@ export function EventForm({ handleClick, event, isEdit } ) {
                         </Button>
                         <Button 
                             colorScheme="blue" 
-                            variant="solid" 
-                            size="lg" 
+                            variant={SOLID} 
+                            size={LARGE} 
                             fontWeight="bold" 
                             px={8} 
                             py={6} 
-                            boxShadow="md" 
-                            borderRadius="xl" 
-                            _hover={{ bg: '#3182ce', color: 'white', transform: 'scale(1.05)' }} 
+                            boxShadow={MEDIUM} 
+                            borderRadius={XL} 
+                            _hover={{ bg: '#3182ce', color: WHITE, transform: 'scale(1.05)' }} 
                             transition="all 0.15s" 
                             type="submit">
                             Add Event

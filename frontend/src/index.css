@@ -4,22 +4,13 @@
 
 @import url('https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap');
 
-/* Global CSS Variables */
+/* Global CSS Variables (only those used in this file) */
 :root {
-    --primary-header-color: #9bc2c3;
-    --primary-bg-color: #fffaee;
-    --error-color: #c46666;
-    --button-text-color: white;
-    --primary-font: 'RocknRoll One', sans-serif;
-    --font-size-title: 40px;
-    --font-size-medium: 16px;
-    --font-weight-bold: bold;
-    --letter-spacing: 1.25px;
-    --line-height: 1.5;
-    --spacing-small: 5px;
-    --spacing-medium: 20px;
-    --spacing-large: 40px;
-    --border-radius: 5px;
+  --primary-bg-color: #fffaee;
+  --primary-font: 'RocknRoll One', sans-serif;
+  --letter-spacing: 1.25px;
+  --line-height: 1.5;
+  --spacing-small: 5px;
 }
 
 /* Global body styling */
