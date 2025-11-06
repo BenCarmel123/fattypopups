@@ -1,40 +1,14 @@
 import React, { useState, useEffect } from "react"
 import { Button, Spinner } from '@chakra-ui/react';
-import { RiMailLine } from "react-icons/ri";
 import EventCard from '../../components/EventCard';
-import { SECONDARY_COLOR, DRAWER_DETAILS_FONT_COLOR } from '../../components/config/colors.jsx';
+import { SECONDARY_COLOR, DRAWER_DETAILS_FONT_COLOR, HEADER_BACKGROUND_COLOR } from '../../components/config/colors.jsx';
 import { APP_NAME } from '../../components/config/strings.jsx';
-
+import { GrCircleInformation } from "react-icons/gr";
 
 // Replace imports from Config.jsx with process.env variables
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 const ABOUT_ROUTE = process.env.REACT_APP_ABOUT_ROUTE;
-const ADMIN_ROUTE = process.env.REACT_APP_ADMIN_ROUTE;
 const LOGO_URL = process.env.REACT_APP_LOGO;
-
-
-function handleRoute(route) {
-  window.location.href = "/" + route;
-}
-
-// Admin button component - for development purposes
-const Admin = () => { 
-  function handleAdmin() {
-    handleRoute(ADMIN_ROUTE);
-  }
-  return (
-    <>
-      <div>
-        <Button
-          variant="subtle"
-          style={{ position: 'fixed', bottom: '1.5rem', right: '1.5rem', background: 'transparent', boxShadow: 'none', opacity: 0.7, _hover: { background: SECONDARY_COLOR, color: 'white' } }}
-          onClick={handleAdmin}>
-          <RiMailLine /> Admin
-        </Button>
-      </div>
-    </>
-  );
-}
 
 const About = () => {
   function handleAbout() {
@@ -54,7 +28,7 @@ const About = () => {
         transition="all 0.15s"
         onClick={handleAbout}
       >
-        About
+        <GrCircleInformation style={{ verticalAlign: 'middle', marginRight: '0.25rem' }} />
       </Button>
     </div>
   );
@@ -62,7 +36,7 @@ const About = () => {
 
 export function Header() {
   return (
-  <header className="sticky top-0 z-50 bg-[#e0e4dd] border-b border-white-100 px-6 md:px-16 py-[0.01rem] md:py-[0.35rem]">
+  <header className="sticky top-0 z-50 border-b border-white-100 px-6 md:px-16 py-[0.01rem] md:py-[0.35rem]" style={{ backgroundColor: HEADER_BACKGROUND_COLOR }} >
       <div className="flex items-center justify-between max-w-3xl mx-auto w-full">
         <div className="flex items-center">
           {LOGO_URL ? (
