@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { Button, Spinner } from '@chakra-ui/react';
 import EventCard from '../../components/EventCard';
-import { SECONDARY_COLOR, DRAWER_DETAILS_FONT_COLOR, HEADER_BACKGROUND_COLOR } from '../../components/config/colors.jsx';
+import { SECONDARY_COLOR, DRAWER_DETAILS_FONT_COLOR, HEADER_BACKGROUND_COLOR, GRAY } from '../../components/config/colors.jsx';
 import { APP_NAME } from '../../components/config/strings.jsx';
 import { GrCircleInformation } from "react-icons/gr";
 
@@ -19,7 +19,7 @@ const About = () => {
       <Button
         variant="solid"
         size="md"
-        color={BLACK}
+        color={GRAY}
         fontWeight="bold"
         px={8}
         py={6}
