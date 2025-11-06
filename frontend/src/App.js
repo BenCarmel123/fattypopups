@@ -9,6 +9,8 @@ import AboutPage from "./pages/about/AboutPage";
 
 ReactGA.initialize(process.env.REACT_APP_GA4_MEASUREMENT_ID);
 
+const ADMIN_ROUTE = process.env.REACT_APP_ADMIN_ROUTE;
+
 function usePageTracking() {
   const location = useLocation();
 
@@ -17,12 +19,15 @@ function usePageTracking() {
   }, [location]);
 }
 
-const ADMIN_ROUTE = process.env.REACT_APP_ADMIN_ROUTE;
+function RouteTracker() {
+  usePageTracking();
+  return null; 
+}
 
 function App() {
-  usePageTracking();
   return (
     <Router>
+      <RouteTracker />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path={`/${ADMIN_ROUTE}`} element={<AdminPageHandler action={undefined} />} />
