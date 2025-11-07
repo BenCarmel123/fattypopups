@@ -82,13 +82,25 @@ export function formatDateRange(start, end) {
 
 // Helper to format event description with English and Hebrew parts
 export function formatEventDescription(event) {
-    return (
-        <div> 
-            <p>{event.english_description}</p>
-            <br />
-            <p style={{ direction: 'rtl', unicodeBidi: 'isolate' }}>{event.hebrew_description}</p>
-        </div>
-    )
+  return (
+    <div style={{ textAlign: 'center' }}>
+      <p>{event.english_description}</p>
+
+      <div
+        style={{
+          width: '50%',
+          height: '2px',
+          backgroundColor: '#d3d3d3',
+          margin: '1.2rem auto', 
+          borderRadius: '2px',
+        }}
+      ></div>
+
+      <p style={{ direction: 'rtl', unicodeBidi: 'isolate' }}>
+        {event.hebrew_description}
+      </p>
+    </div>
+  );
 }
 
 export const defaultOnMouseEnter = (e) => {
