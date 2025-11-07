@@ -12,9 +12,9 @@ export default function DynamicCard({ children }) {
     offset: ["start end", "end start"],
   });
 
+  // Only Y movement + opacity, no scaling
   const yTransform = useTransform(scrollYProgress, [0, 1], [100, -60]);
-  const scaleTransform = useTransform(scrollYProgress, [0, 0.5, 1], [0.9, 1.05, 0.95]);
-  const opacityTransform = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0.6]);
+  const opacityTransform = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0.3]);
   const shadowTransform = useTransform(
     scrollYProgress,
     [0, 0.5, 1],
@@ -35,8 +35,8 @@ export default function DynamicCard({ children }) {
 
   const motionStyle = isTouch
     ? isFrozen
-      ? { y: 0, scale: 1, opacity: 1, boxShadow: "0 0 0 rgba(0,0,0,0)" }
-      : { y: yTransform, scale: scaleTransform, opacity: opacityTransform, boxShadow: shadowTransform }
+      ? { y: 0, opacity: 1, boxShadow: "0 0 0 rgba(0,0,0,0)" }
+      : { y: yTransform, opacity: opacityTransform, boxShadow: shadowTransform }
     : {};
 
   return (
@@ -52,13 +52,12 @@ export default function DynamicCard({ children }) {
       whileHover={
         !isTouch
           ? {
-              scale: 1.04,
+              // no scaling on hover either
               transition: { duration: 0.25, ease: "easeOut" },
             }
           : {}
       }
       onHoverStart={() => {
-        // force stable z-index on hover so overlays aren't affected
         if (!isTouch) ref.current.style.zIndex = 20;
       }}
       onHoverEnd={() => {
