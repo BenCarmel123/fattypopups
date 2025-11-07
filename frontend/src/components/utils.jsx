@@ -1,7 +1,9 @@
 import validator from 'validator';
 import { LONG, BLANK, NO_OPENER, ERR_TITLE_REQUIRED, ERR_START_REQUIRED, ERR_END_REQUIRED, ERR_START_BEFORE_END, ERR_VENUE_INSTAGRAM_REQUIRED, 
     ERR_VENUE_ADDRESS_REQUIRED, ERR_CHEF_NAMES_REQUIRED, ERR_CHEF_INSTAGRAMS_REQUIRED, ERR_RESERVATION_URL_REQUIRED, ERR_ENGLISH_DESC_REQUIRED, 
-    ERR_HEBREW_DESC_REQUIRED, ERR_POSTER_REQUIRED, STRING, NUMERIC } from './config/strings';
+    ERR_HEBREW_DESC_REQUIRED, ERR_POSTER_REQUIRED, STRING, NUMERIC, MINIMAL_TRANSITION, MINIMAL_TRANSFORM } from './config/strings';
+import { HOVER, WHITE, GRAY } from './config/colors.jsx';
+
 
 // Helper to validate event data
 export default function validateEvent(event) {
@@ -63,15 +65,12 @@ export function formatDateRange(start, end) {
         const endDate = new Date(end);
         const sameDay = startDate.getDate() === endDate.getDate() && startDate.getMonth() === endDate.getMonth() && startDate.getFullYear() === endDate.getFullYear();
         if (sameDay) {
-            // e.g. September 15
             return startDate.toLocaleDateString(undefined, { month: LONG, day: NUMERIC });
         }
         const sameMonth = startDate.getMonth() === endDate.getMonth() && startDate.getFullYear() === endDate.getFullYear();
         if (sameMonth) {
-            // e.g. September 15-17
             return `${startDate.toLocaleDateString(undefined, { month: LONG })} ${startDate.getDate()}-${endDate.getDate()}`;
         } else {
-            // e.g. September 29 - October 2
             return `${startDate.toLocaleDateString(undefined, { month: LONG })} ${startDate.getDate()} - ${endDate.toLocaleDateString(undefined, { month: LONG })} ${endDate.getDate()}`;
         }
     } else if (start) {
@@ -90,6 +89,24 @@ export function formatEventDescription(event) {
             <p style={{ direction: 'rtl', unicodeBidi: 'isolate' }}>{event.hebrew_description}</p>
         </div>
     )
+}
+
+export const defaultOnMouseEnter = (e) => {
+    e.currentTarget.style.padding = '0.4rem 0.8rem';
+    e.currentTarget.style.borderRadius = '1rem';
+    e.currentTarget.style.backgroundColor = HOVER;
+    e.currentTarget.style.color = WHITE;
+    e.currentTarget.style.transform = MINIMAL_TRANSFORM;
+    e.currentTarget.style.transition = MINIMAL_TRANSITION;
+}
+
+export const defaultOnMouseLeave = (e) => {
+    e.currentTarget.style.padding = '';
+    e.currentTarget.style.borderRadius = '';
+    e.currentTarget.style.backgroundColor = '';
+    e.currentTarget.style.color = GRAY;
+    e.currentTarget.style.transform = 'scale(1)';
+    e.currentTarget.style.transition = MINIMAL_TRANSITION;
 }
 
 // Function to open Google Maps with the given address

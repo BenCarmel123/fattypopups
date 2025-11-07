@@ -10,6 +10,7 @@ export const DASHBOARD = "DASHBOARD";
 export const DETAILS = "Details";
 export const RESERVE = "Reserve";
 export const SHARE = "Share";
+export const ABOUT_BUTTON_TEXT = "Our Story";
 
 // Informational content
 export const ABOUT_CREATORS_1 = "It all started pretty simply: two people who couldn’t stop talking about food started talking to each other about food. Hallie and Ben connected through their food-centric Instagram accounts and quickly realized they shared the same obsession: Tel Aviv’s ever-evolving culinary scene, especially the underground pop-ups and one-night-only dining experiences that most people only hear about after they happen.";
@@ -51,6 +52,7 @@ export const ACTION_BUTTON_HOVER = "cursor-pointer text-[20px] relative"
 export const BOLD = 'bold';
 export const MINIMAL_TRANSFORM = 'scale(1.05)';
 export const MINIMAL_TRANSITION = 'all 0.15s';
+export const OVERLAY_STYLE = { position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(255, 255, 255, 0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '1.5rem', fontWeight: 'bold', transition: 'opacity 0.3s' };
 
 // Misc UI tokens
 export const POINTER = 'pointer';

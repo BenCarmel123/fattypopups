@@ -3,7 +3,8 @@ import { motion } from "framer-motion";
 import { GiKnifeFork } from "react-icons/gi";
 import { AiOutlineMail } from "react-icons/ai";
 import { SECONDARY_COLOR, ABOUT_PAGE_BACKGROUND_COLOR } from "../../components/config/colors.jsx";
-import { ABOUT_CREATORS_1, ABOUT_CREATORS_2, CONTACT, BLANK, NO_OPENER } from "../../components/config/strings.jsx";
+import { useNavigate } from 'react-router-dom';
+import { ABOUT_CREATORS_1, ABOUT_CREATORS_2, CONTACT, BLANK, NO_OPENER, POINTER } from "../../components/config/strings.jsx";
 
 const INSTA_LINK_HALLIE = process.env.REACT_APP_INSTA_LINK_HALLIE;
 const INSTA_LINK_BEN = process.env.REACT_APP_INSTA_LINK_BEN;
@@ -12,6 +13,7 @@ const HALLIE_PIC_URL = process.env.REACT_APP_HALLIE_PIC_URL;
 const BEN_EMAIL = process.env.REACT_APP_BEN_EMAIL;
 
 export default function AboutPage() {
+  const navigate = useNavigate();
   const creators = [
     {
       name: "Ben",
@@ -28,6 +30,16 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen flex items-center justify-center px-6 py-20" style={{ backgroundColor: ABOUT_PAGE_BACKGROUND_COLOR }}>
       <div className="max-w-2xl w-full space-y-12">
+        <div className="flex justify-center mb-2">
+          <button
+            onClick={() => navigate(-1)}
+            className="text-sm text-gray-600 underline hover:text-gray-800"
+            aria-label="Go back"
+            style={{ cursor: POINTER }}
+          >
+            ← Back
+          </button>
+        </div>
         <h1 className="text-5xl md:text-6xl font-extralight text-gray-900 text-center tracking-tight" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
           About
         </h1>
@@ -40,7 +52,7 @@ export default function AboutPage() {
       </div>
 
         {/* Profile Pictures */}
-        <div className="flex justify-center gap-8 py-8">
+        <div className="flex justify-center gap-8">
           {creators.map((creator, index) => (
             <motion.a
               key={creator.name}
