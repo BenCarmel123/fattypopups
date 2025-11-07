@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react"
 import { Button, Spinner } from '@chakra-ui/react';
 import EventCard from '../../components/EventCard';
-import { SECONDARY_COLOR, HEADER_BACKGROUND_COLOR, GRAY } from '../../components/config/colors.jsx';
-import { APP_NAME, MINIMAL_TRANSFORM } from '../../components/config/strings.jsx';
-import { GrCircleInformation } from "react-icons/gr";
+import { HOVER, HEADER_BACKGROUND_COLOR, GRAY, WHITE } from '../../components/config/colors.jsx';
+import { APP_NAME, MINIMAL_TRANSFORM, SOLID, XL, ABOUT_BUTTON_TEXT, SMALL, MINIMAL_TRANSITION } from '../../components/config/strings.jsx';
 
 // Replace imports from Config.jsx with process.env variables
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
@@ -17,19 +16,18 @@ const About = () => {
   return (
     <div className="flex items-center">
       <Button
-        variant="solid"
-        size="md"
+        variant={SOLID}
+        size={SMALL}
         color={GRAY}
-        fontWeight="bold"
-        px={8}
-        py={6}
-        boxShadow="sm"
-        borderRadius="xl"
-        _hover={{ bg: SECONDARY_COLOR, color: 'white', transform: MINIMAL_TRANSFORM }}
-        transition="all 0.15s"
+        px={4}
+        py={4}
+        boxShadow={SMALL}
+        borderRadius={XL}
+        _hover={{ bg: HOVER, color: WHITE, transform: MINIMAL_TRANSFORM }}
+        transition={MINIMAL_TRANSITION}
         onClick={handleAbout}
       >
-        <GrCircleInformation style={{ verticalAlign: 'middle', marginRight: '0.25rem' }} />
+        {ABOUT_BUTTON_TEXT}
       </Button>
     </div>
   );
@@ -77,7 +75,7 @@ export default function HomePage() {
   if (events === null) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <Spinner size="xl" color="blue.500" />
+        <Spinner size={XL} color="blue.500" />
       </div>
     );
   }
@@ -89,7 +87,6 @@ export default function HomePage() {
   return (
     <>
     <Header />
-    {/* Event cards */}
     <div className="mt-2 w-full flex flex-col items-center px-2 sm:px-4 md:px-8 box-border">
       {events.map(evt => (
         <div key={evt.title} className="mb-8 w-full max-w-xl">
@@ -97,7 +94,6 @@ export default function HomePage() {
         </div>
       ))}
       <div style={{ height: '2.5rem' }} />
-      {/* <Carousel /> */}
     </div>
     </>
   );

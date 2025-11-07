@@ -26,6 +26,7 @@ export const CHECKBOX_COLOR = '#bbb';
 export const BLUE = '#0000ff';
 export const RED = '#ff0000';
 export const TRANSPARENT = 'transparent';
+export const HOVER = '#368382';
 
 // Typography color tokens
 export const DRAWER_DETAILS_FONT_COLOR = 'gray.600';
