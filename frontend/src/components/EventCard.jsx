@@ -153,7 +153,7 @@ export function EventImageContainer({ event }) {
                 color: GRAY,
               }}
             >
-              {formatEventDescription(event)}
+              {formatEventDescription(event, asText=false)}
             </p>
           </motion.div>
         ) : (
@@ -177,7 +177,7 @@ export function CardFooter({ event }) {
               {RESERVE}
             </p>
           </ActionButton>
-          <ActionButton onClick={() => handleWhatsApp(event.english_description)} ariaLabel="Share">
+          <ActionButton onClick={() => handleWhatsApp(formatEventDescription(event), asText=true)} ariaLabel="Share">
             <FaWhatsapp style={{ verticalAlign: 'middle', marginRight: '-0.3rem' }} />
             <p className="eventcard-action-text" style={{ display: 'inline-flex', alignItems: 'center', whiteSpace: 'nowrap' }} onMouseEnter={defaultOnMouseEnter} onMouseLeave={defaultOnMouseLeave}>
               {SHARE}
