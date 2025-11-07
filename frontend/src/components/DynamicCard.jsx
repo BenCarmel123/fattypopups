@@ -43,7 +43,7 @@ export default function DynamicCard({ children }) {
     <motion.div
       ref={ref}
       style={motionStyle}
-      className="overflow-hidden cursor-pointer rounded-2xl bg-[#fffaf1] will-change-transform relative z-10"
+      className="overflow-hidden cursor-pointer rounded-2xl bg-[transparent] will-change-transform relative z-10"
       initial={{ opacity: 0, y: 100 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: false, amount: 0.3 }}
