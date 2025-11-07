@@ -31,7 +31,7 @@ return (
 );
 }
 
-const Details = ({ eventDetails, eventTitle }) => { 
+const Details = ({ eventDetails }) => { 
   return (
     <Drawer.Root>
         <Text></Text>
@@ -45,6 +45,7 @@ const Details = ({ eventDetails, eventTitle }) => {
           pos={FIXED}
           boxSize={FULL}
           padding="2"
+          borderBottom="none"
           style={{ display: FLEX, alignItems: CENTER, justifyContent: CENTER, padding: '1rem' }}
         >
           <Drawer.Content
@@ -214,3 +215,4 @@ export default function EventCard({ event }) {
     </>
   );
 }
+
