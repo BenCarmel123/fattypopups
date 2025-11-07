@@ -3,11 +3,12 @@ import { Button, Spinner } from '@chakra-ui/react';
 import EventCard from '../../components/EventCard';
 import { HOVER, HEADER_BACKGROUND_COLOR, GRAY, WHITE } from '../../components/config/colors.jsx';
 import { APP_NAME, MINIMAL_TRANSFORM, SOLID, XL, ABOUT_BUTTON_TEXT, SMALL, MINIMAL_TRANSITION } from '../../components/config/strings.jsx';
+import DynamicCard from '../../components/DynamicCard.jsx';
 
-// Replace imports from Config.jsx with process.env variables
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 const ABOUT_ROUTE = process.env.REACT_APP_ABOUT_ROUTE;
 const LOGO_URL = process.env.REACT_APP_LOGO;
+
 
 const About = () => {
   function handleAbout() {
@@ -90,7 +91,9 @@ export default function HomePage() {
     <div className="mt-2 w-full flex flex-col items-center px-2 sm:px-4 md:px-8 box-border">
       {events.map(evt => (
         <div key={evt.title} className="mb-8 w-full max-w-xl">
-          <EventCard event={evt} />
+          <DynamicCard>
+            <EventCard event={evt} />
+          </DynamicCard>
         </div>
       ))}
       <div style={{ height: '2.5rem' }} />
