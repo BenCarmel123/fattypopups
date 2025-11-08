@@ -24,7 +24,7 @@ const About = () => {
         py={4}
         boxShadow={SMALL}
         borderRadius={XL}
-        borderColor='#BEDDDC'
+        borderColor='#cde6e5'
         borderStyle='solid'
         borderWidth={BORDER_WIDTH}
         _hover={{ bg: HOVER, color: WHITE, transform: MINIMAL_TRANSFORM }}

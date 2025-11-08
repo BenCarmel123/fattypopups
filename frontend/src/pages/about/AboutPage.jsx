@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { GiKnifeFork } from "react-icons/gi";
 import { AiOutlineMail } from "react-icons/ai";
-import { SECONDARY_COLOR, ABOUT_PAGE_BACKGROUND_COLOR } from "../../components/config/colors.jsx";
+import { SECONDARY_COLOR, ABOUT_PAGE_BACKGROUND_COLOR, BLACK} from "../../components/config/colors.jsx";
 import { useNavigate } from 'react-router-dom';
 import { ABOUT_CREATORS_1, ABOUT_CREATORS_2, ABOUT_CREATORS_3, CONTACT, SELF, NO_OPENER, POINTER, BACK_BUTTON_TEXT } from "../../components/config/strings.jsx";
 
@@ -20,9 +20,9 @@ export const ParagraphComponent = ({ text }) => {
   );
 }
 
-export const ABOUT_SUBHEADER = ({ text }) => {
+export const ABOUT_SUBHEADER = ({ text, color, style }) => {
   return (
-    <h1 className="text-5xl md:text-6xl font-extralight text-gray-900 text-center tracking-tight" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', marginTop: '0.5rem', fontStyle: 'italic', fontWeight: '300', color: SECONDARY_COLOR }}>
+    <h1 className="text-5xl md:text-6xl font-extralight text-gray-900 text-center tracking-tight" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', marginTop: '0.5rem', fontWeight: '100', color: color, ...style }}>
       {text}
     </h1>
   );
@@ -45,9 +45,9 @@ export default function AboutPage() {
   ];
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-6 py-20" style={{ backgroundColor: ABOUT_PAGE_BACKGROUND_COLOR }}>
+    <div className="min-h-screen flex items-center justify-center px-6 py-20" style={{ backgroundColor: ABOUT_PAGE_BACKGROUND_COLOR, marginTop: '-40px' }}>
       <div className="max-w-2xl w-full space-y-12">
-        <div className="flex justify-center mb-2">
+        <div className="flex justify-center mb-7">
           <button
             onClick={() => navigate(-1)}
             className="text-sm text-gray-600 underline hover:text-gray-800"
@@ -57,8 +57,8 @@ export default function AboutPage() {
             {BACK_BUTTON_TEXT}
           </button>
         </div>
-        <ABOUT_SUBHEADER text="About" />
-        <ABOUT_SUBHEADER text="fatty popups" style={{ marginTop: '0.5rem', fontStyle: 'italic', fontWeight: '300', color: SECONDARY_COLOR }} />
+        <ABOUT_SUBHEADER text="About" color={BLACK} />
+        <ABOUT_SUBHEADER text="fatty popups" color={SECONDARY_COLOR} style={{ fontStyle: 'italic', fontWeight: '300' }} />
 
       <div className="flex justify-center">
         <GiKnifeFork className="text-6xl text-gray-900" />

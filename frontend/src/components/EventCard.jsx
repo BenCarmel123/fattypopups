@@ -173,7 +173,7 @@ export function EventAttributeSpan({ attribute, onClick }) {
       style={{
         top: '2px',
         border: 'solid',
-        borderColor: '#BEDDDC',
+        borderColor: '#cde6e5',
         borderRadius: '12px',
         padding: LINK_PADDING,
         borderWidth: '1px',
@@ -193,7 +193,7 @@ export function EventAttributeSpan({ attribute, onClick }) {
 export function CardBody({ event }) {
   return (
     <Card.Body gap="2" padding="5" bg={CARD_BACKGROUND_COLOR} style={{ lineHeight: 2.0 }}>
-      <Card.Title textAlign={CENTER} fontSize={XXL} fontWeight="500" color={DRAWER_DETAILS_FONT_COLOR} mt={-1} mb={1} padding={2} backgroundColor={EVENT_TITLE_PADDING_COLOR} >
+      <Card.Title textAlign={CENTER} fontSize={XXL} fontWeight="500" color={DRAWER_DETAILS_FONT_COLOR} mt={-1} mb={1} borderRadius='20px' backgroundColor={EVENT_TITLE_PADDING_COLOR} style={{padding: '4px 4px'}} >
         {event.title}
       </Card.Title>
       <Card.Description fontSize={XL} color={DRAWER_DETAILS_FONT_COLOR} paddingRight={4} paddingLeft={4} lineHeight={2.5}>
@@ -278,7 +278,7 @@ export default function EventCard({ event }) {
           minWidth: 0,
           boxSizing: 'border-box',
           borderStyle: {SOLID},
-          borderColor: '#BEDDDC',
+          borderColor: '#cde6e5',
           borderRadius: '50px',
           borderWidth: '1.5px'
         }}
