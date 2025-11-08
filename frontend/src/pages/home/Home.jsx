@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { Button, Spinner } from '@chakra-ui/react';
 import EventCard from '../../components/EventCard';
-import { HOVER, HEADER_BACKGROUND_COLOR, GRAY, WHITE, BORDER_COLOR } from '../../components/config/colors.jsx';
+import { HOVER, HEADER_BACKGROUND_COLOR, GRAY, WHITE, BORDER_COLOR, SUB_HEADER_BACKGROUND_COLOR} from '../../components/config/colors.jsx';
 import { APP_NAME, MINIMAL_TRANSFORM, SOLID, XL, ABOUT_BUTTON_TEXT, SMALL, MINIMAL_TRANSITION, SUBHEADER_TEXT_1, SUBHEADER_TEXT_2, BORDER_WIDTH } from '../../components/config/strings.jsx';
 import DynamicCard from '../../components/DynamicCard.jsx';
 
@@ -24,8 +24,8 @@ const About = () => {
         py={4}
         boxShadow={SMALL}
         borderRadius={XL}
-        borderColor={BORDER_COLOR}
-        borderStyle='inset'
+        borderColor='#BEDDDC'
+        borderStyle='solid'
         borderWidth={BORDER_WIDTH}
         _hover={{ bg: HOVER, color: WHITE, transform: MINIMAL_TRANSFORM }}
         transition={MINIMAL_TRANSITION}
@@ -93,17 +93,13 @@ export default function HomePage() {
     <Header />
     <div className="mt-2 w-full flex flex-col items-center px-2 sm:px-4 md:px-8 box-border">
       <h2 style={{
-      fontWeight: 'lighter',
-      color: {GRAY},
+      fontWeight: 'bolder',
+      color: '#51515b',
       textAlign: 'center',
       margin: '1rem',
       width: 'fit-content', 
-      backgroundColor: 'aliceblue',
-      borderRadius: '22px',
-      borderStyle: 'inset',
-      borderColor: {BORDER_COLOR},
-      borderWidth: {BORDER_WIDTH},
-      padding: '22px',
+      backgroundColor: 'transparent',
+      padding: '15px',
     }} >{SUBHEADER_TEXT_1} <br/> {SUBHEADER_TEXT_2} 
     </h2>
       {events.map(evt => (

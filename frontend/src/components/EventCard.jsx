@@ -91,7 +91,6 @@ export function EventImage({ event }) {
           minWidth: 0,
           objectFit: 'contain',
           display: BLOCK,
-          borderRadius: '1rem',
           background: '#fffaf5',
         }}
       />
@@ -139,10 +138,8 @@ export function EventImageContainer({ event }) {
             transition={{ duration: 0.25, ease: 'easeInOut' }}
             style={{
               padding: '1.8rem 1.5rem',
-              borderRadius: '1rem',
               textAlign: 'center',
               lineHeight: 1.55,
-              boxShadow: '0 6px 20px rgba(0,0,0,0.15)',
               transformOrigin: 'left center',
               minHeight: '320px',
             }}
@@ -158,7 +155,7 @@ export function EventImageContainer({ event }) {
                 color: GRAY,
               }}
             >
-              {formatEventDescription(event, false)}
+              {formatEventDescription(event)}
             </p>
           </motion.div>
         ) : (
@@ -175,12 +172,13 @@ export function EventAttributeSpan({ attribute, onClick }) {
     <span
       style={{
         top: '2px',
-        border: 'inset',
-        borderColor: BORDER_COLOR,
-        borderRadius: '22px',
+        border: 'solid',
+        borderColor: '#BEDDDC',
+        borderRadius: '12px',
         padding: LINK_PADDING,
-        borderWidth: '1.5px',
+        borderWidth: '1px',
         cursor: POINTER,
+        color: '#51515b',
       }}
       onMouseEnter={defaultOnMouseEnter}
       onMouseLeave={defaultOnMouseLeave}
@@ -195,7 +193,7 @@ export function EventAttributeSpan({ attribute, onClick }) {
 export function CardBody({ event }) {
   return (
     <Card.Body gap="2" padding="5" bg={CARD_BACKGROUND_COLOR} style={{ lineHeight: 2.0 }}>
-      <Card.Title textAlign={CENTER} fontSize={XXL} fontWeight="500" color={DRAWER_DETAILS_FONT_COLOR} mt={-1} mb={1} padding={3} backgroundColor={EVENT_TITLE_PADDING_COLOR} borderRadius={XXL}>
+      <Card.Title textAlign={CENTER} fontSize={XXL} fontWeight="500" color={DRAWER_DETAILS_FONT_COLOR} mt={-1} mb={1} padding={2} backgroundColor={EVENT_TITLE_PADDING_COLOR} >
         {event.title}
       </Card.Title>
       <Card.Description fontSize={XL} color={DRAWER_DETAILS_FONT_COLOR} paddingRight={4} paddingLeft={4} lineHeight={2.5}>
@@ -223,23 +221,33 @@ export function CardBody({ event }) {
   );
 }
 
+/* -------------------------- FOOTER ACTION BUTTON -------------------------- */
+export const FooterOption = ({ text, onClick }) => {
+  return (
+    <p className="eventcard-action-text" style={{ 
+    display: 'inline-flex', 
+    alignItems: CENTER, 
+    whiteSpace: 'nowrap',
+  }} onMouseEnter={defaultOnMouseEnter} onMouseLeave={defaultOnMouseLeave}> 
+      {text}
+    </p>
+  );
+};
+
+
 /* -------------------------- CARD FOOTER -------------------------- */
 export function CardFooter({ event }) {
   return (
-    <Card.Footer style={{ padding: '1.25rem 1rem 1rem 1rem', backgroundColor: FOOTER_BACKGROUND_COLOR, borderTop:'0.25px solid', borderColor: BORDER_COLOR }}>
+    <Card.Footer style={{ padding: '1.25rem 1rem 1rem 1rem', backgroundColor: FOOTER_BACKGROUND_COLOR }}>
       <div style={{ display: FLEX, alignItems: CENTER, justifyContent: CENTER, width: MAX, marginTop: '-15px', marginBottom: '-10px' }}>
         <div className="eventcard-actions" style={{ display: FLEX, alignItems: CENTER, justifyContent: CENTER, gap: '1rem', width: MAX, maxWidth: '340px', margin: '0 auto' }}>
           <ActionButton onClick={() => window.open(event.reservation_url, SELF, NO_OPENER)} ariaLabel={RESERVE}>
             <GiForkKnifeSpoon style={{ verticalAlign: 'middle', marginRight: '-0.3rem' }} />
-            <p className="eventcard-action-text" style={{ display: 'inline-flex', alignItems: CENTER, whiteSpace: 'nowrap' }} onMouseEnter={defaultOnMouseEnter} onMouseLeave={defaultOnMouseLeave}>
-              {RESERVE}
-            </p>
+           <FooterOption text={RESERVE} onClick={() => window.open(event.reservation_url, SELF, NO_OPENER)} />
           </ActionButton>
-          <ActionButton onClick={() => handleWhatsApp(formatEventDescription(event), true)} ariaLabel="Share">
+          <ActionButton onClick={() => handleWhatsApp(event.english_description)} ariaLabel="Share">
             <FaWhatsapp style={{ verticalAlign: 'middle', marginRight: '-0.3rem' }} />
-            <p className="eventcard-action-text" style={{ display: 'inline-flex', alignItems: 'center', whiteSpace: 'nowrap' }} onMouseEnter={defaultOnMouseEnter} onMouseLeave={defaultOnMouseLeave}>
-              {SHARE}
-            </p>
+            <FooterOption text={SHARE} onClick={() => handleWhatsApp(event.english_description)} />
           </ActionButton>
         </div>
       </div>
@@ -270,7 +278,7 @@ export default function EventCard({ event }) {
           minWidth: 0,
           boxSizing: 'border-box',
           borderStyle: {SOLID},
-          borderColor: {BORDER_COLOR},
+          borderColor: '#BEDDDC',
           borderRadius: '50px',
           borderWidth: '1.5px'
         }}
