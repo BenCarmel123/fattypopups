@@ -11,14 +11,18 @@ export const DETAILS = "Details";
 export const RESERVE = "Reserve";
 export const SHARE = "Share";
 export const ABOUT_BUTTON_TEXT = "Our Story";
+export const BACK_BUTTON_TEXT = "← Back";
 
 // Informational content
-export const ABOUT_CREATORS_1 = "It all started pretty simply: two people who couldn’t stop talking about food started talking to each other about food. Hallie and Ben connected through their food-centric Instagram accounts and quickly realized they shared the same obsession: Tel Aviv’s ever-evolving culinary scene, especially the underground pop-ups and one-night-only dining experiences that most people only hear about after they happen.";
-export const ABOUT_CREATORS_2 = "Together, they created fatty popups - the number one source for everything happening in Tel Aviv’s pop-up culinary scene (and beyond). There’s a lot going on out there, we’re just here to make it easier to keep up.";
+export const ABOUT_CREATORS_1 = "It all started pretty simply: two people who couldn’t stop talking about food started talking to each other about food.";
+export const ABOUT_CREATORS_2 = "Hallie and Ben connected through their food-centric Instagram accounts and quickly realized they shared the same obsession: Tel Aviv’s ever-evolving culinary scene, especially the underground pop-ups and one-night-only dining experiences that most people only hear about after they happen.";
+export const ABOUT_CREATORS_3 = "Together, they created fatty popups - the number one source for everything happening in Tel Aviv’s pop-up culinary scene (and beyond). There’s a lot going on out there, we’re just here to make it easier to keep up.";
 export const CONTACT = "Questions or feedback? We'd love to hear from you.";
+export const SUBHEADER_TEXT_1 = "Discover TLV's upcoming culinary pop-ups";
+export const SUBHEADER_TEXT_2 = "Tap an image to explore!";
 
 // Link/window constants
-export const BLANK = "_blank";
+export const SELF = "_self";
 export const NO_OPENER = "noopener,noreferrer";
 
 // Layout sizes / breakpoints / responsive tokens
@@ -53,6 +57,8 @@ export const BOLD = 'bold';
 export const MINIMAL_TRANSFORM = 'scale(1.05)';
 export const MINIMAL_TRANSITION = 'all 0.15s';
 export const OVERLAY_STYLE = { position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(255, 255, 255, 0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '1.5rem', fontWeight: 'bold', transition: 'opacity 0.3s' };
+export const BORDER_WIDTH = '0.5px';
+export const LINK_PADDING = '2px 7px';
 
 // Misc UI tokens
 export const POINTER = 'pointer';

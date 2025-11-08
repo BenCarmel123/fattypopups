@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, Button } from '@chakra-ui/react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, px } from 'framer-motion';
 import {
   formatDateRange,
   handleMaps,
@@ -18,6 +18,7 @@ import {
   FOOTER_BACKGROUND_COLOR,
   EVENT_TITLE_PADDING_COLOR,
   DRAWER_DETAILS_FONT_COLOR,
+  BORDER_COLOR,
 } from './config/colors.jsx';
 import {
   RESERVE,
@@ -32,10 +33,14 @@ import {
   BLOCK,
   POINTER,
   ACTION_BUTTON_SPACING,
-  BLANK,
+  SELF,
   NO_OPENER,
   OVERLAY_STYLE,
   ACTION_BUTTON_HOVER,
+  SUBTLE,
+  SOLID,
+  NONE, 
+  LINK_PADDING
 } from './config/strings';
 import { RiInstagramFill } from 'react-icons/ri';
 import { SiGooglemaps, SiGooglecalendar } from 'react-icons/si';
@@ -46,19 +51,19 @@ const detailsBackgroundImageUrl = process.env.REACT_APP_DETAILS_BACKGROUND_IMAGE
 
 /* -------------------------- ACTION BUTTON -------------------------- */
 function ActionButton({ children, onClick, ariaLabel, className = '', fullCover = false }) {
-  const baseStyle = { color: GRAY, minHeight: '2.6rem', minWidth: '2.2rem', padding: '0.45rem', background: 'transparent', transition: 'background 0.18s' };
-  const coverStyle = { position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', padding: 0, minHeight: 0, minWidth: 0, background: 'transparent', border: 'none', zIndex: 2 };
+  const baseStyle = { color: GRAY, minHeight: '2.6rem', minWidth: '2.2rem', padding: '0.45rem', transition: 'background 0.18s' };
+  const coverStyle = { position: 'absolute', top: 0, left: 0, width: {MAX}, height: {MAX}, padding: 0, minHeight: 0, minWidth: 0, border: {NONE}, zIndex: 2 };
   const combinedStyle = fullCover ? { ...coverStyle } : baseStyle;
   return (
     <Button
-      variant="subtle"
+      variant={SUBTLE}
       size={XL}
       rounded={XXL}
       className={`detailsDrawerButton ${className}`}
       style={combinedStyle}
       aria-label={ariaLabel}
       onClick={onClick}
-      borderBottom="none"
+      borderBottom={NONE}
     >
       {children}
     </Button>
@@ -73,7 +78,7 @@ export function EventImage({ event }) {
       initial={{ rotateY: 90, opacity: 0 }}
       animate={{ rotateY: 0, opacity: 1 }}
       exit={{ rotateY: -90, opacity: 0 }}
-      transition={{ duration: 0.5, ease: 'easeInOut' }}
+      transition={{ duration: 0.25, ease: 'easeInOut' }}
       style={{ width: MAX, display: BLOCK, position: 'relative', transformOrigin: 'right center' }}
     >
       <img
@@ -131,7 +136,7 @@ export function EventImageContainer({ event }) {
             initial={{ rotateY: -90, opacity: 0 }}
             animate={{ rotateY: 0, opacity: 1 }}
             exit={{ rotateY: 90, opacity: 0 }}
-            transition={{ duration: 0.5, ease: 'easeInOut' }}
+            transition={{ duration: 0.25, ease: 'easeInOut' }}
             style={{
               padding: '1.8rem 1.5rem',
               borderRadius: '1rem',
@@ -153,7 +158,7 @@ export function EventImageContainer({ event }) {
                 color: GRAY,
               }}
             >
-              {formatEventDescription(event, asText=false)}
+              {formatEventDescription(event, false)}
             </p>
           </motion.div>
         ) : (
@@ -165,27 +170,24 @@ export function EventImageContainer({ event }) {
   );
 }
 
-/* -------------------------- CARD FOOTER -------------------------- */
-export function CardFooter({ event }) {
+export function EventAttributeSpan({ attribute, onClick }) {
   return (
-    <Card.Footer style={{ padding: '1.25rem 1rem 1rem 1rem', backgroundColor: FOOTER_BACKGROUND_COLOR }}>
-      <div style={{ display: FLEX, alignItems: CENTER, justifyContent: CENTER, width: MAX, marginTop: '-15px', marginBottom: '-10px' }}>
-        <div className="eventcard-actions" style={{ display: FLEX, alignItems: CENTER, justifyContent: CENTER, gap: '2srem', width: MAX, maxWidth: '340px', margin: '0 auto' }}>
-          <ActionButton onClick={() => window.open(event.reservation_url, BLANK, NO_OPENER)} ariaLabel={RESERVE}>
-            <GiForkKnifeSpoon style={{ verticalAlign: 'middle', marginRight: '-0.3rem' }} />
-            <p className="eventcard-action-text" style={{ display: 'inline-flex', alignItems: CENTER, whiteSpace: 'nowrap' }} onMouseEnter={defaultOnMouseEnter} onMouseLeave={defaultOnMouseLeave}>
-              {RESERVE}
-            </p>
-          </ActionButton>
-          <ActionButton onClick={() => handleWhatsApp(formatEventDescription(event), asText=true)} ariaLabel="Share">
-            <FaWhatsapp style={{ verticalAlign: 'middle', marginRight: '-0.3rem' }} />
-            <p className="eventcard-action-text" style={{ display: 'inline-flex', alignItems: 'center', whiteSpace: 'nowrap' }} onMouseEnter={defaultOnMouseEnter} onMouseLeave={defaultOnMouseLeave}>
-              {SHARE}
-            </p>
-          </ActionButton>
-        </div>
-      </div>
-    </Card.Footer>
+    <span
+      style={{
+        top: '2px',
+        border: 'inset',
+        borderColor: BORDER_COLOR,
+        borderRadius: '22px',
+        padding: LINK_PADDING,
+        borderWidth: '1.5px',
+        cursor: POINTER,
+      }}
+      onMouseEnter={defaultOnMouseEnter}
+      onMouseLeave={defaultOnMouseLeave}
+      onClick={onClick}
+    >
+      {attribute}
+    </span>
   );
 }
 
@@ -204,26 +206,44 @@ export function CardBody({ event }) {
             .map((name, idx) => (
               <span key={name} style={{ cursor: POINTER, marginRight: idx < event.chef_names.length - 1 ? 4 : 0 }} onClick={() => handleInstagram(event.chef_instagrams[idx])}>
                 {(event.chef_names.length === 1 || idx === 0) && <RiInstagramFill className="inline-block mr-1 mb-1" />}
-                <span onMouseEnter={defaultOnMouseEnter} onMouseLeave={defaultOnMouseLeave}>
-                  {name}
-                </span>
+                <EventAttributeSpan attribute={name} onClick={() => handleInstagram(event.chef_instagrams[idx])} style={{ marginLeft: '3.5px' }} />
               </span>
             ))
             .reduce((prev, curr, idx) => (prev === null ? [curr] : [...prev, <span key={`x-${idx}`}> X </span>, curr]), null)}
         <br />
         <SiGooglecalendar className={ACTION_BUTTON_SPACING} />
-        <span className={ACTION_BUTTON_HOVER} onClick={() => handleCalendar(event)} onMouseEnter={defaultOnMouseEnter} onMouseLeave={defaultOnMouseLeave}>
-          {formatDateRange(event.start_datetime, event.end_datetime)}
-        </span>
+        <EventAttributeSpan attribute={formatDateRange(event.start_datetime, event.end_datetime)} onClick={() => handleCalendar(event)} />
         <br />
         <div>
           <SiGooglemaps className={ACTION_BUTTON_SPACING} />
-          <span className={ACTION_BUTTON_HOVER} style={{ top: '2px' }} onClick={() => handleMaps(event.venue_address)} onMouseEnter={defaultOnMouseEnter} onMouseLeave={defaultOnMouseLeave}>
-            {event.venue_address}
-          </span>
+          <EventAttributeSpan attribute={event.venue_address} onClick={() => handleMaps(event.venue_address)} />
         </div>
       </Card.Description>
     </Card.Body>
+  );
+}
+
+/* -------------------------- CARD FOOTER -------------------------- */
+export function CardFooter({ event }) {
+  return (
+    <Card.Footer style={{ padding: '1.25rem 1rem 1rem 1rem', backgroundColor: FOOTER_BACKGROUND_COLOR, borderTop:'0.25px solid', borderColor: BORDER_COLOR }}>
+      <div style={{ display: FLEX, alignItems: CENTER, justifyContent: CENTER, width: MAX, marginTop: '-15px', marginBottom: '-10px' }}>
+        <div className="eventcard-actions" style={{ display: FLEX, alignItems: CENTER, justifyContent: CENTER, gap: '1rem', width: MAX, maxWidth: '340px', margin: '0 auto' }}>
+          <ActionButton onClick={() => window.open(event.reservation_url, SELF, NO_OPENER)} ariaLabel={RESERVE}>
+            <GiForkKnifeSpoon style={{ verticalAlign: 'middle', marginRight: '-0.3rem' }} />
+            <p className="eventcard-action-text" style={{ display: 'inline-flex', alignItems: CENTER, whiteSpace: 'nowrap' }} onMouseEnter={defaultOnMouseEnter} onMouseLeave={defaultOnMouseLeave}>
+              {RESERVE}
+            </p>
+          </ActionButton>
+          <ActionButton onClick={() => handleWhatsApp(formatEventDescription(event), true)} ariaLabel="Share">
+            <FaWhatsapp style={{ verticalAlign: 'middle', marginRight: '-0.3rem' }} />
+            <p className="eventcard-action-text" style={{ display: 'inline-flex', alignItems: 'center', whiteSpace: 'nowrap' }} onMouseEnter={defaultOnMouseEnter} onMouseLeave={defaultOnMouseLeave}>
+              {SHARE}
+            </p>
+          </ActionButton>
+        </div>
+      </div>
+    </Card.Footer>
   );
 }
 
@@ -249,8 +269,10 @@ export default function EventCard({ event }) {
           maxWidth: 'clamp(260px, 86vw, 420px)',
           minWidth: 0,
           boxSizing: 'border-box',
-          border: '2px solid #e0e4dd',
-          borderRadius: 'clamp(0.675rem, 5.4vw, 2.7rem)',
+          borderStyle: {SOLID},
+          borderColor: {BORDER_COLOR},
+          borderRadius: '50px',
+          borderWidth: '1.5px'
         }}
       >
         <EventImageContainer event={event} />

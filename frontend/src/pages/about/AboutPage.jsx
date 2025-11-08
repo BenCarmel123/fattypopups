@@ -4,13 +4,30 @@ import { GiKnifeFork } from "react-icons/gi";
 import { AiOutlineMail } from "react-icons/ai";
 import { SECONDARY_COLOR, ABOUT_PAGE_BACKGROUND_COLOR } from "../../components/config/colors.jsx";
 import { useNavigate } from 'react-router-dom';
-import { ABOUT_CREATORS_1, ABOUT_CREATORS_2, CONTACT, BLANK, NO_OPENER, POINTER } from "../../components/config/strings.jsx";
+import { ABOUT_CREATORS_1, ABOUT_CREATORS_2, ABOUT_CREATORS_3, CONTACT, SELF, NO_OPENER, POINTER, BACK_BUTTON_TEXT } from "../../components/config/strings.jsx";
 
 const INSTA_LINK_HALLIE = process.env.REACT_APP_INSTA_LINK_HALLIE;
 const INSTA_LINK_BEN = process.env.REACT_APP_INSTA_LINK_BEN;
 const BEN_PIC_URL = process.env.REACT_APP_BEN_PIC_URL;
 const HALLIE_PIC_URL = process.env.REACT_APP_HALLIE_PIC_URL;
 const BEN_EMAIL = process.env.REACT_APP_BEN_EMAIL;
+
+export const ParagraphComponent = ({ text }) => {
+  return (
+    <p className="font-light">
+      {text}
+    </p>
+  );
+}
+
+export const ABOUT_SUBHEADER = ({ text }) => {
+  return (
+    <h1 className="text-5xl md:text-6xl font-extralight text-gray-900 text-center tracking-tight" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', marginTop: '0.5rem', fontStyle: 'italic', fontWeight: '300', color: SECONDARY_COLOR }}>
+      {text}
+    </h1>
+  );
+}
+
 
 export default function AboutPage() {
   const navigate = useNavigate();
@@ -37,15 +54,11 @@ export default function AboutPage() {
             aria-label="Go back"
             style={{ cursor: POINTER }}
           >
-            ← Back
+            {BACK_BUTTON_TEXT}
           </button>
         </div>
-        <h1 className="text-5xl md:text-6xl font-extralight text-gray-900 text-center tracking-tight" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
-          About
-        </h1>
-        <h1 className="text-5xl md:text-6xl font-extralight text-gray-900 text-center tracking-tight" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', marginTop: '0.5rem', fontStyle: 'italic', fontWeight: '300', color: SECONDARY_COLOR }}>
-          fatty popups
-        </h1>
+        <ABOUT_SUBHEADER text="About" />
+        <ABOUT_SUBHEADER text="fatty popups" style={{ marginTop: '0.5rem', fontStyle: 'italic', fontWeight: '300', color: SECONDARY_COLOR }} />
 
       <div className="flex justify-center">
         <GiKnifeFork className="text-6xl text-gray-900" />
@@ -57,7 +70,7 @@ export default function AboutPage() {
             <motion.a
               key={creator.name}
               href={creator.instagram}
-              target={BLANK}
+              target={SELF}
               rel={NO_OPENER}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -96,14 +109,9 @@ export default function AboutPage() {
         </div>
 
   <div className="space-y-6 text-lg text-gray-600 leading-relaxed text-center pt-8" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', marginTop: '1rem' }}>
-          <p className="font-light">
-            {ABOUT_CREATORS_1}
-          </p>
-         
-          <p className="font-light">
-            {ABOUT_CREATORS_2}
-          </p>
-
+          <ParagraphComponent text={ABOUT_CREATORS_1} />
+          <ParagraphComponent text={ABOUT_CREATORS_2} />
+          <ParagraphComponent text={ABOUT_CREATORS_3} />
           <p className="text-md text-gray-400 pt-4 font-light" style={{ color: SECONDARY_COLOR }}>
             {CONTACT}
           </p>

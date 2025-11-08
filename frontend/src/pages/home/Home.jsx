@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react"
 import { Button, Spinner } from '@chakra-ui/react';
 import EventCard from '../../components/EventCard';
-import { HOVER, HEADER_BACKGROUND_COLOR, GRAY, WHITE } from '../../components/config/colors.jsx';
-import { APP_NAME, MINIMAL_TRANSFORM, SOLID, XL, ABOUT_BUTTON_TEXT, SMALL, MINIMAL_TRANSITION } from '../../components/config/strings.jsx';
+import { HOVER, HEADER_BACKGROUND_COLOR, GRAY, WHITE, BORDER_COLOR } from '../../components/config/colors.jsx';
+import { APP_NAME, MINIMAL_TRANSFORM, SOLID, XL, ABOUT_BUTTON_TEXT, SMALL, MINIMAL_TRANSITION, SUBHEADER_TEXT_1, SUBHEADER_TEXT_2, BORDER_WIDTH } from '../../components/config/strings.jsx';
 import DynamicCard from '../../components/DynamicCard.jsx';
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
@@ -24,6 +24,9 @@ const About = () => {
         py={4}
         boxShadow={SMALL}
         borderRadius={XL}
+        borderColor={BORDER_COLOR}
+        borderStyle='inset'
+        borderWidth={BORDER_WIDTH}
         _hover={{ bg: HOVER, color: WHITE, transform: MINIMAL_TRANSFORM }}
         transition={MINIMAL_TRANSITION}
         onClick={handleAbout}
@@ -36,12 +39,12 @@ const About = () => {
 
 export function Header() {
   return (
-  <header className="sticky top-0 z-50 border-b border-white-100 px-6 md:px-16 py-[0.01rem] md:py-[0.35rem]" style={{ backgroundColor: HEADER_BACKGROUND_COLOR }} >
+  <header className="top-0 z-50 px-6 md:px-16 py-[0.01rem] md:py-[0.35rem]" style={{ backgroundColor: HEADER_BACKGROUND_COLOR, borderBottom: `1px solid ${BORDER_COLOR}` }} >
       <div className="flex items-center justify-between max-w-3xl mx-auto w-full">
         <div className="flex items-center">
           {LOGO_URL ? (
             <a aria-label={APP_NAME} className="flex items-center">
-              <img src={LOGO_URL} alt={APP_NAME} className="h-42 w-40 object-contain" />
+              <img src={LOGO_URL} alt={APP_NAME} className="h-42 w-40 object-contain" style={{width:'7rem'}} />
             </a>
           ) : (
             <a href="/" className="text-lg font-bold" aria-label={APP_NAME}>{APP_NAME}</a>
@@ -89,6 +92,20 @@ export default function HomePage() {
     <>
     <Header />
     <div className="mt-2 w-full flex flex-col items-center px-2 sm:px-4 md:px-8 box-border">
+      <h2 style={{
+      fontWeight: 'lighter',
+      color: {GRAY},
+      textAlign: 'center',
+      margin: '1rem',
+      width: 'fit-content', 
+      backgroundColor: 'aliceblue',
+      borderRadius: '22px',
+      borderStyle: 'inset',
+      borderColor: {BORDER_COLOR},
+      borderWidth: {BORDER_WIDTH},
+      padding: '22px',
+    }} >{SUBHEADER_TEXT_1} <br/> {SUBHEADER_TEXT_2} 
+    </h2>
       {events.map(evt => (
         <div key={evt.title} className="mb-8 w-full max-w-xl">
           <DynamicCard>
