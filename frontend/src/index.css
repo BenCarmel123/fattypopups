@@ -8,7 +8,7 @@
 :root {
   --primary-bg-color: #fffaee;
   --primary-font: 'RocknRoll One', sans-serif;
-  --letter-spacing: 1.25px;
+  --letter-spacing: 2px;
   --line-height: 1.5;
   --spacing-small: 5px;
 }
@@ -25,6 +25,7 @@ body {
   padding: 0;
   min-height: 50vh;            
   line-height: var(--line-height);
+  letter-spacing: var(--letter-spacing);
 }
 
 

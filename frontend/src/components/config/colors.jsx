@@ -11,13 +11,13 @@ export const GRAY = '#51515b';
 
 // Semantic UI colors
 export const CARD_BACKGROUND_COLOR = '#fffbf1';
-export const FOOTER_BACKGROUND_COLOR = '#e0e4dd';
+export const FOOTER_BACKGROUND_COLOR = '#BEDDDC';
 export const HEADER_BACKGROUND_COLOR = 'transparent';
-export const DRAWER_BACKGROUND_COLOR = '#fffaee';
+export const DRAWER_BACKGROUND_COLOR = '#fffbf1';
 export const ABOUT_PAGE_BACKGROUND_COLOR = '#fffaee';
 export const BACKGROUND_COLOR = '#a1c4fd';
-export const EVENT_TITLE_PADDING_COLOR = '#e0e4dd';
-export const BORDER_COLOR = '#dad6d6ff';
+export const EVENT_TITLE_PADDING_COLOR = '#BEDDDC';
+export const BORDER_COLOR = '#BEDDDC';
 
 // Misc colors / tokens
 export const FORM_FIELD_COLOR = '#2596be';
