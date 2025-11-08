@@ -1,5 +1,5 @@
 import validator from 'validator';
-import { LONG, BLANK, NO_OPENER, ERR_TITLE_REQUIRED, ERR_START_REQUIRED, ERR_END_REQUIRED, ERR_START_BEFORE_END, ERR_VENUE_INSTAGRAM_REQUIRED, 
+import { LONG, SELF, NO_OPENER, ERR_TITLE_REQUIRED, ERR_START_REQUIRED, ERR_END_REQUIRED, ERR_START_BEFORE_END, ERR_VENUE_INSTAGRAM_REQUIRED, 
     ERR_VENUE_ADDRESS_REQUIRED, ERR_CHEF_NAMES_REQUIRED, ERR_CHEF_INSTAGRAMS_REQUIRED, ERR_RESERVATION_URL_REQUIRED, ERR_ENGLISH_DESC_REQUIRED, 
     ERR_HEBREW_DESC_REQUIRED, ERR_POSTER_REQUIRED, STRING, NUMERIC, MINIMAL_TRANSITION, MINIMAL_TRANSFORM } from './config/strings';
 import { HOVER, WHITE, GRAY } from './config/colors.jsx';
@@ -85,7 +85,6 @@ export function formatEventDescription(event, asText = false) {
   if (asText) {
     return `${event.english_description}\n\n--------------------\n\n${event.hebrew_description}`;
   }
-
   return (
     <div style={{ textAlign: 'center' }}>
       <p>{event.english_description}</p>
@@ -115,8 +114,6 @@ export const defaultOnMouseEnter = (e) => {
 }
 
 export const defaultOnMouseLeave = (e) => {
-    e.currentTarget.style.padding = '';
-    e.currentTarget.style.borderRadius = '';
     e.currentTarget.style.backgroundColor = '';
     e.currentTarget.style.color = GRAY;
     e.currentTarget.style.transform = 'scale(1)';
@@ -127,13 +124,13 @@ export const defaultOnMouseLeave = (e) => {
 export function handleMaps(address) {
   const query = encodeURIComponent(address);
   const url = `https://www.google.com/maps/search/?api=1&query=${query}`;
-  window.open(url, BLANK, NO_OPENER);
+  window.open(url, SELF, NO_OPENER);
 }
 
 // Function to open WhatsApp with pre-filled message
 export function handleWhatsApp(description) {
         const desc = description || '';
-        window.open(`https://wa.me/?text=${encodeURIComponent(`${window.location.href}\n\n${desc}`)}`, BLANK, NO_OPENER);
+        window.open(`https://wa.me/?text=${encodeURIComponent(`${window.location.href}\n\n${desc}`)}`, SELF, NO_OPENER);
     }
 
 export function handleInstagram(instagram) {
@@ -141,7 +138,7 @@ export function handleInstagram(instagram) {
     if (typeof instagram === STRING && instagram.length > 0 && instagram[0] === '@') {
         instagramHandle = instagram.slice(1);
     }
-    window.open(`https://www.instagram.com/${instagramHandle}`, BLANK, NO_OPENER);
+    window.open(`https://www.instagram.com/${instagramHandle}`, SELF, NO_OPENER);
 }
 
 export function handleCalendar(event) {
@@ -151,5 +148,5 @@ export function handleCalendar(event) {
     const details = `For reservations, visit: ${reservation_url}`;
     const location = venue_address;
     const calendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${start}/${end}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(location)}&sf=true&output=xml`;
-    window.open(calendarUrl, BLANK, NO_OPENER);
+    window.open(calendarUrl, SELF, NO_OPENER);
 }
