@@ -209,7 +209,7 @@ export function CardBody({ event }) {
                 <EventAttributeSpan attribute={name} onClick={() => handleInstagram(event.chef_instagrams[idx])} style={{ marginLeft: '3.5px' }} />
               </span>
             ))
-            .reduce((prev, curr, idx) => (prev === null ? [curr] : [...prev, <span key={`x-${idx}`}> X </span>, curr]), null)}
+            .reduce((prev, curr, idx) => (prev === null ? [curr] : [...prev, <span key={`x-${idx}`} style={{marginLeft: '-3.75px'}}> X </span>, curr]), null)}
         <br />
         <SiGooglecalendar className={ACTION_BUTTON_SPACING} />
         <EventAttributeSpan attribute={formatDateRange(event.start_datetime, event.end_datetime)} onClick={() => handleCalendar(event)} />
