@@ -13,10 +13,11 @@ export const GRAY = '#51515b';
 export const CARD_BACKGROUND_COLOR = '#fffbf1';
 export const FOOTER_BACKGROUND_COLOR = '#cde6e5';
 export const HEADER_BACKGROUND_COLOR = 'transparent';
+export const HEADER_BORDER_COLOR = '#368382';
 export const DRAWER_BACKGROUND_COLOR = '#fffbf1';
 export const ABOUT_PAGE_BACKGROUND_COLOR = '#fffaee';
 export const BACKGROUND_COLOR = '#a1c4fd';
-export const EVENT_TITLE_PADDING_COLOR = '#cde6e5';
+export const EVENT_TITLE_PADDING_COLOR = 'rgb(205 230 229 / 22%)';
 export const BORDER_COLOR = '#cde6e5';
 
 // Misc colors / tokens
