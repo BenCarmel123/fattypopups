@@ -119,7 +119,7 @@ export const defaultOnMouseLeave = (e) => {
 
 // Function to open Google Maps with the given address
 export function handleMaps(address) {
-  const query = encodeURIComponent(address);
+  const query = encodeURIComponent(address, 'Tel-Aviv');
   const url = `https://www.google.com/maps/search/?api=1&query=${query}`;
   window.open(url, SELF, NO_OPENER);
 }
