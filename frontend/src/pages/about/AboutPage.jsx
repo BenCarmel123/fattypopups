@@ -11,6 +11,7 @@ const INSTA_LINK_BEN = process.env.REACT_APP_INSTA_LINK_BEN;
 const BEN_PIC_URL = process.env.REACT_APP_BEN_PIC_URL;
 const HALLIE_PIC_URL = process.env.REACT_APP_HALLIE_PIC_URL;
 const BEN_EMAIL = process.env.REACT_APP_BEN_EMAIL;
+const HALLIE_EMAIL = process.env.REACT_APP_HALLIE_EMAIL;
 
 export const ParagraphComponent = ({ text }) => {
   return (
@@ -28,6 +29,19 @@ export const ABOUT_SUBHEADER = ({ text, color, style }) => {
   );
 }
 
+export const ContactEmail = ({ email }) => {
+  return (
+    <p className="text-sm text-gray-400 font-bold mt-0" style={{ color: SECONDARY_COLOR }}>
+        <span className="inline-flex items-center gap-2" style={{ color: SECONDARY_COLOR, marginBottom: '1.5rem' }}>
+          <AiOutlineMail className="inline-block" style={{ verticalAlign: 'middle', color: SECONDARY_COLOR }} />
+          <a href={`mailto:${email}`} className="underline" style={{ color: SECONDARY_COLOR }}>
+            {email}
+          </a>
+        </span>
+    </p>
+  );
+}
+
 
 export default function AboutPage() {
   const navigate = useNavigate();
@@ -35,12 +49,14 @@ export default function AboutPage() {
     {
       name: "Ben",
       image: BEN_PIC_URL,
-      instagram: INSTA_LINK_BEN
+      instagram: INSTA_LINK_BEN,
+      email: BEN_EMAIL
     },
     {
       name: "Hallie",
       image: HALLIE_PIC_URL,
-      instagram: INSTA_LINK_HALLIE
+      instagram: INSTA_LINK_HALLIE,
+      email: HALLIE_EMAIL
     }
   ];
 
@@ -115,17 +131,12 @@ export default function AboutPage() {
           <p className="text-md text-gray-400 pt-4 font-light" style={{ color: SECONDARY_COLOR }}>
             {CONTACT}
           </p>
-
-          <p className="text-sm text-gray-400 font-bold mt-0" style={{ color: SECONDARY_COLOR }}>
-              <span className="inline-flex items-center gap-2" style={{ color: SECONDARY_COLOR }}>
-                <AiOutlineMail className="inline-block" style={{ verticalAlign: 'middle', color: SECONDARY_COLOR }} />
-                <a href={`mailto:${BEN_EMAIL}`} className="underline" style={{ color: SECONDARY_COLOR }}>
-                  {BEN_EMAIL}
-                </a>
-              </span>
-          </p>
-        </div>
+          <div className="flex flex-col items-center space-y-2 mt-2">
+            <ContactEmail email={HALLIE_EMAIL} />
+            <ContactEmail email={BEN_EMAIL} />
+          </div>
       </div>
+    </div>
     </div>
   );
 }

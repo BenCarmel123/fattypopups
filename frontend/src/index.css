@@ -6,7 +6,6 @@
 
 /* Global CSS Variables (only those used in this file) */
 :root {
-  --primary-bg-color: #fffaee;
   --primary-font: 'RocknRoll One', sans-serif;
   --letter-spacing: 2px;
   --line-height: 1.5;
@@ -20,47 +19,19 @@ body {
   background-position: center; 
   background-repeat: no-repeat;   
   background-attachment: fixed;   
-  font-family: var(--primary-font);
-  margin: 0;
-  padding: 0;
-  min-height: 50vh;            
+  font-family: var(--primary-font);           
   line-height: var(--line-height);
   letter-spacing: var(--letter-spacing);
 }
 
-
 html {
-    background-color: var(--primary-bg-color);
     scroll-behavior: smooth;
     overscroll-behavior: none;
 }
 
-.centered-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    box-sizing: border-box;
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-    gap: var(--spacing-small);
-}
-
-.centered-content-global {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 10%;
-  margin-right: 10%;
-}
-
-@media (min-width: 600px) {
-  .centered-content-global {
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 600px;
+@media (min-width: 1024px) {
+  body {
+    transform: scale(1.1);
+    transform-origin: top center;
   }
 }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { Button, Spinner } from '@chakra-ui/react';
 import EventCard from '../../components/EventCard';
-import { HOVER, HEADER_BACKGROUND_COLOR, GRAY, WHITE, HEADER_BORDER_COLOR, EVENT_TITLE_PADDING_COLOR} from '../../components/config/colors.jsx';
+import { HEADER_BACKGROUND_COLOR, HEADER_BORDER_COLOR, SECONDARY_COLOR, TRANSPARENT } from '../../components/config/colors.jsx';
 import { APP_NAME, MINIMAL_TRANSFORM, SOLID, XL, ABOUT_BUTTON_TEXT, SMALL, MINIMAL_TRANSITION, SUBHEADER_TEXT_1, SUBHEADER_TEXT_2 } from '../../components/config/strings.jsx';
 import DynamicCard from '../../components/DynamicCard.jsx';
 
@@ -19,16 +19,17 @@ const About = () => {
       <Button
         variant={SOLID}
         size={SMALL}
-        color={GRAY}
-        px={4}
-        py={4}
-        boxShadow={SMALL}
+        color={SECONDARY_COLOR}
+        px={2}
+        py={2}
         borderRadius={XL}
-        borderBottomColor="initial"
+        borderBoxing='border-box'
+        boxShadow={SMALL}
         borderStyle="solid" 
-        borderWidth='medium'
-        backgroundColor={EVENT_TITLE_PADDING_COLOR}
-        _hover={{ bg: HOVER, color: WHITE, transform: MINIMAL_TRANSFORM }}
+        borderWidth='2px'
+        backgroundColor={TRANSPARENT}
+        borderColor="#ffffff3d"
+        _hover={{ transform: MINIMAL_TRANSFORM }}
         transition={MINIMAL_TRANSITION}
         onClick={handleAbout}
       >
@@ -40,7 +41,7 @@ const About = () => {
 
 export function Header() {
   return (
-  <header className="top-0 z-50 px-6 md:px-16 py-[0.75rem] md:py-[0.75rem]" style={{ backgroundColor: HEADER_BACKGROUND_COLOR, borderBottom: `0.5px dashed ${HEADER_BORDER_COLOR}` }} >
+  <header className="top-0 z-50 px-6 md:px-16 py-[0.75rem] md:py-[0.75rem]" style={{ backgroundColor: HEADER_BACKGROUND_COLOR, borderBottom: `0.5px solid ${HEADER_BORDER_COLOR}` }} >
       <div className="flex items-center justify-between max-w-3xl mx-auto w-full">
         <div className="flex items-center">
           {LOGO_URL ? (
@@ -95,7 +96,7 @@ export default function HomePage() {
     <div className="mt-2 w-full flex flex-col items-center px-2 sm:px-4 md:px-8 box-border">
       <h2 style={{
       fontSize: '0.9rem',
-      fontWeight: 'bolder',
+      fontWeight: '100',
       color: '#51515b',
       textAlign: 'center',
       margin: '0.5rem',

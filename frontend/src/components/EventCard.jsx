@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, Button } from '@chakra-ui/react';
-import { motion, AnimatePresence, px } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   formatDateRange,
   handleMaps,
@@ -12,7 +12,6 @@ import {
   defaultOnMouseLeave,
 } from './utils';
 import {
-  PRIMARY_COLOR,
   GRAY,
   CARD_BACKGROUND_COLOR,
   FOOTER_BACKGROUND_COLOR,
@@ -36,7 +35,6 @@ import {
   SELF,
   NO_OPENER,
   OVERLAY_STYLE,
-  ACTION_BUTTON_HOVER,
   SUBTLE,
   SOLID,
   NONE, 
@@ -176,9 +174,10 @@ export function EventAttributeSpan({ attribute, onClick }) {
         borderColor: '#cde6e5',
         borderRadius: '12px',
         padding: LINK_PADDING,
-        borderWidth: '1px',
+        borderWidth: '2.5px',
         cursor: POINTER,
         color: '#51515b',
+        letterSpacing: '1px',
       }}
       onMouseEnter={defaultOnMouseEnter}
       onMouseLeave={defaultOnMouseLeave}
@@ -193,12 +192,24 @@ export function EventAttributeSpan({ attribute, onClick }) {
 export function CardBody({ event }) {
   return (
     <Card.Body gap="2" padding="5" bg={CARD_BACKGROUND_COLOR} style={{ lineHeight: 2.0 }}>
-      <Card.Title textAlign={CENTER} fontSize={XXL} fontWeight="500" color={DRAWER_DETAILS_FONT_COLOR} mt={-1} mb={1} borderRadius='20px' backgroundColor={EVENT_TITLE_PADDING_COLOR} style={{padding: '4px 4px',   borderBottom: 'solid',
-    borderWidth: 'medium'}} >
-        {event.title}
-      </Card.Title>
+  <Card.Title
+  textAlign={CENTER}
+  fontSize={XL}
+  fontWeight="500"
+  color={DRAWER_DETAILS_FONT_COLOR}
+  mt={-1}
+  mb={1}
+  borderRadius="20px"
+  backgroundColor={EVENT_TITLE_PADDING_COLOR}
+  borderBottom="medium solid"
+  borderBottomColor={BORDER_COLOR}
+  px={2}
+  py={1}
+>
+  {event.title}
+</Card.Title>
 
-      <Card.Description fontSize={MEDIUM} color={DRAWER_DETAILS_FONT_COLOR} paddingRight={4} paddingLeft={4} lineHeight={2.5}>
+      <Card.Description fontSize={MEDIUM} color={DRAWER_DETAILS_FONT_COLOR} paddingRight={4} paddingLeft={4} lineHeight={3.5}>
         {event.chef_names &&
           Array.isArray(event.chef_names) &&
           Array.isArray(event.chef_instagrams) &&
@@ -230,7 +241,7 @@ export const FooterOption = ({ text, onClick }) => {
     display: 'inline-flex', 
     alignItems: CENTER, 
     whiteSpace: 'nowrap',
-  }} onMouseEnter={defaultOnMouseEnter} onMouseLeave={defaultOnMouseLeave}> 
+  }} onMouseEnter={defaultOnMouseEnter} onMouseLeave={defaultOnMouseLeave} onClick={onClick}> 
       {text}
     </p>
   );
@@ -287,7 +298,6 @@ export default function EventCard({ event }) {
       >
         <EventImageContainer event={event} />
         <CardBody event={event} />
-        <div style={{ width: MAX, height: '2px', background: PRIMARY_COLOR }} />
         <CardFooter event={event} />
       </Card.Root>
     </>

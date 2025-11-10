@@ -18,8 +18,8 @@ export const ABOUT_CREATORS_1 = "It all started pretty simply: two people who co
 export const ABOUT_CREATORS_2 = "Hallie and Ben connected through their food-centric Instagram accounts and quickly realized they shared the same obsession: Tel Aviv’s ever-evolving culinary scene, especially the underground pop-ups and one-night-only dining experiences that most people only hear about after they happen.";
 export const ABOUT_CREATORS_3 = "Together, they created fatty popups - the number one source for everything happening in Tel Aviv’s pop-up culinary scene (and beyond). There’s a lot going on out there, we’re just here to make it easier to keep up.";
 export const CONTACT = "Questions or feedback? We'd love to hear from you.";
-export const SUBHEADER_TEXT_1 = "Discover TLV's upcoming culinary pop-ups!";
-export const SUBHEADER_TEXT_2 = "Tap each image for more details";
+export const SUBHEADER_TEXT_1 = "Discover TLV's pop-ups!";
+export const SUBHEADER_TEXT_2 = "Tap each image for more details.";
 
 // Link/window constants
 export const SELF = "_self";

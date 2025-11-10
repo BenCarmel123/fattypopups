@@ -69,7 +69,6 @@ export default function LoginForm( {handleClick} ) {
                     boxShadow={MEDIUM}
                     _hover={{
                         bg: SECONDARY_COLOR,
-                        color: WHITE,
                         boxShadow: XL,
                         transform: MINIMAL_TRANSFORM
                     }}
@@ -262,7 +261,7 @@ export function EventForm({ handleClick, event, isEdit } ) {
                             py={6} 
                             boxShadow={MEDIUM} 
                             borderRadius={XL} 
-                            _hover={{ bg: '#3182ce', color: WHITE, transform: MINIMAL_TRANSFORM }} 
+                            _hover={{ bg: '#3182ce', transform: MINIMAL_TRANSFORM }} 
                             transition={MINIMAL_TRANSITION} 
                             type="submit">
                             Add Event
