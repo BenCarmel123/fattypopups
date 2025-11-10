@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react"
 import { Button, Spinner } from '@chakra-ui/react';
 import EventCard from '../../components/EventCard';
-import { HOVER, HEADER_BACKGROUND_COLOR, GRAY, WHITE, BORDER_COLOR, SUB_HEADER_BACKGROUND_COLOR} from '../../components/config/colors.jsx';
-import { APP_NAME, MINIMAL_TRANSFORM, SOLID, XL, ABOUT_BUTTON_TEXT, SMALL, MINIMAL_TRANSITION, SUBHEADER_TEXT_1, SUBHEADER_TEXT_2, BORDER_WIDTH } from '../../components/config/strings.jsx';
+import { HOVER, HEADER_BACKGROUND_COLOR, GRAY, WHITE, HEADER_BORDER_COLOR, EVENT_TITLE_PADDING_COLOR} from '../../components/config/colors.jsx';
+import { APP_NAME, MINIMAL_TRANSFORM, SOLID, XL, ABOUT_BUTTON_TEXT, SMALL, MINIMAL_TRANSITION, SUBHEADER_TEXT_1, SUBHEADER_TEXT_2 } from '../../components/config/strings.jsx';
 import DynamicCard from '../../components/DynamicCard.jsx';
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
@@ -24,9 +24,10 @@ const About = () => {
         py={4}
         boxShadow={SMALL}
         borderRadius={XL}
-        borderColor='#cde6e5'
-        borderStyle='solid'
-        borderWidth={BORDER_WIDTH}
+        borderBottomColor="initial"
+        borderStyle="solid" 
+        borderWidth='medium'
+        backgroundColor={EVENT_TITLE_PADDING_COLOR}
         _hover={{ bg: HOVER, color: WHITE, transform: MINIMAL_TRANSFORM }}
         transition={MINIMAL_TRANSITION}
         onClick={handleAbout}
@@ -39,7 +40,7 @@ const About = () => {
 
 export function Header() {
   return (
-  <header className="top-0 z-50 px-6 md:px-16 py-[0.01rem] md:py-[0.35rem]" style={{ backgroundColor: HEADER_BACKGROUND_COLOR, borderBottom: `1px solid ${BORDER_COLOR}` }} >
+  <header className="top-0 z-50 px-6 md:px-16 py-[0.75rem] md:py-[0.75rem]" style={{ backgroundColor: HEADER_BACKGROUND_COLOR, borderBottom: `0.5px dashed ${HEADER_BORDER_COLOR}` }} >
       <div className="flex items-center justify-between max-w-3xl mx-auto w-full">
         <div className="flex items-center">
           {LOGO_URL ? (
@@ -93,10 +94,11 @@ export default function HomePage() {
     <Header />
     <div className="mt-2 w-full flex flex-col items-center px-2 sm:px-4 md:px-8 box-border">
       <h2 style={{
+      fontSize: '0.9rem',
       fontWeight: 'bolder',
       color: '#51515b',
       textAlign: 'center',
-      margin: '1rem',
+      margin: '0.5rem',
       width: 'fit-content', 
       backgroundColor: 'transparent',
       padding: '15px',

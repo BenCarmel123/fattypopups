@@ -193,17 +193,19 @@ export function EventAttributeSpan({ attribute, onClick }) {
 export function CardBody({ event }) {
   return (
     <Card.Body gap="2" padding="5" bg={CARD_BACKGROUND_COLOR} style={{ lineHeight: 2.0 }}>
-      <Card.Title textAlign={CENTER} fontSize={XXL} fontWeight="500" color={DRAWER_DETAILS_FONT_COLOR} mt={-1} mb={1} borderRadius='20px' backgroundColor={EVENT_TITLE_PADDING_COLOR} style={{padding: '4px 4px'}} >
+      <Card.Title textAlign={CENTER} fontSize={XXL} fontWeight="500" color={DRAWER_DETAILS_FONT_COLOR} mt={-1} mb={1} borderRadius='20px' backgroundColor={EVENT_TITLE_PADDING_COLOR} style={{padding: '4px 4px',   borderBottom: 'solid',
+    borderWidth: 'medium'}} >
         {event.title}
       </Card.Title>
-      <Card.Description fontSize={XL} color={DRAWER_DETAILS_FONT_COLOR} paddingRight={4} paddingLeft={4} lineHeight={2.5}>
+
+      <Card.Description fontSize={MEDIUM} color={DRAWER_DETAILS_FONT_COLOR} paddingRight={4} paddingLeft={4} lineHeight={2.5}>
         {event.chef_names &&
           Array.isArray(event.chef_names) &&
           Array.isArray(event.chef_instagrams) &&
           event.chef_names
             .map((name, idx) => (
               <span key={name} style={{ cursor: POINTER, marginRight: idx < event.chef_names.length - 1 ? 4 : 0 }} onClick={() => handleInstagram(event.chef_instagrams[idx])}>
-                {(event.chef_names.length === 1 || idx === 0) && <RiInstagramFill className="inline-block mr-1 mb-1" />}
+                {(event.chef_names.length === 1 || idx === 0) && <RiInstagramFill className="inline-block mr-2.5 mb-1" />}
                 <EventAttributeSpan attribute={name} onClick={() => handleInstagram(event.chef_instagrams[idx])} style={{ marginLeft: '3.5px' }} />
               </span>
             ))
