@@ -131,11 +131,7 @@ export function handleWhatsApp(description) {
     }
 
 export function handleInstagram(instagram) {
-    let instagramHandle = instagram;
-    if (typeof instagram === STRING && instagram.length > 0 && instagram[0] === '@') {
-        instagramHandle = instagram.slice(1);
-    }
-    window.open(`https://www.instagram.com/${instagramHandle}`, SELF, NO_OPENER);
+    window.open(instagram, SELF, NO_OPENER);
 }
 
 export function handleCalendar(event) {
