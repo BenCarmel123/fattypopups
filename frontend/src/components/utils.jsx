@@ -6,7 +6,7 @@ import { HOVER, GRAY } from './config/colors.jsx';
 
 
 // Helper to validate event data
-export default function validateEvent(event) {
+export default function validateEvent(event, isEdit) {
     const { title, start_datetime, end_datetime, venue_instagram, venue_address, chef_names, chef_instagrams, reservation_url, english_description, hebrew_description, poster } = event;
 
     if (!title || typeof title !== STRING || !validator.isLength(title.trim(), { min: 1 })) {
@@ -50,8 +50,8 @@ export default function validateEvent(event) {
     if (!hebrew_description || typeof hebrew_description !== STRING || !validator.isLength(hebrew_description.trim(), { min: 1 })) {
         return { valid: false, error: ERR_HEBREW_DESC_REQUIRED };
     }
-
-    if (!poster || !(poster instanceof File)) {
+    
+    if (!isEdit && (!poster || !(poster instanceof File))) {
         return { valid: false, error: ERR_POSTER_REQUIRED };
     }
 
@@ -142,4 +142,9 @@ export function handleCalendar(event) {
     const location = venue_address;
     const calendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${start}/${end}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(location)}&sf=true&output=xml`;
     window.open(calendarUrl, SELF, NO_OPENER);
+}
+
+export function formatDate(dateString) {
+  if (!dateString) return "";
+  return dateString.split("T")[0];
 }
