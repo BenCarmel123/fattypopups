@@ -6,7 +6,7 @@ dns.setDefaultResultOrder('ipv4first');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
-const createEventEmbedding  = require('./agent.js');
+const { generateEmbedding }  = require('./agent.js');
 const { createClient } = require('@supabase/supabase-js');
 require('dotenv').config();
 
@@ -81,10 +81,12 @@ catch (err) {
 });
 
 // Add new event (POST)
+// Add new event
 app.post('/api/events', upload.single("poster"), async (req, res) => {
   console.log("Received POST /api/events");
   console.log("Request body:", req.body);
   console.log("Uploaded file:", req.file);
+
   const {
     title,
     start_datetime,
@@ -108,6 +110,7 @@ app.post('/api/events', upload.single("poster"), async (req, res) => {
   const image_url = req.file?.location || null;
 
   try {
+    // ---- Duplicate check (unchanged) ----
     const { data: duplicateCheck, error: duplicateError } = await supabase
       .from('events')
       .select('*')
@@ -116,13 +119,13 @@ app.post('/api/events', upload.single("poster"), async (req, res) => {
       .eq('end_datetime', end_datetime);
 
     if (duplicateError) throw duplicateError;
-
     if (duplicateCheck.length > 0) {
       return res
         .status(400)
         .json({ error: "An event with the same title and dates already exists." });
     }
 
+    // ---- Insert event (same as before) ----
     const { data: newEvent, error: insertError } = await supabase
       .from('events')
       .insert([
@@ -139,52 +142,96 @@ app.post('/api/events', upload.single("poster"), async (req, res) => {
           english_description,
           hebrew_description
         }
-      ]);
+      ])
+      .select()
+      .single();
 
     if (insertError) throw insertError;
 
+    // ---- Generate embeddings (unchanged) ----
+    let english_embedding = null;
+    let hebrew_embedding = null;
     try {
-      const unified_description = english_description + " " + hebrew_description;
-      const embedding = await createEventEmbedding(
-        chefNamesArray.join(", "),
-        venue_address,
-        english_description
-      );
-
-      const { error: embeddingError } = await supabase
-        .from('embeddings')
-        .insert([
-          {
-            chef_names: chefNamesArray.join(", "),
-            venue_address,
-            unified_description,
-            embedding
-          }
-        ]);
-
-      if (embeddingError) throw embeddingError;
+      english_embedding = await generateEmbedding(english_description);
+      hebrew_embedding = await generateEmbedding(hebrew_description);
     } catch (embeddingError) {
-      console.error("Error creating embedding:", embeddingError);
+      console.error("Error generating embeddings:", embeddingError);
     }
 
+    // ---- Insert embeddings and get back IDs (CHANGED) ----
+    let embedding_id_en = null;
+    let embedding_id_he = null;
+
+    try {
+      const { data: enRow, error: enErr } = await supabase
+        .from('embeddings')
+        .insert({
+          chef_names: chefNamesArray.join(", "),
+          language: 'en',
+          description: english_description,
+          embedding: english_embedding
+        })
+        .select()
+        .single();
+
+      if (enErr) throw enErr;
+
+      const { data: heRow, error: heErr } = await supabase
+        .from('embeddings')
+        .insert({
+          chef_names: chefNamesArray.join(", "),
+          language: 'he',
+          description: hebrew_description,
+          embedding: hebrew_embedding
+        })
+        .select()
+        .single();
+
+      if (heErr) throw heErr;
+
+      embedding_id_en = enRow.id;
+      embedding_id_he = heRow.id;
+
+    } catch (embeddingStoreError) {
+      console.error("Error storing embeddings:", embeddingStoreError);
+    }
+
+    // ---- Update event with the two embedding IDs (CHANGED) ----
+    try {
+      await supabase
+        .from('events')
+        .update({
+          embedding_id_en: embedding_id_en,
+          embedding_id_he: embedding_id_he
+        })
+        .eq('id', newEvent.id);
+    } catch (linkError) {
+      console.error("Error linking embeddings to event:", linkError);
+    }
+
+    // ---- Done ----
     console.log("Event successfully added:", newEvent);
     res.json(newEvent);
+
   } catch (err) {
     console.error("Error adding event:", err);
     res.status(500).json({ error: err.message });
   }
 });
 
+
 // UPDATE event (PUT) with image overwrite
+// UPDATE event (PUT) with image overwrite + embedding update
 app.put('/api/events/:id', uploadMemory.single("poster"), async (req, res) => {
   console.log("Received PUT /api/events/:id");
   console.log("Request body:", req.body);
 
+  // 1. IMAGE OVERWRITE (unchanged logic, just cleaner)
   if (req.file) {
     console.log("Uploaded file:", req.file);
     let s3_key;
 
-    // 1. Fetch existing image URL
+    // Fetch existing image URL
     try {
       const { data, error } = await supabase
         .from('events')
@@ -199,20 +246,81 @@ app.put('/api/events/:id', uploadMemory.single("poster"), async (req, res) => {
       return res.status(500).json({ error: "Failed to fetch existing image URL" });
     }
 
-    // 2. Overwrite S3 object
+    // Overwrite S3 object
     try {
-      await s3.send(new PutObjectCommand({
-        Bucket: process.env.AWS_S3_BUCKET_NAME,
-        Key: s3_key,
-        Body: req.file.buffer,
-        ContentType: req.file.mimetype
-      }));
+      await s3.send(
+        new PutObjectCommand({
+          Bucket: process.env.AWS_S3_BUCKET_NAME,
+          Key: s3_key,
+          Body: req.file.buffer,
+          ContentType: req.file.mimetype
+        })
+      );
     } catch (err) {
       console.error("Error uploading file:", err);
       return res.status(500).json({ error: "File upload failed" });
     }
   }
 
+  // 2. FETCH CURRENT EVENT (needed for description + embedding IDs)
+  const { data: currentEvent, error: eventErr } = await supabase
+    .from('events')
+    .select('english_description, hebrew_description, embedding_id_en, embedding_id_he')
+    .eq('id', req.params.id)
+    .single();
+
+  if (eventErr) {
+    console.error("Error fetching current event:", eventErr);
+    return res.status(500).json({ error: "Failed to fetch event data" });
+  }
+
+  const englishChanged = req.body.english_description !== currentEvent.english_description;
+  const hebrewChanged  = req.body.hebrew_description !== currentEvent.hebrew_description;
+
+  let newEnglishEmbedding = null;
+  let newHebrewEmbedding = null;
+
+  // 3. GENERATE NEW EMBEDDINGS IF NEEDED
+  if (englishChanged || hebrewChanged) {
+    console.log("Descriptions changed — generating new embeddings...");
+
+    try {
+      if (englishChanged) {
+        newEnglishEmbedding = await generateEmbedding(req.body.english_description);
+      }
+      if (hebrewChanged) {
+        newHebrewEmbedding = await generateEmbedding(req.body.hebrew_description);
+      }
+    } catch (embeddingErr) {
+      console.error("Error generating embeddings:", embeddingErr);
+    }
+
+    // Update EN embedding
+    if (newEnglishEmbedding) {
+      await supabase
+        .from('embeddings')
+        .update({
+          description: req.body.english_description,
+          embedding: newEnglishEmbedding
+        })
+        .eq('id', currentEvent.embedding_id_en);
+    }
+
+    // Update HE embedding
+    if (newHebrewEmbedding) {
+      await supabase
+        .from('embeddings')
+        .update({
+          description: req.body.hebrew_description,
+          embedding: newHebrewEmbedding
+        })
+        .eq('id', currentEvent.embedding_id_he);
+    }
+  } else {
+    console.log("Descriptions unchanged — skipping embedding regeneration.");
+  }
+
+  // 4. UPDATE EVENT ITSELF
   const {
     title,
     start_datetime,
@@ -229,38 +337,45 @@ app.put('/api/events/:id', uploadMemory.single("poster"), async (req, res) => {
   const chefNamesArray = chef_names
     ? chef_names.split(',').map(name => name.trim())
     : [];
+
   const chefInstagramsArray = chef_instagrams
     ? chef_instagrams.split(',').map(handle => handle.trim())
     : [];
 
+  const startDate = new Date(start_datetime);
+  const endDate = new Date(end_datetime);
+
   try {
-    const { data: updatedEvent, error: updateError } = await supabase
+    const { data: updatedEvent, error: updateErr } = await supabase
       .from('events')
       .update({
-        title: title,
-        start_datetime: start_datetime,
-        end_datetime: end_datetime,
-        venue_instagram: venue_instagram,
-        venue_address: venue_address,
+        title,
+        start_datetime: startDate,
+        end_datetime: endDate,
+        venue_instagram,
+        venue_address,
         chef_names: chefNamesArray,
         chef_instagrams: chefInstagramsArray,
-        reservation_url: reservation_url,
-        english_description: english_description,
-        hebrew_description: hebrew_description
+        reservation_url,
+        english_description,
+        hebrew_description
       })
       .eq('id', req.params.id)
       .select()
-      .single();  
+      .single();
 
-    if (updateError) throw updateError;
+    if (updateErr) throw updateErr;
 
     console.log("Event successfully updated:", updatedEvent);
     res.json(updatedEvent);
+
   } catch (err) {
     console.error("Error updating event:", err);
     res.status(500).json({ error: err.message });
   }
 });
+
+
 
 // Fetch all events
 app.get('/api/events', async (req, res) => {
@@ -304,3 +419,5 @@ app.delete('/api/events', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+
