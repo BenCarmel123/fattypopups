@@ -53,7 +53,7 @@ async function generateEvent(chef_names, venue_address, isPoster) {
 
 
 // Function to embed and store
-async function createEventEmbedding(chef_names, venue_address, description) {
+async function generateEmbedding(description) {
   if (!openai) {
     console.warn("OpenAI client is not initialized. Skipping embedding creation.");
     return null; // Return a fallback value or handle gracefully
@@ -67,6 +67,6 @@ async function createEventEmbedding(chef_names, venue_address, description) {
 }
 
 module.exports = {
-  createEventEmbedding
+  generateEmbedding
 };
 

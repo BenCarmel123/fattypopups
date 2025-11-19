@@ -1,0 +1,72 @@
+// migrate_embeddings.js
+
+const { createClient } = require('@supabase/supabase-js');
+const { generateEmbedding } = require('../agent.js');
+require('dotenv').config();
+
+const supabase = createClient(
+  process.env.DATABASE_PROD_URL,
+  process.env.SUPABASE_KEY
+);
+
+async function migrateEmbeddings() {
+  console.log("🔍 Fetching all events...");
+
+  const { data: events, error } = await supabase
+    .from('events')
+    .select('id, chef_names, english_description, hebrew_description');
+
+  if (error) {
+    console.error("❌ Error fetching events:", error);
+    return;
+  }
+
+  console.log(`📦 Found ${events.length} events`);
+
+  for (const event of events) {
+    const { id, chef_names, english_description, hebrew_description } = event;
+
+    console.log(`➡️ Processing event ID ${id}`);
+
+    try {
+      // Generate embeddings
+      const enEmbedding = await generateEmbedding(english_description);
+      const heEmbedding = await generateEmbedding(hebrew_description);
+
+      // Insert both rows
+      const { error: insertError } = await supabase
+        .from('embeddings')
+        .insert([
+          {
+            chef_names: Array.isArray(chef_names)
+              ? chef_names.join(", ")
+              : chef_names,
+            language: 'en',
+            description: english_description,
+            embedding: enEmbedding
+          },
+          {
+            chef_names: Array.isArray(chef_names)
+              ? chef_names.join(", ")
+              : chef_names,
+            language: 'he',
+            description: hebrew_description,
+            embedding: heEmbedding
+          }
+        ]);
+
+      if (insertError) {
+        console.error(`❌ Error inserting embedding for event ID ${id}:`, insertError);
+      } else {
+        console.log(`✅ Embeddings stored for event ID ${id}`);
+      }
+    } catch (err) {
+      console.error(`❌ Error generating embedding for event ID ${id}:`, err);
+    }
+  }
+
+  console.log("🎉 Migration complete!");
+}
+
+// Run script
+migrateEmbeddings();
