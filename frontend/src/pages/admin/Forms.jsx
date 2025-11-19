@@ -1,4 +1,4 @@
-import { Button, Card, Stack, Input, Field, Float, useFileUploadContext, Textarea } from "@chakra-ui/react";
+import { Button, Card, Stack, Input, Field, Textarea } from "@chakra-ui/react";
 import { DASHBOARD, MINIMAL_TRANSITION } from "../../components/config/strings.jsx";
 import validateEvent from "../../components/utils.jsx";
 import  MyAlert  from "../../components/CustomAlert.jsx";
@@ -6,6 +6,7 @@ import { useState } from "react";
 import FileUpload from "../../components/FileUpload.jsx";
 import { FORM_FIELD_COLOR, SECONDARY_COLOR, TEXT_AREA_COLOR, WHITE } from "../../components/config/colors.jsx"; 
 import { CENTER, FLEX, RELATIVE, FIXED, MAX, NONE, AUTO, LARGE, XL, MEDIUM, SOLID, OUTLINE, MINIMAL_TRANSFORM, BOLD } from "../../components/config/strings.jsx";
+import { formatDate } from "../../components/utils.jsx";
 
 const ADMIN_USERNAME = process.env.REACT_APP_ADMIN_USERNAME;
 const ADMIN_PASSWORD = process.env.REACT_APP_ADMIN_PASSWORD;
@@ -166,11 +167,11 @@ export function EventForm({ handleClick, event, isEdit } ) {
                             </Field.Root>
                             <Field.Root>
                                 <Field.Label color={FORM_FIELD_COLOR}>Start Date</Field.Label>
-                                <Input type="date" name="start_datetime" defaultValue={event?.start_datetime || ""} borderColor={TEXT_AREA_COLOR} borderWidth={2} _focus={{ borderColor: FORM_FIELD_COLOR }} />
+                                <Input type="date" name="start_datetime" defaultValue={formatDate(event?.start_datetime) || ""} borderColor={TEXT_AREA_COLOR} borderWidth={2} _focus={{ borderColor: FORM_FIELD_COLOR }} />
                             </Field.Root>
                             <Field.Root>
                                 <Field.Label color={FORM_FIELD_COLOR}>End Date</Field.Label>
-                                <Input type="date" name="end_datetime" defaultValue={event?.end_datetime || ""} borderColor={TEXT_AREA_COLOR} borderWidth={2} _focus={{ borderColor: FORM_FIELD_COLOR }} />
+                                <Input type="date" name="end_datetime" defaultValue={formatDate(event?.end_datetime) || ""} borderColor={TEXT_AREA_COLOR} borderWidth={2} _focus={{ borderColor: FORM_FIELD_COLOR }} />
                             </Field.Root>
                             <Field.Root>
                                 <Field.Label color={FORM_FIELD_COLOR}>Venue Instagram</Field.Label>

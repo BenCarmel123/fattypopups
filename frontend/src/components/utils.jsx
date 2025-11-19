@@ -143,3 +143,8 @@ export function handleCalendar(event) {
     const calendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${start}/${end}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(location)}&sf=true&output=xml`;
     window.open(calendarUrl, SELF, NO_OPENER);
 }
+
+export function formatDate(dateString) {
+  if (!dateString) return "";
+  return dateString.split("T")[0];
+}
