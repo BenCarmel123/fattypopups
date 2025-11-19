@@ -99,7 +99,7 @@ export function EventForm({ handleClick, event, isEdit } ) {
           hebrew_description: form.hebrew_description.value,
           poster: form.poster.files[0] // File input
         };
-        const validation = validateEvent(eventData);
+        const validation = validateEvent(eventData, isEdit);
         if (!validation.valid) {
             setAlert({ status: "error", title: "Validation Error", description: validation.error });
             return;
