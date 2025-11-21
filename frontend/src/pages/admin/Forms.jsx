@@ -4,9 +4,10 @@ import validateEvent from "../../components/utils.jsx";
 import  MyAlert  from "../../components/CustomAlert.jsx";
 import { useState } from "react";
 import FileUpload from "../../components/FileUpload.jsx";
-import { FORM_FIELD_COLOR, SECONDARY_COLOR, TEXT_AREA_COLOR, WHITE } from "../../components/config/colors.jsx"; 
-import { CENTER, FLEX, RELATIVE, FIXED, MAX, NONE, AUTO, LARGE, XL, MEDIUM, SOLID, OUTLINE, MINIMAL_TRANSFORM, BOLD } from "../../components/config/strings.jsx";
+import { FORM_FIELD_COLOR, TEXT_AREA_COLOR, TRANSPARENT, WHITE } from "../../components/config/colors.jsx"; 
+import { CENTER, FLEX, RELATIVE, FIXED, MAX, NONE, AUTO, LARGE, XL, MEDIUM, SOLID, MINIMAL_TRANSFORM, BOLD } from "../../components/config/strings.jsx";
 import { formatDate } from "../../components/utils.jsx";
+import { BackButton, SubmitFormButton } from "../../components/Buttons.jsx";
 
 const ADMIN_USERNAME = process.env.REACT_APP_ADMIN_USERNAME;
 const ADMIN_PASSWORD = process.env.REACT_APP_ADMIN_PASSWORD;
@@ -40,10 +41,6 @@ export default function LoginForm( {handleClick} ) {
         )}
         <form onSubmit={handleLogin} enctype="multipart/form-data">
         <Card.Root maxW={LARGE} w={MAX} minW="400px" padding={8} boxShadow={XL} borderRadius={XL}>
-            <Card.Header>
-                <div style={{ marginBottom: 16, color: FORM_FIELD_COLOR, fontSize: 24, textDecoration: "underline" }}>Hey Hallee / Benji ! </div>
-                <div style={{ fontWeight: 700, fontSize: 32 }}></div>
-            </Card.Header>
             <Card.Body>
                 <Stack gap={6} w="full">
                     <Field.Root>
@@ -57,25 +54,7 @@ export default function LoginForm( {handleClick} ) {
                 </Stack>
             </Card.Body>
             <Card.Footer justifyContent="flex-end" paddingTop={6}>
-                <Button 
-                    variant={SOLID} 
-                    colorScheme="blue" 
-                    ml={4} 
-                    size={MEDIUM} 
-                    type="submit"
-                    fontWeight={BOLD}
-                    fontSize={18}
-                    px={7}
-                    py={5}
-                    boxShadow={MEDIUM}
-                    _hover={{
-                        bg: SECONDARY_COLOR,
-                        boxShadow: XL,
-                        transform: MINIMAL_TRANSFORM
-                    }}
-                >
-                    Login
-                </Button>
+                <SubmitFormButton text="Login" />
             </Card.Footer>
         </Card.Root>
         </form>
@@ -157,8 +136,10 @@ export function EventForm({ handleClick, event, isEdit } ) {
                     </div>
                 </div>
             )}
-            <Card.Root maxW={MEDIUM} w={MAX} minW="350px">
-                <form onSubmit={handleEvent}>
+            <Card.Root backgroundColor={TRANSPARENT} marginBottom="4rem" maxW="800px" w={MAX} minW="300px" boxShadow={NONE} borderRadius={XL}>
+                <br></br> <br></br>
+                <BackButton marginBottom="2rem" />
+                <form className onSubmit={handleEvent} style={{ backgroundColor: WHITE, enctype: "multipart/form-data", borderRadius: '1rem', padding: '2rem', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
                     <Card.Body>
                         <Stack gap={4} w="full">
                             <Field.Root>
@@ -175,7 +156,7 @@ export function EventForm({ handleClick, event, isEdit } ) {
                             </Field.Root>
                             <Field.Root>
                                 <Field.Label color={FORM_FIELD_COLOR}>Venue Instagram</Field.Label>
-                                <Input name="venue_instagram" defaultValue={event?.venue_instagram || ""} borderColor={TEXT_AREA_COLOR} borderWidth={2} _focus={{ borderColor: FORM_FIELD_COLOR }} />
+                                <Input name="venue_instagram" placeholder="@" defaultValue={event?.venue_instagram || ""} borderColor={TEXT_AREA_COLOR} borderWidth={2} _focus={{ borderColor: FORM_FIELD_COLOR }} />
                             </Field.Root>
                             <Field.Root>
                                 <Field.Label color={FORM_FIELD_COLOR}>Venue Address</Field.Label>
@@ -183,11 +164,11 @@ export function EventForm({ handleClick, event, isEdit } ) {
                             </Field.Root>
                             <Field.Root>
                                 <Field.Label color={FORM_FIELD_COLOR}>Chef Names (comma separated)</Field.Label>
-                                <Input name="chef_names" placeholder="e.g. Ori Salama, Ido Kablan" defaultValue={event?.chef_names ? event.chef_names.join(', ') : ""} borderColor={TEXT_AREA_COLOR} borderWidth={2} _focus={{ borderColor: FORM_FIELD_COLOR }} />
+                                <Input name="chef_names" defaultValue={event?.chef_names ? event.chef_names.join(', ') : ""} borderColor={TEXT_AREA_COLOR} borderWidth={2} _focus={{ borderColor: FORM_FIELD_COLOR }} />
                             </Field.Root>
                             <Field.Root>
                                 <Field.Label color={FORM_FIELD_COLOR}>Chef Instagrams (comma separated)</Field.Label>
-                                <Input name="chef_instagrams" placeholder="e.g. @ori, @ido" defaultValue={event?.chef_instagrams ? event.chef_instagrams.join(', ') : ""} borderColor={TEXT_AREA_COLOR} borderWidth={2} _focus={{ borderColor: FORM_FIELD_COLOR }} />
+                                <Input name="chef_instagrams" placeholder="@" defaultValue={event?.chef_instagrams ? event.chef_instagrams.join(', ') : ""} borderColor={TEXT_AREA_COLOR} borderWidth={2} _focus={{ borderColor: FORM_FIELD_COLOR }} />
                             </Field.Root>
                             <Field.Root>
                                 <Field.Label color={FORM_FIELD_COLOR}>Reservation URL</Field.Label>
@@ -221,52 +202,25 @@ export function EventForm({ handleClick, event, isEdit } ) {
                             </Field.Root>
                             <Field.Root>
                                 <Button 
-                                    colorScheme="blue"
                                     variant={SOLID}
-                                        size={LARGE}
-                                        fontWeight={BOLD}
+                                    size={LARGE}
+                                    fontWeight={BOLD}
                                     px={2} 
                                     py={2} 
                                     boxShadow={MEDIUM}
                                     borderRadius={XL} 
-                                    _hover={{ bg: '#3182ce', color: WHITE, transform: MINIMAL_TRANSFORM }} 
+                                    backgroundColor={FORM_FIELD_COLOR}
+                                    _hover={{ transform: MINIMAL_TRANSFORM }} 
                                     transition={MINIMAL_TRANSITION}
                                     as="label"
                                 >
-                                    <FileUpload style={{ display: 'none' }} />
+                                    <FileUpload style={{ display: 'none'}} />
                                 </Button>
                             </Field.Root>
                         </Stack>
                     </Card.Body>
-                    <Card.Footer justifyContent="flex-end">
-                        <Button 
-                            colorScheme="gray" 
-                            variant={OUTLINE} 
-                            size={LARGE} 
-                            fontWeight={BOLD} 
-                            px={8} 
-                            py={6} 
-                            borderRadius={XL} 
-                            _hover={{ bg: '#edf2f7', color: '#2d3748', transform: MINIMAL_TRANSFORM }} 
-                            transition={MINIMAL_TRANSITION} 
-                            onClick={handleClick(DASHBOARD)} 
-                            type="button">
-                            Back
-                        </Button>
-                        <Button 
-                            colorScheme="blue" 
-                            variant={SOLID} 
-                            size={LARGE} 
-                            fontWeight={BOLD} 
-                            px={8} 
-                            py={6} 
-                            boxShadow={MEDIUM} 
-                            borderRadius={XL} 
-                            _hover={{ bg: '#3182ce', transform: MINIMAL_TRANSFORM }} 
-                            transition={MINIMAL_TRANSITION} 
-                            type="submit">
-                            Add Event
-                        </Button>
+                    <Card.Footer>
+                        <SubmitFormButton text={isEdit ? "Update" : "Add"} />
                     </Card.Footer>
                 </form>
             </Card.Root>

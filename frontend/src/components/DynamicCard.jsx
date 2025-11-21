@@ -11,8 +11,8 @@ export default function DynamicCard({ children }) {
     offset: ["start end", "end start"],
   });
 
-  const yTransform = useTransform(scrollYProgress, [0, 1], [50, -50]);
-  const opacityTransform = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0.3]);
+  const yTransform = useTransform(scrollYProgress, [0, 1], [20, -20]);
+  const opacityTransform = useTransform(scrollYProgress, [1, 1, 1, 1], [1, 1, 1, 1]);
 
   const [isFrozen, setIsFrozen] = useState(false);
 

@@ -29,6 +29,13 @@ html {
     overscroll-behavior: none;
 }
 
+@media (max-width: 768px) {
+  form {
+    scale: 0.9;
+  }
+}
+
+/* Responsive scaling for larger screens */
 @media (min-width: 1024px) {
   body {
     transform: scale(1.1);
