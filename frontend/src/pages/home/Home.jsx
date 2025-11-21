@@ -95,14 +95,16 @@ export default function HomePage() {
     <Header />
     <div className="mt-2 w-full flex flex-col items-center px-2 sm:px-4 md:px-8 box-border">
       <h2 style={{
-      fontSize: '0.9rem',
-      fontWeight: '100',
+      fontSize: '1rem',
+      fontWeight: '900',
       color: '#51515b',
       textAlign: 'center',
       margin: '0.5rem',
       width: 'fit-content', 
       backgroundColor: 'transparent',
       padding: '15px',
+      marginTop: '2rem',
+      marginBottom: '2rem',
     }} >{SUBHEADER_TEXT_1} <br/> {SUBHEADER_TEXT_2} 
     </h2>
       {events.map(evt => (

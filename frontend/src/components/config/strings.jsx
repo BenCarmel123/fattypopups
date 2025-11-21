@@ -3,6 +3,7 @@
 export const APP_NAME = "fatty popups";
 export const ADD = "ADD";
 export const EDIT = "EDIT";
+export const DELETE = "DELETE";
 export const LOGIN = "LOGIN";
 export const DASHBOARD = "DASHBOARD";
 
