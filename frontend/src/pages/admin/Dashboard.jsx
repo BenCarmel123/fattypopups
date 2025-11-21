@@ -1,8 +1,9 @@
 import { Checkbox, Table, Button } from "@chakra-ui/react"
 import { useState, useEffect } from "react"
-import { ADD, EDIT, LARGE, FLEX, CENTER, SOLID, OUTLINE, XL, BOLD, MEDIUM, MINIMAL_TRANSFORM, MINIMAL_TRANSITION } from "../../components/config/strings"
+import { ADD, EDIT, LARGE, FLEX, CENTER, SOLID, XL, BOLD, MEDIUM, MINIMAL_TRANSFORM, MINIMAL_TRANSITION } from "../../components/config/strings"
 import MyAlert from "../../components/CustomAlert.jsx"; 
-import { CHECKBOX_COLOR, SECONDARY_COLOR } from "../../components/config/colors";
+import { WHITE, CHECKBOX_COLOR, BACKGROUND_COLOR, ADMIN_PANEL_COLOR } from "../../components/config/colors";
+import { BackButton } from "../../components/Buttons.jsx";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -47,12 +48,7 @@ const Dashboard = ({ handleClick }) => {
     handleClick(EDIT, eventToEdit)();
   }
 
-  // Navigate back to homepage
-  function backToFatty() {
-    window.location.href = "/";
-  }
-
-  const rows = events.map((event) => (
+  const eventRows = events.map((event) => (
     <Table.Row
       key={event.title}
       data-selected={selection.includes(event.title) ? "" : undefined}
@@ -81,28 +77,26 @@ const Dashboard = ({ handleClick }) => {
         </Checkbox.Root>
       </Table.Cell>
       <Table.Cell>{event.title}</Table.Cell>
-      <Table.Cell>{event.description}</Table.Cell>
     </Table.Row>
   ))
 
   return (
-    <div className="centered-content-global" style={{ display: FLEX, flexDirection: 'column', alignItems: 'stretch', maxWidth: '1200px', minWidth: '400px', margin: '0 auto', padding: '2rem', borderRadius: '2rem' }}>
+    <div style={{ display: FLEX, flexDirection: 'column', alignItems: 'stretch', maxWidth: '1200px', minWidth: '400px', margin: '0 auto', padding: '2rem', borderRadius: '2rem' }}>
       {alert && <MyAlert {...alert} onClose={() => setAlert(null)} />}
-      <Table.Root interactive stickyHeader size={LARGE}>
+      <BackButton />
+      <Table.Root size={LARGE} marginTop="2rem">
         <Table.Header>
-          <Table.Row style={{ backgroundColor: '#cce6ff', fontSize: '1.25rem', height: '3.5rem' }}>
+          <Table.Row style={{ backgroundColor: BACKGROUND_COLOR, fontSize: '1.25rem', height: '3.5rem' }}>
             <Table.ColumnHeader w="6" />
-            <Table.ColumnHeader>Event</Table.ColumnHeader>
-            <Table.ColumnHeader>Description</Table.ColumnHeader>
+            <Table.ColumnHeader></Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
-        <Table.Body>{rows}</Table.Body>
+        <Table.Body>{eventRows}</Table.Body>
       </Table.Root>
-      <div style={{ display: FLEX, justifyContent: CENTER, gap: '2rem', marginTop: '2.5rem' }}>
-        <Button colorScheme="blue" variant={SOLID} size={LARGE} fontWeight={BOLD} px={8} py={6} boxShadow={MEDIUM} borderRadius={XL} _hover={{ bg: SECONDARY_COLOR, transform: MINIMAL_TRANSFORM }} transition={MINIMAL_TRANSITION} onClick={ handleClick(ADD, undefined) }>Add</Button>
-        <Button colorScheme="yellow" variant={SOLID} size={LARGE} fontWeight={BOLD} px={8} py={6} boxShadow={MEDIUM} borderRadius={XL} _hover={{ bg: SECONDARY_COLOR, transform: MINIMAL_TRANSFORM }} transition={MINIMAL_TRANSITION} onClick={ handleEditEvents }>Edit</Button>
-        <Button colorScheme="red" variant={SOLID} size={LARGE} fontWeight={BOLD} px={8} py={6} boxShadow={MEDIUM} borderRadius={XL} _hover={{ bg: SECONDARY_COLOR, transform: MINIMAL_TRANSFORM }} transition={MINIMAL_TRANSITION} onClick={handleDeleteEvents}>Delete</Button>
-        <Button colorScheme="gray" variant={OUTLINE} size={LARGE} fontWeight={BOLD} px={8} py={6} borderRadius={XL} _hover={{ bg: '#edf2f7', color: '#2d3748', transform: MINIMAL_TRANSFORM }} transition={MINIMAL_TRANSITION} onClick={backToFatty}>Back</Button>
+      <div style={{ display: FLEX, justifyContent: CENTER, gap: '1rem', marginTop: '1rem', color: WHITE, fontWeight: BOLD }}>
+        <Button variant={SOLID} px={6} py={6} boxShadow={MEDIUM} borderRadius={XL} backgroundColor={ADMIN_PANEL_COLOR} _hover={{ transform: MINIMAL_TRANSFORM }} transition={MINIMAL_TRANSITION} onClick={ handleClick(ADD, undefined) }>Add</Button>
+        <Button variant={SOLID} px={6} py={6} boxShadow={MEDIUM} borderRadius={XL} backgroundColor={ADMIN_PANEL_COLOR} _hover={{ transform: MINIMAL_TRANSFORM }} transition={MINIMAL_TRANSITION} onClick={ handleEditEvents }>Edit</Button>
+        <Button variant={SOLID} px={6} py={6} boxShadow={MEDIUM} borderRadius={XL} backgroundColor={ADMIN_PANEL_COLOR} _hover={{ transform: MINIMAL_TRANSFORM }} transition={MINIMAL_TRANSITION} onClick={handleDeleteEvents}>Delete</Button>
       </div>
     </div>
   )

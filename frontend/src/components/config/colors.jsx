@@ -8,7 +8,6 @@ export const BLACK = '#000000';
 export const WHITE = '#ffffff';
 export const GRAY = '#51515b';
 
-
 // Semantic UI colors
 export const CARD_BACKGROUND_COLOR = '#fffbf1';
 export const FOOTER_BACKGROUND_COLOR = '#cde6e5';
@@ -19,6 +18,8 @@ export const ABOUT_PAGE_BACKGROUND_COLOR = '#fffaee';
 export const BACKGROUND_COLOR = '#a1c4fd';
 export const EVENT_TITLE_PADDING_COLOR = 'rgb(205 230 229 / 22%)';
 export const BORDER_COLOR = '#cde6e5';
+export const DASHBOARD_HEADER_BACKGROUND_COLOR = '#cce6ff';
+export const ADMIN_PANEL_COLOR = '#a1c4fd';
 
 // Misc colors / tokens
 export const FORM_FIELD_COLOR = '#2596be';
