@@ -27,16 +27,15 @@ const Dashboard = ({ handleClick }) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ titles: selection }),
     })
-    .then(res => {
-      if (res.ok) {
-        res.json().then(data => {
-          setEvents(data.events);
-          setSelection([]);
-        });
-      }
+    .then(res => res.json())
+    .then(data => {
+      setEvents(prev =>
+        prev.filter(ev => !data.deleted.includes(ev.title))
+      );
+      setSelection([]);
     })
-    .catch(err => console.error('Error deleting events:', err));
-  }
+    .catch(err => console.error("Error deleting events:", err));
+  };
 
   // Edit selected event (only if one selected)
   const handleEditEvents = () => {
