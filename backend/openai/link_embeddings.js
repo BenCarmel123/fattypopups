@@ -1,4 +1,5 @@
-const { createClient } = require('@supabase/supabase-js');
+// Script to link existing embeddings to events based on matching criteria
+import { createClient } from '@supabase/supabase-js';
 require('dotenv').config();
 
 const supabase = createClient(process.env.DATABASE_PROD_URL, process.env.SUPABASE_KEY);

@@ -1,10 +1,10 @@
 // Require necessary modules and configure OpenAI client
-require('dotenv').config();
-const { OpenAI } = require('openai');
+import 'dotenv/config';
+import { OpenAI } from 'openai';
 const openai = process.env.OPENAI_PROD_KEY
   ? new OpenAI({ apiKey: process.env.OPENAI_PROD_KEY })
   : null;
-const { writeFile } = require('fs').promises;
+import { writeFile } from 'fs/promises';
 
 // Function to generate event descriptions
 async function generateEventDescriptions(chef_names, venue_address) {
@@ -53,7 +53,7 @@ async function generateEvent(chef_names, venue_address, isPoster) {
 
 
 // Function to embed and store
-async function generateEmbedding(description) {
+export async function generateEmbedding(description) {
   if (!openai) {
     console.warn("OpenAI client is not initialized. Skipping embedding creation.");
     return null; // Return a fallback value or handle gracefully
@@ -66,7 +66,4 @@ async function generateEmbedding(description) {
   return embedding;
 }
 
-module.exports = {
-  generateEmbedding
-};
 
