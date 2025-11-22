@@ -60,7 +60,7 @@ export const createEvent = async (body, file) => {
     english_embedding = await generateEmbedding(english_description);
     hebrew_embedding = await generateEmbedding(hebrew_description);
   } catch (e) {
-    console.error("Embedding error:", e);
+    console.log("[ERROR] - Embedding error:", e);
   }
 
   // 4. Insert embeddings
@@ -93,7 +93,7 @@ export const createEvent = async (body, file) => {
     embedding_id_en = enRow.id;
     embedding_id_he = heRow.id;
   } catch (e) {
-    console.error("Error storing embeddings:", e);
+    console.log("[ERROR] - Error storing embeddings:", e);
   }
 
   // 5. Update event with IDs

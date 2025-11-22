@@ -5,12 +5,12 @@ import { generateEmbedding } from "../../openai/agent.js";
 
 // UPDATE event (PUT) with image overwrite + embedding update
 export const updateEvent = async (id, body, file) => {
-  console.log("Received PUT /api/events/:id");
-  console.log("Request body:", body);
+  console.log("[DEBUG] - Received PUT /api/events/:id");
+  console.log("[DEBUG] - Request body:", body);
 
   // 1. IMAGE OVERWRITE (unchanged logic, just cleaner)
   if (file) {
-    console.log("Uploaded file:", file);
+  console.log("[DEBUG] - Uploaded file:", file);
     let s3_key;
 
     // Fetch existing image URL
@@ -24,7 +24,7 @@ export const updateEvent = async (id, body, file) => {
 
       s3_key = data.image_url.split(".amazonaws.com/")[1];
     } catch (err) {
-      console.error("Error fetching existing image URL:", err);
+      console.log("[ERROR] - Error fetching existing image URL:", err);
     }
 
     // Overwrite S3 object
@@ -38,7 +38,7 @@ export const updateEvent = async (id, body, file) => {
         })
       );
     } catch (err) {
-      console.error("Error uploading file:", err);
+      console.log("[ERROR] - Error uploading file:", err);
     }
   }
 
@@ -50,7 +50,7 @@ export const updateEvent = async (id, body, file) => {
     .single();
 
   if (eventErr) {
-    console.error("Error fetching current event:", eventErr);
+    console.log("[ERROR] - Error fetching current event:", eventErr);
   }
 
   const englishChanged = body.english_description !== currentEvent.english_description;
@@ -61,7 +61,7 @@ export const updateEvent = async (id, body, file) => {
 
   // 3. GENERATE NEW EMBEDDINGS IF NEEDED
   if (englishChanged || hebrewChanged) {
-    console.log("Descriptions changed — generating new embeddings...");
+  console.log("[DEBUG] - Descriptions changed — generating new embeddings...");
         
     try {
       if (englishChanged) {
@@ -71,7 +71,7 @@ export const updateEvent = async (id, body, file) => {
         newHebrewEmbedding = await generateEmbedding(body.hebrew_description);
       }
     } catch (embeddingErr) {
-      console.error("Error generating embeddings:", embeddingErr);
+      console.log("[ERROR] - Error generating embeddings:", embeddingErr);
     }
 
     // Update EN embedding
@@ -96,7 +96,7 @@ export const updateEvent = async (id, body, file) => {
         .eq('id', currentEvent.embedding_id_he);
     }
   } else {
-    console.log("Descriptions unchanged — skipping embedding regeneration.");
+    console.log("[DEBUG] - Descriptions unchanged — skipping embedding regeneration.");
   }
 
   // 4. UPDATE EVENT ITSELF
@@ -146,7 +146,7 @@ export const updateEvent = async (id, body, file) => {
     if (updateErr) throw updateErr;
     return updatedEvent;
     } catch (err) {
-    console.error("Error updating event:", err);
+    console.log("[ERROR] - Error updating event:", err);
     throw err;
   }
 };

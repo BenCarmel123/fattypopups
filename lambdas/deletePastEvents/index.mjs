@@ -15,13 +15,13 @@ export const deletePastEvents = async () => {
                 .lt('end_datetime', oldest_allowed_date.toISOString())
                 .select('*');
         if (error) {
-            console.error("[DEBUG] - Error deleting past events:", error);
+            console.log("[ERROR] - Error deleting past events:", error);
             return;
         }
         console.log(`[DEBUG] - Deleted ${data?.length ?? 0} past events.`);
     }
     catch (error) {
-        console.error("[DEBUG] - Unexpected error deleting past events:", error);
+        console.log("[ERROR] - Unexpected error deleting past events:", error);
     }
 }
 
