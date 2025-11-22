@@ -1,8 +1,7 @@
 // migrate_embeddings.js
-
-const { createClient } = require('@supabase/supabase-js');
-const { generateEmbedding } = require('../agent.js');
-require('dotenv').config();
+import { createClient } from '@supabase/supabase-js';
+import { generateEmbedding } from './agent.js';
+import 'dotenv/config';
 
 const supabase = createClient(
   process.env.DATABASE_PROD_URL,
