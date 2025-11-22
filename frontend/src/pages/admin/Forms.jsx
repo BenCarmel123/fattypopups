@@ -23,11 +23,11 @@ export default function LoginForm( {handleClick} ) {
         const username = form.username.value;
         const password = form.password.value;
         if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-            console.log("Login successful");
+            console.log("[DEBUG] - Login successful");
             handleClick(DASHBOARD)();
         } else {
             setAlert({ status: "error", title: "Login Failed", description: "Invalid username or password." });
-            console.log("Login failed");
+            console.log("[DEBUG] - Login failed");
         }
     }
 

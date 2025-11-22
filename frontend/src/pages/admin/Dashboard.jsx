@@ -16,8 +16,8 @@ const Dashboard = ({ handleClick }) => {
   useEffect(() => {
     fetch(`${SERVER_URL}/api/events`)
       .then(res => res.json())
-      .then(data => setEvents(data))
-      .catch(err => console.error('Error fetching events:', err));
+  .then(data => setEvents(data))
+  .catch(err => console.log('[ERROR] - Error fetching events:', err));
   }, [])
 
   // Delete selected events
@@ -34,7 +34,7 @@ const Dashboard = ({ handleClick }) => {
       );
       setSelection([]);
     })
-    .catch(err => console.error("Error deleting events:", err));
+  .catch(err => console.log("[ERROR] - Error deleting events:", err));
   };
 
   // Edit selected event (only if one selected)

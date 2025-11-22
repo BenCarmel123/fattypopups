@@ -68,11 +68,11 @@ export default function HomePage() {
     fetch(`${SERVER_URL}/api/events`)
       .then(res => res.json())
       .then(data => {
-        console.log('Fetched events:', data); // Debugging log
+        console.log('[DEBUG] - Fetched events:', data); // Debugging log
         setEvents(Array.isArray(data) ? data : []);
       })
       .catch(err => {
-        console.error('Error fetching events:', err);
+        console.log('[ERROR] - Error fetching events:', err);
         setEvents([]); // Fallback to an empty array on error
       });
   }, []);

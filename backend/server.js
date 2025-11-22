@@ -20,7 +20,7 @@ import { deleteEvent } from './services/events/deleteEvent.js';
 const app = express();
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`[DEBUG] - Server running on port ${PORT}`);
 });
 
 // Middleware
@@ -37,7 +37,7 @@ app.use(express.json());
 
 // Logging middleware
 app.use((req, res, next) => {
-  console.log(` Incoming ${req.method} ${req.url}`);
+  console.log(`[DEBUG] - Incoming ${req.method} ${req.url}`);
   next();
 });
 
@@ -54,7 +54,7 @@ app.get('/' + process.env.ADMIN_ROUTE, async (req, res) => {
       events,
     });
   } catch (err) {
-    console.error("HTTP Error:", err);
+    console.log("[ERROR] - HTTP Error:", err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -65,7 +65,7 @@ app.get('/api/events', async (req, res) => {
     const events = await getEvents();
     res.json(events);
   } catch (err) {
-    console.error("HTTP Error:", err);
+    console.log("[ERROR] - HTTP Error:", err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -86,7 +86,7 @@ app.put('/api/events/:id', uploadMemory.single("poster"), async (req, res) => {
     const updatedEvent = await updateEvent(req.params.id, req.body, req.file);
     res.json(updatedEvent);
   } catch (err) {
-    console.error("HTTP Error:", err);
+    console.log("[ERROR] - HTTP Error:", err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -102,7 +102,7 @@ app.delete('/api/events', async (req, res) => {
     const result = await deleteEvent(titles);
     res.json(result);
   } catch (err) {
-    console.error("HTTP Error:", err);
+    console.log("[ERROR] - HTTP Error:", err);
     res.status(500).json({ error: err.message });
   }
 });

@@ -7,7 +7,7 @@ export async function getEvents() {
     .order("start_datetime", { ascending: true });
 
   if (error) {
-    console.error("Error fetching events:", error);
+    console.log("[ERROR] - Error fetching events:", error);
     throw new Error(error.message);
   }
   return data;
