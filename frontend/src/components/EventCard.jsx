@@ -195,7 +195,7 @@ export function CardBody({ event }) {
   <Card.Title
   textAlign={CENTER}
   fontSize={XL}
-  fontWeight="500"
+  fontWeight="bolder"
   color={DRAWER_DETAILS_FONT_COLOR}
   mt={-1}
   mb={1}
@@ -301,7 +301,8 @@ export default function EventCard({ event }) {
           borderStyle: {SOLID},
           borderColor: '#cde6e5',
           borderRadius: '50px',
-          borderWidth: '1.5px'
+          borderWidth: '1.5px',
+          fontWeight: 'bolder'
         }}
       >
         <EventImageContainer event={event} />

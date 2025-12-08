@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { useRef, useState } from "react";
 
 export default function DynamicCard({ children }) {
@@ -11,8 +11,13 @@ export default function DynamicCard({ children }) {
     offset: ["start end", "end start"],
   });
 
+  // smoother version of your y transform
   const yTransform = useTransform(scrollYProgress, [0, 1], [20, -20]);
-  const opacityTransform = useTransform(scrollYProgress, [1, 1, 1, 1], [1, 1, 1, 1]);
+  const smoothY = useSpring(yTransform, {
+    stiffness: 50,
+    damping: 20,
+    mass: 0.3,
+  });
 
   const [isFrozen, setIsFrozen] = useState(false);
 
@@ -25,8 +30,8 @@ export default function DynamicCard({ children }) {
   const motionStyle = isTouch
     ? isFrozen
       ? { y: 0, opacity: 1 }
-      : { y: yTransform, opacity: opacityTransform }
-    : {};
+      : { y: smoothY, opacity: 1 }
+    : { y: smoothY };
 
   return (
     <motion.div
@@ -35,9 +40,8 @@ export default function DynamicCard({ children }) {
       className="overflow-hidden rounded-2xl bg-[transparent] will-change-transform relative z-10"
       initial={{ opacity: 0, y: 100 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: false, amount: 0.3 }}
+      viewport={{ once: true, amount: 0.3 }}
       onViewportEnter={isTouch ? handleEnter : undefined}
-      // smoother hover animation on web
       whileHover={
         !isTouch
           ? {
@@ -60,4 +64,3 @@ export default function DynamicCard({ children }) {
     </motion.div>
   );
 }
-
