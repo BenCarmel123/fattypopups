@@ -1,5 +1,4 @@
 import { supabase } from '../../config/supabaseClient.js';
-import { generateEmbedding } from '../../openai/agent.js';
 
 export const createEvent = async (body, file) => {
   const {
@@ -51,50 +50,6 @@ export const createEvent = async (body, file) => {
     .single();
 
   if (insertErr) throw new Error(insertErr.message);
-
-  // 3. Generate embeddings
-  let english_embedding = null;
-  let hebrew_embedding = null;
-
-  try {
-    english_embedding = await generateEmbedding(english_description);
-    hebrew_embedding = await generateEmbedding(hebrew_description);
-  } catch (e) {
-    console.log("[ERROR] - Embedding error:", e);
-  }
-
-  // 4. Insert embeddings
-  let embedding_id_en = null;
-  let embedding_id_he = null;
-
-  try {
-    const { data: enRow } = await supabase
-      .from('embeddings')
-      .insert({
-        chef_names: chefNamesArray.join(", "),
-        language: 'en',
-        description: english_description,
-        embedding: english_embedding,
-      })
-      .select()
-      .single();
-
-    const { data: heRow } = await supabase
-      .from('embeddings')
-      .insert({
-        chef_names: chefNamesArray.join(", "),
-        language: 'he',
-        description: hebrew_description,
-        embedding: hebrew_embedding,
-      })
-      .select()
-      .single();
-
-    embedding_id_en = enRow.id;
-    embedding_id_he = heRow.id;
-  } catch (e) {
-    console.log("[ERROR] - Error storing embeddings:", e);
-  }
 
   // 5. Update event with IDs
   await supabase
