@@ -2,7 +2,7 @@ import { Checkbox, Table, Button } from "@chakra-ui/react"
 import { useState, useEffect } from "react"
 import { ADD, EDIT, LARGE, FLEX, CENTER, SOLID, XL, BOLD, MEDIUM, MINIMAL_TRANSFORM, MINIMAL_TRANSITION } from "../../components/config/strings"
 import MyAlert from "../../components/CustomAlert.jsx"; 
-import { WHITE, CHECKBOX_COLOR, BACKGROUND_COLOR, ADMIN_PANEL_COLOR } from "../../components/config/colors";
+import { WHITE, BACKGROUND_COLOR, ADMIN_PANEL_COLOR } from "../../components/config/colors";
 import { BackButton } from "../../components/Buttons.jsx";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
@@ -40,7 +40,7 @@ const Dashboard = ({ handleClick }) => {
   // Edit selected event (only if one selected)
   const handleEditEvents = () => {
     if (selection.length !== 1) {
-        setAlert({ status: "error", title: "Selection Error", description: "Please select exactly one event to edit." });
+        setAlert({ status: "error", description: "Please select exactly one event to edit." });
       return
     }
     const eventToEdit = events.find(event => event.title === selection[0]);
@@ -53,24 +53,16 @@ const Dashboard = ({ handleClick }) => {
       data-selected={selection.includes(event.title) ? "" : undefined}
     >
       <Table.Cell>
-        <Checkbox.Root
-          size={LARGE}
-          mt="0.5"
-          aria-label="Select row"
-          borderColor={CHECKBOX_COLOR}
-          borderWidth={2}
-          _checked={{ borderColor: CHECKBOX_COLOR, bg: CHECKBOX_COLOR }}
-          _focus={{ boxShadow: `0 0 0 2px ${CHECKBOX_COLOR}` }}
-          style={{ boxShadow: `0 0 0 2px ${CHECKBOX_COLOR}`, borderRadius: '0.5rem' }}
-          checked={selection.includes(event.title)}
-          onCheckedChange={(checked) => {
-          setSelection((prev) =>
-            checked
+      <Checkbox.Root variant={'subtle'} colorPalette={'blue'}
+        checked={selection.includes(event.title)}
+        onCheckedChange={({ checked }) => {
+          setSelection(prev =>
+            checked === true
               ? [...prev, event.title]
-              : prev.filter((title) => title !== event.title),
+              : prev.filter(title => title !== event.title)
           );
         }}
-        >
+      >
           <Checkbox.HiddenInput />
           <Checkbox.Control />
         </Checkbox.Root>
