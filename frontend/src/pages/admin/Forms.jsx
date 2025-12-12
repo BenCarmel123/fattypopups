@@ -8,6 +8,7 @@ import { FORM_FIELD_COLOR, TEXT_AREA_COLOR, TRANSPARENT, WHITE } from "../../com
 import { CENTER, FLEX, RELATIVE, FIXED, MAX, NONE, AUTO, LARGE, XL, MEDIUM, SOLID, MINIMAL_TRANSFORM, BOLD } from "../../components/config/strings.jsx";
 import { formatDate } from "../../components/utils.jsx";
 import { BackButton, SubmitFormButton } from "../../components/Buttons.jsx";
+import { useNavigate } from "react-router-dom";
 
 const ADMIN_USERNAME = process.env.REACT_APP_ADMIN_USERNAME;
 const ADMIN_PASSWORD = process.env.REACT_APP_ADMIN_PASSWORD;
@@ -61,8 +62,10 @@ export default function LoginForm( {handleClick} ) {
     </div>);
 }
 
-export function EventForm({ handleClick, event, isEdit } ) {
+export function EventForm({ event, isEdit } ) {
     const [alert, setAlert] = useState(undefined);
+    const navigate = useNavigate();
+
     function handleEvent(e) {
         e.preventDefault(); 
         const form = e.target; // e.target is the form when using onSubmit
@@ -116,8 +119,9 @@ export function EventForm({ handleClick, event, isEdit } ) {
             setAlert({
                 status: "success",
                 title: isEdit ? "Event Updated" : "Event Created",
-                description: isEdit ? "The event was successfully updated." : "The event was successfully added."
             });
+
+           setTimeout(() => navigate(-1), 500);
         })
         .catch((err) => {
             // handle error
