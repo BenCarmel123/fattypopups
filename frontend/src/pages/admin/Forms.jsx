@@ -8,7 +8,6 @@ import { FORM_FIELD_COLOR, TEXT_AREA_COLOR, TRANSPARENT, WHITE } from "../../com
 import { CENTER, FLEX, RELATIVE, FIXED, MAX, NONE, AUTO, LARGE, XL, MEDIUM, SOLID, MINIMAL_TRANSFORM, BOLD } from "../../components/config/strings.jsx";
 import { formatDate } from "../../components/utils.jsx";
 import { BackButton, SubmitFormButton } from "../../components/Buttons.jsx";
-import { useNavigate } from "react-router-dom";
 
 const ADMIN_USERNAME = process.env.REACT_APP_ADMIN_USERNAME;
 const ADMIN_PASSWORD = process.env.REACT_APP_ADMIN_PASSWORD;
@@ -62,9 +61,8 @@ export default function LoginForm( {handleClick} ) {
     </div>);
 }
 
-export function EventForm({ event, isEdit } ) {
+export function EventForm({ event, isEdit, handleClick } ) {
     const [alert, setAlert] = useState(undefined);
-    const navigate = useNavigate();
 
     function handleEvent(e) {
         e.preventDefault(); 
@@ -121,7 +119,8 @@ export function EventForm({ event, isEdit } ) {
                 title: isEdit ? "Event Updated" : "Event Created",
             });
 
-           setTimeout(() => navigate(-1), 500);
+           // Render the admin dashboard 
+           setTimeout(() => handleClick(DASHBOARD)(), 1000);
         })
         .catch((err) => {
             // handle error
