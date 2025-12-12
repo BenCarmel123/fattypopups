@@ -81,7 +81,7 @@ export function EventForm({ handleClick, event, isEdit } ) {
         };
         const validation = validateEvent(eventData, isEdit);
         if (!validation.valid) {
-            setAlert({ status: "error", title: "Validation Error", description: validation.error });
+            setAlert({ status: "error", description: validation.error });
             return;
         }
         const method = isEdit ? "PUT" : "POST";
