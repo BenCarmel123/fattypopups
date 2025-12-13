@@ -13,6 +13,7 @@ export const createEvent = async (body, file) => {
     reservation_url,
     english_description,
     hebrew_description,
+    is_draft
   } = body;
 
   const chefNamesArray = chef_names?.split(',').map(s => s.trim()) ?? [];
@@ -46,11 +47,15 @@ export const createEvent = async (body, file) => {
       reservation_url,
       english_description,
       hebrew_description,
+      is_draft
     }])
     .select()
     .single();
 
   if (insertErr) throw new Error(insertErr.message);
+  if (is_draft) {
+    return newEvent;
+  }
 
   // 3. Generate embeddings
   let english_embedding = null;

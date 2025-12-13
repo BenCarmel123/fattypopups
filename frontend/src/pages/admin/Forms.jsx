@@ -78,7 +78,7 @@ export function EventForm({ event, isEdit, handleClick } ) {
           reservation_url: form.reservation_url.value,
           english_description: form.english_description.value,
           hebrew_description: form.hebrew_description.value,
-          poster: form.poster.files[0] // File input
+          image_url: form.poster.files[0] // File input
         };
         const validation = validateEvent(eventData, isEdit);
         if (!validation.valid) {
@@ -100,7 +100,7 @@ export function EventForm({ event, isEdit, handleClick } ) {
         formData.append('reservation_url', eventData.reservation_url);
         formData.append('english_description', eventData.english_description);
         formData.append('hebrew_description', eventData.hebrew_description);
-        formData.append('poster', eventData.poster);
+        formData.append('poster', eventData.image_url);
         fetch(url, {
             method: method,
             body: formData,

@@ -48,7 +48,7 @@ app.get('/', (req, res) => {
 // Routes
 app.get('/' + process.env.ADMIN_ROUTE, async (req, res) => {
   try {
-    const events = await getEvents();
+    const events = await getEvents(true);
     res.json({
       message: 'Admin route reached!',
       events,
@@ -62,7 +62,7 @@ app.get('/' + process.env.ADMIN_ROUTE, async (req, res) => {
 // Fetch all events
 app.get('/api/events', async (req, res) => {
   try {
-    const events = await getEvents();
+    const events = await getEvents(false);
     res.json(events);
   } catch (err) {
     console.log("[ERROR] - HTTP Error:", err);
