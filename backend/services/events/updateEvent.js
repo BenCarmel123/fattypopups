@@ -45,7 +45,7 @@ export const updateEvent = async (id, body, file) => {
   // 2. FETCH CURRENT EVENT (needed for description + embedding IDs)
   const { data: currentEvent, error: eventErr } = await supabase
     .from('events')
-    .select('english_description, hebrew_description, embedding_id_en, embedding_id_he')
+    .select('english_description, hebrew_description, embedding_id_en, embedding_id_he, is_draft')
     .eq('id', id)
     .single();
 
@@ -53,16 +53,30 @@ export const updateEvent = async (id, body, file) => {
     console.log("[ERROR] - Error fetching current event:", eventErr);
   }
 
-  const englishChanged = body.english_description !== currentEvent.english_description;
-  const hebrewChanged  = body.hebrew_description !== currentEvent.hebrew_description;
+  const chefNamesArray = body.chef_names
+    ? body.chef_names.split(',').map(name => name.trim())
+    : [];
+
+  const chefInstagramsArray = body.chef_instagrams
+    ? body.chef_instagrams.split(',').map(handle => handle.trim())
+    : [];
+  
+    console.log(chefInstagramsArray)
+
+  const toPublish = (!body.is_draft && currentEvent.is_draft); 
+  const published = (!body.is_draft && !currentEvent.is_draft); 
+  const englishChanged = (published && body.english_description !== currentEvent.english_description) || toPublish;
+  const hebrewChanged  = (published && body.hebrew_description !== currentEvent.hebrew_description) || toPublish;
 
   let newEnglishEmbedding = null;
   let newHebrewEmbedding = null;
+  let en_id = null;
+  let he_id = null;
+
 
   // 3. GENERATE NEW EMBEDDINGS IF NEEDED
   if (englishChanged || hebrewChanged) {
-  console.log("[DEBUG] - Descriptions changed — generating new embeddings...");
-        
+  console.log("[DEBUG] - Descriptions changed — generating new embeddings...");    
     try {
       if (englishChanged) {
         newEnglishEmbedding = await generateEmbedding(body.english_description);
@@ -73,79 +87,91 @@ export const updateEvent = async (id, body, file) => {
     } catch (embeddingErr) {
       console.log("[ERROR] - Error generating embeddings:", embeddingErr);
     }
-
-    // Update EN embedding
-    if (newEnglishEmbedding) {
-      await supabase
-        .from('embeddings')
-        .update({
-          description: body.english_description,
-          embedding: newEnglishEmbedding
-        })
-        .eq('id', currentEvent.embedding_id_en);
-    }
-
-    // Update HE embedding
-    if (newHebrewEmbedding) {
-      await supabase
-        .from('embeddings')
-        .update({
-          description: body.hebrew_description,
-          embedding: newHebrewEmbedding
-        })
-        .eq('id', currentEvent.embedding_id_he);
-    }
-  } else {
-    console.log("[DEBUG] - Descriptions unchanged — skipping embedding regeneration.");
   }
 
-  // 4. UPDATE EVENT ITSELF
-  const {
-    title,
-    start_datetime,
-    end_datetime,
-    venue_instagram,
-    venue_address,
-    chef_names,
-    chef_instagrams,
-    reservation_url,
-    english_description,
-    hebrew_description
-  } = body;
+  // 4. UPDATE EMBEDDINGS TABLE
+  // If event was draft -> Create embeddings
+  if (toPublish) { 
+    try {
+      const { data: enRow } = await supabase
+        .from('embeddings')
+        .insert({
+          chef_names: chefNamesArray.join(", "),
+          language: 'en',
+          description: body.english_description,
+          embedding: newEnglishEmbedding,
+        })
+        .select()
+        .single();
 
-  const chefNamesArray = chef_names
-    ? chef_names.split(',').map(name => name.trim())
-    : [];
+      const { data: heRow } = await supabase
+        .from('embeddings')
+        .insert({
+          chef_names: chefNamesArray.join(", "),
+          language: 'he',
+          description: body.hebrew_description,
+          embedding: newHebrewEmbedding,
+        })
+        .select()
+        .single();
 
-  const chefInstagramsArray = chef_instagrams
-    ? chef_instagrams.split(',').map(handle => handle.trim())
-    : [];
+        en_id = enRow.id
+        he_id = heRow.id
 
-  const startDate = new Date(start_datetime);
-  const endDate = new Date(end_datetime);
+    } 
+    catch (e) {
+      console.log("[ERROR] - Error inserting embeddings:", e);
+    }
+  }
+
+  // If event wasn't draft -> Update embeddings
+  if (published) {
+    try {
+    // Update EN embedding
+      if (newEnglishEmbedding) {
+        await supabase
+          .from('embeddings')
+          .update({
+            description: body.english_description,
+            embedding: newEnglishEmbedding
+          })
+          .eq('id', currentEvent.embedding_id_en);
+      }
+    // Update HE embedding
+      if (newHebrewEmbedding) {
+        await supabase
+          .from('embeddings')
+          .update({
+            description: body.hebrew_description,
+            embedding: newHebrewEmbedding
+          })
+          .eq('id', currentEvent.embedding_id_he);
+      }
+    }
+    catch(e) {
+      console.log("[ERROR] - Error updating embeddings:", e);
+    }
+  } 
+
+  // 5. UPDATE EVENT ITSELF
+  if (toPublish) {
+  body.embedding_id_en = en_id;
+  body.embedding_id_he = he_id;
+  body.chef_names = chefNamesArray;
+  body.chef_instagrams = chefInstagramsArray;
+  }
 
   try {
     const { data: updatedEvent, error: updateErr } = await supabase
       .from('events')
-      .update({
-        title,
-        start_datetime: startDate,
-        end_datetime: endDate,
-        venue_instagram,
-        venue_address,
-        chef_names: chefNamesArray,
-        chef_instagrams: chefInstagramsArray,
-        reservation_url,
-        english_description,
-        hebrew_description
-      })
+      .update(body)
       .eq('id', id)
       .select()
       .single();
-
     if (updateErr) throw updateErr;
     return updatedEvent;
-    } catch (err) {
+    } 
+    catch (err) {
     console.log("[ERROR] - Error updating event:", err);
     throw err;
   }

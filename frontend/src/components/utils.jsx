@@ -7,7 +7,7 @@ import { HOVER, GRAY } from './config/colors.jsx';
 
 // Helper to validate event data
 export default function validateEvent(event, isEdit) {
-    const { title, start_datetime, end_datetime, venue_instagram, venue_address, chef_names, chef_instagrams, reservation_url, english_description, hebrew_description, poster } = event;
+    const { title, start_datetime, end_datetime, venue_instagram, venue_address, chef_names, chef_instagrams, reservation_url, english_description, hebrew_description, image_url } = event;
 
     if (!title || typeof title !== STRING || !validator.isLength(title.trim(), { min: 1 })) {
         return { valid: false, error: ERR_TITLE_REQUIRED };
@@ -51,7 +51,7 @@ export default function validateEvent(event, isEdit) {
         return { valid: false, error: ERR_HEBREW_DESC_REQUIRED };
     }
     
-    if (!isEdit && (!poster || !(poster instanceof File))) {
+    if (!isEdit && (!image_url || !(image_url instanceof File))) {
         return { valid: false, error: ERR_POSTER_REQUIRED };
     }
 
@@ -131,7 +131,11 @@ export function handleWhatsApp(description) {
     }
 
 export function handleInstagram(instagram) {
-    window.open(instagram, SELF, NO_OPENER);
+  let url = instagram.trim();
+  if (url.startsWith('@')) {
+    url = `https://instagram.com/${url.slice(1)}`;
+  }
+  window.open(url, "_self", "noopener,noreferrer");
 }
 
 export function handleCalendar(event) {
