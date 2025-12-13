@@ -90,7 +90,7 @@ export const updateEvent = async (id, body, file) => {
   let he_id = null;
 
 
-  // 3. GENERATE NEW EMBEDDINGS IF NEEDED
+  // 3. GENERATE NEW EMBEDDINGS (IF NEEDED)
   if (englishChanged || hebrewChanged) {
   console.log("[DEBUG] - Descriptions changed — generating new embeddings...");    
     try {
