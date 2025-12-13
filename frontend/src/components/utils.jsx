@@ -131,7 +131,11 @@ export function handleWhatsApp(description) {
     }
 
 export function handleInstagram(instagram) {
-    window.open(instagram, SELF, NO_OPENER);
+  let url = instagram.trim();
+  if (url.startsWith('@')) {
+    url = `https://instagram.com/${url.slice(1)}`;
+  }
+  window.open(url, "_self", "noopener,noreferrer");
 }
 
 export function handleCalendar(event) {
