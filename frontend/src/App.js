@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import ReactGA from "react-ga4";
 
-import AdminPageHandler from "./pages/admin/AdminPageHandler";
+import AdminPageHandler from "./pages/admin/Handler";
 import HomePage from "./pages/home/Home";
 import AboutPage from "./pages/about/AboutPage";
 

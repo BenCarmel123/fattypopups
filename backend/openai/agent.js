@@ -38,7 +38,7 @@ async function generateEventPoster(chef_names, venue_address, event_description)
   );
   const arrayBuffer = await response.arrayBuffer();
   await writeFile('event_poster.png', Buffer.from(arrayBuffer));
-  console.log("[DEBUG] - Poster image saved as event_poster.png");
+  console.log("[DEBUG] Poster image saved as event_poster.png");
 }
 
 // Main function to generate event description and optionally poster (stub for now)

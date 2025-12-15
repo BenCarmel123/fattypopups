@@ -1,4 +1,4 @@
-import { Button, Card, Stack, Input, Field, Textarea } from "@chakra-ui/react";
+import { Button, Card, Stack, Input, Field } from "@chakra-ui/react";
 import { DASHBOARD, MINIMAL_TRANSITION } from "../../components/config/strings.jsx";
 import validateEvent from "../../components/utils.jsx";
 import  MyAlert  from "../../components/CustomAlert.jsx";
@@ -8,7 +8,7 @@ import { FORM_FIELD_COLOR, TEXT_AREA_COLOR, TRANSPARENT, WHITE } from "../../com
 import { CENTER, FLEX, RELATIVE, FIXED, MAX, NONE, AUTO, LARGE, XL, MEDIUM, SOLID, MINIMAL_TRANSFORM, BOLD } from "../../components/config/strings.jsx";
 import { formatDate } from "../../components/utils.jsx";
 import { BackButton, SubmitFormButton } from "../../components/Buttons.jsx";
-
+import DescriptionArea from "../../components/DescriptionArea.jsx";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -29,7 +29,8 @@ export default function EventForm({ event, isEdit, handleClick } ) {
           reservation_url: form.reservation_url.value,
           english_description: form.english_description.value,
           hebrew_description: form.hebrew_description.value,
-          image_url: form.poster.files[0] // File input
+          image_url: form.poster.files[0], //TODO: Find better name (its a file)
+          is_draft: form.is_draft ? !!form.is_draft.checked : false,
         };
         const validation = validateEvent(eventData, isEdit);
         if (!validation.valid) {
@@ -51,7 +52,8 @@ export default function EventForm({ event, isEdit, handleClick } ) {
         formData.append('reservation_url', eventData.reservation_url);
         formData.append('english_description', eventData.english_description);
         formData.append('hebrew_description', eventData.hebrew_description);
-        formData.append('poster', eventData.image_url);
+        formData.append('image_url', eventData.image_url);
+        formData.append('is_draft', eventData.is_draft ? 'true' : 'false');
         fetch(url, {
             method: method,
             body: formData,
@@ -128,32 +130,8 @@ export default function EventForm({ event, isEdit, handleClick } ) {
                                 <Field.Label color={FORM_FIELD_COLOR}>Reservation URL</Field.Label>
                                 <Input name="reservation_url" defaultValue={event?.reservation_url || ""} borderColor={TEXT_AREA_COLOR} borderWidth={2} _focus={{ borderColor: FORM_FIELD_COLOR }} />
                             </Field.Root>
-                            <Field.Root>
-                                <Field.Label color={FORM_FIELD_COLOR}>English Description</Field.Label>
-                                <Textarea
-                                    name="english_description"
-                                    defaultValue={event?.english_description || ""}
-                                    borderColor={TEXT_AREA_COLOR}
-                                    borderWidth={2}
-                                    _focus={{ borderColor: FORM_FIELD_COLOR }}
-                                    resize="vertical"
-                                    minH="100px"
-                                    onInput={(e) => e.target.style.height = `${e.target.scrollHeight}px`}
-                                />
-                            </Field.Root>
-                            <Field.Root>
-                                <Field.Label color={FORM_FIELD_COLOR}>Hebrew Description</Field.Label>
-                                <Textarea
-                                    name="hebrew_description"
-                                    defaultValue={event?.hebrew_description || ""}
-                                    borderColor={TEXT_AREA_COLOR}
-                                    borderWidth={2}
-                                    _focus={{ borderColor: FORM_FIELD_COLOR }}
-                                    resize="vertical"
-                                    minH="100px"
-                                    onInput={(e) => e.target.style.height = `${e.target.scrollHeight}px`}
-                                />
-                            </Field.Root>
+                            <DescriptionArea event={event} lang="en" />
+                            <DescriptionArea event={event} lang="he" />
                             <Field.Root>
                                 <Button 
                                     variant={SOLID}
@@ -166,10 +144,15 @@ export default function EventForm({ event, isEdit, handleClick } ) {
                                     backgroundColor={FORM_FIELD_COLOR}
                                     _hover={{ transform: MINIMAL_TRANSFORM }} 
                                     transition={MINIMAL_TRANSITION}
-                                    as="label"
-                                >
+                                    as="label">
                                     <FileUpload style={{ display: 'none'}} />
                                 </Button>
+                            </Field.Root>
+                            <Field.Root>
+                                <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                  <input type="checkbox" name="is_draft" defaultChecked={event?.is_draft || false} />
+                                  <span>Save as Draft </span>
+                                </label>
                             </Field.Root>
                         </Stack>
                     </Card.Body>

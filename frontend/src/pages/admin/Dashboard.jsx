@@ -1,9 +1,9 @@
 import { Checkbox, Table, Button } from "@chakra-ui/react"
 import { useState, useEffect } from "react"
 import { ADD, EDIT, LARGE, FLEX, CENTER, SOLID, XL, BOLD, MEDIUM, MINIMAL_TRANSFORM, MINIMAL_TRANSITION } from "../../components/config/strings"
-import MyAlert from "../../components/CustomAlert.jsx"; 
 import { WHITE, BACKGROUND_COLOR, ADMIN_PANEL_COLOR } from "../../components/config/colors";
 import { BackButton } from "../../components/Buttons.jsx";
+import MyAlert from "../../components/CustomAlert.jsx"; 
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -14,10 +14,10 @@ const Dashboard = ({ handleClick }) => {
   
   // Fetch events from the server
   useEffect(() => {
-    fetch(`${SERVER_URL}/api/events`)
+    fetch(`${SERVER_URL}/api/events?includeDrafts=true`)
       .then(res => res.json())
   .then(data => setEvents(data))
-  .catch(err => console.log('[ERROR] - Error fetching events:', err));
+  .catch(err => console.log('[ERROR] Error fetching events:', err));
   }, [])
 
   // Delete selected events
@@ -34,7 +34,7 @@ const Dashboard = ({ handleClick }) => {
       );
       setSelection([]);
     })
-  .catch(err => console.log("[ERROR] - Error deleting events:", err));
+  .catch(err => console.log("[ERROR] Error deleting events:", err));
   };
 
   // Edit selected event (only if one selected)
@@ -47,30 +47,30 @@ const Dashboard = ({ handleClick }) => {
     handleClick(EDIT, eventToEdit)();
   }
 
-  const eventRows = events.map((event) => (
+  const eventRows = events.map((event) => 
+    (
     <Table.Row
       key={event.title}
       data-selected={selection.includes(event.title) ? "" : undefined}
     >
       <Table.Cell>
-      <Checkbox.Root variant={'subtle'} colorPalette={'blue'}
+      <Checkbox.Root variant={'subtle'} colorPalette={event.is_draft ? 'red' : 'blue'}
         checked={selection.includes(event.title)}
-        onCheckedChange={({ checked }) => {
-          setSelection(prev =>
-            checked === true
-              ? [...prev, event.title]
-              : prev.filter(title => title !== event.title)
-          );
-        }}
-      >
+        onCheckedChange=
+        {({ checked }) => 
+          {
+          setSelection(prev => checked === true ? 
+            [...prev, event.title] : prev.filter(title => title !== event.title));
+          }
+        }> 
           <Checkbox.HiddenInput />
           <Checkbox.Control />
         </Checkbox.Root>
       </Table.Cell>
       <Table.Cell>{event.title}</Table.Cell>
     </Table.Row>
-  ))
-
+    )  );
+  
   return (
     <div style={{ display: FLEX, flexDirection: 'column', alignItems: 'stretch', maxWidth: '1200px', minWidth: '400px', margin: '0 auto', padding: '2rem', borderRadius: '2rem' }}>
       {alert && <MyAlert {...alert} onClose={() => setAlert(null)} />}

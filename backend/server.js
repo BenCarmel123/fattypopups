@@ -46,23 +46,12 @@ app.get('/', (req, res) => {
 });
 
 // Routes
-app.get('/' + process.env.ADMIN_ROUTE, async (req, res) => {
-  try {
-    const events = await getEvents(true);
-    res.json({
-      message: 'Admin route reached!',
-      events,
-    });
-  } catch (err) {
-    console.log("[ERROR] - HTTP Error:", err);
-    res.status(500).json({ error: err.message });
-  }
-});
 
 // Fetch all events
 app.get('/api/events', async (req, res) => {
   try {
-    const events = await getEvents(false);
+    const isAdmin = req.query.includeDrafts? true : false
+    const events = await getEvents(isAdmin);
     res.json(events);
   } catch (err) {
     console.log("[ERROR] - HTTP Error:", err);
