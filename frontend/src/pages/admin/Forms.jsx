@@ -100,7 +100,7 @@ export function EventForm({ event, isEdit, handleClick } ) {
         formData.append('reservation_url', eventData.reservation_url);
         formData.append('english_description', eventData.english_description);
         formData.append('hebrew_description', eventData.hebrew_description);
-        formData.append('poster', eventData.image_url);
+        formData.append('image_url', eventData.image_url);
         fetch(url, {
             method: method,
             body: formData,
