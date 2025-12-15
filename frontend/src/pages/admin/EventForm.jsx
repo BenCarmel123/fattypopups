@@ -150,12 +150,14 @@ export default function EventForm({ event, isEdit, handleClick } ) {
                                     <FileUpload style={{ display: 'none'}} />
                                 </Button>
                             </Field.Root>
+                            {event.is_draft && isEdit && (
                             <Field.Root>
                                 <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                  <input type="checkbox" name="is_draft" defaultChecked={event?.is_draft || false} />
-                                  <span>Save as Draft </span>
+                                <input type="checkbox" name="is_draft" defaultChecked={event?.is_draft || false} />
+                                <span>Save as Draft </span>
                                 </label>
                             </Field.Root>
+                            )}
                         </Stack>
                     </Card.Body>
                     <Card.Footer>
