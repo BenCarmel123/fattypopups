@@ -5,12 +5,12 @@ import { generateEmbedding } from "../../openai/agent.js";
 
 // UPDATE event (PUT) with image overwrite + embedding update
 export const updateEvent = async (id, body, file) => {
-  console.log("[DEBUG] - Received PUT /api/events/:id");
-  console.log("[DEBUG] - Request body:", body);
+  console.log("[DEBUG] Received PUT /api/events/:id");
+  console.log("[DEBUG] Request body:", body);
 
-  // 1. IMAGE OVERWRITE (unchanged logic, just cleaner)
+  // 1. IMAGE OVERWRITE 
   if (file) {
-    console.log("[DEBUG] - Uploaded file:", file);
+    console.log("[DEBUG] Uploaded file:", file);
     let s3_key;
     let s3_url;
 
@@ -79,8 +79,16 @@ export const updateEvent = async (id, body, file) => {
   body.chef_instagrams = chefInstagramsArray;
 
   // Compute draft & embedding changes 
-  const toPublish = (!body.is_draft && currentEvent.is_draft); 
-  const published = (!body.is_draft && !currentEvent.is_draft); 
+  const isDraft = body.is_draft === "true"; // converts string to boolean
+  const toPublish = (!isDraft && currentEvent.is_draft); 
+  
+  // Enforce invariant: cannot publish a draft without an image.
+  if (toPublish && !body.image_url && !currentEvent.image_url) {
+    console.log("[ERROR] Cannot publish draft: event must have an image.");
+    throw new Error("Cannot publish draft: event must have an image.");
+  } 
+
+  const published = (!isDraft && !currentEvent.is_draft); 
   const englishChanged = (published && body.english_description !== currentEvent.english_description) || toPublish;
   const hebrewChanged  = (published && body.hebrew_description !== currentEvent.hebrew_description) || toPublish;
 

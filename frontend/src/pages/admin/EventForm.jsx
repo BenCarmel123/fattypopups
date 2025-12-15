@@ -32,11 +32,13 @@ export default function EventForm({ event, isEdit, handleClick } ) {
           image_url: form.poster.files[0], //TODO: Find better name (its a file)
           is_draft: form.is_draft ? !!form.is_draft.checked : false,
         };
-        const validation = validateEvent(eventData, isEdit);
-        if (!validation.valid) {
+
+        const validation = eventData.is_draft ? true : validateEvent(eventData, isEdit)
+        if (!validation) {
             setAlert({ status: "error", description: validation.error });
             return;
         }
+
         const method = isEdit ? "PUT" : "POST";
         const url = isEdit ? `${SERVER_URL}/api/events/${event.id}` : `${SERVER_URL}/api/events`;
 
@@ -52,7 +54,7 @@ export default function EventForm({ event, isEdit, handleClick } ) {
         formData.append('reservation_url', eventData.reservation_url);
         formData.append('english_description', eventData.english_description);
         formData.append('hebrew_description', eventData.hebrew_description);
-        formData.append('image_url', eventData.image_url);
+        formData.append('poster', eventData.image_url);
         formData.append('is_draft', eventData.is_draft ? 'true' : 'false');
         fetch(url, {
             method: method,
