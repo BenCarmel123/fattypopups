@@ -5,7 +5,7 @@ require('dotenv').config();
 const supabase = createClient(process.env.DATABASE_PROD_URL, process.env.SUPABASE_KEY);
 
 async function linkEmbeddings() {
-  console.log("[DEBUG] - Linking embeddings to events...");
+  console.log("[DEBUG] Linking embeddings to events...");
 
   // 1. Fetch all events
   const { data: events, error: eventErr } = await supabase
@@ -13,7 +13,7 @@ async function linkEmbeddings() {
     .select('*');
 
   if (eventErr) {
-    console.log("[ERROR] - Error fetching events:", eventErr);
+    console.log("[ERROR] Error fetching events:", eventErr);
     return;
   }
 
@@ -39,7 +39,7 @@ async function linkEmbeddings() {
       .single();
 
     if (enErr || heErr) {
-      console.log(`[DEBUG] - Skipping event ${event.id} (no match found)`);
+      console.log(`[DEBUG] Skipping event ${event.id} (no match found)`);
       continue;
     }
 
@@ -52,10 +52,10 @@ async function linkEmbeddings() {
       })
       .eq('id', event.id);
 
-    console.log(`[DEBUG] - Linked event ${event.id} → EN:${enEmbed.id} HE:${heEmbed.id}`);
+    console.log(`[DEBUG] Linked event ${event.id} → EN:${enEmbed.id} HE:${heEmbed.id}`);
   }
 
-  console.log("[DEBUG] - Done linking embeddings.");
+  console.log("[DEBUG] Done linking embeddings.");
 }
 
 linkEmbeddings();

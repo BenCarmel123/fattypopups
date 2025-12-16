@@ -9,23 +9,23 @@ const supabase = createClient(
 );
 
 async function migrateEmbeddings() {
-  console.log("[DEBUG] - 🔍 Fetching all events...");
+  console.log("[DEBUG] Fetching all events...");
 
   const { data: events, error } = await supabase
     .from('events')
     .select('id, chef_names, english_description, hebrew_description');
 
   if (error) {
-    console.log("[ERROR] - ❌ Error fetching events:", error);
+    console.log("[ERROR] Error fetching events:", error);
     return;
   }
 
-  console.log(`[DEBUG] - 📦 Found ${events.length} events`);
+  console.log(`[DEBUG] Found ${events.length} events`);
 
   for (const event of events) {
     const { id, chef_names, english_description, hebrew_description } = event;
 
-  console.log(`[DEBUG] - ➡️ Processing event ID ${id}`);
+  console.log(`[DEBUG] Processing event ID ${id}`);
 
     try {
       // Generate embeddings
@@ -55,16 +55,16 @@ async function migrateEmbeddings() {
         ]);
 
       if (insertError) {
-        console.log(`[ERROR] - ❌ Error inserting embedding for event ID ${id}:`, insertError);
+        console.log(`[ERROR] Error inserting embedding for event ID ${id}:`, insertError);
       } else {
-        console.log(`[DEBUG] - ✅ Embeddings stored for event ID ${id}`);
+        console.log(`[DEBUG] Embeddings stored for event ID ${id}`);
       }
     } catch (err) {
-      console.log(`[ERROR] - ❌ Error generating embedding for event ID ${id}:`, err);
+      console.log(`[ERROR] Error generating embedding for event ID ${id}:`, err);
     }
   }
 
-  console.log("[DEBUG] - 🎉 Migration complete!");
+  console.log("[DEBUG] Migration complete!");
 }
 
 // Run script

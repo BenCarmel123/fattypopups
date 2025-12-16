@@ -14,13 +14,13 @@ export async function getEvents(isAdmin) {
     const { data, error } = await query;
 
     if (error) {
-      console.log("[ERROR] - Error fetching events:", error);
+      console.log("[ERROR] Error fetching events:", error);
       throw new Error(error.message);
     }
 
     return data;
   } catch (err) {
-    console.log("[ERROR] - Unexpected error fetching events:", err);
+    console.log("[ERROR] Unexpected error fetching events:", err);
     throw err;
   }
 }
