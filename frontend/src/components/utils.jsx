@@ -7,7 +7,7 @@ import { HOVER, GRAY } from './config/colors.jsx';
 
 // Helper to validate event data
 export default function validateEvent(event, isEdit) {
-    const { title, start_datetime, end_datetime, venue_instagram, venue_address, chef_names, chef_instagrams, reservation_url, english_description, hebrew_description, image_url } = event;
+    const { title, start_datetime, end_datetime, venue_instagram, venue_address, chef_names, chef_instagrams, reservation_url, english_description, hebrew_description, poster } = event;
 
     if (!title || typeof title !== STRING || !validator.isLength(title.trim(), { min: 1 })) {
         return { valid: false, error: ERR_TITLE_REQUIRED };
@@ -51,7 +51,7 @@ export default function validateEvent(event, isEdit) {
         return { valid: false, error: ERR_HEBREW_DESC_REQUIRED };
     }
     
-    if (!isEdit && (!image_url || !(image_url instanceof File))) {
+    if (!isEdit && (!poster || !(poster instanceof File))) {
         return { valid: false, error: ERR_POSTER_REQUIRED };
     }
 

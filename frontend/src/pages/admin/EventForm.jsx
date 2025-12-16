@@ -17,7 +17,7 @@ export default function EventForm({ event, isEdit, handleClick } ) {
 
     function handleEvent(e) {
         e.preventDefault(); 
-        const form = e.target; // e.target is the form when using onSubmit
+        const form = e.target; 
         const eventData = {
           title: form.title.value,
           start_datetime: form.start_datetime.value,
@@ -29,20 +29,26 @@ export default function EventForm({ event, isEdit, handleClick } ) {
           reservation_url: form.reservation_url.value,
           english_description: form.english_description.value,
           hebrew_description: form.hebrew_description.value,
-          image_url: form.poster.files[0], //TODO: Find better name (its a file)
+          poster: form.poster.files[0], 
           is_draft: form.is_draft ? !!form.is_draft.checked : false,
         };
 
-        const validation = eventData.is_draft ? true : validateEvent(eventData, isEdit)
-        if (!validation) {
-            setAlert({ status: "error", description: validation.error });
-            return;
+        // MINIMAL CHANGE: validate only if draft → non-draft
+        const wasDraft = event?.is_draft ?? true;
+        const isDraft = eventData.is_draft;
+
+        if (wasDraft && !isDraft) {
+            const validation = validateEvent(eventData, isEdit);
+            if (!validation) {
+                setAlert({ status: "error", description: validation.error });
+                return;
+            }
         }
 
         const method = isEdit ? "PUT" : "POST";
         const url = isEdit ? `${SERVER_URL}/api/events/${event.id}` : `${SERVER_URL}/api/events`;
 
-        // If valid, proceed to submit the form data
+        // Submit form data
         const formData = new FormData();
         formData.append('title', eventData.title);
         formData.append('start_datetime', eventData.start_datetime);
@@ -54,8 +60,9 @@ export default function EventForm({ event, isEdit, handleClick } ) {
         formData.append('reservation_url', eventData.reservation_url);
         formData.append('english_description', eventData.english_description);
         formData.append('hebrew_description', eventData.hebrew_description);
-        formData.append('poster', eventData.image_url);
+        formData.append('poster', eventData.poster);
         formData.append('is_draft', eventData.is_draft ? 'true' : 'false');
+
         fetch(url, {
             method: method,
             body: formData,
@@ -68,17 +75,14 @@ export default function EventForm({ event, isEdit, handleClick } ) {
             return res.json();
         })
         .then(() => {
-            // handle success (e.g., show a message, reset form, etc.)
             setAlert({
                 status: "success",
                 title: isEdit ? "Event Updated" : "Event Created",
             });
 
-           // Render the admin dashboard 
-           setTimeout(() => handleClick(DASHBOARD)(), 1000);
+            setTimeout(() => handleClick(DASHBOARD)(), 1000);
         })
         .catch((err) => {
-            // handle error
             setAlert({
                 status: "error", title: "Submission Error", description: err.message
             });
@@ -150,7 +154,7 @@ export default function EventForm({ event, isEdit, handleClick } ) {
                                     <FileUpload style={{ display: 'none'}} />
                                 </Button>
                             </Field.Root>
-                            {event.is_draft && isEdit && (
+                        {(event?.is_draft ?? true) && (
                             <Field.Root>
                                 <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                 <input type="checkbox" name="is_draft" defaultChecked={event?.is_draft || false} />

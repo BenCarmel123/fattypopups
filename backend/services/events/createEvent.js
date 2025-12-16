@@ -19,7 +19,7 @@ export const createEvent = async (body, file) => {
   const chefNamesArray = chef_names?.split(',').map(s => s.trim()) ?? [];
   const chefInstagramsArray = chef_instagrams?.split(',').map(s => s.trim()) ?? [];
 
-  const image_url = file?.location || null;
+  const poster = file?.location || null;
 
   // 1. Duplicate check
   const { data: dup, error: dupErr } = await supabase
@@ -43,7 +43,7 @@ export const createEvent = async (body, file) => {
       venue_address,
       chef_names: chefNamesArray,
       chef_instagrams: chefInstagramsArray,
-      image_url,
+      poster,
       reservation_url,
       english_description,
       hebrew_description,

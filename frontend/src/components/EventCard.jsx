@@ -45,7 +45,7 @@ import { SiGooglemaps, SiGooglecalendar } from 'react-icons/si';
 import { GiForkKnifeSpoon } from 'react-icons/gi';
 import { FaWhatsapp } from 'react-icons/fa';
 
-const detailsBackgroundImageUrl = process.env.REACT_APP_DETAILS_BACKGROUND_IMAGE_URL;
+const detailsBackgroundImageUrl = process.env.REACT_APP_DETAILS_BACKGROUND_poster;
 
 /* -------------------------- ACTION BUTTON -------------------------- */
 function ActionButton({ children, onClick, ariaLabel, className = '', fullCover = false }) {
@@ -80,7 +80,7 @@ export function EventImage({ event }) {
       style={{ width: MAX, display: BLOCK, position: 'relative', transformOrigin: 'right center' }}
     >
       <img
-        src={event.image_url}
+        src={event.poster}
         alt={event.title}
         style={{
           width: MAX,
