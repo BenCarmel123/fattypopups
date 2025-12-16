@@ -14,6 +14,10 @@ const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 export default function EventForm({ event, isEdit, handleClick } ) {
     const [alert, setAlert] = useState(undefined);
+    
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const tomorrowStr = tomorrow.toISOString().split("T")[0];
 
     function handleEvent(e) {
         e.preventDefault(); 
@@ -33,15 +37,14 @@ export default function EventForm({ event, isEdit, handleClick } ) {
           is_draft: form.is_draft ? !!form.is_draft.checked : false,
         };
 
-        // MINIMAL CHANGE: validate only if draft → non-draft
         const wasDraft = event?.is_draft ?? true;
         const isDraft = eventData.is_draft;
 
-        if (wasDraft && !isDraft) {
-            const validation = validateEvent(eventData, isEdit);
-            if (!validation) {
+        if (!(wasDraft && isDraft)) {
+                const validation = validateEvent(eventData, isEdit);
+                if (!validation.valid) {
                 setAlert({ status: "error", description: validation.error });
-                return;
+                return; 
             }
         }
 
@@ -110,11 +113,11 @@ export default function EventForm({ event, isEdit, handleClick } ) {
                             </Field.Root>
                             <Field.Root>
                                 <Field.Label color={FORM_FIELD_COLOR}>Start Date</Field.Label>
-                                <Input type="date" name="start_datetime" defaultValue={formatDate(event?.start_datetime) || ""} borderColor={TEXT_AREA_COLOR} borderWidth={2} _focus={{ borderColor: FORM_FIELD_COLOR }} />
+                                <Input type="date" name="start_datetime" defaultValue={formatDate(event?.start_datetime) || tomorrowStr} borderColor={TEXT_AREA_COLOR} borderWidth={2} _focus={{ borderColor: FORM_FIELD_COLOR }} />
                             </Field.Root>
                             <Field.Root>
                                 <Field.Label color={FORM_FIELD_COLOR}>End Date</Field.Label>
-                                <Input type="date" name="end_datetime" defaultValue={formatDate(event?.end_datetime) || ""} borderColor={TEXT_AREA_COLOR} borderWidth={2} _focus={{ borderColor: FORM_FIELD_COLOR }} />
+                                <Input type="date" name="end_datetime" defaultValue={formatDate(event?.end_datetime) || tomorrowStr} borderColor={TEXT_AREA_COLOR} borderWidth={2} _focus={{ borderColor: FORM_FIELD_COLOR }} />
                             </Field.Root>
                             <Field.Root>
                                 <Field.Label color={FORM_FIELD_COLOR}>Venue Instagram</Field.Label>
