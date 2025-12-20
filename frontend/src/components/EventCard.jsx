@@ -45,7 +45,7 @@ import { SiGooglemaps, SiGooglecalendar } from 'react-icons/si';
 import { GiForkKnifeSpoon } from 'react-icons/gi';
 import { FaWhatsapp } from 'react-icons/fa';
 
-const detailsBackgroundImageUrl = process.env.REACT_APP_DETAILS_BACKGROUND_poster;
+const detailsBackgroundImageUrl = process.env.REACT_APP_DETAILS_BACKGROUND_IMAGE_URL;
 
 /* -------------------------- ACTION BUTTON -------------------------- */
 function ActionButton({ children, onClick, ariaLabel, className = '', fullCover = false }) {
