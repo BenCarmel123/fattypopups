@@ -1,8 +1,9 @@
 import { useState } from "react";
 import EventForm from "./EventForm.jsx";
 import LoginForm from "../../components/LoginForm.jsx"
-import { ADD, EDIT, LOGIN, DASHBOARD } from "../../components/config/strings.jsx";
+import { ADD, EDIT, LOGIN, DASHBOARD, MANUAL } from "../../components/config/strings.jsx";
 import Dashboard from "./Dashboard.jsx";
+import LoginOptions from "../../components/LoginOptions.jsx";
 
 export default function AdminPageHandler( ) {
   const[action, setAction] = useState(LOGIN);
@@ -19,8 +20,8 @@ export default function AdminPageHandler( ) {
          case DASHBOARD:
             return (<Dashboard handleClick={handleClick} />);
          case LOGIN:
-            return (<LoginForm handleClick={handleClick} />);
-         default:
+            return (<LoginOptions handleClick={handleClick}/>);
+         case MANUAL:
             return (<LoginForm handleClick={handleClick} />);
       }  
 }
