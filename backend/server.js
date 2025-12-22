@@ -15,6 +15,7 @@ import { getEvents } from './services/events/getEvents.js';
 import { createEvent } from './services/events/createEvent.js';
 import { updateEvent } from './services/events/updateEvent.js';
 import { deleteEvent } from './services/events/deleteEvent.js';
+import { google } from 'googleapis';
 
 // Initialize Express app
 const app = express();
@@ -22,6 +23,13 @@ const PORT = process.env.PORT || 8080;
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`[DEBUG] - Server running on port ${PORT}`);
 });
+
+// Initialize Google Auth
+const oauth2Client = new google.auth.OAuth2(
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET,
+  process.env.GOOGLE_REDIRECT_URI
+);
 
 // Middleware
 app.use(cors({
@@ -96,4 +104,29 @@ app.delete('/api/events', async (req, res) => {
   }
 });
 
+app.get('/auth/google', (req, res) => {
+  const url = oauth2Client.generateAuthUrl({
+    scope: ['openid', 'email', 'profile'],
+  });
 
+  res.redirect(url);
+});
+
+app.get('/auth/google/callback', async (req, res) => {
+  const code = req.query.code;
+
+  const { tokens } = await oauth2Client.getToken(code);
+  oauth2Client.setCredentials(tokens);
+
+  const ticket = await oauth2Client.verifyIdToken({
+    idToken: tokens.id_token,
+    audience: process.env.GOOGLE_CLIENT_ID,
+  });
+
+  const payload = ticket.getPayload();
+  const email = payload.email;
+
+  console.log('[DEBUG] Logged in as:', email);
+
+  res.redirect(process.env.FRONTEND_LOCAL_URL+'/fattyadmin?oauth=success');
+});
