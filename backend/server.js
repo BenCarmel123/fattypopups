@@ -128,5 +128,5 @@ app.get('/auth/google/callback', async (req, res) => {
 
   console.log('[DEBUG] Logged in as:', email);
 
-  res.redirect(process.env.FRONTEND_LOCAL_URL+'/fattyadmin');
+  res.redirect(process.env.FRONTEND_LOCAL_URL+'/fattyadmin?oauth=success');
 });

@@ -1,9 +1,9 @@
 import { Card, Stack, Input, Field } from "@chakra-ui/react";
-import { DASHBOARD, CENTER, FLEX, RELATIVE, FIXED, MAX, NONE, AUTO, LARGE, XL } from "./config/strings.jsx";
-import MyAlert from "./CustomAlert.jsx";
+import { DASHBOARD, CENTER, FLEX, RELATIVE, FIXED, MAX, NONE, AUTO, LARGE, XL } from "../../components/config/strings.jsx";
+import MyAlert from "../../components/CustomAlert.jsx";
 import { useState } from "react";
-import { FORM_FIELD_COLOR, TEXT_AREA_COLOR } from "./config/colors.jsx";
-import { SubmitFormButton } from "./Buttons.jsx";
+import { FORM_FIELD_COLOR, TEXT_AREA_COLOR } from "../../components/config/colors.jsx";
+import { SubmitFormButton } from "../../components/Buttons.jsx";
 
 
 const ADMIN_USERNAME = process.env.REACT_APP_ADMIN_USERNAME;

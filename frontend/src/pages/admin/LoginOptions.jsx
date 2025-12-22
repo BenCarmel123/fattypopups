@@ -1,6 +1,6 @@
 import { Button } from "@chakra-ui/react";
-import { MANUAL, MEDIUM, SOLID, XL, FLEX, BOLD, CENTER, MINIMAL_TRANSFORM, MINIMAL_TRANSITION } from "./config/strings.jsx";
-import { ADMIN_PANEL_COLOR, WHITE } from "./config/colors";
+import { MANUAL, MEDIUM, SOLID, XL, FLEX, BOLD, CENTER, MINIMAL_TRANSFORM, MINIMAL_TRANSITION } from "../../components/config/strings.jsx";
+import { ADMIN_PANEL_COLOR, WHITE } from "../../components/config/colors.jsx";
 
 const handleGoogle = () =>
       window.location.href = 'http://localhost:5000/auth/google'
