@@ -50,7 +50,7 @@ const detailsBackgroundImageUrl = process.env.REACT_APP_DETAILS_BACKGROUND_IMAGE
 /* -------------------------- ACTION BUTTON -------------------------- */
 function ActionButton({ children, onClick, ariaLabel, className = '', fullCover = false }) {
   const baseStyle = { color: GRAY, minHeight: '2.6rem', minWidth: '2.2rem', padding: '0.45rem', transition: 'background 0.18s' };
-  const coverStyle = { position: 'absolute', top: 0, left: 0, width: {MAX}, height: {MAX}, padding: 0, minHeight: 0, minWidth: 0, border: {NONE}, zIndex: 2 };
+  const coverStyle = { position: 'absolute', top: 0, left: 0, width: MAX, height: MAX, padding: 0, minHeight: 0, minWidth: 0, border: NONE, zIndex: 2 };
   const combinedStyle = fullCover ? { ...coverStyle } : baseStyle;
   return (
     <Button
@@ -288,7 +288,7 @@ export default function EventCard({ event }) {
           .eventcard-action-text{ font-size:calc(20px * 0.8); }
         }
       `}</style>
-      <Card.Root
+        <Card.Root
         size={MEDIUM}
         overflow="hidden"
         rounded={LARGE}
@@ -298,7 +298,7 @@ export default function EventCard({ event }) {
           maxWidth: 'clamp(260px, 86vw, 420px)',
           minWidth: 0,
           boxSizing: 'border-box',
-          borderStyle: {SOLID},
+          borderStyle: SOLID,
           borderColor: '#cde6e5',
           borderRadius: '50px',
           borderWidth: '1.5px',

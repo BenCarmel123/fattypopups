@@ -30,10 +30,20 @@ export default function HomePage() {
       </div>
     );
   }
-  // If no events, blank page
+  // If no events, show header and a friendly empty state instead of a blank page
   if (events.length === 0) {
-    return <></>;
-  } 
+    return (
+      <>
+        <Header />
+        <div className="flex flex-col items-center justify-center h-screen px-4">
+          <h3 style={{ fontSize: '1.125rem', fontWeight: 800, color: '#51515b', textAlign: 'center' }}>
+            No upcoming pop-ups right now.
+          </h3>
+          <p style={{ marginTop: '0.5rem', color: '#6b6b74', textAlign: 'center' }}>Check back soon or explore our About page for more.</p>
+        </div>
+      </>
+    );
+  }
   
   return (
     <>
