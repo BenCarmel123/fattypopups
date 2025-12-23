@@ -16,6 +16,7 @@ import { createEvent } from './services/events/createEvent.js';
 import { updateEvent } from './services/events/updateEvent.js';
 import { deleteEvent } from './services/events/deleteEvent.js';
 import { google } from 'googleapis';
+import session from 'express-session';
 
 // Initialize Express app
 const app = express();
@@ -53,7 +54,21 @@ app.get('/', (req, res) => {
   res.send(' FattyPopups backend is running!');
 });
 
-// Routes
+// Session Middleware
+app.use(session({
+  name: 'fatty.sid',
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    secure: false,        // set true in production (HTTPS)
+    sameSite: 'lax',
+  }
+}));
+
+
+// TODO - Move routes to separate file
 
 // Fetch all events
 app.get('/api/events', async (req, res) => {
@@ -113,6 +128,14 @@ app.get('/auth/google', (req, res) => {
 });
 
 app.get('/auth/google/callback', async (req, res) => {
+  const validateEmail = (email) => {
+  const adminEmails = [
+    process.env.BEN_EMAIL.toLowerCase(),
+    process.env.HALLIE_EMAIL.toLowerCase()
+  ].filter(Boolean);
+
+  return adminEmails.includes(email);
+}
   const code = req.query.code;
 
   const { tokens } = await oauth2Client.getToken(code);
@@ -128,5 +151,20 @@ app.get('/auth/google/callback', async (req, res) => {
 
   console.log('[DEBUG] Logged in as:', email);
 
-  res.redirect(process.env.FRONTEND_LOCAL_URL+'/fattyadmin?oauth=success');
+  const isAdmin = validateEmail(email)
+  console.log('[DEBUG] isAdmin:', isAdmin);
+  if (isAdmin) {
+    req.session.user = 
+    {
+      email,
+      provider: 'google'
+    };
+    res.redirect(`${process.env.FRONTEND_LOCAL_URL}/${ADMIN_ROUTE}?oauth=success`);
+  }
+  else {
+    res.redirect(process.env.FRONTEND_LOCAL_URL)
+  }
+
 });
+
+
