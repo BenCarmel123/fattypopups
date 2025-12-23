@@ -52,11 +52,6 @@ app.get('/', (req, res) => {
   res.send(' FattyPopups backend is running!');
 });
 
-// Fallback for undefined route 
-app.use((req, res) => {
-  res.status(404).json({ error: 'Not found' });
-});
-
 app.use('/api/events', eventRouter);
 app.use('/auth', authRouter);
 
