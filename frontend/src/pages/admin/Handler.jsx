@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import EventForm from "./EventForm.jsx";
-import LoginForm from "./LoginForm.jsx"
 import { ADD, EDIT, LOGIN, DASHBOARD, MANUAL } from "../../components/config/strings.jsx";
 import Dashboard from "./Dashboard.jsx";
 import LoginOptions from "./LoginOptions.jsx";
@@ -12,7 +11,7 @@ export default function AdminPageHandler() {
   const[action, setAction] = useState(LOGIN);
   const[selectedEvent, setSelectedEvent] = useState(undefined);
   useEffect(() => {
-    fetch(`${SERVER_URL}/api/me`, {
+    fetch(`${SERVER_URL}/auth/me`, {
       credentials: 'include'
     })
       .then(res => res.json())
@@ -37,8 +36,6 @@ export default function AdminPageHandler() {
             return (<Dashboard handleClick={handleClick} />);
          case LOGIN:
             return (<LoginOptions handleClick={handleClick}/>);
-         case MANUAL:
-            return (<LoginForm handleClick={handleClick} />);
       }  
 }
 
