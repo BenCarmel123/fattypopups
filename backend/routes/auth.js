@@ -1,5 +1,6 @@
 
 import { google } from 'googleapis';
+import express from 'express';
 
 // Initialize Google Auth
 const oauth2Client = new google.auth.OAuth2(
@@ -10,15 +11,15 @@ const oauth2Client = new google.auth.OAuth2(
 
 const authRouter = express.Router();
 
-authRouter.get('/auth/google', (req, res) => {
+authRouter.get('/google', (req, res) => {
   const url = oauth2Client.generateAuthUrl({
     scope: ['openid', 'email', 'profile'],
   });
-
+  
   res.redirect(url);
 });
 
-authRouter.get('/auth/google/callback', async (req, res) => {
+authRouter.get('/google/callback', async (req, res) => {
   const validateEmail = (email) => {
   const adminEmails = [
     process.env.BEN_EMAIL.toLowerCase(),
@@ -57,7 +58,7 @@ authRouter.get('/auth/google/callback', async (req, res) => {
   }
 });
 
-authRouter.get('/api/me', async (req,res) => {
+authRouter.get('/me', async (req,res) => {
   if (req.session?.user) {
     return res.json({
       authenticated: true,
@@ -68,6 +69,8 @@ authRouter.get('/api/me', async (req,res) => {
   }
   res.json({ authenticated: false });
 });
+
+export default authRouter;
 
 
 
