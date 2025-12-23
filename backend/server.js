@@ -64,6 +64,7 @@ app.use(session({
     httpOnly: true,
     secure: false,        // set true in production (HTTPS)
     sameSite: 'lax',
+    maxAge: 1000 * 60 * 60 * 24 * 7
   }
 }));
 
@@ -159,12 +160,21 @@ app.get('/auth/google/callback', async (req, res) => {
       email,
       provider: 'google'
     };
-    res.redirect(`${process.env.FRONTEND_LOCAL_URL}/${ADMIN_ROUTE}?oauth=success`);
+    res.redirect(`${process.env.FRONTEND_LOCAL_URL}/${process.env.ADMIN_ROUTE}`);
   }
   else {
     res.redirect(process.env.FRONTEND_LOCAL_URL)
   }
-
 });
 
-
+app.get('/api/me', async (req,res) => {
+  if (req.session?.user) {
+    return res.json({
+      authenticated: true,
+      user: {
+        email: req.session.user.email
+      }
+    });
+  }
+  res.json({ authenticated: false });
+});
