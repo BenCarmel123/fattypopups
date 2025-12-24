@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import EventForm from "./EventForm.jsx";
 import { ADD, EDIT, LOGIN, DASHBOARD, MANUAL } from "../../components/config/strings.jsx";
 import Dashboard from "./Dashboard.jsx";
-import LoginOptions from "./LoginOptions.jsx";
+import Login from "./Login.jsx";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -35,7 +35,7 @@ export default function AdminPageHandler() {
          case DASHBOARD:
             return (<Dashboard handleClick={handleClick} />);
          case LOGIN:
-            return (<LoginOptions handleClick={handleClick}/>);
+            return (<Login />);
       }  
 }
 
