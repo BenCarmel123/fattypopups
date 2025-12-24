@@ -4,12 +4,11 @@ import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { FcGoogle } from "react-icons/fc";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL
+const LOGO_URL = process.env.REACT_APP_LOGO;
 
 const handleGoogle = () => {
   window.location.href = `${SERVER_URL}/auth/google`;
 };
-
-const LOGO_URL = process.env.REACT_APP_LOGO;
 
 export default function Login() {
   return (
