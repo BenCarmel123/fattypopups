@@ -63,6 +63,7 @@ authRouter.get('/google/callback', async (req, res) => {
 });
 
 authRouter.get('/me', async (req,res) => {
+  console.log('[DEBUG me] sessionID:', req.sessionID);
   if (req.session?.user) {
     return res.json({
       authenticated: true,
@@ -72,6 +73,7 @@ authRouter.get('/me', async (req,res) => {
     });
   }
   res.json({ authenticated: false });
+  console.log('[DEBUG me] sessionID:', req.sessionID);
 });
 
 export default authRouter;
