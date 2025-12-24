@@ -22,7 +22,14 @@ export default function HomePage() {
       });
   }, []);
 
-  if (events.length === 0) return <></>;
+  if (events === null) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Spinner size="xl" color="blue.500" />
+      </div>
+    );
+  }
+
 
   return (
     <>

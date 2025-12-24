@@ -9,7 +9,6 @@ import { upload, uploadMemory } from '../config/multerConfig.js';
 const eventRouter = express.Router();
 
 // Fetch all events
-// Mounted at /api/events in server.js, so use root here
 eventRouter.get('/', async (req, res) => {
   try {
     const isAdmin = req.query.includeDrafts ? true : false;
