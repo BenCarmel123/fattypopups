@@ -16,7 +16,6 @@ export default function AdminPageHandler() {
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data);
         setAuthenticated(data.authenticated);
         setAction(data.authenticated ? DASHBOARD : LOGIN);
       });
