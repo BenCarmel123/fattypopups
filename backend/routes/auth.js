@@ -6,7 +6,7 @@ import express from 'express';
 const oauth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_ID,
   process.env.GOOGLE_CLIENT_SECRET,
-  process.env.GOOGLE_REDIRECT_URI
+  process.env.GOOGLE_REDIRECT_PROD_URI
 );
 
 const authRouter = express.Router();
@@ -51,10 +51,10 @@ authRouter.get('/google/callback', async (req, res) => {
       email,
       provider: 'google'
     };
-    res.redirect(`${process.env.FRONTEND_LOCAL_URL}/${process.env.ADMIN_ROUTE}`);
+    res.redirect(`${process.env.FRONTEND_PROD_URL}/${process.env.ADMIN_ROUTE}`);
   }
   else {
-    res.redirect(process.env.FRONTEND_LOCAL_URL)
+    res.redirect(process.env.FRONTEND_PROD_URL)
   }
 });
 
