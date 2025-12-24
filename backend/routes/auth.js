@@ -2,20 +2,24 @@
 import { google } from 'googleapis';
 import express from 'express';
 
+const redirectUri = process.env.GOOGLE_REDIRECT_PROD_URI;
+
 // Initialize Google Auth
 const oauth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_ID,
   process.env.GOOGLE_CLIENT_SECRET,
-  process.env.GOOGLE_REDIRECT_PROD_URI
+  redirectUri
 );
 
 const authRouter = express.Router();
 
 authRouter.get('/google', (req, res) => {
+  console.log("REDIRECT URI:", redirectUri);
   const url = oauth2Client.generateAuthUrl({
     scope: ['openid', 'email', 'profile'],
+    redirect_uri: redirectUri,
   });
-  
+
   res.redirect(url);
 });
 
