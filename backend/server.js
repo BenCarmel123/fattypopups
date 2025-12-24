@@ -6,22 +6,14 @@ import dns from 'dns';
 // Ensure IPv4 is preferred
 dns.setDefaultResultOrder('ipv4first');
 import 'dotenv/config';
+import session from 'express-session';
 
-// Multer imports
-import { upload, uploadMemory } from './config/multerConfig.js';
-
-// Service imports
-import { getEvents } from './services/events/getEvents.js';
-import { createEvent } from './services/events/createEvent.js';
-import { updateEvent } from './services/events/updateEvent.js';
-import { deleteEvent } from './services/events/deleteEvent.js';
+// Import routers 
+import eventRouter from './routes/events.js';
+import authRouter from './routes/auth.js';
 
 // Initialize Express app
 const app = express();
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`[DEBUG] - Server running on port ${PORT}`);
-});
 
 // Middleware
 app.use(cors({
@@ -41,59 +33,30 @@ app.use((req, res, next) => {
   next();
 });
 
+// Session Middleware
+app.use(session({
+  name: 'fatty.sid',
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    secure: false,        // set true in production (HTTPS)
+    sameSite: 'lax',
+    maxAge: 1000 * 60 * 60 * 24 * 7
+  }
+}));
+
+// For Debugging
 app.get('/', (req, res) => {
   res.send(' FattyPopups backend is running!');
 });
 
-// Routes
+app.use('/api/events', eventRouter);
+app.use('/auth', authRouter);
 
-// Fetch all events
-app.get('/api/events', async (req, res) => {
-  try {
-    const isAdmin = req.query.includeDrafts? true : false
-    const events = await getEvents(isAdmin);
-    res.json(events);
-  } catch (err) {
-    console.log("[ERROR] - HTTP Error:", err);
-    res.status(500).json({ error: err.message });
-  }
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`[DEBUG] - Server running on port ${PORT}`);
 });
-
-// Add new event
-app.post('/api/events', upload.single("poster"), async (req, res) => {
-  try {
-    const newEvent = await createEvent(req.body, req.file);
-    res.json(newEvent);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// UPDATE event with image overwrite + embedding update
-app.put('/api/events/:id', uploadMemory.single("poster"), async (req, res) => {
-  try {
-    const updatedEvent = await updateEvent(req.params.id, req.body, req.file);
-    res.json(updatedEvent);
-  } catch (err) {
-    console.log("[ERROR] - HTTP Error:", err);
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// Delete events by titles
-app.delete('/api/events', async (req, res) => {
-  const { titles } = req.body;
-
-  if (!Array.isArray(titles) || titles.length === 0) {
-    return res.status(400).json({ error: "Titles must be a non-empty array" });
-  }
-  try {
-    const result = await deleteEvent(titles);
-    res.json(result);
-  } catch (err) {
-    console.log("[ERROR] - HTTP Error:", err);
-    res.status(500).json({ error: err.message });
-  }
-});
-
 

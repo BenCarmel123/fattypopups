@@ -13,28 +13,17 @@ export default function HomePage() {
     fetch(`${SERVER_URL}/api/events`)
       .then(res => res.json())
       .then(data => {
-        console.log('[DEBUG] Fetched events:', data); // Debugging log
+        console.log('[DEBUG] Fetched events:', data); 
         setEvents(Array.isArray(data) ? data : []);
       })
       .catch(err => {
         console.log('[ERROR] Error fetching events:', err);
-        setEvents([]); // Fallback to an empty array on error
+        setEvents([]);
       });
   }, []);
-  
-  // While loading
-  if (events === null) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <Spinner size={XL} color="blue.500" />
-      </div>
-    );
-  }
-  // If no events, blank page
-  if (events.length === 0) {
-    return <></>;
-  } 
-  
+
+  if (events.length === 0) return <></>;
+
   return (
     <>
     <Header />

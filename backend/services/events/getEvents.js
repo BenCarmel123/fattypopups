@@ -5,7 +5,8 @@ export async function getEvents(isAdmin) {
     let query = supabase
       .from("events")
       .select("*")
-      .order("start_datetime", { ascending: true });
+      .order("is_draft", { ascending: true })        
+      .order("start_datetime", { ascending: true });  
 
     if (!isAdmin) {
       query = query.eq("is_draft", false);
