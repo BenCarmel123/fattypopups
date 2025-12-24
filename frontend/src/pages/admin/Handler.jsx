@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import EventForm from "./EventForm.jsx";
-import { ADD, EDIT, LOGIN, DASHBOARD, MANUAL } from "../../components/config/strings.jsx";
+import { ADD, EDIT, LOGIN, DASHBOARD } from "../../components/config/strings.jsx";
 import Dashboard from "./Dashboard.jsx";
 import Login from "./Login.jsx";
 

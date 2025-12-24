@@ -1,5 +1,5 @@
-import { MINIMAL_TRANSITION, CENTER, APP_NAME, XL, XXL, MAX, MEDIUM, LARGE} from "../../components/config/strings.jsx";
-import { WHITE, BORDER_COLOR, HOVER, GRAY, EVENT_TITLE_PADDING_COLOR } from "../../components/config/colors.jsx";
+import { MINIMAL_TRANSITION, CENTER, APP_NAME, LARGE, XL, XXL } from "../../components/config/strings.jsx";
+import { WHITE, BORDER_COLOR, HOVER, GRAY } from "../../components/config/colors.jsx";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { FcGoogle } from "react-icons/fc";
 
