@@ -13,38 +13,17 @@ export default function HomePage() {
     fetch(`${SERVER_URL}/api/events`)
       .then(res => res.json())
       .then(data => {
-        console.log('[DEBUG] Fetched events:', data); // Debugging log
+        console.log('[DEBUG] Fetched events:', data); 
         setEvents(Array.isArray(data) ? data : []);
       })
       .catch(err => {
         console.log('[ERROR] Error fetching events:', err);
-        setEvents([]); // Fallback to an empty array on error
+        setEvents([]);
       });
   }, []);
-  
-  // While loading
-  if (events === null) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <Spinner size={XL} color="blue.500" />
-      </div>
-    );
-  }
-  // If no events, show header and a friendly empty state instead of a blank page
-  if (events.length === 0) {
-    return (
-      <>
-        <Header />
-        <div className="flex flex-col items-center justify-center h-screen px-4">
-          <h3 style={{ fontSize: '1.125rem', fontWeight: 800, color: '#51515b', textAlign: 'center' }}>
-            No upcoming pop-ups right now.
-          </h3>
-          <p style={{ marginTop: '0.5rem', color: '#6b6b74', textAlign: 'center' }}>Check back soon or explore our About page for more.</p>
-        </div>
-      </>
-    );
-  }
-  
+
+  if (events.length === 0) return <></>;
+
   return (
     <>
     <Header />
