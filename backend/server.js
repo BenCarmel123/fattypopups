@@ -15,6 +15,9 @@ import authRouter from './routes/auth.js';
 // Initialize Express app
 const app = express();
 
+app.set('trust proxy', 1);
+
+
 // Middleware
 app.use(cors({
   origin: [
@@ -39,6 +42,7 @@ app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
+  proxy:true,
   cookie: {
     httpOnly: true,
     secure: true,       

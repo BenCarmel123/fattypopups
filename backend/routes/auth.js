@@ -55,7 +55,10 @@ authRouter.get('/google/callback', async (req, res) => {
       email,
       provider: 'google'
     };
+    return req.session.save(() => {
     res.redirect(`${process.env.FRONTEND_PROD_URL}/${process.env.ADMIN_ROUTE}`);
+  });
+  
   }
   else {
     res.redirect(process.env.FRONTEND_PROD_URL)
