@@ -1,6 +1,6 @@
 import { Checkbox, Table, Button } from "@chakra-ui/react"
 import { useState, useEffect } from "react"
-import { ADD, EDIT, LARGE, FLEX, CENTER, SOLID, XL, BOLD, MEDIUM, MINIMAL_TRANSFORM, MINIMAL_TRANSITION } from "../../components/config/strings"
+import { ADD, EDIT, LARGE, FLEX, CENTER, SOLID, XL, BOLD, AI, MEDIUM, MINIMAL_TRANSFORM, MINIMAL_TRANSITION } from "../../components/config/strings"
 import { WHITE, BACKGROUND_COLOR, ADMIN_PANEL_COLOR } from "../../components/config/colors";
 import MyAlert from "../../components/CustomAlert.jsx"; 
 
@@ -85,7 +85,8 @@ const Dashboard = ({ handleClick }) => {
       <div style={{ display: FLEX, justifyContent: CENTER, gap: '1rem', marginTop: '1rem', color: WHITE, fontWeight: BOLD }}>
         <Button variant={SOLID} px={6} py={6} boxShadow={MEDIUM} borderRadius={XL} backgroundColor={ADMIN_PANEL_COLOR} _hover={{ transform: MINIMAL_TRANSFORM }} transition={MINIMAL_TRANSITION} onClick={ handleClick(ADD, undefined) }>Add</Button>
         <Button variant={SOLID} px={6} py={6} boxShadow={MEDIUM} borderRadius={XL} backgroundColor={ADMIN_PANEL_COLOR} _hover={{ transform: MINIMAL_TRANSFORM }} transition={MINIMAL_TRANSITION} onClick={ handleEditEvents }>Edit</Button>
-        <Button variant={SOLID} px={6} py={6} boxShadow={MEDIUM} borderRadius={XL} backgroundColor={ADMIN_PANEL_COLOR} _hover={{ transform: MINIMAL_TRANSFORM }} transition={MINIMAL_TRANSITION} onClick={handleDeleteEvents}>Delete</Button>
+        <Button variant={SOLID} px={6} py={6} boxShadow={MEDIUM} borderRadius={XL} backgroundColor={ADMIN_PANEL_COLOR} _hover={{ transform: MINIMAL_TRANSFORM }} transition={MINIMAL_TRANSITION} onClick={ handleDeleteEvents }>Delete</Button>
+        <Button variant={SOLID} px={6} py={6} boxShadow={MEDIUM} borderRadius={XL} backgroundColor={ADMIN_PANEL_COLOR} _hover={{ transform: MINIMAL_TRANSFORM }} transition={MINIMAL_TRANSITION} onClick={ handleClick(AI, undefined) }>AI Draft</Button>
       </div>
     </div>
   )

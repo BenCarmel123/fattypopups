@@ -6,6 +6,7 @@ export const EDIT = "EDIT";
 export const DELETE = "DELETE";
 export const LOGIN = "LOGIN";
 export const DASHBOARD = "DASHBOARD";
+export const AI = "AI";
 
 // Action labels
 export const DETAILS = "Details";

@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import EventForm from "./EventForm.jsx";
-import { ADD, EDIT, LOGIN, DASHBOARD } from "../../components/config/strings.jsx";
+import { ADD, EDIT, LOGIN, DASHBOARD, AI } from "../../components/config/strings.jsx";
 import Dashboard from "./Dashboard.jsx";
 import Login from "./Login.jsx";
+import PromptDraft from "./PromptDraft.jsx";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -34,6 +35,10 @@ export default function AdminPageHandler() {
             return (<Dashboard handleClick={handleClick} />);
          case LOGIN:
             return (<Login />);
-      }  
-}
+         case AI: 
+            return (<PromptDraft/>);
+   }
+  }
+      
+      
 
