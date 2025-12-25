@@ -11,6 +11,7 @@ import session from 'express-session';
 // Import routers 
 import eventRouter from './routes/events.js';
 import authRouter from './routes/auth.js';
+import agentRouter from './routes/agent.js';
 
 // Initialize Express app
 const app = express();
@@ -58,6 +59,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/events', eventRouter);
 app.use('/auth', authRouter);
+app.use('/agent', agentRouter);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, '0.0.0.0', () => {
