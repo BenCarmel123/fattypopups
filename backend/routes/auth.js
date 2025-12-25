@@ -24,6 +24,10 @@ authRouter.get('/google', (req, res) => {
 });
 
 authRouter.get('/google/callback', async (req, res) => {
+console.log("OAUTH CALLBACK");
+console.log("Session ID:", req.sessionID);
+console.log("Session user set:", !!req.session.user);
+console.log("Set-Cookie header:", res.getHeader("set-cookie"));
   const validateEmail = (email) => {
   const adminEmails = [
     process.env.BEN_EMAIL.toLowerCase(),
@@ -66,6 +70,10 @@ authRouter.get('/google/callback', async (req, res) => {
 });
 
 authRouter.get('/me', async (req,res) => {
+console.log("AUTH ME");
+console.log("Session ID:", req.sessionID);
+console.log("Session user:", req.session.user);
+console.log("Cookies:", req.headers.cookie);
   if (req.session?.user) {
     return res.json({
       authenticated: true,
