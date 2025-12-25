@@ -26,8 +26,6 @@ authRouter.get('/google', (req, res) => {
 authRouter.get('/google/callback', async (req, res) => {
 console.log("OAUTH CALLBACK");
 console.log("Session ID:", req.sessionID);
-console.log("Session user set:", !!req.session.user);
-console.log("Set-Cookie header:", res.getHeader("set-cookie"));
   const validateEmail = (email) => {
   const adminEmails = [
     process.env.BEN_EMAIL.toLowerCase(),
@@ -60,6 +58,8 @@ console.log("Set-Cookie header:", res.getHeader("set-cookie"));
       provider: 'google'
     };
     return req.session.save(() => {
+      console.log("Session user set:", !!req.session.user);
+      console.log("Set-Cookie header:", res.getHeader("set-cookie"));
     res.redirect(`${process.env.FRONTEND_PROD_URL}/${process.env.ADMIN_ROUTE}`);
   });
   
