@@ -1,6 +1,7 @@
 
 import { google } from 'googleapis';
 import express from 'express';
+import jwt from "jsonwebtoken";
 
 const redirectUri = process.env.GOOGLE_REDIRECT_PROD_URI;
 
@@ -24,13 +25,11 @@ authRouter.get('/google', (req, res) => {
 });
 
 authRouter.get('/google/callback', async (req, res) => {
-console.log("OAUTH CALLBACK");
-console.log("Session ID:", req.sessionID);
   const validateEmail = (email) => {
   const adminEmails = [
-    process.env.BEN_EMAIL.toLowerCase(),
-    process.env.HALLIE_EMAIL.toLowerCase()
-  ].filter(Boolean);
+    process.env.BEN_EMAIL,
+    process.env.HALLIE_EMAIL].filter(Boolean)
+  .map(e => e.toLowerCase());
 
   return adminEmails.includes(email);
 }
@@ -45,44 +44,50 @@ console.log("Session ID:", req.sessionID);
   });
 
   const payload = ticket.getPayload();
-  const email = payload.email;
+  const email = payload.email.toLowerCase();
 
   console.log('[DEBUG] Logged in as:', email);
 
   const isAdmin = validateEmail(email)
-  console.log('[DEBUG] isAdmin:', isAdmin);
-  if (isAdmin) {
-    req.session.user = 
-    {
-      email,
-      provider: 'google'
-    };
-    return req.session.save(() => {
-      console.log("Session user set:", !!req.session.user);
-      console.log("Set-Cookie header:", res.getHeader("set-cookie"));
-    res.redirect(`${process.env.FRONTEND_PROD_URL}/${process.env.ADMIN_ROUTE}`);
-  });
-  
-  }
-  else {
-    res.redirect(process.env.FRONTEND_PROD_URL)
-  }
-});
 
-authRouter.get('/me', async (req,res) => {
-console.log("AUTH ME");
-console.log("Session ID:", req.sessionID);
-console.log("Session user:", req.session.user);
-console.log("Cookies:", req.headers.cookie);
-  if (req.session?.user) {
+  console.log("[DEBUG] isAdmin:", isAdmin);
+
+  if (isAdmin) {
+    const token = jwt.sign(
+      { email, role: "admin" },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" });
+      console.log("[DEBUG] GOOGLE CALLBACK");
+    console.log("[DEBUG] JWT created:", !!token);
+    return res.redirect(`${process.env.FRONTEND_PROD_URL}/${process.env.ADMIN_ROUTE}?token=${token}`);
+    } 
+  else return res.redirect(process.env.FRONTEND_PROD_URL);
+})
+
+authRouter.get("/check", (req, res) => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.json({ authenticated: false });
+  }
+
+  const token = authHeader.split(" ")[1];
+  console.log("[DEBUG] AUTH CHECK");
+  console.log("[DEBUG] Authorization header:", req.headers.authorization);
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log("[DEBUG] JWT valid for:", decoded.email)
     return res.json({
       authenticated: true,
       user: {
-        email: req.session.user.email
-      }
+        email: decoded.email,
+      },
     });
+  } catch {
+    console.log("[ERROR] JWT invalid:", e.message);
+    return res.json({ authenticated: false });
   }
-  return res.json({ authenticated: false });
 });
 
 export default authRouter;

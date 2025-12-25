@@ -6,7 +6,6 @@ import dns from 'dns';
 // Ensure IPv4 is preferred
 dns.setDefaultResultOrder('ipv4first');
 import 'dotenv/config';
-import session from 'express-session';
 
 // Import routers 
 import eventRouter from './routes/events.js';
@@ -14,9 +13,6 @@ import authRouter from './routes/auth.js';
 
 // Initialize Express app
 const app = express();
-
-app.set('trust proxy', 1);
-
 
 // Middleware
 app.use(cors({
@@ -36,21 +32,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// Session Middleware
-app.use(session({
-  name: 'fatty.sid',
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false,
-  proxy:true,
-  cookie: {
-    httpOnly: true,
-    secure: true,       
-    sameSite: "none",
-    domain: ".onrender.com",
-    maxAge: 1000 * 60 * 60 * 24 * 7
-  }
-}));
 
 // For Debugging
 app.get('/', (req, res) => {
