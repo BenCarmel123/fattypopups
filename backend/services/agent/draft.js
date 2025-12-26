@@ -1,9 +1,21 @@
+import { generateEventDescriptions } from "../../openai/agent.js";
 const generateDraft = 
     async (prompt) => 
     { 
         // TODO: Change 
-        
         const today = new Date().toISOString().split('T')[0];
+
+        let agentResponse;
+        // Generate Event Embeddings
+        try {
+            agentResponse = await generateEventDescriptions("Eyal Shani", "HaSalon");
+        }
+        catch (e) {
+            console.log("[ERROR] Error Generating event descriptions", e);
+            agentResponse = prompt
+        }
+
+        console.log(agentResponse)
 
         return { 
                 title: prompt, 
@@ -14,7 +26,7 @@ const generateDraft =
                 chef_names: null,
                 chef_instagrams: null,
                 reservation_url: null, 
-                english_description: prompt,
+                english_description: agentResponse,
                 hebrew_description: prompt,
                 is_draft: true
             }

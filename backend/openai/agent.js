@@ -7,7 +7,7 @@ const openai = process.env.OPENAI_PROD_KEY
 import { writeFile } from 'fs/promises';
 
 // Function to generate event descriptions
-async function generateEventDescriptions(chef_names, venue_address) {
+export async function generateEventDescriptions(chef_names, venue_address) {
   const response = await openai.responses.create({
     model: "gpt-4o",
     input: "chef names: " + chef_names + ", venue address: " + venue_address,
@@ -23,7 +23,7 @@ async function generateEventDescriptions(chef_names, venue_address) {
         search_context_size: "medium",
     }],
   });
-    return response;
+    return response.output_text;
   }
 
 // Function to generate event poster (stub for now)
@@ -50,7 +50,6 @@ async function generateEvent(chef_names, venue_address, isPoster) {
   }
   return { event_description }; 
 }
-
 
 // Function to embed and store
 export async function generateEmbedding(description) {
