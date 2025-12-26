@@ -73,8 +73,7 @@ authRouter.get("/check", (req, res) => {
 
   const token = authHeader.split(" ")[1];
   console.log("[DEBUG] AUTH CHECK");
-  console.log("[DEBUG] Authorization header:", req.headers.authorization);
-
+  
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     console.log("[DEBUG] JWT valid for:", decoded.email)
