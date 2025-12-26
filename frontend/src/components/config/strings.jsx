@@ -14,6 +14,9 @@ export const RESERVE = "Reserve";
 export const SHARE = "Share";
 export const ABOUT_BUTTON_TEXT = "Our Story";
 export const BACK_BUTTON_TEXT = "← Back";
+export const POST = "POST";
+export const PUT = "PUT";
+export const ENTER = "Enter";
 
 // Informational content
 export const ABOUT_CREATORS_1 = "It all started pretty simply: two people who couldn’t stop talking about food started talking to each other about food.";
@@ -80,6 +83,8 @@ export const ERR_RESERVATION_URL_REQUIRED = 'Reservation URL is required and mus
 export const ERR_ENGLISH_DESC_REQUIRED = 'English description is required and must be a non-empty string.';
 export const ERR_HEBREW_DESC_REQUIRED = 'Hebrew description is required and must be a non-empty string.';
 export const ERR_POSTER_REQUIRED = 'Poster is required and must be a valid file.';
+export const UNKNOWN_ERROR = "Unknown error"
+export const PROMPT_PLACEHOLDER = "Describe the event..."
 
 // Type / input constants
 export const STRING = 'string';

@@ -25,7 +25,9 @@ app.use(cors({
   credentials: true
 }));
 
+// JSON/TEXT Support
 app.use(express.json());
+app.use(express.text());
 
 // Logging middleware
 app.use((req, res, next) => {

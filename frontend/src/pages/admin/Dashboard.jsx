@@ -77,7 +77,9 @@ const Dashboard = ({ handleClick }) => {
         <Table.Header>
           <Table.Row style={{ backgroundColor: BACKGROUND_COLOR, fontSize: '1.25rem', height: '3.5rem' }}>
             <Table.ColumnHeader w="6" />
-            <Table.ColumnHeader></Table.ColumnHeader>
+            <Table.ColumnHeader>
+              <Button variant={SOLID} px={6} py={6} boxShadow={MEDIUM} borderRadius={XL} color={WHITE} _hover={{ transform: MINIMAL_TRANSFORM }} transition={MINIMAL_TRANSITION} onClick={ handleClick(AI, undefined) }> AI Draft </Button>
+            </Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
         <Table.Body>{eventRows}</Table.Body>
@@ -86,7 +88,6 @@ const Dashboard = ({ handleClick }) => {
         <Button variant={SOLID} px={6} py={6} boxShadow={MEDIUM} borderRadius={XL} backgroundColor={ADMIN_PANEL_COLOR} _hover={{ transform: MINIMAL_TRANSFORM }} transition={MINIMAL_TRANSITION} onClick={ handleClick(ADD, undefined) }>Add</Button>
         <Button variant={SOLID} px={6} py={6} boxShadow={MEDIUM} borderRadius={XL} backgroundColor={ADMIN_PANEL_COLOR} _hover={{ transform: MINIMAL_TRANSFORM }} transition={MINIMAL_TRANSITION} onClick={ handleEditEvents }>Edit</Button>
         <Button variant={SOLID} px={6} py={6} boxShadow={MEDIUM} borderRadius={XL} backgroundColor={ADMIN_PANEL_COLOR} _hover={{ transform: MINIMAL_TRANSFORM }} transition={MINIMAL_TRANSITION} onClick={ handleDeleteEvents }>Delete</Button>
-        <Button variant={SOLID} px={6} py={6} boxShadow={MEDIUM} borderRadius={XL} backgroundColor={ADMIN_PANEL_COLOR} _hover={{ transform: MINIMAL_TRANSFORM }} transition={MINIMAL_TRANSITION} onClick={ handleClick(AI, undefined) }>AI Draft</Button>
       </div>
     </div>
   )

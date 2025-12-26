@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@chakra-ui/react';
 import { WHITE, ADMIN_PANEL_COLOR } from './config/colors.jsx';
 import { SOLID, LARGE, BOLD, XL, MEDIUM, MINIMAL_TRANSFORM, MINIMAL_TRANSITION, POINTER, BACK_BUTTON_TEXT } from './config/strings.jsx';
+import { Send, Loader2 } from 'lucide-react';
 
 export function BackButton() {
   const navigate = useNavigate();
@@ -33,4 +34,17 @@ export function SubmitFormButton({ text }) {
     {text}
     </Button>
     );
+}
+
+export function SubmitPromptButton({ message, isLoading}) {
+    return(
+        <Button type="submit" size="lg" disabled={!message.trim() || isLoading}
+        className="absolute right-3 bottom-3 h-11 w-11 md:h-12 md:w-12 rounded-xl bg-slate-100
+        hover:bg-slate-200 disabled:bg-slate-100 disabled:text-slate-400 transition-all duration-200">
+        {isLoading ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+                <Send className="h-4 w-4" />
+            )}
+        </Button>)
 }
