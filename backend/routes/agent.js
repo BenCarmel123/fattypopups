@@ -3,6 +3,7 @@ import 'dotenv/config';
 import { OpenAI } from 'openai';
 import { generateDraft } from '../services/agent/draft.js';
 import express from 'express';
+import { createEvent } from '../services/events/createEvent.js';
 
 const openai = process.env.OPENAI_PROD_KEY
   ? new OpenAI({ apiKey: process.env.OPENAI_PROD_KEY })
@@ -10,26 +11,29 @@ const openai = process.env.OPENAI_PROD_KEY
 const authRouter = express.Router();
 
 authRouter.post("/draft", async (req, res) => {
+  console.log("got to endpoint")
+  const prompt = req.body;
 
-  const prompt = req.body; 
-
-  // Client Error
-  if (typeof prompt !== "string" || !prompt.trim()) 
+  // Client error
+  if (typeof prompt !== "string" || !prompt.trim()) {
     return res.status(400).json({ error: "A non-empty prompt is required" });
+  }
 
   try {
-    // Generate draft with agent 
+    // Generate draft
     const draft = await generateDraft(prompt);
+    console.log("generated draft")
+    // Create event from draft
+    const newEvent = await createEvent(draft, null);
+    console.log("created event")
+    // Success response
+    return res.status(200).json({ event: newEvent });
 
-    // Success 
-    return res.status(200).json({ draft });
-  } catch (e) {
-
-    // Server Error
-    console.error("Draft generation failed:", e);
-    return res.status(500).json({ error: "Draft generation failed" });
-    
+  } catch (err) {
+    console.error("Draft or event creation failed:", err);
+    return res.status(500).json({ error: "Draft or event creation failed", draft: newEvent });
   }
 });
+
 
 export default authRouter;

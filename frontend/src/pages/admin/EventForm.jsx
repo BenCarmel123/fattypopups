@@ -104,7 +104,7 @@ export default function EventForm({ event, isEdit, handleClick } ) {
             <Card.Root backgroundColor={TRANSPARENT} marginBottom="4rem" maxW="800px" w={MAX} minW="300px" boxShadow={NONE} borderRadius={XL}>
                 <br></br> <br></br>
                 <BackButton marginBottom="2rem" />
-                <form className onSubmit={handleEvent} style={{ backgroundColor: WHITE, enctype: "multipart/form-data", borderRadius: '1rem', padding: '2rem', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+                <form onSubmit={handleEvent} style={{ backgroundColor: WHITE, enctype: "multipart/form-data", borderRadius: '1rem', padding: '2rem', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
                     <Card.Body>
                         <Stack gap={4} w="full">
                             <Field.Root>

@@ -15,7 +15,7 @@ const oauth2Client = new google.auth.OAuth2(
 const authRouter = express.Router();
 
 authRouter.get('/google', (req, res) => {
-  console.log("REDIRECT URI:", redirectUri);
+  console.log("[DEBUG] REDIRECT URI:", redirectUri);
   const url = oauth2Client.generateAuthUrl({
     scope: ['openid', 'email', 'profile'],
     redirect_uri: redirectUri,
@@ -73,7 +73,6 @@ authRouter.get("/check", (req, res) => {
 
   const token = authHeader.split(" ")[1];
   console.log("[DEBUG] AUTH CHECK");
-  console.log("[DEBUG] Authorization header:", req.headers.authorization);
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);

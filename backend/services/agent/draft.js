@@ -1,19 +1,21 @@
-
 const generateDraft = 
     async (prompt) => 
     { 
+        // TODO: Change 
+        
+        const today = new Date().toISOString().split('T')[0];
+
         return { 
                 title: prompt, 
-                start_datetime: null, 
-                end_datetime: null,
+                start_datetime: today, 
+                end_datetime: today,
                 venue_instagram: null,
-                venue_address: null,
+                venue_address: prompt,
                 chef_names: null,
                 chef_instagrams: null,
                 reservation_url: null, 
-                english_description: null,
-                hebrew_description: null,
-                poster: null,
+                english_description: prompt,
+                hebrew_description: prompt,
                 is_draft: true
             }
     }

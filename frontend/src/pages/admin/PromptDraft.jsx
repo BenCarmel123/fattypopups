@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Textarea } from "@chakra-ui/react";
-import { POST, ENTER, UNKNOWN_ERROR, PROMPT_PLACEHOLDER } from "../../components/config/strings.jsx";
+import { POST, ENTER, UNKNOWN_ERROR, PROMPT_PLACEHOLDER, EDIT } from "../../components/config/strings.jsx";
 import { SubmitPromptButton } from '../../components/Buttons.jsx';
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL
@@ -12,24 +12,34 @@ export const sendPrompt = async (prompt) => {
     body: prompt
   });
 
-  const draft = await res.json();
+  const event = await res.json();
 
   if (!res.ok) {
-    throw new Error(draft.error || UNKNOWN_ERROR);
+    throw new Error(event.error || UNKNOWN_ERROR);
   }
 
-  console.log(draft);
+  console.log(event);
+  return event;
 
 };
 
-export default function PromptDraft({ isLoading = false, placeholder = PROMPT_PLACEHOLDER }) {
+
+export default function PromptDraft({ isLoading = false, placeholder = PROMPT_PLACEHOLDER, handleClick }) {
     const [prompt, setPrompt] = useState('');
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (prompt.trim() && !isLoading) {
-            sendPrompt(prompt)
+        if (!prompt.trim() || isLoading) return;
+
+        try {
+            const { event } = await sendPrompt(prompt);
             setPrompt('');
+            // Switch to ADD mode and pass the generated draft
+            handleClick(EDIT, event)();
+            
+            }
+        catch (err) {
+            console.error('Draft generation error:', err);
         }
     };
 
