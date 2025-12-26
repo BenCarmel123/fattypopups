@@ -42,9 +42,9 @@ export default function AdminPageHandler() {
     return
   }
 
-  // Yes Token
   console.log("[DEBUG] pending token to /auth/check");
 
+  // Authorization Check
   fetch(`${SERVER_URL}/auth/check`, { headers: { Authorization: `Bearer ${token}`,},})
       .then(res => res.json()).then(data => {
           if (!data.authenticated) localStorage.removeItem("auth_token");

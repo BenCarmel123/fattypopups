@@ -2,10 +2,8 @@
 const generateDraft = 
     async (prompt) => 
     { 
-        const venueInfo = generateVenue(prompt)
-        const chefInfo = generateChef(prompt)
         return { 
-                title: null, 
+                title: prompt, 
                 start_datetime: null, 
                 end_datetime: null,
                 venue_instagram: null,
@@ -16,7 +14,7 @@ const generateDraft =
                 english_description: null,
                 hebrew_description: null,
                 poster: null,
-                is_draft: null
+                is_draft: true
             }
     }
 

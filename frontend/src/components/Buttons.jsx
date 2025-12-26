@@ -36,9 +36,9 @@ export function SubmitFormButton({ text }) {
     );
 }
 
-export function SubmitPromptButton({ message, isLoading}) {
+export function SubmitPromptButton({ prompt, isLoading}) {
     return(
-        <Button type="submit" size="lg" disabled={!message.trim() || isLoading}
+        <Button type="submit" size="lg" disabled={!prompt.trim() || isLoading}
         className="absolute right-3 bottom-3 h-11 w-11 md:h-12 md:w-12 rounded-xl bg-slate-100
         hover:bg-slate-200 disabled:bg-slate-100 disabled:text-slate-400 transition-all duration-200">
         {isLoading ? (
