@@ -1,35 +1,5 @@
 import { generateEventDescriptions, extractChefAndVenue } from "../../openai/agent.js";
-
-function extractChefNameNaive(text) {
-  const key = `"chef_name":`;
-  const idx = text.indexOf(key);
-  if (idx === -1) return null;
-
-  const afterKey = text.slice(idx + key.length).trim();
-
-  if (!afterKey.startsWith(`"`)) return null;
-
-  const endQuoteIdx = afterKey.indexOf(`"`, 1);
-  if (endQuoteIdx === -1) return null;
-
-  return afterKey.slice(1, endQuoteIdx);
-}
-
-function extractVenueNameNaive(text) {
-    const key = `"venue_name":`;
-    const idx = text.indexOf(key);
-    if (idx === -1) return null;
-
-    const afterKey = text.slice(idx + key.length).trim();
-
-    if (!afterKey.startsWith(`"`)) return null;
-
-    const endQuoteIdx = afterKey.indexOf(`"`, 1);
-    if (endQuoteIdx === -1) return null;
-
-    return afterKey.slice(1, endQuoteIdx);
-}
-
+import { extractChefNameNaive, extractVenueNameNaive } from "./extract.js";
 
 const generateDraft = 
     async (prompt) => 
@@ -43,17 +13,16 @@ const generateDraft =
         const venueName = extractVenueNameNaive(rawString)
         console.log("[DEBUG] chef is " + chefName + " of type " + typeof chefName)
                 console.log("[DEBUG] venue is " + venueName + " of type " + typeof venueName)
-        let agentResponse;
+        let descriptionResponse;
         // Generate Event Embeddings
         try {
-            agentResponse = await generateEventDescriptions("Eyal Shani", "HaSalon");
+            descriptionResponse = generateEventDescriptions("Eyal Shani", "HaSalon");
         }
         catch (e) {
             console.log("[ERROR] Error Generating event descriptions", e);
-            agentResponse = prompt
+            descriptionResponse = prompt
         }
-
-        console.log(agentResponse)
+        console.log(descriptionResponse)
 
         return { 
                 title: prompt, 
