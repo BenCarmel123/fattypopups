@@ -1,6 +1,6 @@
 // Require necessary modules and configure OpenAI client
 import 'dotenv/config';
-import { OpenAI } from 'openai';
+import { openai } from '../../config/openai';
 
 // Function to embed and store
 export async function generateEmbedding(description) {
@@ -15,11 +15,6 @@ export async function generateEmbedding(description) {
   const embedding = embeddingResponse.data[0].embedding;
   return embedding;
 }
-
-// Initialize OpenAI entity
-const openai = process.env.OPENAI_PROD_KEY
-  ? new OpenAI({ apiKey: process.env.OPENAI_PROD_KEY })
-  : null;
 
 // Function to generate event descriptions
 export async function generateEventDescriptions(chef_names, venue_address) {
