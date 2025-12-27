@@ -65,4 +65,14 @@ export async function generateEmbedding(description) {
   return embedding;
 }
 
+export async function extractChefAndVenue(prompt) {
+  const response = await openai.responses.create({
+    model: "gpt-4o",
+    input: `${prompt}`,
+    instructions: `${process.env.CHEF_VENUE_INSTRUCTIONS}`,
+  });
+  return response.output_text;
+}
+
+
 

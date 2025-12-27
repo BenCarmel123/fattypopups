@@ -1,10 +1,48 @@
-import { generateEventDescriptions } from "../../openai/agent.js";
+import { generateEventDescriptions, extractChefAndVenue } from "../../openai/agent.js";
+
+function extractChefNameNaive(text) {
+  const key = `"chef_name":`;
+  const idx = text.indexOf(key);
+  if (idx === -1) return null;
+
+  const afterKey = text.slice(idx + key.length).trim();
+
+  if (!afterKey.startsWith(`"`)) return null;
+
+  const endQuoteIdx = afterKey.indexOf(`"`, 1);
+  if (endQuoteIdx === -1) return null;
+
+  return afterKey.slice(1, endQuoteIdx);
+}
+
+function extractVenueNameNaive(text) {
+    const key = `"venue_name":`;
+    const idx = text.indexOf(key);
+    if (idx === -1) return null;
+
+    const afterKey = text.slice(idx + key.length).trim();
+
+    if (!afterKey.startsWith(`"`)) return null;
+
+    const endQuoteIdx = afterKey.indexOf(`"`, 1);
+    if (endQuoteIdx === -1) return null;
+
+    return afterKey.slice(1, endQuoteIdx);
+}
+
+
 const generateDraft = 
     async (prompt) => 
     { 
         // TODO: Change 
         const today = new Date().toISOString().split('T')[0];
 
+        // Extract chef names and venue from prompt 
+        const rawString = await extractChefAndVenue(prompt);
+        const chefName = extractChefNameNaive(rawString)
+        const venueName = extractVenueNameNaive(rawString)
+        console.log("[DEBUG] chef is " + chefName + " of type " + typeof chefName)
+                console.log("[DEBUG] venue is " + venueName + " of type " + typeof venueName)
         let agentResponse;
         // Generate Event Embeddings
         try {
@@ -22,8 +60,8 @@ const generateDraft =
                 start_datetime: today, 
                 end_datetime: today,
                 venue_instagram: null,
-                venue_address: prompt,
-                chef_names: null,
+                venue_address: venueName ? venueName : prompt,
+                chef_names: chefName ? chefName : null,
                 chef_instagrams: null,
                 reservation_url: null, 
                 english_description: agentResponse,

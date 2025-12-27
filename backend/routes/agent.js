@@ -11,7 +11,7 @@ const openai = process.env.OPENAI_PROD_KEY
 const authRouter = express.Router();
 
 authRouter.post("/draft", async (req, res) => {
-  console.log("got to endpoint")
+  console.log("[DEBUG] Reached Endpoint")
   const prompt = req.body;
 
   // Client error
@@ -22,15 +22,15 @@ authRouter.post("/draft", async (req, res) => {
   try {
     // Generate draft
     const draft = await generateDraft(prompt);
-    console.log("generated draft")
+    console.log("[DEBUG] Draft Generated")
     // Create event from draft
     const newEvent = await createEvent(draft, null);
-    console.log("created event")
+    console.log("[DEBUG] Event Created")
     // Success response
     return res.status(200).json({ event: newEvent });
 
   } catch (err) {
-    console.error("Draft or event creation failed:", err);
+    console.error("[ERROR] Draft or event creation failed:", err);
     return res.status(500).json({ error: "Draft or event creation failed", draft: newEvent });
   }
 });
