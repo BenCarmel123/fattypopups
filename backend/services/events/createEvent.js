@@ -1,5 +1,5 @@
 import { supabase } from '../../config/supabaseClient.js';
-import { generateEmbedding } from '../../openai/agent.js';
+import { generateEmbedding } from '../agent/agent.js';
 
 export const createEvent = async (body, file) => {
   const {

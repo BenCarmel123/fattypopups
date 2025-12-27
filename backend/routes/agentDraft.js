@@ -1,13 +1,9 @@
 // Require necessary modules and configure OpenAI client
 import 'dotenv/config';
-import { OpenAI } from 'openai';
-import { generateDraft } from '../services/agent/draft.js';
+import { generateDraft } from '../services/agent/createDraft.js';
 import express from 'express';
 import { createEvent } from '../services/events/createEvent.js';
 
-const openai = process.env.OPENAI_PROD_KEY
-  ? new OpenAI({ apiKey: process.env.OPENAI_PROD_KEY })
-  : null;
 const authRouter = express.Router();
 
 authRouter.post("/draft", async (req, res) => {
@@ -23,9 +19,11 @@ authRouter.post("/draft", async (req, res) => {
     // Generate draft
     const draft = await generateDraft(prompt);
     console.log("[DEBUG] Draft Generated")
+
     // Create event from draft
     const newEvent = await createEvent(draft, null);
     console.log("[DEBUG] Event Created")
+
     // Success response
     return res.status(200).json({ event: newEvent });
 
