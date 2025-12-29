@@ -41,6 +41,7 @@ app.get('/', (req, res) => {
   res.send(' FattyPopups backend is running!');
 });
 
+// Routing
 app.use('/api/events', eventRouter);
 app.use('/auth', authRouter);
 app.use('/agent', agentRouter);

@@ -1,6 +1,6 @@
 // Require necessary modules and configure OpenAI client
 import 'dotenv/config';
-import { openai } from '../../config/openai';
+import { openai } from '../../config/openai.js';
 
 // Function to embed and store
 export async function generateEmbedding(description) {

@@ -1,14 +1,14 @@
-import { Button, Card, Stack, Input, Field } from "@chakra-ui/react";
-import { DASHBOARD, MINIMAL_TRANSITION } from "../../components/config/strings.jsx";
+import { Card, Stack, Input, Field } from "@chakra-ui/react";
+import { DASHBOARD } from "../../components/config/strings.jsx";
 import validateEvent from "../../components/utils.jsx";
 import  MyAlert  from "../../components/CustomAlert.jsx";
 import { useState } from "react";
-import FileUpload from "../../components/FileUpload.jsx";
-import { FORM_FIELD_COLOR, TEXT_AREA_COLOR, TRANSPARENT, WHITE } from "../../components/config/colors.jsx"; 
-import { CENTER, FLEX, RELATIVE, FIXED, MAX, NONE, AUTO, LARGE, XL, MEDIUM, SOLID, MINIMAL_TRANSFORM, BOLD, PUT, POST } from "../../components/config/strings.jsx";
+import { FORM_FIELD_COLOR, TEXT_AREA_COLOR, TRANSPARENT, FORM_BACKGROUND_COLOR } from "../../components/config/colors.jsx"; 
+import { CENTER, FLEX, RELATIVE, FIXED, MAX, NONE, AUTO, XL, PUT, POST } from "../../components/config/strings.jsx";
 import { formatDate } from "../../components/utils.jsx";
-import { BackButton, SubmitFormButton } from "../../components/Buttons.jsx";
+import { BackToDashboard, FileUploadButton, SubmitFormButton } from "../../components/Buttons.jsx";
 import DescriptionArea from "../../components/DescriptionArea.jsx";
+import SaveAsDraft from "../../components/SaveAsDraft.jsx";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -102,9 +102,7 @@ export default function EventForm({ event, isEdit, handleClick } ) {
                 </div>
             )}
             <Card.Root backgroundColor={TRANSPARENT} marginBottom="4rem" maxW="800px" w={MAX} minW="300px" boxShadow={NONE} borderRadius={XL}>
-                <br></br> <br></br>
-                <BackButton marginBottom="2rem" />
-                <form onSubmit={handleEvent} style={{ backgroundColor: WHITE, enctype: "multipart/form-data", borderRadius: '1rem', padding: '2rem', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+                <form onSubmit={handleEvent} style={{ backgroundColor: FORM_BACKGROUND_COLOR, enctype: "multipart/form-data", borderRadius: '1rem', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
                     <Card.Body>
                         <Stack gap={4} w="full">
                             <Field.Root>
@@ -142,33 +140,18 @@ export default function EventForm({ event, isEdit, handleClick } ) {
                             <DescriptionArea event={event} lang="en" />
                             <DescriptionArea event={event} lang="he" />
                             <Field.Root>
-                                <Button 
-                                    variant={SOLID}
-                                    size={LARGE}
-                                    fontWeight={BOLD}
-                                    px={2} 
-                                    py={2} 
-                                    boxShadow={MEDIUM}
-                                    borderRadius={XL} 
-                                    backgroundColor={FORM_FIELD_COLOR}
-                                    _hover={{ transform: MINIMAL_TRANSFORM }} 
-                                    transition={MINIMAL_TRANSITION}
-                                    as="label">
-                                    <FileUpload style={{ display: 'none'}} />
-                                </Button>
+                                <FileUploadButton></FileUploadButton>
                             </Field.Root>
                         {(event?.is_draft ?? true) && (
                             <Field.Root>
-                                <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                <input type="checkbox" name="is_draft" defaultChecked={event?.is_draft || false} />
-                                <span>Save as Draft </span>
-                                </label>
+                            <SaveAsDraft defaultChecked={event?.is_draft || false}></SaveAsDraft>
                             </Field.Root>
                             )}
                         </Stack>
                     </Card.Body>
-                    <Card.Footer>
+                    <Card.Footer gap="1rem">
                         <SubmitFormButton text={isEdit ? "Update" : "Add"} />
+                        <BackToDashboard handleClick={handleClick(DASHBOARD, undefined)}></BackToDashboard>
                     </Card.Footer>
                 </form>
             </Card.Root>
