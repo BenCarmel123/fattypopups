@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Textarea } from "@chakra-ui/react";
-import { POST, ENTER, UNKNOWN_ERROR, PROMPT_PLACEHOLDER, EDIT } from "../../components/config/strings.jsx";
-import { SubmitPromptButton } from '../../components/Buttons.jsx';
+import { POST, ENTER, UNKNOWN_ERROR, PROMPT_PLACEHOLDER, EDIT, DASHBOARD } from "../../components/config/strings.jsx";
+import { SubmitPromptButton, BackToDashboard } from '../../components/Buttons.jsx';
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL
 
@@ -49,22 +49,28 @@ export default function PromptDraft({ isLoading = false, placeholder = PROMPT_PL
             handleSubmit(e);
         }
     };
+    
     return (
         <div>
-        <form onSubmit={handleSubmit} className="min-h-screen flex items-center justify-center px-4">
-                <div className="relative flex items-end gap-2 p-1 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-200 w-full max-w-xl md:max-w-3xl lg:max-w-4xl">
-                <Textarea
-                    value={prompt}
-                    onChange={(e) => setPrompt(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                    placeholder={placeholder}
-                    disabled={isLoading}
-                        className="min-h-[64px] md:min-h-[100px] max-h-[400px] resize-none bg-transparent pr-12 py-4 px-4 text-base md:text-lg placeholder:text-slate-400"
-                    rows={1}
-                />
-                <SubmitPromptButton prompt={prompt} isLoading={isLoading}> </SubmitPromptButton>
+        <form onSubmit={handleSubmit} className="min-h-screen flex items-center justify-center">
+            <div className="relative flex items-end gap-2 p-1 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-200 w-full max-w-xl md:max-w-3xl lg:max-w-4xl">
+            <div className="absolute -bottom-14 left-1/2 -translate-x-1/2">
+                <BackToDashboard handleClick={handleClick(DASHBOARD, undefined)} />
+            </div>
+            <Textarea
+                value={prompt}
+                onChange={(e) => setPrompt(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder={placeholder}
+                disabled={isLoading}
+                borderWidth={"thick"}
+                borderRadius={"1rem"}
+                className="min-h-[64px] md:min-h-[100px] max-h-[400px] resize-none bg-transparent pl-1rem pr-12 py-4 px-4 text-base md:text-lg placeholder:text-slate-400"
+                rows={1}
+            />
+            <SubmitPromptButton prompt={prompt} isLoading={isLoading} />
             </div>
         </form>
         </div>
-    );
+        );
 }

@@ -83,3 +83,22 @@ export function FileUploadButton() {
             <FileUpload style={{ display: 'none'}} />
         </Button>);
 }
+
+export function AdminActionButton({ onClick, text }) {
+    return (
+        <Button
+            color={WHITE}
+            variant={SOLID}
+            px={6}
+            py={6}
+            boxShadow={MEDIUM}
+            borderRadius={XL}
+            backgroundColor={ADMIN_PANEL_COLOR}
+            _hover={{ transform: MINIMAL_TRANSFORM }}
+            transition={MINIMAL_TRANSITION}
+            onClick={onClick}
+        >
+            {text}
+        </Button>
+    );
+}

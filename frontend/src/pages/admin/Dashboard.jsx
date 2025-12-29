@@ -1,8 +1,10 @@
 import { Checkbox, Table, Button } from "@chakra-ui/react"
 import { useState, useEffect } from "react"
-import { ADD, EDIT, LARGE, FLEX, CENTER, SOLID, XL, BOLD, AI, MEDIUM, MINIMAL_TRANSFORM, MINIMAL_TRANSITION } from "../../components/config/strings"
-import { WHITE, BACKGROUND_COLOR, ADMIN_PANEL_COLOR } from "../../components/config/colors";
+import { EDIT, LARGE, FLEX, SOLID, XL, AI, MEDIUM, MINIMAL_TRANSFORM, MINIMAL_TRANSITION } from "../../components/config/strings"
+import { WHITE, BACKGROUND_COLOR } from "../../components/config/colors";
 import MyAlert from "../../components/CustomAlert.jsx"; 
+import AdminActions from "../../components/AdminActions.jsx";
+import { AdminActionButton } from "../../components/Buttons";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -78,17 +80,13 @@ const Dashboard = ({ handleClick }) => {
           <Table.Row style={{ backgroundColor: BACKGROUND_COLOR, fontSize: '1.25rem', height: '3.5rem' }}>
             <Table.ColumnHeader w="6" />
             <Table.ColumnHeader>
-              <Button variant={SOLID} px={6} py={6} boxShadow={MEDIUM} borderRadius={XL} color={WHITE} _hover={{ transform: MINIMAL_TRANSFORM }} transition={MINIMAL_TRANSITION} onClick={ handleClick(AI, undefined) }> AI Draft </Button>
+            <AdminActionButton onClick={ handleClick(AI, undefined) } text="Draft"></AdminActionButton>
             </Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
         <Table.Body>{eventRows}</Table.Body>
       </Table.Root>
-      <div style={{ display: FLEX, justifyContent: CENTER, gap: '1rem', marginTop: '1rem', color: WHITE, fontWeight: BOLD }}>
-        <Button variant={SOLID} px={6} py={6} boxShadow={MEDIUM} borderRadius={XL} backgroundColor={ADMIN_PANEL_COLOR} _hover={{ transform: MINIMAL_TRANSFORM }} transition={MINIMAL_TRANSITION} onClick={ handleClick(ADD, undefined) }>Add</Button>
-        <Button variant={SOLID} px={6} py={6} boxShadow={MEDIUM} borderRadius={XL} backgroundColor={ADMIN_PANEL_COLOR} _hover={{ transform: MINIMAL_TRANSFORM }} transition={MINIMAL_TRANSITION} onClick={ handleEditEvents }>Edit</Button>
-        <Button variant={SOLID} px={6} py={6} boxShadow={MEDIUM} borderRadius={XL} backgroundColor={ADMIN_PANEL_COLOR} _hover={{ transform: MINIMAL_TRANSFORM }} transition={MINIMAL_TRANSITION} onClick={ handleDeleteEvents }>Delete</Button>
-      </div>
+      <AdminActions handleClick={handleClick} handleEditEvents={handleEditEvents} handleDeleteEvents={handleDeleteEvents} />
     </div>
   )
 }
