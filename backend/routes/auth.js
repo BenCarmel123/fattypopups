@@ -15,7 +15,7 @@ const oauth2Client = new google.auth.OAuth2(
 const authRouter = express.Router();
 
 authRouter.get('/google', (req, res) => {
-  console.log("[DEBUG] REDIRECT URI:", redirectUri);
+  console.log("[AUTH] REDIRECT URI:", redirectUri);
   const url = oauth2Client.generateAuthUrl({
     scope: ['openid', 'email', 'profile'],
     redirect_uri: redirectUri,
@@ -46,19 +46,19 @@ authRouter.get('/google/callback', async (req, res) => {
   const payload = ticket.getPayload();
   const email = payload.email.toLowerCase();
 
-  console.log('[DEBUG] Logged in as:', email);
+  console.log('[AUTH] Logged in as:', email);
 
   const isAdmin = validateEmail(email)
 
-  console.log("[DEBUG] isAdmin:", isAdmin);
+  console.log("[AUTH] isAdmin:", isAdmin);
 
   if (isAdmin) {
     const token = jwt.sign(
       { email, role: "admin" },
       process.env.JWT_SECRET,
       { expiresIn: "7d" });
-      console.log("[DEBUG] GOOGLE CALLBACK");
-    console.log("[DEBUG] JWT created:", !!token);
+      console.log("[AUTH] GOOGLE CALLBACK");
+    console.log("[AUTH] JWT created:", !!token);
     return res.redirect(`${process.env.FRONTEND_LOCAL_URL}/${process.env.ADMIN_ROUTE}?token=${token}`);
     } 
   else return res.redirect(process.env.FRONTEND_PROD_URL);
@@ -72,11 +72,11 @@ authRouter.get("/check", (req, res) => {
   }
 
   const token = authHeader.split(" ")[1];
-  console.log("[DEBUG] AUTH CHECK");
+  console.log("[AUTH] AUTH CHECK");
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log("[DEBUG] JWT valid for:", decoded.email)
+    console.log("[AUTH] JWT valid for:", decoded.email)
     return res.json({
       authenticated: true,
       user: {

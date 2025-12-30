@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Textarea } from "@chakra-ui/react";
 import { POST, ENTER, UNKNOWN_ERROR, PROMPT_PLACEHOLDER, EDIT, DASHBOARD } from "../../components/config/strings.jsx";
 import { SubmitPromptButton, BackToDashboard } from '../../components/Buttons.jsx';
+import SpinnerOverlay from '../../components/SpinnerOverlay.jsx';
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL
 
@@ -24,22 +25,29 @@ export const sendPrompt = async (prompt) => {
 };
 
 
-export default function PromptDraft({ isLoading = false, placeholder = PROMPT_PLACEHOLDER, handleClick }) {
+export default function PromptDraft({ placeholder = PROMPT_PLACEHOLDER, handleClick }) {
     const [prompt, setPrompt] = useState('');
+    const [isLoading, setLoading] = useState(false)
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!prompt.trim() || isLoading) return;
-
+        if (!prompt.trim() || isLoading) 
+        {  
+            return;
+        }
+         
         try {
+            setLoading(true)
             const { event } = await sendPrompt(prompt);
             setPrompt('');
             // Switch to ADD mode and pass the generated draft
             handleClick(EDIT, event)();
-            
             }
         catch (err) {
             console.error('Draft generation error:', err);
+        }
+        finally{
+            setLoading(false)
         }
     };
 
@@ -52,6 +60,7 @@ export default function PromptDraft({ isLoading = false, placeholder = PROMPT_PL
     
     return (
         <div>
+        <SpinnerOverlay isLoading={isLoading} />
         <form onSubmit={handleSubmit} className="min-h-screen flex items-center justify-center">
             <div className="relative flex items-end gap-2 p-1 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-200 w-full max-w-xl md:max-w-3xl lg:max-w-4xl">
             <div className="absolute -bottom-14 left-1/2 -translate-x-1/2">

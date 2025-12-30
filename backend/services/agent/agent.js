@@ -37,7 +37,8 @@ export async function generateEventDescriptions(chef_names, venue_address) {
   }
 
 // Function to extract chef and venue names
-export async function extractChefAndVenue(prompt) {
+export async function FindChefAndVenue(prompt) {
+  console.log("[AGENT] Prompt: " + prompt)
   const response = await openai.responses.create({
     model: "gpt-4o",
     input: `${prompt}`,
@@ -46,5 +47,22 @@ export async function extractChefAndVenue(prompt) {
   return response.output_text;
 }
 
-
+export async function FindInstagrams(chef_names, venue_address) {
+  const response = await openai.responses.create({
+    model: "gpt-4o",
+    input: "chef names: " + chef_names + ", venue address: " + venue_address,
+    instructions: "find the instagram accounts for the chef and the venue. if either of them is null, dont return it. at the end i want a format of chef: {account}, venue: {account}",
+    tools: [{
+        type: "web_search",
+        user_location: {
+            type: "approximate",
+            country: "IL", 
+            city: "Tel Aviv",
+            region: "Tel Aviv District"
+        }, 
+        search_context_size: "medium",
+    }],
+  });
+    return response.output_text;
+  }
 

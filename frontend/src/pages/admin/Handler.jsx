@@ -26,13 +26,13 @@ export default function AdminPageHandler() {
 
  // Backend Sent Token
   if (tokenFromUrl) {
-    console.log("[DEBUG] Token from URL:", tokenFromUrl);
+    console.log("[AUTH] Token from URL:", tokenFromUrl);
     localStorage.setItem("auth_token", tokenFromUrl);
     window.history.replaceState({}, "", window.location.pathname);
   }
 
   // Verify Token
-  console.log("[DEBUG] Token in storage:", localStorage.getItem("auth_token"));
+  console.log("[AUTH] Token in storage:", localStorage.getItem("auth_token"));
   const token = localStorage.getItem("auth_token");
 
   // No Token
@@ -42,7 +42,7 @@ export default function AdminPageHandler() {
     return
   }
 
-  console.log("[DEBUG] pending token to /auth/check");
+  console.log("[AUTH] pending token to /auth/check");
 
   // Authorization Check
   fetch(`${SERVER_URL}/auth/check`, { headers: { Authorization: `Bearer ${token}`,},})
