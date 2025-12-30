@@ -1,5 +1,5 @@
-import { generateEventDescriptions, FindChefAndVenue, FindInstagrams } from "./agent.js";
-import { extractChefInstagram, extractChefNameNaive, extractStreetAndNumber, extractVenueAddress, extractVenueInstagram, extractVenueNameNaive } from "./extract.js";
+import { generateEventDescriptions, FindChefAndVenue } from "./agent.js";
+import { fetchInstagram, extractChefNameNaive, extractDescriptionNaive, extractInstagramHandle, extractStreetAndNumber, extractVenueAddress, extractVenueNameNaive } from "./extract.js";
 
 const generateDraft = 
     async (prompt) => 
@@ -17,26 +17,22 @@ const generateDraft =
         const streetNumber = extractStreetAndNumber(venueAddress)
         console.log("[DRAFT] street and number are", venueAddress);
 
-        // Extract instagram accounts from prompt
+        // Extract instagram accounts 
         console.log("[DRAFT] finding Instagrams: ");
-        const rawInstagrams = await FindInstagrams(chefName, venueAddress);
-
-        console.log("[DRAFT] found Instagrams: " + rawInstagrams);
-        const chefInstagram = extractChefInstagram(rawInstagrams);
-        const venueInstagram = extractVenueInstagram(rawInstagrams)
+        const chefQuery = `"${chefName}" site:instagram.com`;
+        const venueQuery =`"${venueName}" "${streetNumber}" Tel Aviv instagram`;;
+        const chefInstagramSearchResult = await fetchInstagram(chefQuery);
+        const venueInstagramSearchResult = await fetchInstagram(venueQuery);
+        const chefInstagram = extractInstagramHandle(chefInstagramSearchResult);
+        const venueInstagram = extractInstagramHandle(venueInstagramSearchResult);
 
         // Generate Event Descriptions
-        let descriptionResponse;
-        try {
-            console.log("[DRAFT] Generating event descriptions: ")
-            descriptionResponse = await generateEventDescriptions(chefName, venueName);
-            console.log("[DRAFT] Response is: ")
-        }
-        catch (e) {
-            console.log("[ERROR] Error Generating event descriptions", e);
-            descriptionResponse = prompt
-        }
-
+        console.log("[DRAFT] Generating event descriptions: ")
+        const descriptionResponse = await generateEventDescriptions(chefName, venueName);
+        console.log("[DRAFT] Response is: " + descriptionResponse)
+        const englishDescription = extractDescriptionNaive("en", descriptionResponse)
+        const hebrewDescription = extractDescriptionNaive("he", descriptionResponse)
+       
         const today = new Date().toISOString().split('T')[0];
 
         // Return draft 
@@ -46,11 +42,11 @@ const generateDraft =
                 end_datetime: today, // Done
                 venue_instagram: venueInstagram, 
                 venue_address:  venueAddress ? streetNumber : venueName, // Done
-                chef_names: chefName ? chefName : null,
-                chef_instagrams: chefInstagram, 
+                chef_names: chefName ? chefName : null, // Done 
+                chef_instagrams: chefInstagram, // Done 
                 reservation_url: null, // Done
-                english_description: descriptionResponse, 
-                hebrew_description: descriptionResponse, 
+                english_description: englishDescription, 
+                hebrew_description: hebrewDescription, 
                 is_draft: true // Done
             }
     }
