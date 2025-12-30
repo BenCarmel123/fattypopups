@@ -11,7 +11,6 @@ export function extractChefNameNaive(text) {
     : value;
 }
 
-
 export function extractVenueNameNaive(text) {
   if (typeof text !== "string") return null;
 
@@ -23,7 +22,6 @@ export function extractVenueNameNaive(text) {
     ? null
     : value;
 }
-
 
 export function extractChefInstagram(str) {
   if (typeof str !== "string") return null;
@@ -45,16 +43,45 @@ export function extractVenueInstagram(str) {
   return handle.toLowerCase() === "none" ? null : handle;
 }
 
+async function fetchVenueAddress(venueName) {
+    const response = await fetch('https://places.googleapis.com/v1/places:searchText', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Goog-Api-Key': process.env.GOOGLE_MAPS_API_KEY,
+            'X-Goog-FieldMask': 'places.formattedAddress'
+        },
+        body: JSON.stringify({
+            textQuery: `${venueName} Tel Aviv`,
+            languageCode: 'en',
+            maxResultCount: 1
+        })
+    });
+
+    return response.json();
+}
+
 export async function extractVenueAddress(venueName) {
-  if (!venueName) return null;
+    const response = await fetch('https://places.googleapis.com/v1/places:searchText', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Goog-Api-Key': process.env.GOOGLE_MAPS_API_KEY,
+            'X-Goog-FieldMask': 'places.formattedAddress'
+        },
+        body: JSON.stringify({
+            textQuery: `${venueName} Tel Aviv`,
+            languageCode: 'en',
+            maxResultCount: 1
+        })
+    });
 
-  const query = encodeURIComponent(`${venueName} Tel Aviv`);
-  const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${query}&key=${process.env.GOOGLE_MAPS_API_KEY}`;
+    return response.json();
+}
 
-  const res = await fetch(url);
-  const data = await res.json();
+export function extractStreetAndNumber(addressResponse) {
+    const fullAddress = addressResponse?.places?.[0]?.formattedAddress;
+    if (!fullAddress) return null;
 
-  if (!data.results || data.results.length === 0) return null;
-
-  return data.results[0].formatted_address;
+    return fullAddress.split(',')[0].trim();
 }

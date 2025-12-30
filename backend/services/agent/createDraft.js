@@ -1,5 +1,5 @@
 import { generateEventDescriptions, FindChefAndVenue, FindInstagrams } from "./agent.js";
-import { extractChefInstagram, extractChefNameNaive, extractVenueAddress, extractVenueInstagram, extractVenueNameNaive } from "./extract.js";
+import { extractChefInstagram, extractChefNameNaive, extractStreetAndNumber, extractVenueAddress, extractVenueInstagram, extractVenueNameNaive } from "./extract.js";
 
 const generateDraft = 
     async (prompt) => 
@@ -13,7 +13,9 @@ const generateDraft =
 
         // Extract Venue Address from name 
         const venueAddress = await extractVenueAddress(venueName);
-        console.log("[DRAFT] address is", venueAddress);
+        console.log("[DRAFT] full address is", venueAddress);
+        const streetNumber = extractStreetAndNumber(venueAddress)
+        console.log("[DRAFT] street and number are", venueAddress);
 
         // Extract instagram accounts from prompt
         console.log("[DRAFT] finding Instagrams: ");
@@ -43,7 +45,7 @@ const generateDraft =
                 start_datetime: today, // Done
                 end_datetime: today, // Done
                 venue_instagram: venueInstagram, 
-                venue_address:  venueAddress ? venueAddress : venueName, 
+                venue_address:  venueAddress ? streetNumber : venueName, // Done
                 chef_names: chefName ? chefName : null,
                 chef_instagrams: chefInstagram, 
                 reservation_url: null, // Done
