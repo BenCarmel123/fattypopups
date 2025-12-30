@@ -13,7 +13,6 @@ export default function HomePage() {
     fetch(`${SERVER_URL}/api/events`)
       .then(res => res.json())
       .then(data => {
-        console.log('[DEBUG] Fetched events:', data); 
         setEvents(Array.isArray(data) ? data : []);
       })
       .catch(err => {

@@ -6,17 +6,14 @@ import dns from 'dns';
 // Ensure IPv4 is preferred
 dns.setDefaultResultOrder('ipv4first');
 import 'dotenv/config';
-import session from 'express-session';
 
 // Import routers 
 import eventRouter from './routes/events.js';
 import authRouter from './routes/auth.js';
+import agentRouter from './routes/agentDraft.js';
 
 // Initialize Express app
 const app = express();
-
-app.set('trust proxy', 1);
-
 
 // Middleware
 app.use(cors({
@@ -28,40 +25,29 @@ app.use(cors({
   credentials: true
 }));
 
+// JSON/TEXT Support
 app.use(express.json());
+app.use(express.text());
 
 // Logging middleware
 app.use((req, res, next) => {
-  console.log(`[DEBUG] - Incoming ${req.method} ${req.url}`);
+  console.log(`[REQUEST] - Incoming ${req.method} ${req.url}`);
   next();
 });
 
-// Session Middleware
-app.use(session({
-  name: 'fatty.sid',
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false,
-  proxy:true,
-  cookie: {
-    httpOnly: true,
-    secure: true,       
-    sameSite: "none",
-    domain: ".onrender.com",
-    maxAge: 1000 * 60 * 60 * 24 * 7
-  }
-}));
 
 // For Debugging
 app.get('/', (req, res) => {
   res.send(' FattyPopups backend is running!');
 });
 
+// Routing
 app.use('/api/events', eventRouter);
 app.use('/auth', authRouter);
+app.use('/agent', agentRouter);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`[DEBUG] - Server running on port ${PORT}`);
+  console.log(`[NETWORK] - Server running on port ${PORT}`);
 });
 

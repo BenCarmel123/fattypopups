@@ -18,7 +18,7 @@ export const deletePastEvents = async () => {
             console.log("[ERROR] - Error deleting past events:", error);
             return;
         }
-        console.log(`[DEBUG] - Deleted ${data?.length ?? 0} past events.`);
+        console.log(`[EVENT] - Deleted ${data?.length ?? 0} past events.`);
     }
     catch (error) {
         console.log("[ERROR] - Unexpected error deleting past events:", error);

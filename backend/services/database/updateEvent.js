@@ -1,16 +1,16 @@
 import { supabase } from "../../config/supabaseClient.js";
 import { s3 } from '../../config/s3Client.js';
 import { PutObjectCommand } from "@aws-sdk/client-s3";
-import { generateEmbedding } from "../../openai/agent.js";
+import { generateEmbedding } from "../agent/agent.js";
 
 // UPDATE event (PUT) with image overwrite + embedding update
 export const updateEvent = async (id, body, file) => {
-  console.log("[DEBUG] Received PUT /api/events/:id");
-  console.log("[DEBUG] Request body:", body);
+  console.log("[REQUEST] Received PUT /api/events/:id");
+  console.log("[REQUEST] Request body:", body);
 
   // 1. IMAGE OVERWRITE 
   if (file) {
-    console.log("[DEBUG] Uploaded file:", file);
+    console.log("[FILE] Uploaded file:", file);
     let s3_key;
     let s3_url;
 
@@ -110,7 +110,7 @@ let he_id = null;
 
 // 3. GENERATE NEW EMBEDDINGS (IF NEEDED)
 if (toPublish || (alreadyPublished && (englishChanged || hebrewChanged))) {
-  console.log("[DEBUG] - Descriptions changed — generating new embeddings...");    
+  console.log("[EMBEDDING] - Descriptions changed — generating new embeddings...");    
   try {
     if (toPublish || englishChanged) {
       newEnglishEmbedding = await generateEmbedding(body.english_description);
