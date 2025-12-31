@@ -1,6 +1,6 @@
 import express from 'express';
 import { getEvents } from '../services/database/getEvents.js';
-import { createEvent } from '../services/database/createEvent.js';
+import { createEvent } from '../services/database/event/createEvent.js';
 import { updateEvent } from '../services/database/updateEvent.js';
 import { deleteEvent } from '../services/database/deleteEvent.js';
 // Multer imports

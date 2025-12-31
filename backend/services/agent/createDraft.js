@@ -1,5 +1,5 @@
 import { GenerateDraftDetails } from "./modelCalls.js";
-import { extractChefNameNaive, extractDescriptionNaive, extractInstagramHandle, extractStreetAndNumber, extractVenueNameNaive } from "./utils/parsers.js";
+import { extractChefNameNaive, extractDescriptionNaive, extractVenueNameNaive } from "./utils/parsers.js";
 import { fetchDetails } from "./utils/fetchers.js";
 
 const REMINDER = "!!!DO NOT FORGET TO FILL!!!"
@@ -8,17 +8,21 @@ const generateDraft =
     { 
         const _startTime = Date.now(); // TIME start
 
-        // Extract chef name, venue and descriptions from prompt 
+        // Details from prompt 
         const rawOutput = await GenerateDraftDetails(prompt);
+
+        // Extract names from output
         const chefName = extractChefNameNaive(rawOutput);
         const venueName = extractVenueNameNaive(rawOutput);
+
+        // Extract address and Instagram 
+        const { venueAddress, streetNumber, chefInstagram } = await fetchDetails(venueName, chefName);
+
+        // Extract descriptions from output
         const englishDescription = extractDescriptionNaive("en", rawOutput);
         const hebrewDescription = extractDescriptionNaive("he", rawOutput);
         console.log("[DRAFT] chef:", chefName, "| venue:", venueName);
         console.log("[DRAFT] english:", englishDescription, "| hebrew:", hebrewDescription);
-
-        // Extract address and Instagram 
-        const { venueAddress, streetNumber, chefInstagram } = await fetchDetails(venueName, chefName);
 
         const today = new Date().toISOString().split('T')[0];
 
