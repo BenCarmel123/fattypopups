@@ -1,54 +1,44 @@
-import { generateEventDescriptions, FindChefAndVenue } from "./agent.js";
-import { fetchInstagram, extractChefNameNaive, extractDescriptionNaive, extractInstagramHandle, extractStreetAndNumber, extractVenueAddress, extractVenueNameNaive } from "./extract.js";
+import { GenerateDraftDetails } from "./modelCalls.js";
+import { extractChefNameNaive, extractDescriptionNaive, extractInstagramHandle, extractStreetAndNumber, extractVenueNameNaive } from "./utils/parsers.js";
+import { fetchDetails } from "./utils/fetchers.js";
 
+const REMINDER = "!!!DO NOT FORGET TO FILL!!!"
 const generateDraft = 
     async (prompt) => 
     { 
-        // Extract chef names and venue from prompt 
-        const rawNames = await FindChefAndVenue(prompt);
-        console.log("[DRAFT] found names: " + rawNames);
-        const chefName = extractChefNameNaive(rawNames);
-        const venueName = extractVenueNameNaive(rawNames);
-        console.log("[DRAFT] chef is " + chefName + " of type " + typeof chefName);
+        const _startTime = Date.now(); // TIME start
 
-        // Extract Venue Address from name 
-        const venueAddress = await extractVenueAddress(venueName);
-        console.log("[DRAFT] full address is", venueAddress);
-        const streetNumber = extractStreetAndNumber(venueAddress)
-        console.log("[DRAFT] street and number are", venueAddress);
+        // Extract chef name, venue and descriptions from prompt 
+        const rawOutput = await GenerateDraftDetails(prompt);
+        const chefName = extractChefNameNaive(rawOutput);
+        const venueName = extractVenueNameNaive(rawOutput);
+        const englishDescription = extractDescriptionNaive("en", rawOutput);
+        const hebrewDescription = extractDescriptionNaive("he", rawOutput);
+        console.log("[DRAFT] chef:", chefName, "| venue:", venueName);
+        console.log("[DRAFT] english:", englishDescription, "| hebrew:", hebrewDescription);
 
-        // Extract instagram accounts 
-        console.log("[DRAFT] finding Instagrams: ");
-        const chefQuery = `"${chefName}" site:instagram.com`;
-        const venueQuery =`"${venueName}" "${streetNumber}" Tel Aviv instagram`;;
-        const chefInstagramSearchResult = await fetchInstagram(chefQuery);
-        const venueInstagramSearchResult = await fetchInstagram(venueQuery);
-        const chefInstagram = extractInstagramHandle(chefInstagramSearchResult);
-        const venueInstagram = extractInstagramHandle(venueInstagramSearchResult);
+        // Extract address and Instagram 
+        const { venueAddress, streetNumber, chefInstagram } = await fetchDetails(venueName, chefName);
 
-        // Generate Event Descriptions
-        console.log("[DRAFT] Generating event descriptions: ")
-        const descriptionResponse = await generateEventDescriptions(chefName, venueName);
-        console.log("[DRAFT] Response is: " + descriptionResponse)
-        const englishDescription = extractDescriptionNaive("en", descriptionResponse)
-        const hebrewDescription = extractDescriptionNaive("he", descriptionResponse)
-       
         const today = new Date().toISOString().split('T')[0];
 
-        // Return draft 
-        return { 
-                title: prompt, 
-                start_datetime: today, // Done
-                end_datetime: today, // Done
-                venue_instagram: venueInstagram, 
-                venue_address:  venueAddress ? streetNumber : venueName, // Done
-                chef_names: chefName ? chefName : null, // Done 
-                chef_instagrams: chefInstagram, // Done 
-                reservation_url: null, // Done
-                english_description: englishDescription, 
-                hebrew_description: hebrewDescription, 
-                is_draft: true // Done
-            }
+        const result = { 
+            title: REMINDER, // DONE
+            start_datetime: today, // DONE
+            end_datetime: today, // DONE
+            venue_instagram: REMINDER, // DONE 
+            venue_address: venueAddress ? streetNumber : venueName, // DONE
+            chef_names: chefName, // DONE
+            chef_instagrams: chefInstagram, // DONE
+            reservation_url: REMINDER, // Done
+            english_description: englishDescription, // DONE
+            hebrew_description: hebrewDescription, // DONE
+            is_draft: true // DONE
+        };
+
+        console.log("[TIME]", Date.now() - _startTime, "ms"); // TIME end
+        return result;
     }
 
 export { generateDraft };
+

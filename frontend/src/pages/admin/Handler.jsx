@@ -56,7 +56,6 @@ export default function AdminPageHandler() {
          case ADD:
             return (<EventForm isEdit={false} handleClick={handleClick} event={selectedEvent} />);
          case EDIT:
-            console.log("chose to edit")
             return (<EventForm isEdit={true} handleClick={handleClick} event={selectedEvent} />);
          case DASHBOARD:
             return (<Dashboard handleClick={handleClick} />);

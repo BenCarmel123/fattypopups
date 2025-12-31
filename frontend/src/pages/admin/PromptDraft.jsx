@@ -5,8 +5,11 @@ import { SubmitPromptButton, BackToDashboard } from '../../components/Buttons.js
 import SpinnerOverlay from '../../components/SpinnerOverlay.jsx';
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL
+const ONTOPO_URL = process.env.REACT_APP_ONTOPO_URL
 
 export const sendPrompt = async (prompt) => {
+  const _startTime = Date.now(); // TIME start
+
   const res = await fetch(`${SERVER_URL}/agent/draft`, {
     method: POST,
     headers: { "Content-Type": "text/plain" },
@@ -15,15 +18,15 @@ export const sendPrompt = async (prompt) => {
 
   const event = await res.json();
 
+  console.log("[TIME]", Date.now() - _startTime, "ms"); // TIME end
+
   if (!res.ok) {
     throw new Error(event.error || UNKNOWN_ERROR);
   }
 
   console.log(event);
   return event;
-
 };
-
 
 export default function PromptDraft({ placeholder = PROMPT_PLACEHOLDER, handleClick }) {
     const [prompt, setPrompt] = useState('');
@@ -38,6 +41,7 @@ export default function PromptDraft({ placeholder = PROMPT_PLACEHOLDER, handleCl
          
         try {
             setLoading(true)
+            window.open(`${ONTOPO_URL}`, '_blank');
             const { event } = await sendPrompt(prompt);
             setPrompt('');
             // Switch to ADD mode and pass the generated draft
