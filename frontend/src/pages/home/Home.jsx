@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { Spinner } from '@chakra-ui/react';
 import EventCard from '../../components/EventCard';
-import { XL, SUBHEADER_TEXT_1, SUBHEADER_TEXT_2 } from '../../components/config/strings.jsx';
+import { SUBHEADER_TEXT_1, SUBHEADER_TEXT_2 } from '../../components/config/strings.jsx';
 import DynamicCard from '../../components/DynamicCard.jsx';
 import Header from '../../components/Header.jsx';
 

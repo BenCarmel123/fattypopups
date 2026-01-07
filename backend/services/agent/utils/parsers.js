@@ -1,3 +1,22 @@
+export function extractTitleNaive(text) {
+  if (typeof text !== "string") return null;
+
+  const match = text.match(/event_title:\s*(.+)/i);
+  if (!match) return null;
+
+  let value = match[1].trim();
+
+  // extract substring inside quotes if present
+  const quoted = value.match(/"([^"]+)"/);
+  if (quoted) {
+    value = quoted[1];
+  }
+
+  return value.toLowerCase() === "null" || value.toLowerCase() === "none"
+    ? null
+    : value;
+}
+
 export function extractChefNameNaive(text) {
   if (typeof text !== "string") return null;
 

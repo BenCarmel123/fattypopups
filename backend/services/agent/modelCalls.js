@@ -28,4 +28,3 @@ export async function GenerateDraftDetails(prompt) {
   if (!response.output_text) throw new Error("LLM returned empty output");
   return response.output_text;
 }
-

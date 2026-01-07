@@ -1,5 +1,5 @@
 import { GenerateDraftDetails } from "./modelCalls.js";
-import { extractChefNameNaive, extractDescriptionNaive, extractVenueNameNaive } from "./utils/parsers.js";
+import { extractChefNameNaive, extractDescriptionNaive, extractVenueNameNaive, extractTitleNaive } from "./utils/parsers.js";
 import { fetchSpecificDetails } from "./utils/fetchers.js";
 
 const REMINDER = "!!!DO NOT FORGET TO FILL!!!"
@@ -11,15 +11,16 @@ const generateDraft =
         // Details from prompt 
         const rawOutput = await GenerateDraftDetails(prompt);
 
-        // Extract names from output
+        // Extract names and title from output
         const chefName = extractChefNameNaive(rawOutput);
         const venueName = extractVenueNameNaive(rawOutput);
+        const eventTitle = extractTitleNaive(rawOutput);
 
         // Extract descriptions from output
         const englishDescription = extractDescriptionNaive("en", rawOutput);
         const hebrewDescription = extractDescriptionNaive("he", rawOutput);
-        console.log("[DRAFT] chef:", chefName, "| venue:", venueName);
-        console.log("[DRAFT] english:", englishDescription, "| hebrew:", hebrewDescription);
+        console.log("[DRAFT] chef:", chefName, "| venue:", venueName, "| title:", eventTitle, "\n");
+        console.log("[DRAFT] english:", englishDescription, "| hebrew:", hebrewDescription, "\n");
 
         // Extract Date
         const today = new Date().toISOString().split('T')[0];
@@ -28,7 +29,7 @@ const generateDraft =
         const { venueAddress, streetNumber, chefInstagram, venueInstagram } = await fetchSpecificDetails(venueName, chefName);
 
         const result = { 
-            title: REMINDER, // DONE
+            title: eventTitle, // DONE
             start_datetime: today, // DONE
             end_datetime: today, // DONE
             venue_instagram: venueInstagram || REMINDER, // DONE 
@@ -41,7 +42,7 @@ const generateDraft =
             is_draft: true // DONE
         };
 
-        console.log("[TIME]", Date.now() - _startTime, "ms"); // TIME end
+        console.log("[TIME]", Date.now() - _startTime, "ms\n"); // TIME end
         return result;
     }
 
