@@ -1,6 +1,6 @@
 import { GenerateDraftDetails } from "./modelCalls.js";
 import { extractChefNameNaive, extractDescriptionNaive, extractVenueNameNaive } from "./utils/parsers.js";
-import { fetchDetails } from "./utils/fetchers.js";
+import { fetchVenueDetails } from "./utils/fetchers.js";
 
 const REMINDER = "!!!DO NOT FORGET TO FILL!!!"
 const generateDraft = 
@@ -16,7 +16,7 @@ const generateDraft =
         const venueName = extractVenueNameNaive(rawOutput);
 
         // Extract address and Instagram 
-        const { venueAddress, streetNumber, chefInstagram } = await fetchDetails(venueName, chefName);
+        const { venueAddress, streetNumber, chefInstagram } = await fetchVenueDetails(venueName, chefName);
 
         // Extract descriptions from output
         const englishDescription = extractDescriptionNaive("en", rawOutput);

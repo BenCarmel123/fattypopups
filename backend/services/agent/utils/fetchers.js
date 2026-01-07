@@ -44,7 +44,7 @@ export async function fetchInstagram(query) {
  * Fetch venue address and chef Instagram in parallel, then extract useful bits.
  * Returns an object: { venueAddress, streetNumber, chefInstagram }
  */
-export async function fetchDetails(venueName, chefName) {
+export async function fetchVenueDetails(venueName, chefName) {
   const [venueAddress, chefInstagramSearchResult] = await Promise.all([
     fetchAddress(venueName),
     // search Instagram for the chef name; caller may pass null/undefined
