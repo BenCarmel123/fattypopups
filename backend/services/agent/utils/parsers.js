@@ -4,7 +4,14 @@ export function extractChefNameNaive(text) {
   const match = text.match(/chef_name:\s*(.+)/i);
   if (!match) return null;
 
-  const value = match[1].trim();
+  let value = match[1].trim();
+
+  // extract substring inside quotes if present
+  const quoted = value.match(/"([^"]+)"/);
+  if (quoted) {
+    value = quoted[1];
+  }
+
   return value.toLowerCase() === "null" || value.toLowerCase() === "none"
     ? null
     : value;
