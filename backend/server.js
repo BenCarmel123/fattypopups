@@ -35,7 +35,6 @@ app.use((req, res, next) => {
   next();
 });
 
-
 // For Debugging
 app.get('/', (req, res) => {
   res.send(' FattyPopups backend is running!');

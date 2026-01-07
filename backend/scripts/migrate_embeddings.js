@@ -1,6 +1,6 @@
 // migrate_embeddings.js
 import { createClient } from '@supabase/supabase-js';
-import { generateEmbedding } from '../openai/agent.js';
+import { generateEmbedding } from '../services/agent/modelCalls.js';
 import 'dotenv/config';
 
 const supabase = createClient(

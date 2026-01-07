@@ -1,5 +1,5 @@
-import { supabase } from '../../config/supabaseClient.js';
-import { generateEmbedding } from '../agent/agent.js';
+import { supabase } from '../../../config/supabaseClient.js';
+import { generateEmbedding } from '../../agent/modelCalls.js';
 
 export const createEvent = async (body, file) => {
   const {

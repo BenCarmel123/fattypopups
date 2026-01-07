@@ -2,7 +2,7 @@
 import 'dotenv/config';
 import { generateDraft } from '../services/agent/createDraft.js';
 import express from 'express';
-import { createEvent } from '../services/database/createEvent.js'; 
+import { createEvent } from '../services/database/event/createEvent.js'; 
 
 const agentRouter = express.Router();
 
@@ -29,7 +29,7 @@ agentRouter.post("/draft", async (req, res) => {
 
   } catch (err) {
     console.error("[ERROR] Draft or event creation failed:", err);
-    return res.status(500).json({ error: "Draft or event creation failed", draft: newEvent });
+    return res.status(500).json({ error: "Draft or event creation failed" });
   }
 });
 

@@ -1,7 +1,7 @@
-import { supabase } from "../../config/supabaseClient.js";
-import { s3 } from '../../config/s3Client.js';
+import { supabase } from "../../../config/supabaseClient.js";
+import { s3 } from '../../../config/s3Client.js';
 import { PutObjectCommand } from "@aws-sdk/client-s3";
-import { generateEmbedding } from "../agent/agent.js";
+import { generateEmbedding } from "../../agent/modelCalls.js";
 
 // UPDATE event (PUT) with image overwrite + embedding update
 export const updateEvent = async (id, body, file) => {
