@@ -4,7 +4,7 @@ import validateEvent from "../../components/utils.jsx";
 import  MyAlert  from "../../components/CustomAlert.jsx";
 import { useState } from "react";
 import { FORM_FIELD_COLOR, TEXT_AREA_COLOR, TRANSPARENT, FORM_BACKGROUND_COLOR } from "../../components/config/colors.jsx"; 
-import { CENTER, FLEX, RELATIVE, FIXED, MAX, NONE, AUTO, XL, PUT, POST } from "../../components/config/strings.jsx";
+import { CENTER, FLEX, RELATIVE, FIXED, MAX, NONE, AUTO, XL } from "../../components/config/strings.jsx";
 import { formatDate } from "../../components/utils.jsx";
 import { BackToDashboard, FileUploadButton, SubmitFormButton } from "../../components/Buttons.jsx";
 import DescriptionArea from "../../components/DescriptionArea.jsx";
@@ -48,7 +48,7 @@ export default function EventForm({ event, isEdit, handleClick } ) {
             }
         }
 
-        const method = isEdit ? {PUT} : {POST};
+        const method = isEdit ? "PUT" : "POST";
         const url = isEdit ? `${SERVER_URL}/api/events/${event.id}` : `${SERVER_URL}/api/events`;
 
         // Submit form data

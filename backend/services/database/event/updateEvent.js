@@ -93,11 +93,15 @@ body.chef_names = chefNamesArray;
 body.chef_instagrams = chefInstagramsArray;
 
 // MINIMAL CHANGE: Draft / Publish flags
-const isDraft = body.is_draft === "true"; 
-const wasDraft = currentEvent.is_draft; 
+// Handle both string and boolean is_draft values
+const isDraft = body.is_draft === "true" || body.is_draft === true; 
+const wasDraft = currentEvent.is_draft === true || currentEvent.is_draft === "true"; 
 const toPublish = wasDraft && !isDraft;
 const stillDraft = wasDraft && isDraft;
 const alreadyPublished = !wasDraft;
+
+console.log("[DEBUG] is_draft values - body:", body.is_draft, "| current:", currentEvent.is_draft);
+console.log("[DEBUG] Flags - isDraft:", isDraft, "| wasDraft:", wasDraft, "| toPublish:", toPublish);
 
 // Compute embedding changes
 const englishChanged = body.english_description !== currentEvent.english_description;
