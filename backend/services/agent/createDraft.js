@@ -16,7 +16,7 @@ const generateDraft =
         const venueName = extractVenueNameNaive(rawOutput);
 
         // Extract address and Instagram 
-        const { venueAddress, streetNumber, chefInstagram } = await fetchVenueDetails(venueName, chefName);
+        const { venueAddress, streetNumber, chefInstagram, venueInstagram } = await fetchVenueDetails(venueName, chefName);
 
         // Extract descriptions from output
         const englishDescription = extractDescriptionNaive("en", rawOutput);
@@ -30,7 +30,7 @@ const generateDraft =
             title: REMINDER, // DONE
             start_datetime: today, // DONE
             end_datetime: today, // DONE
-            venue_instagram: REMINDER, // DONE 
+            venue_instagram: venueInstagram || REMINDER, // DONE 
             venue_address: venueAddress ? streetNumber : venueName, // DONE
             chef_names: chefName, // DONE
             chef_instagrams: chefInstagram, // DONE

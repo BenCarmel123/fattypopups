@@ -1,4 +1,5 @@
 import { extractStreetAndNumber, extractInstagramHandle } from './parsers.js';
+import { getOrCreateInstagram, getInstagramIfExists } from '../../database/instagram/scripts.js';
 
 export async function fetchAddress(venueName) {
     const response = await fetch('https://places.googleapis.com/v1/places:searchText', {
@@ -41,19 +42,27 @@ export async function fetchInstagram(query) {
 }
 
 /**
- * Fetch venue address and chef Instagram in parallel, then extract useful bits.
- * Returns an object: { venueAddress, streetNumber, chefInstagram }
+ * Fetch venue address and chef Instagram. For venue Instagram, only check DB.
+ * Returns an object: { venueAddress, streetNumber, chefInstagram, venueInstagram }
  */
 export async function fetchVenueDetails(venueName, chefName) {
   const [venueAddress, chefInstagramSearchResult] = await Promise.all([
     fetchAddress(venueName),
-    // search Instagram for the chef name; caller may pass null/undefined
+    // Only search Instagram for the chef name; caller may pass null/undefined
     chefName ? fetchInstagram(`"${chefName}" site:instagram.com`) : Promise.resolve(null),
   ]);
 
-  // Extract street/number and instagram handle using parser helpers
+  // Extract street/number
   const streetNumber = extractStreetAndNumber(venueAddress);
-  const chefInstagram = extractInstagramHandle(chefInstagramSearchResult);
+  
+  // For chef: full getOrCreate flow, for venue: only check existing DB records
+  const [chefInstagramRecord, venueInstagramRecord] = await Promise.all([
+    chefName ? getOrCreateInstagram(chefName, "chef") : Promise.resolve(null),
+    venueName ? getInstagramIfExists(venueName, "venue") : Promise.resolve(null),
+  ]);
+  
+  const chefInstagram = chefInstagramRecord?.handle || null;
+  const venueInstagram = venueInstagramRecord?.handle || null;
 
-  return { venueAddress, streetNumber, chefInstagram };
+  return { venueAddress, streetNumber, chefInstagram, venueInstagram };
 }

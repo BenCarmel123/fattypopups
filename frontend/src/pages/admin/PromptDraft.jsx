@@ -31,8 +31,11 @@ export const sendPrompt = async (prompt) => {
 export default function PromptDraft({ placeholder = PROMPT_PLACEHOLDER, handleClick }) {
     const [prompt, setPrompt] = useState('');
     const [isLoading, setLoading] = useState(false)
+    const [requestInProgress, setRequestInProgress] = useState(false);
 
     const handleSubmit = async (e) => {
+        if (requestInProgress) return; // Prevent duplicate
+        setRequestInProgress(true);
         e.preventDefault();
         if (!prompt.trim() || isLoading) 
         {  
@@ -50,7 +53,8 @@ export default function PromptDraft({ placeholder = PROMPT_PLACEHOLDER, handleCl
         catch (err) {
             console.error('Draft generation error:', err);
         }
-        finally{
+        finally {
+            setRequestInProgress(false);
             setLoading(false)
         }
     };

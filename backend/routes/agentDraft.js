@@ -29,7 +29,7 @@ agentRouter.post("/draft", async (req, res) => {
 
   } catch (err) {
     console.error("[ERROR] Draft or event creation failed:", err);
-    return res.status(500).json({ error: "Draft or event creation failed", draft: newEvent });
+    return res.status(500).json({ error: "Draft or event creation failed" });
   }
 });
 
