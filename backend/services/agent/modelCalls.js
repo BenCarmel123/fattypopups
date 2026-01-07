@@ -20,7 +20,7 @@ export async function generateEmbedding(description) {
 export async function GenerateDraftDetails(prompt) {
   console.log("[AGENT] Prompt: " + prompt)
    const response = await openai.responses.create({
-    model: "gpt-5-nano",
+    model: "gpt-4o-mini",
     input: `${prompt}`,
     instructions: `${process.env.DRAFT_INSTRUCTIONS}`,
   });
