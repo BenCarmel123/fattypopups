@@ -1,8 +1,8 @@
 import express from 'express';
-import { getEvents } from '../services/events/getEvents.js';
-import { createEvent } from '../services/events/createEvent.js';
-import { updateEvent } from '../services/events/updateEvent.js';
-import { deleteEvent } from '../services/events/deleteEvent.js';
+import { getEvents } from '../services/database/event/getEvents.js';
+import { createEvent } from '../services/database/event/createEvent.js';
+import { updateEvent } from '../services/database/event/updateEvent.js';
+import { deleteEvent } from '../services/database/event/deleteEvent.js';
 // Multer imports
 import { upload, uploadMemory } from '../config/multerConfig.js';
 

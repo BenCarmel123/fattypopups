@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { Spinner } from '@chakra-ui/react';
 import EventCard from '../../components/EventCard';
-import { XL, SUBHEADER_TEXT_1, SUBHEADER_TEXT_2 } from '../../components/config/strings.jsx';
+import { SUBHEADER_TEXT_1, SUBHEADER_TEXT_2 } from '../../components/config/strings.jsx';
 import DynamicCard from '../../components/DynamicCard.jsx';
 import Header from '../../components/Header.jsx';
 
@@ -13,7 +13,6 @@ export default function HomePage() {
     fetch(`${SERVER_URL}/api/events`)
       .then(res => res.json())
       .then(data => {
-        console.log('[DEBUG] Fetched events:', data); 
         setEvents(Array.isArray(data) ? data : []);
       })
       .catch(err => {

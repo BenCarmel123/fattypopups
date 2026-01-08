@@ -1,25 +1,41 @@
-import { Button, Card, Stack, Input, Field } from "@chakra-ui/react";
-import { DASHBOARD, MINIMAL_TRANSITION } from "../../components/config/strings.jsx";
+import { Card, Stack, Input, Field } from "@chakra-ui/react";
+import { DASHBOARD } from "../../components/config/strings.jsx";
 import validateEvent from "../../components/utils.jsx";
 import  MyAlert  from "../../components/CustomAlert.jsx";
 import { useState } from "react";
-import FileUpload from "../../components/FileUpload.jsx";
-import { FORM_FIELD_COLOR, TEXT_AREA_COLOR, TRANSPARENT, WHITE } from "../../components/config/colors.jsx"; 
-import { CENTER, FLEX, RELATIVE, FIXED, MAX, NONE, AUTO, LARGE, XL, MEDIUM, SOLID, MINIMAL_TRANSFORM, BOLD } from "../../components/config/strings.jsx";
+import { FORM_FIELD_COLOR, TEXT_AREA_COLOR, TRANSPARENT, FORM_BACKGROUND_COLOR } from "../../components/config/colors.jsx"; 
+import { CENTER, FLEX, RELATIVE, FIXED, MAX, NONE, AUTO, XL } from "../../components/config/strings.jsx";
 import { formatDate } from "../../components/utils.jsx";
-import { BackButton, SubmitFormButton } from "../../components/Buttons.jsx";
+import { BackToDashboard, FileUploadButton, SubmitFormButton } from "../../components/Buttons.jsx";
 import DescriptionArea from "../../components/DescriptionArea.jsx";
+import SaveAsDraft from "../../components/SaveAsDraft.jsx";
+import SpinnerOverlay from "../../components/SpinnerOverlay.jsx";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 export default function EventForm({ event, isEdit, handleClick } ) {
     const [alert, setAlert] = useState(undefined);
+    const [isLoading, setLoading] = useState(false);
     
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     const tomorrowStr = tomorrow.toISOString().split("T")[0];
 
-    function handleEvent(e) {
+    async function handleSubmit(url, method, formData) {
+        await fetch(url, {
+            method: method,
+            body: formData,
+        })
+        .then(async res => {
+            if (!res.ok) {
+                const err = await res.json();
+                throw new Error(err.error || 'Unknown error');
+            }
+            return res.json();
+        })
+    }
+
+    async function handleEvent(e) {
         e.preventDefault(); 
         const form = e.target; 
         const eventData = {
@@ -48,9 +64,6 @@ export default function EventForm({ event, isEdit, handleClick } ) {
             }
         }
 
-        const method = isEdit ? "PUT" : "POST";
-        const url = isEdit ? `${SERVER_URL}/api/events/${event.id}` : `${SERVER_URL}/api/events`;
-
         // Submit form data
         const formData = new FormData();
         formData.append('title', eventData.title);
@@ -66,34 +79,39 @@ export default function EventForm({ event, isEdit, handleClick } ) {
         formData.append('poster', eventData.poster);
         formData.append('is_draft', eventData.is_draft ? 'true' : 'false');
 
-        fetch(url, {
-            method: method,
-            body: formData,
-        })
-        .then(async res => {
-            if (!res.ok) {
-                const err = await res.json();
-                throw new Error(err.error || 'Unknown error');
-            }
-            return res.json();
-        })
-        .then(() => {
+        const url = isEdit ? `${SERVER_URL}/api/events/${event.id}` : `${SERVER_URL}/api/events`;
+        const method = isEdit ? "PUT" : "POST";
+
+        try {
+
+            setLoading(true);
+            await handleSubmit(url, method, formData);
+
+            setLoading(false)
+
             setAlert({
                 status: "success",
                 title: isEdit ? "Event Updated" : "Event Created",
             });
 
-            setTimeout(() => handleClick(DASHBOARD)(), 1000);
-        })
-        .catch((err) => {
+            setTimeout(() => {
+                handleClick(DASHBOARD)();
+            }, 750);
+
+        } 
+
+        catch (err) {
+            setLoading(false)
             setAlert({
-                status: "error", title: "Submission Error", description: err.message
+                status: "error",
+                description: err.message,
             });
-        });
+        } 
     }
 
     return (
         <div className={CENTER} style={{ position: RELATIVE, display: FLEX, alignItems: CENTER, justifyContent: CENTER, minHeight: '100vh' }}>
+            <SpinnerOverlay isLoading={isLoading} />
             {alert && (
                 <div style={{ position: FIXED, top: 0, left: 0, width: MAX, zIndex: 2000, display: FLEX, justifyContent: CENTER, pointerEvents: NONE }}>
                     <div style={{ pointerEvents: AUTO, width: 'fit-content' }}>
@@ -102,9 +120,7 @@ export default function EventForm({ event, isEdit, handleClick } ) {
                 </div>
             )}
             <Card.Root backgroundColor={TRANSPARENT} marginBottom="4rem" maxW="800px" w={MAX} minW="300px" boxShadow={NONE} borderRadius={XL}>
-                <br></br> <br></br>
-                <BackButton marginBottom="2rem" />
-                <form className onSubmit={handleEvent} style={{ backgroundColor: WHITE, enctype: "multipart/form-data", borderRadius: '1rem', padding: '2rem', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+                <form onSubmit={handleEvent} style={{ backgroundColor: FORM_BACKGROUND_COLOR, enctype: "multipart/form-data", borderRadius: '1rem', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
                     <Card.Body>
                         <Stack gap={4} w="full">
                             <Field.Root>
@@ -142,33 +158,18 @@ export default function EventForm({ event, isEdit, handleClick } ) {
                             <DescriptionArea event={event} lang="en" />
                             <DescriptionArea event={event} lang="he" />
                             <Field.Root>
-                                <Button 
-                                    variant={SOLID}
-                                    size={LARGE}
-                                    fontWeight={BOLD}
-                                    px={2} 
-                                    py={2} 
-                                    boxShadow={MEDIUM}
-                                    borderRadius={XL} 
-                                    backgroundColor={FORM_FIELD_COLOR}
-                                    _hover={{ transform: MINIMAL_TRANSFORM }} 
-                                    transition={MINIMAL_TRANSITION}
-                                    as="label">
-                                    <FileUpload style={{ display: 'none'}} />
-                                </Button>
+                                <FileUploadButton></FileUploadButton>
                             </Field.Root>
                         {(event?.is_draft ?? true) && (
                             <Field.Root>
-                                <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                <input type="checkbox" name="is_draft" defaultChecked={event?.is_draft || false} />
-                                <span>Save as Draft </span>
-                                </label>
+                            <SaveAsDraft defaultChecked={event?.is_draft || false}></SaveAsDraft>
                             </Field.Root>
                             )}
                         </Stack>
                     </Card.Body>
-                    <Card.Footer>
+                    <Card.Footer gap="1rem">
                         <SubmitFormButton text={isEdit ? "Update" : "Add"} />
+                        <BackToDashboard handleClick={handleClick(DASHBOARD, undefined)}></BackToDashboard>
                     </Card.Footer>
                 </form>
             </Card.Root>

@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import EventForm from "./EventForm.jsx";
-import { ADD, EDIT, LOGIN, DASHBOARD } from "../../components/config/strings.jsx";
+import { ADD, EDIT, LOGIN, DASHBOARD, AI } from "../../components/config/strings.jsx";
 import Dashboard from "./Dashboard.jsx";
 import Login from "./Login.jsx";
+import PromptDraft from "./PromptDraft.jsx";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -25,13 +26,13 @@ export default function AdminPageHandler() {
 
  // Backend Sent Token
   if (tokenFromUrl) {
-    console.log("[DEBUG] Token from URL:", tokenFromUrl);
+    console.log("[AUTH] Token from URL:", tokenFromUrl);
     localStorage.setItem("auth_token", tokenFromUrl);
     window.history.replaceState({}, "", window.location.pathname);
   }
 
   // Verify Token
-  console.log("[DEBUG] Token in storage:", localStorage.getItem("auth_token"));
+  console.log("[AUTH] Token in storage:", localStorage.getItem("auth_token"));
   const token = localStorage.getItem("auth_token");
 
   // No Token
@@ -41,9 +42,9 @@ export default function AdminPageHandler() {
     return
   }
 
-  // Yes Token
-  console.log("[DEBUG] pending token to /auth/check");
+  console.log("[AUTH] pending token to /auth/check");
 
+  // Authorization Check
   fetch(`${SERVER_URL}/auth/check`, { headers: { Authorization: `Bearer ${token}`,},})
       .then(res => res.json()).then(data => {
           if (!data.authenticated) localStorage.removeItem("auth_token");
@@ -60,6 +61,10 @@ export default function AdminPageHandler() {
             return (<Dashboard handleClick={handleClick} />);
          case LOGIN:
             return (<Login />);
-      }  
-}
+         case AI: 
+            return (<PromptDraft handleClick={handleClick} />);
+   }
+  }
+      
+      
 
