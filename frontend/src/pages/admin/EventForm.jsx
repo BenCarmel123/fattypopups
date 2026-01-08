@@ -9,17 +9,33 @@ import { formatDate } from "../../components/utils.jsx";
 import { BackToDashboard, FileUploadButton, SubmitFormButton } from "../../components/Buttons.jsx";
 import DescriptionArea from "../../components/DescriptionArea.jsx";
 import SaveAsDraft from "../../components/SaveAsDraft.jsx";
+import SpinnerOverlay from "../../components/SpinnerOverlay.jsx";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 export default function EventForm({ event, isEdit, handleClick } ) {
     const [alert, setAlert] = useState(undefined);
+    const [isLoading, setLoading] = useState(false);
     
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     const tomorrowStr = tomorrow.toISOString().split("T")[0];
 
-    function handleEvent(e) {
+    async function handleSubmit(url, method, formData) {
+        await fetch(url, {
+            method: method,
+            body: formData,
+        })
+        .then(async res => {
+            if (!res.ok) {
+                const err = await res.json();
+                throw new Error(err.error || 'Unknown error');
+            }
+            return res.json();
+        })
+    }
+
+    async function handleEvent(e) {
         e.preventDefault(); 
         const form = e.target; 
         const eventData = {
@@ -48,9 +64,6 @@ export default function EventForm({ event, isEdit, handleClick } ) {
             }
         }
 
-        const method = isEdit ? "PUT" : "POST";
-        const url = isEdit ? `${SERVER_URL}/api/events/${event.id}` : `${SERVER_URL}/api/events`;
-
         // Submit form data
         const formData = new FormData();
         formData.append('title', eventData.title);
@@ -66,34 +79,39 @@ export default function EventForm({ event, isEdit, handleClick } ) {
         formData.append('poster', eventData.poster);
         formData.append('is_draft', eventData.is_draft ? 'true' : 'false');
 
-        fetch(url, {
-            method: method,
-            body: formData,
-        })
-        .then(async res => {
-            if (!res.ok) {
-                const err = await res.json();
-                throw new Error(err.error || 'Unknown error');
-            }
-            return res.json();
-        })
-        .then(() => {
+        const url = isEdit ? `${SERVER_URL}/api/events/${event.id}` : `${SERVER_URL}/api/events`;
+        const method = isEdit ? "PUT" : "POST";
+
+        try {
+
+            setLoading(true);
+            await handleSubmit(url, method, formData);
+
+            setLoading(false)
+
             setAlert({
                 status: "success",
                 title: isEdit ? "Event Updated" : "Event Created",
             });
 
-            setTimeout(() => handleClick(DASHBOARD)(), 1000);
-        })
-        .catch((err) => {
+            setTimeout(() => {
+                handleClick(DASHBOARD)();
+            }, 750);
+
+        } 
+
+        catch (err) {
+            setLoading(false)
             setAlert({
-                status: "error", title: "Submission Error", description: err.message
+                status: "error",
+                description: err.message,
             });
-        });
+        } 
     }
 
     return (
         <div className={CENTER} style={{ position: RELATIVE, display: FLEX, alignItems: CENTER, justifyContent: CENTER, minHeight: '100vh' }}>
+            <SpinnerOverlay isLoading={isLoading} />
             {alert && (
                 <div style={{ position: FIXED, top: 0, left: 0, width: MAX, zIndex: 2000, display: FLEX, justifyContent: CENTER, pointerEvents: NONE }}>
                     <div style={{ pointerEvents: AUTO, width: 'fit-content' }}>

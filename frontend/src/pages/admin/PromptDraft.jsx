@@ -33,6 +33,7 @@ export default function PromptDraft({ placeholder = PROMPT_PLACEHOLDER, handleCl
     const [requestInProgress, setRequestInProgress] = useState(false);
 
     const handleSubmit = async (e) => {
+
         if (requestInProgress) return; // Prevent duplicate
         setRequestInProgress(true);
         e.preventDefault();
@@ -48,13 +49,16 @@ export default function PromptDraft({ placeholder = PROMPT_PLACEHOLDER, handleCl
             // Switch to ADD mode and pass the generated draft
             handleClick(EDIT, event)();
             }
+
         catch (err) {
             console.error('Draft generation error:', err);
         }
+
         finally {
             setRequestInProgress(false);
             setLoading(false)
         }
+
     };
 
     const handleKeyDown = (e) => {
