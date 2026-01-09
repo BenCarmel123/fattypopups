@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import EventForm from "./EventForm.jsx";
-import { ADD, EDIT, LOGIN, DASHBOARD, AI } from "../../components/config/strings.jsx";
+import { ADD, EDIT, LOGIN, DASHBOARD, AI, AUTH_TOKEN } from "../../config/strings.jsx";
 import Dashboard from "./Dashboard.jsx";
 import Login from "./Login.jsx";
 import PromptDraft from "./PromptDraft.jsx";
@@ -27,13 +27,13 @@ export default function AdminPageHandler() {
  // Backend Sent Token
   if (tokenFromUrl) {
     console.log("[AUTH] Token from URL:", tokenFromUrl);
-    localStorage.setItem("auth_token", tokenFromUrl);
+      localStorage.setItem(AUTH_TOKEN, tokenFromUrl);
     window.history.replaceState({}, "", window.location.pathname);
   }
 
-  // Verify Token
-  console.log("[AUTH] Token in storage:", localStorage.getItem("auth_token"));
-  const token = localStorage.getItem("auth_token");
+   // Verify Token
+   console.log("[AUTH] Token in storage:", localStorage.getItem(AUTH_TOKEN));
+   const token = localStorage.getItem(AUTH_TOKEN);
 
   // No Token
   if (!token) {
@@ -47,7 +47,7 @@ export default function AdminPageHandler() {
   // Authorization Check
   fetch(`${SERVER_URL}/auth/check`, { headers: { Authorization: `Bearer ${token}`,},})
       .then(res => res.json()).then(data => {
-          if (!data.authenticated) localStorage.removeItem("auth_token");
+               if (!data.authenticated) localStorage.removeItem(AUTH_TOKEN);
         setAuthenticated(data.authenticated);
         setAction(data.authenticated ? DASHBOARD : LOGIN);});
   }, []);

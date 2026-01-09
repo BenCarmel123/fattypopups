@@ -1,7 +1,7 @@
 import React from "react"
 import { Button } from "@chakra-ui/react";
-import { HEADER_BACKGROUND_COLOR, HEADER_BORDER_COLOR, SECONDARY_COLOR, TRANSPARENT } from './config/colors.jsx';
-import { APP_NAME, ABOUT_BUTTON_TEXT, SOLID, SMALL, XL, MINIMAL_TRANSFORM, MINIMAL_TRANSITION } from './config/strings.jsx';
+import { HEADER_BACKGROUND_COLOR, HEADER_BORDER_COLOR, SECONDARY_COLOR, TRANSPARENT } from '../config/colors.jsx';
+import { APP_NAME, ABOUT_BUTTON_TEXT, SOLID, SMALL, XL, MINIMAL_TRANSFORM, MINIMAL_TRANSITION } from '../config/strings.jsx';
 
 const LOGO_URL = process.env.REACT_APP_LOGO;
 const ABOUT_ROUTE = process.env.REACT_APP_ABOUT_ROUTE;

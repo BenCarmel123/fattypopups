@@ -1,5 +1,5 @@
-import { ADD, FLEX, CENTER, BOLD } from "./config/strings.jsx";
-import { WHITE } from "./config/colors.jsx";
+import { ADD, FLEX, CENTER, BOLD } from "../config/strings.jsx";
+import { WHITE } from "../config/colors.jsx";
 import React from 'react';
 import { AdminActionButton } from './Buttons.jsx';
 

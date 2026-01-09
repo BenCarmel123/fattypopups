@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Textarea } from "@chakra-ui/react";
-import { POST, ENTER, UNKNOWN_ERROR, PROMPT_PLACEHOLDER, EDIT, DASHBOARD } from "../../components/config/strings.jsx";
+import { POST, ENTER, UNKNOWN_ERROR, PROMPT_PLACEHOLDER, EDIT, DASHBOARD } from "../../config/strings.jsx";
 import { SubmitPromptButton, BackToDashboard } from '../../components/Buttons.jsx';
 import SpinnerOverlay from '../../components/SpinnerOverlay.jsx';
 
@@ -51,7 +51,7 @@ export default function PromptDraft({ placeholder = PROMPT_PLACEHOLDER, handleCl
             }
 
         catch (err) {
-            console.error('Draft generation error:', err);
+            console.error('[ERROR] Draft generation error:', err);
         }
 
         finally {

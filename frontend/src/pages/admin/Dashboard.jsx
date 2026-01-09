@@ -1,7 +1,7 @@
 import { Checkbox, Table } from "@chakra-ui/react"
 import { useState, useEffect } from "react"
-import { EDIT, LARGE, FLEX, AI } from "../../components/config/strings"
-import { BACKGROUND_COLOR } from "../../components/config/colors";
+import { EDIT, LARGE, FLEX, AI } from "../../config/strings"
+import { BACKGROUND_COLOR } from "../../config/colors";
 import MyAlert from "../../components/CustomAlert.jsx"; 
 import AdminActions from "../../components/AdminActions.jsx";
 import { AdminActionButton } from "../../components/Buttons";
