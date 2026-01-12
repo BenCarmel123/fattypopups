@@ -3,7 +3,7 @@ import { google } from 'googleapis';
 import express from 'express';
 import jwt from "jsonwebtoken";
 
-const redirectUri = process.env.GOOGLE_REDIRECT_LOCAL_URI;
+const redirectUri = process.env.GOOGLE_REDIRECT_PROD_URI;
 
 // Initialize Google Auth
 const oauth2Client = new google.auth.OAuth2(
@@ -59,7 +59,7 @@ authRouter.get('/google/callback', async (req, res) => {
       { expiresIn: "7d" });
       console.log("[AUTH] GOOGLE CALLBACK");
     console.log("[AUTH] JWT created:", !!token);
-    return res.redirect(`${process.env.FRONTEND_LOCAL_URL}/${process.env.ADMIN_ROUTE}?token=${token}`);
+    return res.redirect(`${process.env.FRONTEND_PROD_URL}/${process.env.ADMIN_ROUTE}?token=${token}`);
     } 
   else return res.redirect(process.env.FRONTEND_PROD_URL);
 })
