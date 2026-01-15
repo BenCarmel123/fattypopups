@@ -17,6 +17,7 @@ export const BACK_BUTTON_TEXT = "← Back";
 export const POST = "POST";
 export const PUT = "PUT";
 export const ENTER = "Enter";
+export const AUTH_TOKEN = "auth_token";
 
 // Informational content
 export const ABOUT_CREATORS_1 = "It all started pretty simply: two people who couldn’t stop talking about food started talking to each other about food.";

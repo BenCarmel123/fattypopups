@@ -18,7 +18,7 @@ import {
   EVENT_TITLE_PADDING_COLOR,
   DRAWER_DETAILS_FONT_COLOR,
   BORDER_COLOR,
-} from './config/colors.jsx';
+} from '../config/colors.jsx';
 import {
   RESERVE,
   SHARE,
@@ -39,7 +39,7 @@ import {
   SOLID,
   NONE, 
   LINK_PADDING
-} from './config/strings';
+} from '../config/strings';
 import { RiInstagramFill } from 'react-icons/ri';
 import { SiGooglemaps, SiGooglecalendar } from 'react-icons/si';
 import { GiForkKnifeSpoon } from 'react-icons/gi';
