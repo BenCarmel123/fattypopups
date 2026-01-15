@@ -1,4 +1,4 @@
-import { supabase } from '../../../config/supabaseClient.js';
+import { supabase } from '../../../config/supabase.js';
 import { fetchInstagram } from '../../agent/utils/fetchers.js';
 import { extractInstagramHandle } from '../../agent/utils/parsers.js';
 import 'dotenv/config';

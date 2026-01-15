@@ -1,9 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient(
-    process.env.DATABASE_PROD_URL,
-    process.env.SUPABASE_KEY
-);
+import { supabase } from '../../backend/config/supabase.js';
 
 export const deletePastEvents = async () => {
     try {
@@ -15,13 +10,13 @@ export const deletePastEvents = async () => {
                 .lt('end_datetime', oldest_allowed_date.toISOString())
                 .select('*');
         if (error) {
-            console.log("[ERROR] - Error deleting past events:", error);
+            console.log("[ERROR] Error deleting past events:", error);
             return;
         }
-        console.log(`[EVENT] - Deleted ${data?.length ?? 0} past events.`);
+        console.log(`[EVENT] Deleted ${data?.length ?? 0} past events.`);
     }
     catch (error) {
-        console.log("[ERROR] - Unexpected error deleting past events:", error);
+        console.log("[ERROR] Unexpected error deleting past events:", error);
     }
 }
 

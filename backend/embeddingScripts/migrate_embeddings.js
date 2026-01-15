@@ -1,12 +1,6 @@
 // migrate_embeddings.js
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '../config/supabase.js';
 import { generateEmbedding } from '../services/agent/modelCalls.js';
-import 'dotenv/config';
-
-const supabase = createClient(
-  process.env.DATABASE_PROD_URL,
-  process.env.SUPABASE_KEY
-);
 
 async function migrateEmbeddings() {
   console.log("[DEBUG] Fetching all events...");

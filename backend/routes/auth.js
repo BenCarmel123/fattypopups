@@ -1,24 +1,13 @@
 
-import { google } from 'googleapis';
+import { oauth2Client } from '../config/googleAuth.js';
 import express from 'express';
 import jwt from "jsonwebtoken";
-
-const redirectUri = process.env.GOOGLE_REDIRECT_PROD_URI;
-
-// Initialize Google Auth
-const oauth2Client = new google.auth.OAuth2(
-  process.env.GOOGLE_CLIENT_ID,
-  process.env.GOOGLE_CLIENT_SECRET,
-  redirectUri
-);
 
 const authRouter = express.Router();
 
 authRouter.get('/google', (req, res) => {
-  console.log("[AUTH] REDIRECT URI:", redirectUri);
   const url = oauth2Client.generateAuthUrl({
     scope: ['openid', 'email', 'profile'],
-    redirect_uri: redirectUri,
   });
 
   res.redirect(url);
@@ -59,9 +48,9 @@ authRouter.get('/google/callback', async (req, res) => {
       { expiresIn: "7d" });
       console.log("[AUTH] GOOGLE CALLBACK");
     console.log("[AUTH] JWT created:", !!token);
-    return res.redirect(`${process.env.FRONTEND_PROD_URL}/${process.env.ADMIN_ROUTE}?token=${token}`);
+    return res.redirect(`${process.env.FRONTEND_URL}/${process.env.ADMIN_ROUTE}?token=${token}`);
     } 
-  else return res.redirect(process.env.FRONTEND_PROD_URL);
+  else return res.redirect(process.env.FRONTEND_URL);
 })
 
 authRouter.get("/check", (req, res) => {

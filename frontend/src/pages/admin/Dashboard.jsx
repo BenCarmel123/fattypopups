@@ -17,8 +17,11 @@ const Dashboard = ({ handleClick }) => {
   useEffect(() => {
     fetch(`${SERVER_URL}/api/events?includeDrafts=true`)
       .then(res => res.json())
-  .then(data => setEvents(data))
-  .catch(err => console.log('[ERROR] Error fetching events:', err));
+      .then(data => setEvents(Array.isArray(data) ? data : []))
+      .catch(err => {
+        console.log('[ERROR] Error fetching events:', err);
+        setEvents([]);
+      });
   }, [])
 
   // Delete selected events

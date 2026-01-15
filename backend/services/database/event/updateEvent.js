@@ -1,4 +1,4 @@
-import { supabase } from "../../../config/supabaseClient.js";
+import { supabase } from "../../../config/supabase.js";
 import { s3 } from '../../../config/s3Client.js';
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { generateEmbedding } from "../../agent/modelCalls.js";
@@ -30,7 +30,7 @@ export const updateEvent = async (id, body, file) => {
         s3_url = `https://${process.env.AWS_S3_BUCKET_NAME}.s3.amazonaws.com/${s3_key}`;
         body.poster = s3_url;
     } catch (err) {
-        console.log("[ERROR] - Error fetching existing image URL:", err);
+        console.log("[ERROR] Error fetching existing image URL:", err);
         // fallback key if fetch fails
         s3_key = `events/${Date.now()}_${file.originalname}`;
         s3_url = `https://${process.env.AWS_S3_BUCKET_NAME}.s3.amazonaws.com/${s3_key}`;
@@ -48,7 +48,7 @@ export const updateEvent = async (id, body, file) => {
             })
         );
     } catch (err) {
-        console.log("[ERROR] - Error uploading file:", err);
+        console.log("[ERROR] Error uploading file:", err);
     }
 } else {
     const { data: currentEvent } = await supabase
@@ -77,7 +77,7 @@ const { data: currentEvent, error: eventErr } = await supabase
   .single();
 
 if (eventErr) {
-  console.log("[ERROR] - Error fetching current event:", eventErr);
+  console.log("[ERROR] Error fetching current event:", eventErr);
 }
 
 // Update Chef Names & Instagrams
@@ -114,7 +114,7 @@ let he_id = null;
 
 // 3. GENERATE NEW EMBEDDINGS (IF NEEDED)
 if (toPublish || (alreadyPublished && (englishChanged || hebrewChanged))) {
-  console.log("[EMBEDDING] - Descriptions changed — generating new embeddings...");    
+  console.log("[EMBEDDING] Descriptions changed — generating new embeddings...");    
   try {
     if (toPublish || englishChanged) {
       newEnglishEmbedding = await generateEmbedding(body.english_description);
@@ -123,7 +123,7 @@ if (toPublish || (alreadyPublished && (englishChanged || hebrewChanged))) {
       newHebrewEmbedding = await generateEmbedding(body.hebrew_description);
     }
   } catch (embeddingErr) {
-    console.log("[ERROR] - Error generating embeddings:", embeddingErr);
+    console.log("[ERROR] Error generating embeddings:", embeddingErr);
   }
 }
 
@@ -157,7 +157,7 @@ if (toPublish) {
 
   } 
   catch (e) {
-    console.log("[ERROR] - Error inserting embeddings:", e);
+    console.log("[ERROR] Error inserting embeddings:", e);
   }
 }
 
@@ -183,7 +183,7 @@ if (alreadyPublished) {
         .eq('id', currentEvent.embedding_id_he);
     }
   } catch(e) {
-    console.log("[ERROR] - Error updating embeddings:", e);
+    console.log("[ERROR] Error updating embeddings:", e);
   }
 } 
 
@@ -204,7 +204,7 @@ try {
   return updatedEvent;
 } 
 catch (err) {
-  console.log("[ERROR] - Error updating event:", err);
+  console.log("[ERROR] Error updating event:", err);
   throw err;
 }
 };
