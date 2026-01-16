@@ -4,15 +4,23 @@ import { generateEmbedding } from "./api.js";
 // Process embeddings for an event - generate, store, and link to event
 // Returns object with embedding IDs or null if failed
 export async function processEventEmbeddings(eventId, englishDescription, hebrewDescription, chefNames) {
+  console.log('[EMBEDDING] Starting embedding process for event:', eventId);
+  
   // 1. Generate embeddings
   let english_embedding = null;
   let hebrew_embedding = null;
 
   try {
+    console.log('[EMBEDDING] Generating English embedding...');
     english_embedding = await generateEmbedding(englishDescription);
+    console.log('[EMBEDDING] English embedding generated:', english_embedding ? 'SUCCESS' : 'NULL');
+    
+    console.log('[EMBEDDING] Generating Hebrew embedding...');
     hebrew_embedding = await generateEmbedding(hebrewDescription);
+    console.log('[EMBEDDING] Hebrew embedding generated:', hebrew_embedding ? 'SUCCESS' : 'NULL');
   } catch (e) {
     console.log("[ERROR] Embedding generation error:", e);
+    console.log("[ERROR] Error details:", e.message, e.stack);
     return { embedding_id_en: null, embedding_id_he: null };
   }
 

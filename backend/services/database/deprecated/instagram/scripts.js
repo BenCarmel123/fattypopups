@@ -1,6 +1,6 @@
-import { supabase } from '../../../config/instances.js';
-import { fetchInstagram } from '../../agent/utils/fetch.js';
-import { extractInstagramHandle } from '../../agent/utils/parse.js';
+import { supabase } from '../../../../config/instances.js';
+import { fetchInstagram } from '../../../agent/utils/fetch.js';
+import { extractInstagramHandle } from '../../../agent/utils/parse.js';
 import 'dotenv/config';
 
 /**

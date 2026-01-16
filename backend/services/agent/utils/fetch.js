@@ -1,6 +1,6 @@
 import { extractStreetAndNumber, extractInstagramHandle } from './parse.js';
-import { getOrCreateInstagram, getInstagramIfExists } from '../../database/instagram/scripts.js';
-import { getOrCreateAddress, getAddressIfExists } from '../../database/address/scripts.js';
+import { getOrCreateInstagram, getInstagramIfExists } from '../../database/deprecated/instagram/scripts.js';
+import { getOrCreateAddress, getAddressIfExists } from '../../database/deprecated/address/scripts.js';
 
 export async function fetchAddress(venueName) {
     const response = await fetch('https://places.googleapis.com/v1/places:searchText', {

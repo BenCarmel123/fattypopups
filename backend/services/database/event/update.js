@@ -1,6 +1,7 @@
-import { supabase, s3 } from "../../../config/instances.js";
-import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { supabase } from "../../../config/instances.js";
 import { generateEmbedding } from "../embeddings/api.js";
+import { handleEventImageUpload } from "../../../s3/upload.js";
+import { getEventById, updateEventById } from "./crud.js";
 
 // UPDATE event (PUT) with image overwrite + embedding update
 export const updateEvent = async (id, body, file) => {
@@ -8,90 +9,37 @@ export const updateEvent = async (id, body, file) => {
   console.log("[REQUEST] Request body:", body);
 
   // 1. IMAGE OVERWRITE 
-  if (file) {
-    console.log("[FILE] Uploaded file:", file);
-    let s3_key;
-    let s3_url;
+  await handleEventImageUpload(id, body, file);
 
-    // Fetch existing image URL
-    try {
-        const { data, error } = await supabase
-            .from('events')
-            .select('poster')
-            .eq('id', id)
-            .single();
-        if (error) throw error;
+  // 2. FETCH CURRENT EVENT (needed for description + embedding IDs)
+  const currentEvent = await getEventById(id, 'english_description, hebrew_description, embedding_id_en, embedding_id_he, is_draft');
 
-        // Use existing key or create new one if undefined
-        s3_key = data?.poster
-            ? data.poster.split(".amazonaws.com/")[1]
-            : `events/${Date.now()}_${file.originalname}`;
-        s3_url = `https://${process.env.AWS_S3_BUCKET_NAME}.s3.amazonaws.com/${s3_key}`;
-        body.poster = s3_url;
-    } catch (err) {
-        console.log("[ERROR] Error fetching existing image URL:", err);
-        // fallback key if fetch fails
-        s3_key = `events/${Date.now()}_${file.originalname}`;
-        s3_url = `https://${process.env.AWS_S3_BUCKET_NAME}.s3.amazonaws.com/${s3_key}`;
-        body.poster = s3_url;
-    }
+  if (!currentEvent) {
+    throw new Error(`Event with id ${id} not found`);
+  }
 
-    // Upload to S3
-    try {
-        await s3.send(
-            new PutObjectCommand({
-                Bucket: process.env.AWS_S3_BUCKET_NAME,
-                Key: s3_key,
-                Body: file.buffer,
-                ContentType: file.mimetype
-            })
-        );
-    } catch (err) {
-        console.log("[ERROR] Error uploading file:", err);
-    }
-} else {
-    const { data: currentEvent } = await supabase
-      .from('events')
-      .select('poster')
-      .eq('id', id)
-      .single();
-    
-    const isDraft = body.is_draft === "true";
-    const wasDraft = currentEvent.is_draft;
-    const toPublish = wasDraft && !isDraft;
+  // TODO: Update chef relationships in event_chefs junction table
+  // Currently chef names are only parsed for embedding generation, not stored in event table
+  // Need to:
+  // 1. processChefs(chef_names, chef_instagrams) → get/create chef IDs
+  // 2. Delete old event_chefs links for this event
+  // 3. Insert new event_chefs links with new chef IDs
+  // 4. Fetch chef names from event_chefs junction table (not from request body) for embeddings
+  //    to keep chef-embedding-event relationships consistent
+  
+  // Parse chef names for embedding generation (temporary - see TODO above)
+  const chefNamesArray = body.chef_names
+    ? body.chef_names.split(',').map(name => name.trim())
+    : [];
 
-    if (toPublish && !currentEvent.poster) {
-      throw new Error("Cannot publish draft: event must have an image.");
-    } else {
-      // retain existing image
-      delete body.poster;
-    }
-}
+  const chefInstagramsArray = body.chef_instagrams
+    ? body.chef_instagrams.split(',').map(handle => handle.trim())
+    : [];
 
-// 2. FETCH CURRENT EVENT (needed for description + embedding IDs)
-const { data: currentEvent, error: eventErr } = await supabase
-  .from('events')
-  .select('english_description, hebrew_description, embedding_id_en, embedding_id_he, is_draft')
-  .eq('id', id)
-  .single();
+  body.chef_names = chefNamesArray;
+  body.chef_instagrams = chefInstagramsArray;
 
-if (eventErr) {
-  console.log("[ERROR] Error fetching current event:", eventErr);
-}
-
-// Update Chef Names & Instagrams
-const chefNamesArray = body.chef_names
-  ? body.chef_names.split(',').map(name => name.trim())
-  : [];
-
-const chefInstagramsArray = body.chef_instagrams
-  ? body.chef_instagrams.split(',').map(handle => handle.trim())
-  : [];
-
-body.chef_names = chefNamesArray;
-body.chef_instagrams = chefInstagramsArray;
-
-// MINIMAL CHANGE: Draft / Publish flags
+  // MINIMAL CHANGE: Draft / Publish flags
 // Handle both string and boolean is_draft values
 const isDraft = body.is_draft === "true" || body.is_draft === true; 
 const wasDraft = currentEvent.is_draft === true || currentEvent.is_draft === "true"; 
@@ -192,18 +140,6 @@ if (toPublish) {
   body.embedding_id_he = he_id;
 }
 
-try {
-  const { data: updatedEvent, error: updateErr } = await supabase
-    .from('events')
-    .update(body)
-    .eq('id', id)
-    .select()
-    .single();
-  if (updateErr) throw updateErr;
-  return updatedEvent;
-} 
-catch (err) {
-  console.log("[ERROR] Error updating event:", err);
-  throw err;
-}
+const updatedEvent = await updateEventById(id, body);
+return updatedEvent;
 };

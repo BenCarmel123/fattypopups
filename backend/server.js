@@ -10,7 +10,7 @@ import 'dotenv/config';
 // Import routers 
 import eventRouter from './routes/events.js';
 import authRouter from './routes/auth.js';
-import agentRouter from './routes/agentDraft.js';
+import agentRouter from './routes/draft.js';
 
 // Initialize Express app
 const app = express();

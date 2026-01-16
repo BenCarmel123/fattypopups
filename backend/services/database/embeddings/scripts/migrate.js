@@ -1,6 +1,6 @@
 // migrate_embeddings.js
-import { supabase } from '../../../config/instances.js';
-import { generateEmbedding } from "./api.js";
+import { supabase } from '../../../../config/instances.js';
+import { generateEmbedding } from "../api.js";
 
 async function migrateEmbeddings() {
   console.log("[DEBUG] Fetching all events...");

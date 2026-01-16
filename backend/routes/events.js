@@ -1,8 +1,8 @@
 import express from 'express';
-import { getNormalizedEvents } from '../services/database/event/getEvents.js';
-import { createEvent } from '../services/database/event/createEvent.js';
-import { updateEvent } from '../services/database/event/updateEvent.js';
-import { deleteEvent } from '../services/database/event/deleteEvent.js';
+import { getEventsWithDetails } from '../services/database/ops/getEvent.js';
+import { createEventWithRelations } from '../services/database/ops/createEvent.js';
+import { updateEvent } from '../services/database/event/update.js';
+import { deleteEventsWithCleanup } from '../services/database/ops/deleteEvent.js';
 // Multer imports
 import { upload, uploadMemory } from '../config/instances.js';
 
@@ -12,7 +12,7 @@ const eventRouter = express.Router();
 eventRouter.get('/', async (req, res) => {
   try {
     const isAdmin = req.query.includeDrafts ? true : false;
-    const events = await getNormalizedEvents(isAdmin);
+    const events = await getEventsWithDetails(isAdmin);
     res.json(events);
   } catch (err) {
     console.log("[ERROR] HTTP Error:", err);
@@ -23,7 +23,7 @@ eventRouter.get('/', async (req, res) => {
 // Add new event
 eventRouter.post('/', upload.single('poster'), async (req, res) => {
   try {
-    const newEvent = await createEvent(req.body, req.file);
+    const newEvent = await createEventWithRelations(req.body, req.file);
     res.json(newEvent);
   } catch (err) {
     console.log('[ERROR] HTTP Error:', err);
@@ -50,7 +50,7 @@ eventRouter.delete('/', async (req, res) => {
     return res.status(400).json({ error: 'Titles must be a non-empty array' });
   }
   try {
-    const result = await deleteEvent(titles);
+    const result = await deleteEventsWithCleanup(titles);
     res.json(result);
   } catch (err) {
     console.log('[ERROR] HTTP Error:', err);
