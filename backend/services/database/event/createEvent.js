@@ -1,6 +1,6 @@
-import { processChefs } from '../chef/helpers.js';
-import { processVenue } from '../venue/helpers.js';
-import { processEventEmbeddings } from '../embeddings/process.js';
+import { processChefs } from '../chef/operations.js';
+import { processVenue } from '../venue/operations.js';
+import { processEventEmbeddings } from '../embeddings/createEmbeddings.js';
 import { insertEvent } from './helpers.js';
 
 export const createEvent = async (body, file) => {

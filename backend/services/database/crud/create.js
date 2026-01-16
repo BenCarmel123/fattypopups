@@ -1,7 +1,7 @@
-import { processChefs } from '../chef/helpers.js';
-import { processVenue } from '../venue/helpers.js';
-import { processEventEmbeddings } from '../embeddings/process.js';
-import { insertEvent, linkChefsToEvent } from '../event/crud.js';
+import { processChefs } from '../chef/operations.js';
+import { processVenue } from '../venue/operations.js';
+import { processEventEmbeddings } from '../embeddings/createEmbeddings.js';
+import { insertEvent, linkChefsToEvent } from '../event/operations.js';
 
 // Orchestrates creating an event with all related entities (venue, chefs, embeddings)
 export const createEventWithRelations = async (body, file) => {

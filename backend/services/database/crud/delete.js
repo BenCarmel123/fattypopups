@@ -1,4 +1,4 @@
-import { getEventsByTitles, deleteEventsByTitles } from '../event/crud.js';
+import { getEventsByTitles, deleteEventsByTitles } from '../event/operations.js';
 import { supabase } from '../../../config/instances.js';
 
 // Orchestrates deleting events with cleanup of related data

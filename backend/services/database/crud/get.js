@@ -1,4 +1,4 @@
-import { getAllEventsWithRelations } from '../event/crud.js';
+import { getAllEventsWithRelations } from '../event/operations.js';
 
 // Get normalized events with all relations for API response
 export async function getEventsWithDetails(isAdmin = false) {

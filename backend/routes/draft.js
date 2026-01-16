@@ -2,7 +2,7 @@
 import 'dotenv/config';
 import { generateDraft } from '../services/agent/draft.js';
 import express from 'express';
-import { createEventWithRelations } from '../services/database/ops/createEvent.js'; 
+import { createEventWithRelations } from '../services/database/crud/create.js'; 
 
 const agentRouter = express.Router();
 
