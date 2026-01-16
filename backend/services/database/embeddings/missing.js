@@ -1,6 +1,6 @@
 // migrate_missing_embeddings.js
-import { supabase } from '../config/supabase.js';
-import { generateEmbedding } from '../services/agent/modelCalls.js';
+import { supabase } from '../../../config/instances.js';
+import { generateEmbedding } from "./api.js";
 
 async function migrateMissingEmbeddings() {
   console.log("[DEBUG] Fetching all events...");

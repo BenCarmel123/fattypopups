@@ -1,4 +1,4 @@
-import { supabase } from "../../../config/supabase.js";
+import { supabase } from "../../../config/instances.js";
 
 export async function getNormalizedEvents(isAdmin) {
   try {

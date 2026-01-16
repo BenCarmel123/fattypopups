@@ -4,7 +4,7 @@ import { createEvent } from '../services/database/event/createEvent.js';
 import { updateEvent } from '../services/database/event/updateEvent.js';
 import { deleteEvent } from '../services/database/event/deleteEvent.js';
 // Multer imports
-import { upload, uploadMemory } from '../config/multer.js';
+import { upload, uploadMemory } from '../config/instances.js';
 
 const eventRouter = express.Router();
 

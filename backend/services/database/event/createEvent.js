@@ -1,11 +1,14 @@
-import { supabase } from '../../../config/supabase.js';
-import { generateEmbedding } from '../../agent/modelCalls.js';
+import { processChefs } from '../chef/helpers.js';
+import { processVenue } from '../venue/helpers.js';
+import { processEventEmbeddings } from '../embeddings/process.js';
+import { insertEvent } from './helpers.js';
 
 export const createEvent = async (body, file) => {
   const {
     title,
     start_datetime,
     end_datetime,
+    venue_name,
     venue_instagram,
     venue_address,
     chef_names,
@@ -16,99 +19,42 @@ export const createEvent = async (body, file) => {
     is_draft
   } = body;
 
-  const chefNamesArray = chef_names?.split(',').map(s => s.trim()) ?? [];
-  const chefInstagramsArray = chef_instagrams?.split(',').map(s => s.trim()) ?? [];
-
   const poster = file?.location || null;
 
-  // 1. Duplicate check
-  const { data: dup, error: dupErr } = await supabase
-    .from('events')
-    .select("*")
-    .eq('title', title)
-    .eq('start_datetime', start_datetime)
-    .eq('end_datetime', end_datetime);
+  // 1. Handle venue 
+  const venueId = await processVenue(venue_name, venue_address, venue_instagram);
 
-  if (dupErr) throw new Error(dupErr.message);
-  if (dup.length > 0) throw new Error("Event already exists.");
+  // 2. Handle chefs 
+  const chefIds = await processChefs(chef_names, chef_instagrams);
+  const chefNamesArray = chef_names?.split(',').map(s => s.trim()) ?? [];
 
-  // 2. Insert event
-  const { data: newEvent, error: insertErr } = await supabase
-    .from('events')
-    .insert([{
-      title,
-      start_datetime,
-      end_datetime,
-      venue_instagram,
-      venue_address,
-      chef_names: chefNamesArray,
-      chef_instagrams: chefInstagramsArray,
-      poster,
-      reservation_url,
-      english_description,
-      hebrew_description,
-      is_draft
-    }])
-    .select()
-    .single();
+  // 3. Insert event into events_new
+  const newEvent = await insertEvent({
+    title,
+    start_datetime,
+    end_datetime,
+    venue_id: venueId,
+    poster,
+    reservation_url,
+    english_description,
+    hebrew_description,
+    is_draft
+  });
 
-  if (insertErr) throw new Error(insertErr.message);
+  // 4. Link chefs to event
+ 
+
   if (is_draft) {
     return newEvent;
   }
 
-  // 3. Generate embeddings
-  let english_embedding = null;
-  let hebrew_embedding = null;
-
-  try {
-    english_embedding = await generateEmbedding(english_description);
-    hebrew_embedding = await generateEmbedding(hebrew_description);
-  } catch (e) {
-    console.log("[ERROR] Embedding error:", e);
-  }
-
-  // 4. Insert embeddings
-  let embedding_id_en = null;
-  let embedding_id_he = null;
-
-  try {
-    const { data: enRow } = await supabase
-      .from('embeddings')
-      .insert({
-        chef_names: chefNamesArray.join(", "),
-        language: 'en',
-        description: english_description,
-        embedding: english_embedding,
-      })
-      .select()
-      .single();
-
-    const { data: heRow } = await supabase
-      .from('embeddings')
-      .insert({
-        chef_names: chefNamesArray.join(", "),
-        language: 'he',
-        description: hebrew_description,
-        embedding: hebrew_embedding,
-      })
-      .select()
-      .single();
-
-    embedding_id_en = enRow.id;
-    embedding_id_he = heRow.id;
-  } catch (e) {
-    console.log("[ERROR] Error storing embeddings:", e);
-  }
-
-  // 5. Update event with IDs
-  await supabase
-    .from('events')
-    .update({
-      embedding_id_en,
-      embedding_id_he,
-    })
-    .eq('id', newEvent.id);
+  // 5. Process embeddings (generate, store, and link to event)
+  await processEventEmbeddings(
+    newEvent.id,
+    english_description,
+    hebrew_description,
+    chefNamesArray.join(", ")
+  );
 
   return newEvent;
 };

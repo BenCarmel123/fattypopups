@@ -1,4 +1,4 @@
-import { extractStreetAndNumber, extractInstagramHandle } from './parsers.js';
+import { extractStreetAndNumber, extractInstagramHandle } from './parse.js';
 import { getOrCreateInstagram, getInstagramIfExists } from '../../database/instagram/scripts.js';
 import { getOrCreateAddress, getAddressIfExists } from '../../database/address/scripts.js';
 

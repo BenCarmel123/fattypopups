@@ -1,6 +1,6 @@
 // Require necessary modules and configure OpenAI client
 import 'dotenv/config';
-import { generateDraft } from '../services/agent/createDraft.js';
+import { generateDraft } from '../services/agent/draft.js';
 import express from 'express';
 import { createEvent } from '../services/database/event/createEvent.js'; 
 

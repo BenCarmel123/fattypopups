@@ -1,6 +1,6 @@
-import { GenerateDraftDetails } from "./modelCalls.js";
-import { extractChefNameNaive, extractDescriptionNaive, extractVenueNameNaive, extractTitleNaive } from "./utils/parsers.js";
-import { fetchSpecificDetails } from "./utils/fetchers.js";
+import { GenerateDraftDetails } from "./api.js";
+import { extractChefNameNaive, extractDescriptionNaive, extractVenueNameNaive, extractTitleNaive } from "./utils/parse.js";
+import { fetchSpecificDetails } from "./utils/fetch.js";
 
 const REMINDER = "!!!DO NOT FORGET TO FILL!!!"
 const generateDraft = 

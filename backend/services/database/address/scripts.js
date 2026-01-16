@@ -1,4 +1,4 @@
-import { supabase } from '../../../config/supabase.js';
+import { supabase } from '../../../config/instances.js';
 
 /**
  * Check if an address exists in the database (DB only, no API calls)

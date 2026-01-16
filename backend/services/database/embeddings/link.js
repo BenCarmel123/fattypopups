@@ -1,5 +1,5 @@
 // Script to link existing embeddings to events based on matching criteria
-import { supabase } from '../config/supabase.js';
+import { supabase } from '../../../config/instances.js';
 
 async function linkEmbeddings() {
   console.log("[DEBUG] Linking embeddings to events...");

@@ -42,6 +42,7 @@ export default function EventForm({ event, isEdit, handleClick } ) {
           title: form.title.value,
           start_datetime: form.start_datetime.value,
           end_datetime: form.end_datetime.value,
+          venue_name: form.venue_name.value,
           venue_instagram: form.venue_instagram.value,
           venue_address: form.venue_address.value,
           chef_names: form.chef_names.value,
@@ -69,6 +70,7 @@ export default function EventForm({ event, isEdit, handleClick } ) {
         formData.append('title', eventData.title);
         formData.append('start_datetime', eventData.start_datetime);
         formData.append('end_datetime', eventData.end_datetime);
+        formData.append('venue_name', eventData.venue_name);
         formData.append('venue_instagram', eventData.venue_instagram);
         formData.append('venue_address', eventData.venue_address);
         formData.append('chef_names', eventData.chef_names);
@@ -136,12 +138,16 @@ export default function EventForm({ event, isEdit, handleClick } ) {
                                 <Input type="date" name="end_datetime" defaultValue={formatDate(event?.end_datetime) || tomorrowStr} borderColor={TEXT_AREA_COLOR} borderWidth={2} _focus={{ borderColor: FORM_FIELD_COLOR }} />
                             </Field.Root>
                             <Field.Root>
+                                <Field.Label color={FORM_FIELD_COLOR}>Venue Name</Field.Label>
+                                <Input name="venue_name" defaultValue={event?.venue?.name || ""} borderColor={TEXT_AREA_COLOR} borderWidth={2} _focus={{ borderColor: FORM_FIELD_COLOR }} />
+                            </Field.Root>
+                            <Field.Root>
                                 <Field.Label color={FORM_FIELD_COLOR}>Venue Instagram</Field.Label>
-                                <Input name="venue_instagram" placeholder="@" defaultValue={event?.venue_instagram || ""} borderColor={TEXT_AREA_COLOR} borderWidth={2} _focus={{ borderColor: FORM_FIELD_COLOR }} />
+                                <Input name="venue_instagram" placeholder="@" defaultValue={event?.venue?.instagram_handle || ""} borderColor={TEXT_AREA_COLOR} borderWidth={2} _focus={{ borderColor: FORM_FIELD_COLOR }} />
                             </Field.Root>
                             <Field.Root>
                                 <Field.Label color={FORM_FIELD_COLOR}>Venue Address</Field.Label>
-                                <Input name="venue_address" defaultValue={event?.venue_address || ""} borderColor={TEXT_AREA_COLOR} borderWidth={2} _focus={{ borderColor: FORM_FIELD_COLOR }} />
+                                <Input name="venue_address" defaultValue={event?.venue?.address || ""} borderColor={TEXT_AREA_COLOR} borderWidth={2} _focus={{ borderColor: FORM_FIELD_COLOR }} />
                             </Field.Root>
                             <Field.Root>
                                 <Field.Label color={FORM_FIELD_COLOR}>Chef Names (comma separated)</Field.Label>
