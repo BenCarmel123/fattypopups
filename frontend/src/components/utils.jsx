@@ -84,7 +84,7 @@ export function formatDateRange(start, end) {
 export function formatEventDescription(event) {
   return (
     <div style={{ textAlign: 'center' }}>
-      <p style={{ direction: 'ltr', unicodeBidi: 'isolate', textAlign: 'left', letterSpacing: '1.2px' }}>{event.english_description}</p>
+      <p style={{ direction: 'ltr', unicodeBidi: 'isolate', textAlign: 'left', letterSpacing: '1.2px' }}>{event.englishDescription}</p>
       <div
         style={{
           width: '50%',
@@ -95,7 +95,7 @@ export function formatEventDescription(event) {
         }}
       ></div>
       <p style={{ direction: 'rtl', unicodeBidi: 'isolate', textAlign: 'right', letterSpacing: '1.2px' }}>
-        {event.hebrew_description}
+        {event.hebrewDescription}
       </p>
     </div>
   );
@@ -139,11 +139,11 @@ export function handleInstagram(instagram) {
 }
 
 export function handleCalendar(event) {
-    const { title, start_datetime, end_datetime, venue_address, reservation_url } = event;
-    const start = new Date(start_datetime).toISOString().replace(/-|:|\.\d\d\d/g,"");
-    const end = new Date(end_datetime).toISOString().replace(/-|:|\.\d\d\d/g,"");
-    const details = `For reservations, visit: ${reservation_url}`;
-    const location = venue_address;
+    const { title, startDatetime, endDatetime, venue, reservationUrl } = event;
+    const start = new Date(startDatetime).toISOString().replace(/-|:|\.\d\d\d/g,"");
+    const end = new Date(endDatetime).toISOString().replace(/-|:|\.\d\d\d/g,"");
+    const details = `For reservations, visit: ${reservationUrl}`;
+    const location = venue?.address || '';
     const calendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${start}/${end}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(location)}&sf=true&output=xml`;
     window.open(calendarUrl, SELF, NO_OPENER);
 }

@@ -209,33 +209,33 @@ export function CardBody({ event }) {
   {event.title}
 </Card.Title>
       <Card.Description fontSize={MEDIUM} color={DRAWER_DETAILS_FONT_COLOR} paddingRight={4} paddingLeft={4} lineHeight={3.5}>
-        {event.chef_names &&
-          Array.isArray(event.chef_names) &&
-          Array.isArray(event.chef_instagrams) &&
-          event.chef_names
-            .map((name, idx) => (
+        {event.chefs &&
+          Array.isArray(event.chefs) &&
+          event.chefs.length > 0 &&
+          event.chefs
+            .map((chef, idx) => (
              <span
-                key={name}
+                key={chef.id}
                 style={{
                   cursor: POINTER,
-                  marginRight: idx < event.chef_names.length - 1 ? 4 : 0,
+                  marginRight: idx < event.chefs.length - 1 ? 4 : 0,
                   display: "block",
                   marginLeft: idx === 0 ? 0 : "27px"  
                 }}
-                onClick={() => handleInstagram(event.chef_instagrams[idx])}
+                onClick={() => handleInstagram(chef.instagram_handle)}
                 >
-                {(event.chef_names.length === 1 || idx === 0) && <RiInstagramFill className="inline-block mr-2.5 mb-1" />}
-                <EventAttributeSpan attribute={name} onClick={() => handleInstagram(event.chef_instagrams[idx])} style={{ marginLeft: '3.5px' }} />
+                {(event.chefs.length === 1 || idx === 0) && <RiInstagramFill className="inline-block mr-2.5 mb-1" />}
+                <EventAttributeSpan attribute={chef.name} onClick={() => handleInstagram(chef.instagram_handle)} style={{ marginLeft: '3.5px' }} />
                 <br></br>
               </span>
             ))
         }
         <SiGooglecalendar className={ACTION_BUTTON_SPACING} />
-        <EventAttributeSpan attribute={formatDateRange(event.start_datetime, event.end_datetime)} onClick={() => handleCalendar(event)} />
+        <EventAttributeSpan attribute={formatDateRange(event.startDatetime, event.endDatetime)} onClick={() => handleCalendar(event)} />
         <br />
         <div>
           <SiGooglemaps className={ACTION_BUTTON_SPACING} />
-          <EventAttributeSpan attribute={event.venue_address} onClick={() => handleMaps(event.venue_address)} />
+          <EventAttributeSpan attribute={event.venue?.address} onClick={() => handleMaps(event.venue?.address)} />
         </div>
       </Card.Description>
     </Card.Body>
@@ -262,13 +262,13 @@ export function CardFooter({ event }) {
     <Card.Footer style={{ padding: '1.25rem 1rem 1rem 1rem', backgroundColor: FOOTER_BACKGROUND_COLOR }}>
       <div style={{ display: FLEX, alignItems: CENTER, justifyContent: CENTER, width: MAX, marginTop: '-15px', marginBottom: '-10px' }}>
         <div className="eventcard-actions" style={{ display: FLEX, alignItems: CENTER, justifyContent: CENTER, gap: '1rem', width: MAX, maxWidth: '340px', margin: '0 auto' }}>
-          <ActionButton onClick={() => window.open(event.reservation_url, SELF, NO_OPENER)} ariaLabel={RESERVE}>
+          <ActionButton onClick={() => window.open(event.reservationUrl, SELF, NO_OPENER)} ariaLabel={RESERVE}>
             <GiForkKnifeSpoon style={{ verticalAlign: 'middle', marginRight: '-0.3rem' }} />
-           <FooterOption text={RESERVE} onClick={() => window.open(event.reservation_url, SELF, NO_OPENER)} />
+           <FooterOption text={RESERVE} onClick={() => window.open(event.reservationUrl, SELF, NO_OPENER)} />
           </ActionButton>
-          <ActionButton onClick={() => handleWhatsApp(event.english_description)} ariaLabel="Share">
+          <ActionButton onClick={() => handleWhatsApp(event.englishDescription)} ariaLabel="Share">
             <FaWhatsapp style={{ verticalAlign: 'middle', marginRight: '-0.3rem' }} />
-            <FooterOption text={SHARE} onClick={() => handleWhatsApp(event.english_description)} />
+            <FooterOption text={SHARE} onClick={() => handleWhatsApp(event.englishDescription)} />
           </ActionButton>
         </div>
       </div>

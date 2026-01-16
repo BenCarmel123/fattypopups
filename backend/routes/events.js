@@ -1,5 +1,5 @@
 import express from 'express';
-import { getEvents } from '../services/database/event/getEvents.js';
+import { getNormalizedEvents } from '../services/database/event/getEvents.js';
 import { createEvent } from '../services/database/event/createEvent.js';
 import { updateEvent } from '../services/database/event/updateEvent.js';
 import { deleteEvent } from '../services/database/event/deleteEvent.js';
@@ -12,7 +12,7 @@ const eventRouter = express.Router();
 eventRouter.get('/', async (req, res) => {
   try {
     const isAdmin = req.query.includeDrafts ? true : false;
-    const events = await getEvents(isAdmin);
+    const events = await getNormalizedEvents(isAdmin);
     res.json(events);
   } catch (err) {
     console.log("[ERROR] HTTP Error:", err);
