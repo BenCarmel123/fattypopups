@@ -24,7 +24,7 @@ export async function GenerateDraftDetails(prompt) {
     input: `${prompt}`,
     instructions: `${process.env.DRAFT_INSTRUCTIONS}`,
   });
-  console.log("[AGENT] - " + response.output_text)
+  console.log("[AGENT] " + response.output_text)
   if (!response.output_text) throw new Error("LLM returned empty output");
   return response.output_text;
 }

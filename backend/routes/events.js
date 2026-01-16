@@ -4,7 +4,7 @@ import { createEvent } from '../services/database/event/createEvent.js';
 import { updateEvent } from '../services/database/event/updateEvent.js';
 import { deleteEvent } from '../services/database/event/deleteEvent.js';
 // Multer imports
-import { upload, uploadMemory } from '../config/multerConfig.js';
+import { upload, uploadMemory } from '../config/multer.js';
 
 const eventRouter = express.Router();
 
@@ -15,7 +15,7 @@ eventRouter.get('/', async (req, res) => {
     const events = await getEvents(isAdmin);
     res.json(events);
   } catch (err) {
-    console.log("[ERROR] - HTTP Error:", err);
+    console.log("[ERROR] HTTP Error:", err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -26,7 +26,7 @@ eventRouter.post('/', upload.single('poster'), async (req, res) => {
     const newEvent = await createEvent(req.body, req.file);
     res.json(newEvent);
   } catch (err) {
-    console.log('[ERROR] - HTTP Error:', err);
+    console.log('[ERROR] HTTP Error:', err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -37,7 +37,7 @@ eventRouter.put('/:id', uploadMemory.single('poster'), async (req, res) => {
     const updatedEvent = await updateEvent(req.params.id, req.body, req.file);
     res.json(updatedEvent);
   } catch (err) {
-    console.log('[ERROR] - HTTP Error:', err);
+    console.log('[ERROR] HTTP Error:', err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -53,7 +53,7 @@ eventRouter.delete('/', async (req, res) => {
     const result = await deleteEvent(titles);
     res.json(result);
   } catch (err) {
-    console.log('[ERROR] - HTTP Error:', err);
+    console.log('[ERROR] HTTP Error:', err);
     res.status(500).json({ error: err.message });
   }
 });
