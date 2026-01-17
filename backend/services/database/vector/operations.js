@@ -1,4 +1,4 @@
-import { supabase } from "../../../config/instances.js";
+import { supabase } from "../../../config/index.js";
 
 // Insert a single embedding into the database
 export async function insertEmbedding(language, description, embedding, chefNames) {

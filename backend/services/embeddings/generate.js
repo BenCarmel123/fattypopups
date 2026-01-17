@@ -1,4 +1,4 @@
-import { openai } from "../../config/instances.js";
+import { openai } from "../../config/index.js";
 
 // Function to generate embedding using OpenAI API
 export async function generateEmbedding(description) {

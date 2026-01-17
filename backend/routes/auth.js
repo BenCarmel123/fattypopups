@@ -1,5 +1,5 @@
 
-import { oauth2Client } from '../config/instances.js';
+import { oauth2Client } from '../config/index.js';
 import express from 'express';
 import jwt from "jsonwebtoken";
 

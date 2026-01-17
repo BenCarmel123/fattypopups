@@ -1,4 +1,4 @@
-import { supabase } from "../../../config/instances.js";
+import { supabase } from "../../../config/index.js";
 import { normalizeVenueName } from "../utils/parse.js";
 
 // Check if venue exists by name

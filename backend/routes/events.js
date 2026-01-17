@@ -6,7 +6,7 @@ import {
   deleteEvents 
 } from '../services/database/orchestrator/index.js';
 // Multer imports
-import { upload, uploadMemory } from '../config/instances.js';
+import { upload, uploadMemory } from '../config/index.js';
 
 const eventRouter = express.Router();
 

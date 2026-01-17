@@ -1,5 +1,8 @@
-import 'dotenv/config';
+import dotenvFlow from 'dotenv-flow';
 import { S3Client } from '@aws-sdk/client-s3';
+
+dotenvFlow.config();
+
 // AWS S3 setup
 export const s3 = new S3Client({
   credentials: {

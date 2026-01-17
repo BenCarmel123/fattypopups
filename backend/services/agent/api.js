@@ -1,6 +1,6 @@
 // Require necessary modules and configure OpenAI client
 import 'dotenv/config';
-import { openai } from '../../config/instances.js';
+import { openai } from '../../config/index.js';
 
 // Function to generate draft details
 export async function GenerateDraftDetails(prompt) {

@@ -1,4 +1,4 @@
-import { supabase, s3 } from "../../config/instances.js";
+import { supabase, s3 } from "../../config/index.js";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 
 // 1. Fetch existing image URL from event

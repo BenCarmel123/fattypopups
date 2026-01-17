@@ -1,7 +1,7 @@
 // Multer configuration for file uploads to AWS S3 and memory storage
 import multer from 'multer';
 import multerS3 from 'multer-s3';
-import { s3 } from './s3Client.js';
+import { s3 } from '../clients/s3Client.js';
 
 // Multer S3 storage (for POST)
 export const upload = multer({

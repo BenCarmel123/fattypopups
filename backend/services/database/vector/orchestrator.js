@@ -2,9 +2,9 @@ import { generateEmbeddings } from "../../embeddings/generate.js";
 import { insertEmbedding, upsertEventEmbeddings } from "./operations.js";
 import { updateEventById } from "../entities/event/operations.js";
 
-// Process embeddings for a new event - generate, store, and link to event
+// Create embeddings for a new event - generate, store, and link to event
 // Returns object with embedding IDs or null if failed
-export async function processEventEmbeddings(eventId, englishDescription, hebrewDescription, chefNames) {
+export async function createEventEmbeddings(eventId, englishDescription, hebrewDescription, chefNames) {
   console.log('[EMBEDDING] Starting embedding process for event:', eventId);
   
   // 1. Generate embeddings
@@ -46,8 +46,8 @@ export async function processEventEmbeddings(eventId, englishDescription, hebrew
   return { embedding_id_en, embedding_id_he };
 }
 
-// Handle full embedding update workflow for existing event updates
-export async function handleEventEmbeddingsUpdate(options) {
+// Update embeddings for an existing event
+export async function updateEventEmbeddings(options) {
   const {
     toPublish,
     alreadyPublished,

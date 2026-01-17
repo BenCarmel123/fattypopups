@@ -1,6 +1,6 @@
 import { upsertChefs } from '../../entities/chef/operations.js';
 import { upsertVenue } from '../../entities/venue/operations.js';
-import { processEventEmbeddings } from '../../vector/orchestrator.js';
+import { createEventEmbeddings } from '../../vector/orchestrator.js';
 import { insertEvent } from '../../entities/event/operations.js';
 import { linkChefsToEvent } from '../../entities/linking/operations.js';
 
@@ -68,7 +68,7 @@ export const orchestrateEventCreate = async (body, file) => {
   // 3. Link chefs and process embeddings in parallel (both use newEvent.id)
   await Promise.all([
     linkChefsToEvent(newEvent.id, chefIds),
-    processEventEmbeddings(
+    createEventEmbeddings(
       newEvent.id,
       english_description,
       hebrew_description,

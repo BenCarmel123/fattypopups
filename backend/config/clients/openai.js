@@ -1,5 +1,7 @@
-import 'dotenv/config';
+import dotenvFlow from 'dotenv-flow';
 import { OpenAI } from 'openai';
+
+dotenvFlow.config();
 
 // Initialize OpenAI entity
 const apiKey = process.env.OPENAI_PROD_KEY;

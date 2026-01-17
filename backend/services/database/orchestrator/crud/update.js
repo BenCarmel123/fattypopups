@@ -1,4 +1,4 @@
-import { handleEventEmbeddingsUpdate } from "../../vector/orchestrator.js";
+import { updateEventEmbeddings } from "../../vector/orchestrator.js";
 import { handleEventImageUpload } from "../../../s3/upload.js";
 import { getEventById, updateEventById, handleEventVenueUpdate } from "../../entities/event/operations.js";
 import { computeUpdateState } from "../../utils/computeState.js";
@@ -60,7 +60,7 @@ export const orchestrateEventUpdate = async (id, body, file) => {
   } = computeUpdateState(body, currentEvent, currentVenue, currentChefs);
 
   // 5. Update embeddings
-  const { en_id, he_id } = await handleEventEmbeddingsUpdate({
+  const { en_id, he_id } = await updateEventEmbeddings({
     toPublish,
     alreadyPublished,
     englishChanged,
