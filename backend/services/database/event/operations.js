@@ -1,4 +1,5 @@
 import { supabase } from "../../../config/instances.js";
+import { upsertVenue } from "../venue/operations.js";
 
 // Insert a new event into the events_new table
 export async function insertEvent(eventData) {
@@ -142,3 +143,22 @@ export async function getEventsByTitles(titles) {
   
   return data || [];
 }
+
+// Handle venue updates - only update if venue changed or publishing draft
+export async function handleEventVenueUpdate({ eventId, venueName, venueAddress, venueInstagram, toPublish, venueChanged }) {
+  const shouldUpdate = toPublish || venueChanged;
+
+  if (!shouldUpdate) {
+    console.log('[VENUE] No venue update needed');
+    return null;
+  }
+
+  console.log('[VENUE] Processing venue update');
+  
+  // Get or create venue, returns venue_id
+  const venueId = await upsertVenue(venueName, venueAddress, venueInstagram);
+  
+  console.log('[VENUE] Venue processed, ID:', venueId);
+  return venueId;
+}
+

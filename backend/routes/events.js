@@ -1,7 +1,7 @@
 import express from 'express';
 import { getEventsWithDetails } from '../services/database/crud/get.js';
-import { createEventWithRelations } from '../services/database/crud/create.js';
-import { updateEventWithRelations } from '../services/database/crud/update.js';
+import { orchestrateEventCreate } from '../services/database/crud/create.js';
+import { orchestrateEventUpdate } from '../services/database/crud/update.js';
 import { deleteEventsWithCleanup } from '../services/database/crud/delete.js';
 // Multer imports
 import { upload, uploadMemory } from '../config/instances.js';
@@ -23,7 +23,7 @@ eventRouter.get('/', async (req, res) => {
 // Add new event
 eventRouter.post('/', upload.single('poster'), async (req, res) => {
   try {
-    const newEvent = await createEventWithRelations(req.body, req.file);
+    const newEvent = await orchestrateEventCreate(req.body, req.file);
     res.json(newEvent);
   } catch (err) {
     console.log('[ERROR] HTTP Error:', err);
@@ -34,7 +34,7 @@ eventRouter.post('/', upload.single('poster'), async (req, res) => {
 // UPDATE event with image overwrite + embedding update
 eventRouter.put('/:id', uploadMemory.single('poster'), async (req, res) => {
   try {
-    const updatedEvent = await updateEventWithRelations(req.params.id, req.body, req.file);
+    const updatedEvent = await orchestrateEventUpdate(req.params.id, req.body, req.file);
     res.json(updatedEvent);
   } catch (err) {
     console.log('[ERROR] HTTP Error:', err);

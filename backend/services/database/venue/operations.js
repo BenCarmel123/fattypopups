@@ -40,9 +40,9 @@ export async function createVenue(name, address, instagram_handle) {
   return data;
 }
 
-// Process venue data - get existing or create new
+// Upsert venue data - get existing or create new
 // Returns venue ID (does not update existing venue from user input)
-export async function processVenue(venueName, venueAddress, venueInstagram) {
+export async function upsertVenue(venueName, venueAddress, venueInstagram) {
   if (!venueName || !venueAddress || !venueInstagram) {
     throw new Error("Venue name, address, and instagram_handle are required");
   }
@@ -57,3 +57,4 @@ export async function processVenue(venueName, venueAddress, venueInstagram) {
   
   return venue.id;
 }
+

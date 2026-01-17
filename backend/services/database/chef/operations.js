@@ -40,9 +40,9 @@ export async function createChef(name, instagram_handle) {
   return data;
 }
 
-// Process multiple chefs from comma-separated strings
+// Upsert multiple chefs from comma-separated strings
 // Returns array of chef IDs (creates new chefs only if they don't exist)
-export async function processChefs(chefNamesString, chefInstagramsString) {
+export async function upsertChefs(chefNamesString, chefInstagramsString) {
   const chefNamesArray = chefNamesString?.split(',').map(s => s.trim()).filter(Boolean) ?? [];
   const chefInstagramsArray = chefInstagramsString?.split(',').map(s => s.trim()).filter(Boolean) ?? [];
 
@@ -68,4 +68,49 @@ export async function processChefs(chefNamesString, chefInstagramsString) {
   }
 
   return chefIds;
+}
+
+export async function getChefsForEvent(eventId) {
+  const { data, error } = await supabase
+    .from("event_chefs")
+    .select("chef:chefs(id, name, instagram_handle)")
+    .eq("event_id", eventId);
+
+  if (error) {
+    throw new Error(`Error fetching chefs for event: ${error.message}`);
+  }
+
+  // Flatten the nested chef objects
+  return data?.map(item => item.chef) || [];
+}
+
+// Unlink all chefs from an event (for updates)
+export async function unlinkChefsFromEvent(eventId) {
+  const { error } = await supabase
+    .from('event_chefs')
+    .delete()
+    .eq('event_id', eventId);
+
+  if (error) throw new Error(`Error unlinking chefs from event: ${error.message}`);
+}
+
+// Handle chef relationship updates - only update if chefs changed or publishing draft
+export async function handleEventChefsUpdate({ chefNames, chefInstagrams, toPublish, chefsChanged }) {
+  const shouldUpdate = toPublish || chefsChanged;
+
+  if (!shouldUpdate) {
+    console.log('[CHEFS] No chef update needed');
+    return;
+  }
+
+  console.log('[CHEFS] Processing chef updates');
+
+  // Get or create chefs, returns array of chef IDs
+  const chefIds = await upsertChefs(chefNames, chefInstagrams);
+
+  // TODO: Update junction table relationships
+  // await unlinkChefsFromEvent(eventId);
+  // await linkChefsToEvent(eventId, chefIds);
+
+  console.log('[CHEFS] Chefs processed, IDs:', chefIds);
 }

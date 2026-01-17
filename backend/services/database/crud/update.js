@@ -1,65 +1,63 @@
 import { handleEventEmbeddingsUpdate } from "../embeddings/updateEmbeddings.js";
-import { handleEventImageUpload } from "../../../s3/upload.js";
+import { handleEventImageUpload } from "../../s3/upload.js";
 import { getEventById, updateEventById } from "../event/operations.js";
 import { computeUpdateState } from "../event/helpers.js";
+import { getChefsForEvent } from "../chef/operations.js";
+import { getVenueById } from "../venue/operations.js";
+import { handleEventVenueUpdate } from "../event/operations.js";
+import { handleEventChefsUpdate } from "../chef/operations.js";
 
 // Orchestrates updating an event with all related operations (S3, embeddings, event data)
-export const updateEventWithRelations = async (id, body, file) => {
-  console.log("[UPDATE] Starting event update for ID:", id);
-  console.log("[REQUEST] Request body:", body);
-  console.log("[REQUEST] File attached:", !!file);
+export const orchestrateEventUpdate = async (id, body, file) => {
+  console.log("[UPDATE] Starting update for event ID:", id, "| File attached:", !!file);
 
-  // ============================================================================
-  // IMAGE HANDLING (S3 Upload)
-  // ============================================================================
-  console.log("[IMAGE] Handling image upload for event ID:", id);
-  await handleEventImageUpload(id, body, file);
-  console.log("[IMAGE] Image upload completed");
-
-  // ============================================================================
-  // FETCH CURRENT EVENT DATA
-  // ============================================================================
-  const currentEvent = await getEventById(id, 'english_description, hebrew_description, embedding_id_en, embedding_id_he, is_draft');
+  // 1. Fetch current event data
+  const currentEvent = await getEventById(id, 'english_description, hebrew_description, embedding_id_en, embedding_id_he, is_draft, poster, venue_id');
 
   if (!currentEvent) {
     throw new Error(`Event with id ${id} not found`);
   }
 
-  // ============================================================================
-  // PARSE & VALIDATE INPUT
-  // ============================================================================
-  // TODO: Update chef relationships in event_chefs junction table
-  // Currently chef names are only parsed for embedding generation, not stored in event table
-  // Need to:
-  // 1. processChefs(chef_names, chef_instagrams) → get/create chef IDs
-  // 2. Delete old event_chefs links for this event
-  // 3. Insert new event_chefs links with new chef IDs
-  // 4. Fetch chef names from event_chefs junction table (not from request body) for embeddings
-  //    to keep chef-embedding-event relationships consistent
+  // 2. Handle image upload to S3
+  console.log("[UPDATE] Handling image upload for event ID:", id);
+  await handleEventImageUpload(id, body, file, currentEvent);
+  console.log("[UPDATE] Image upload completed");
+
+  // 3. Fetch current venue and chefs for change detection
+  const [currentVenue, currentChefs] = await Promise.all([
+    currentEvent.venue_id ? getVenueById(currentEvent.venue_id) : null,
+    getChefsForEvent(id)
+  ]);
   
-  // Parse chef names for embedding generation (temporary - see TODO above)
-  const chefNamesArray = body.chef_names
-    ? body.chef_names.split(',').map(name => name.trim())
-    : [];
+  const currentChefNames = currentChefs.map(c => c.name).join(", ");
+  
+  console.log("[UPDATE] Venue:", currentVenue?.name || 'none', "| Chefs:", currentChefNames || 'none');
 
-  const chefInstagramsArray = body.chef_instagrams
-    ? body.chef_instagrams.split(',').map(handle => handle.trim())
-    : [];
+  // Save venue and chef data before deleting from body
+  const venueName = body.venue_name;
+  const venueAddress = body.venue_address;
+  const venueInstagram = body.venue_instagram;
+  const chefNames = body.chef_names;
+  const chefInstagrams = body.chef_instagrams;
 
-  body.chef_names = chefNamesArray;
-  body.chef_instagrams = chefInstagramsArray;
+  // Remove chef and venue fields from body - these don't exist in events_new table
+  delete body.chef_names;
+  delete body.chef_instagrams;
+  delete body.venue_name;
+  delete body.venue_address;
+  delete body.venue_instagram;
 
-  // Compute draft/publish state and what changed
+  // 4. Compute draft/publish state and what changed
   const {
     toPublish,
     alreadyPublished,
     englishChanged,
-    hebrewChanged
-  } = computeUpdateState(body, currentEvent);
+    hebrewChanged,
+    venueChanged,
+    chefsChanged
+  } = computeUpdateState(body, currentEvent, currentVenue, currentChefs);
 
-  // ============================================================================
-  // EMBEDDING UPDATES
-  // ============================================================================
+  // 5. Update embeddings
   const { en_id, he_id } = await handleEventEmbeddingsUpdate({
     toPublish,
     alreadyPublished,
@@ -67,24 +65,42 @@ export const updateEventWithRelations = async (id, body, file) => {
     hebrewChanged,
     englishDescription: body.english_description,
     hebrewDescription: body.hebrew_description,
-    chefNames: chefNamesArray.join(", "),
+    chefNames: currentChefNames,
     currentEnglishId: currentEvent.embedding_id_en,
     currentHebrewId: currentEvent.embedding_id_he
   });
 
-  // ============================================================================
-  // UPDATE EVENT RECORD
-  // ============================================================================
+  // 6. Update venue relationship (if venue changed or publishing draft)
+  const venueId = await handleEventVenueUpdate({
+    eventId: id,
+    venueName,
+    venueAddress,
+    venueInstagram,
+    toPublish,
+    venueChanged
+  });
+
+  // 7. Update chef relationships (if chefs changed or publishing draft)
+  await handleEventChefsUpdate({
+    chefNames,
+    chefInstagrams,
+    toPublish,
+    chefsChanged
+  });
+
+  // 8. Update event record in database
   if (toPublish) {
     body.embedding_id_en = en_id;
     body.embedding_id_he = he_id;
   }
 
+  if (venueId) {
+    body.venue_id = venueId;
+  }
+
   const updatedEvent = await updateEventById(id, body);
 
-  // ============================================================================
-  // RETURN RESULT
-  // ============================================================================
+  // 9. Return updated event
   console.log("[UPDATE] Event update completed for ID:", id);
   return updatedEvent;
 };

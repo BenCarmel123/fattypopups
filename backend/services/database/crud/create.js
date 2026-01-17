@@ -1,10 +1,10 @@
-import { processChefs } from '../chef/operations.js';
-import { processVenue } from '../venue/operations.js';
+import { upsertChefs } from '../chef/operations.js';
+import { upsertVenue } from '../venue/operations.js';
 import { processEventEmbeddings } from '../embeddings/createEmbeddings.js';
 import { insertEvent, linkChefsToEvent } from '../event/operations.js';
 
 // Orchestrates creating an event with all related entities (venue, chefs, embeddings)
-export const createEventWithRelations = async (body, file) => {
+export const orchestrateEventCreate = async (body, file) => {
   const {
     title,
     start_datetime,
@@ -21,15 +21,37 @@ export const createEventWithRelations = async (body, file) => {
   } = body;
 
   const poster = file?.location || null;
-
-  // 1. Process venue (get existing or create new)
-  const venueId = await processVenue(venue_name, venue_address, venue_instagram);
-
-  // 2. Process chefs (get existing or create new)
-  const chefIds = await processChefs(chef_names, chef_instagrams);
+  const isDraft = is_draft === true || is_draft === "true";
   const chefNamesArray = chef_names?.split(',').map(s => s.trim()) ?? [];
 
-  // 3. Insert event into events_new
+  console.log('[EVENT] Creating event - isDraft:', isDraft);
+
+  // Early return for drafts - minimal processing
+  if (isDraft) {
+    console.log('[EVENT] Draft mode - skipping venue, chefs, and embeddings');
+    return await insertEvent({
+      title,
+      start_datetime,
+      end_datetime,
+      venue_id: null,
+      poster,
+      reservation_url,
+      english_description,
+      hebrew_description,
+      is_draft
+    });
+  }
+
+  // Published event - full processing
+  console.log('[EVENT] Published mode - processing all relations');
+
+  // 1. Process venue and chefs in parallel (independent operations)
+  const [venueId, chefIds] = await Promise.all([
+    upsertVenue(venue_name, venue_address, venue_instagram),
+    upsertChefs(chef_names, chef_instagrams)
+  ]);
+
+  // 2. Insert event into events_new
   const newEvent = await insertEvent({
     title,
     start_datetime,
@@ -42,25 +64,16 @@ export const createEventWithRelations = async (body, file) => {
     is_draft
   });
 
-  // 4. Link chefs to event in junction table
-  await linkChefsToEvent(newEvent.id, chefIds);
-
-  // 5. Process embeddings only if not a draft
-  // Handle both string and boolean is_draft values
-  const isDraft = is_draft === true || is_draft === "true";
-  console.log('[EVENT] is_draft value:', is_draft, 'Type:', typeof is_draft, 'Parsed as draft:', isDraft);
-  
-  if (!isDraft) {
-    console.log('[EVENT] Processing embeddings...');
-    await processEventEmbeddings(
+  // 3. Link chefs and process embeddings in parallel (both use newEvent.id)
+  await Promise.all([
+    linkChefsToEvent(newEvent.id, chefIds),
+    processEventEmbeddings(
       newEvent.id,
       english_description,
       hebrew_description,
       chefNamesArray.join(", ")
-    );
-  } else {
-    console.log('[EVENT] Skipping embeddings - event is a draft');
-  }
+    )
+  ]);
 
   return newEvent;
 };

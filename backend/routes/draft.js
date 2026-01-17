@@ -2,7 +2,7 @@
 import 'dotenv/config';
 import { generateDraft } from '../services/agent/draft.js';
 import express from 'express';
-import { createEventWithRelations } from '../services/database/crud/create.js'; 
+import { orchestrateEventCreate } from '../services/database/crud/create.js'; 
 
 const agentRouter = express.Router();
 
@@ -21,7 +21,7 @@ agentRouter.post("/draft", async (req, res) => {
     console.log("[EVENT] Draft Generated\n")
 
     // Create event from draft
-    const newEvent = await createEventWithRelations(draft, null);
+    const newEvent = await orchestrateEventCreate(draft, null);
     console.log("[EVENT] Event Created\n")
 
     // Success response
