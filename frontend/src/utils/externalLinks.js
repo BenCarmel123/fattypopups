@@ -1,4 +1,4 @@
-import { SELF, NO_OPENER } from '../../config/strings';
+import { SELF, NO_OPENER } from '../config/strings.jsx';
 
 // Function to open Google Maps with the given address
 export function handleMaps(address) {

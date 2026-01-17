@@ -9,6 +9,7 @@ const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 export default function AdminPageHandler() {
   // Component State
+  // eslint-disable-next-line no-unused-vars
   const[isAuthenticated, setAuthenticated] = useState(false)
   const[action, setAction] = useState(LOGIN);
   const[selectedEvent, setSelectedEvent] = useState(undefined);
@@ -63,6 +64,8 @@ export default function AdminPageHandler() {
             return (<Login />);
          case AI: 
             return (<PromptDraft handleClick={handleClick} />);
+         default:
+            return (<Login />);
    }
   }
       

@@ -1,4 +1,4 @@
-import { supabase } from "../../../config/index.js";
+import { supabase } from "../../../../config/index.js";
 import { upsertVenue } from "../venue/operations.js";
 
 // Insert a new event into the events_new table

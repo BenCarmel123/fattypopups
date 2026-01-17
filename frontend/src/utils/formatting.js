@@ -1,4 +1,4 @@
-import { SHORT, NUMERIC } from '../../config/strings';
+import { SHORT, NUMERIC } from '../config/strings.jsx';
 
 // Helper to format date ranges from start and end dates of events
 export function formatDateRange(start, end) {

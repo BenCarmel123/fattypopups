@@ -1,4 +1,4 @@
-import { supabase } from "../../../config/index.js";
+import { supabase } from "../../../../config/index.js";
 
 // Get all chefs linked to an event
 export async function getChefsForEvent(eventId) {

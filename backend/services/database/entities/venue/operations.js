@@ -1,5 +1,22 @@
-import { supabase } from "../../../config/index.js";
-import { normalizeVenueName } from "../utils/parse.js";
+import { supabase } from "../../../../config/index.js";
+import { normalizeVenueName } from "../../utils/parse.js";
+
+// Get venue by ID
+export async function getVenueById(id) {
+  if (!id) return null;
+
+  const { data, error } = await supabase
+    .from("venues")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error && error.code !== 'PGRST116') { // PGRST116 = not found
+    throw new Error(`Error finding venue: ${error.message}`);
+  }
+
+  return data || null;
+}
 
 // Check if venue exists by name
 // Returns the venue object if found, null otherwise
