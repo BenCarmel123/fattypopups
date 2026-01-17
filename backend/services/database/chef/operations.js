@@ -1,5 +1,6 @@
 import { supabase } from "../../../config/instances.js";
 import { normalizeChefName } from "../utils/parse.js";
+import { unlinkChefsFromEvent, linkChefsToEvent } from "../linking/operations.js";
 
 // Check if chef exists by name
 // Returns the chef object if found, null otherwise
@@ -70,36 +71,10 @@ export async function upsertChefs(chefNamesString, chefInstagramsString) {
   return chefIds;
 }
 
-export async function getChefsForEvent(eventId) {
-  const { data, error } = await supabase
-    .from("event_chefs")
-    .select("chef:chefs(id, name, instagram_handle)")
-    .eq("event_id", eventId);
-
-  if (error) {
-    throw new Error(`Error fetching chefs for event: ${error.message}`);
-  }
-
-  // Flatten the nested chef objects
-  return data?.map(item => item.chef) || [];
-}
-
-// Unlink all chefs from an event (for updates)
-export async function unlinkChefsFromEvent(eventId) {
-  const { error } = await supabase
-    .from('event_chefs')
-    .delete()
-    .eq('event_id', eventId);
-
-  if (error) throw new Error(`Error unlinking chefs from event: ${error.message}`);
-}
-
 // Handle chef relationship updates - only update if chefs changed or publishing draft
-export async function handleEventChefsUpdate({ chefNames, chefInstagrams, toPublish, chefsChanged }) {
-  const shouldUpdate = toPublish || chefsChanged;
-
+export async function handleEventChefsUpdate({ eventId, chefNames, chefInstagrams, shouldUpdate, shouldUnlink }) {
   if (!shouldUpdate) {
-    console.log('[CHEFS] No chef update needed');
+    console.log('[CHEFS] No chef update needed (draft mode or no changes to published event)');
     return;
   }
 
@@ -108,9 +83,13 @@ export async function handleEventChefsUpdate({ chefNames, chefInstagrams, toPubl
   // Get or create chefs, returns array of chef IDs
   const chefIds = await upsertChefs(chefNames, chefInstagrams);
 
-  // TODO: Update junction table relationships
-  // await unlinkChefsFromEvent(eventId);
-  // await linkChefsToEvent(eventId, chefIds);
+  // Unlink existing chefs if updating already-published event
+  if (shouldUnlink) {
+    await unlinkChefsFromEvent(eventId);
+    console.log('[CHEFS] Unlinked old chefs for published event update');
+  }
 
-  console.log('[CHEFS] Chefs processed, IDs:', chefIds);
+  // Link new/updated chefs
+  await linkChefsToEvent(eventId, chefIds);
+  console.log('[CHEFS] Linked chefs. Chef IDs:', chefIds);
 }

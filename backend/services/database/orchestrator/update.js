@@ -1,8 +1,8 @@
-import { handleEventEmbeddingsUpdate } from "../embeddings/updateEmbeddings.js";
+import { handleEventEmbeddingsUpdate } from "../embeddings/orchestrateEmbeddings.js";
 import { handleEventImageUpload } from "../../s3/upload.js";
 import { getEventById, updateEventById } from "../event/operations.js";
-import { computeUpdateState } from "../event/helpers.js";
-import { getChefsForEvent } from "../chef/operations.js";
+import { computeUpdateState } from "../utils/computeState.js";
+import { getChefsForEvent } from "../linking/operations.js";
 import { getVenueById } from "../venue/operations.js";
 import { handleEventVenueUpdate } from "../event/operations.js";
 import { handleEventChefsUpdate } from "../chef/operations.js";
@@ -54,7 +54,10 @@ export const orchestrateEventUpdate = async (id, body, file) => {
     englishChanged,
     hebrewChanged,
     venueChanged,
-    chefsChanged
+    chefsChanged,
+    shouldUpdateVenue,
+    shouldUpdateChefs,
+    shouldUnlinkChefs
   } = computeUpdateState(body, currentEvent, currentVenue, currentChefs);
 
   // 5. Update embeddings
@@ -70,22 +73,22 @@ export const orchestrateEventUpdate = async (id, body, file) => {
     currentHebrewId: currentEvent.embedding_id_he
   });
 
-  // 6. Update venue relationship (if venue changed or publishing draft)
+  // 6. Update venue relationship (only if publishing or updating published content)
   const venueId = await handleEventVenueUpdate({
     eventId: id,
     venueName,
     venueAddress,
     venueInstagram,
-    toPublish,
-    venueChanged
+    shouldUpdate: shouldUpdateVenue
   });
 
-  // 7. Update chef relationships (if chefs changed or publishing draft)
+  // 7. Update chef relationships (only if publishing or updating published content)
   await handleEventChefsUpdate({
+    eventId: id,
     chefNames,
     chefInstagrams,
-    toPublish,
-    chefsChanged
+    shouldUpdate: shouldUpdateChefs,
+    shouldUnlink: shouldUnlinkChefs
   });
 
   // 8. Update event record in database

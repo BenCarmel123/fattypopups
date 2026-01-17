@@ -1,8 +1,10 @@
 import express from 'express';
-import { getEventsWithDetails } from '../services/database/crud/get.js';
-import { orchestrateEventCreate } from '../services/database/crud/create.js';
-import { orchestrateEventUpdate } from '../services/database/crud/update.js';
-import { deleteEventsWithCleanup } from '../services/database/crud/delete.js';
+import { 
+  getEventsWithDetails, 
+  orchestrateEventCreate, 
+  orchestrateEventUpdate, 
+  deleteEvents 
+} from '../services/database/orchestrator/index.js';
 // Multer imports
 import { upload, uploadMemory } from '../config/instances.js';
 
@@ -49,7 +51,7 @@ eventRouter.delete('/', async (req, res) => {
     return res.status(400).json({ error: 'Titles must be a non-empty array' });
   }
   try {
-    const result = await deleteEventsWithCleanup(titles);
+    const result = await deleteEvents(titles);
     res.json(result);
   } catch (err) {
     console.log('[ERROR] HTTP Error:', err);

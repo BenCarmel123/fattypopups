@@ -14,10 +14,11 @@ export async function generateEmbedding(description) {
   return embedding;
 }
 
-// Wrapper function to generate embeddings based on what changed
-export async function generateChangedEmbeddings(englishChanged, hebrewChanged, englishDescription, hebrewDescription) {
-  console.log('[EMBEDDING] Starting embedding generation...');
-  console.log('[EMBEDDING] English changed:', englishChanged, '| Hebrew changed:', hebrewChanged);
+// Generate embeddings for English and/or Hebrew descriptions in parallel
+// Pass true/false for each language to control what gets generated
+// If no flags provided, generates both by default
+export async function generateEmbeddings(englishDescription, hebrewDescription, generateEnglish = true, generateHebrew = true) {
+  console.log(`[EMBEDDING] Starting embedding generation - English: ${generateEnglish} | Hebrew: ${generateHebrew}`);
   
   const result = {
     english: null,
@@ -25,46 +26,42 @@ export async function generateChangedEmbeddings(englishChanged, hebrewChanged, e
   };
 
   try {
-    // Generate English embedding if it changed
-    if (englishChanged) {
-      console.log('[EMBEDDING] Generating English embedding...');
-      result.english = await generateEmbedding(englishDescription);
-      console.log('[EMBEDDING] English embedding generated:', result.english ? 'SUCCESS' : 'NULL');
+    // Build array of promises for parallel execution
+    const promises = [];
+    
+    if (generateEnglish) {
+      console.log('[EMBEDDING] Queuing English embedding generation...');
+      promises.push(
+        generateEmbedding(englishDescription).then(embedding => ({ type: 'english', embedding }))
+      );
+    }
+    
+    if (generateHebrew) {
+      console.log('[EMBEDDING] Queuing Hebrew embedding generation...');
+      promises.push(
+        generateEmbedding(hebrewDescription).then(embedding => ({ type: 'hebrew', embedding }))
+      );
     }
 
-    // Generate Hebrew embedding if it changed
-    if (hebrewChanged) {
-      console.log('[EMBEDDING] Generating Hebrew embedding...');
-      result.hebrew = await generateEmbedding(hebrewDescription);
-      console.log('[EMBEDDING] Hebrew embedding generated:', result.hebrew ? 'SUCCESS' : 'NULL');
+    // Execute all generations in parallel
+    if (promises.length > 0) {
+      const results = await Promise.all(promises);
+      
+      // Map results back to their respective languages
+      results.forEach(({ type, embedding }) => {
+        result[type] = embedding;
+        const status = embedding ? 'SUCCESS' : 'NULL';
+        const lang = type === 'english' ? 'English' : 'Hebrew';
+        console.log(`[EMBEDDING] ${lang} embedding generated:`, status);
+      });
     }
   } catch (e) {
-    console.log("[ERROR] Embedding generation error:", e);
-    console.log("[ERROR] Error details:", e.message, e.stack);
+    console.log(`[ERROR] Embedding generation error: ${e.message}`, e.stack);
   }
 
   return result;
 }
 
-// Generate both English and Hebrew embeddings (always generates both)
-export async function generateBothEmbeddings(englishDescription, hebrewDescription) {
-  console.log('[EMBEDDING] Starting embedding generation...');
-  
-  let english = null;
-  let hebrew = null;
-
-  try {
-    console.log('[EMBEDDING] Generating English embedding...');
-    english = await generateEmbedding(englishDescription);
-    console.log('[EMBEDDING] English embedding generated:', english ? 'SUCCESS' : 'NULL');
-    
-    console.log('[EMBEDDING] Generating Hebrew embedding...');
-    hebrew = await generateEmbedding(hebrewDescription);
-    console.log('[EMBEDDING] Hebrew embedding generated:', hebrew ? 'SUCCESS' : 'NULL');
-  } catch (e) {
-    console.log("[ERROR] Embedding generation error:", e);
-    console.log("[ERROR] Error details:", e.message, e.stack);
-  }
-
-  return { english, hebrew };
-}
+// Backwards compatibility aliases
+export const generateBothEmbeddings = (en, he) => generateEmbeddings(en, he, true, true);
+export const generateChangedEmbeddings = (enChanged, heChanged, en, he) => generateEmbeddings(en, he, enChanged, heChanged);

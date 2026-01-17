@@ -66,17 +66,6 @@ export async function updateEventById(id, updates) {
 }
 
 // Delete event
-export async function deleteEventById(id) {
-  const { error } = await supabase
-    .from('events_new')
-    .delete()
-    .eq('id', id);
-
-  if (error) throw new Error(`Error deleting event: ${error.message}`);
-  
-  return { message: 'Event deleted successfully', id };
-}
-
 // Get all events with relations
 export async function getAllEventsWithRelations(isAdmin = false) {
   let query = supabase
@@ -104,22 +93,6 @@ export async function getAllEventsWithRelations(isAdmin = false) {
   return data;
 }
 
-// Link chefs to event in junction table
-export async function linkChefsToEvent(eventId, chefIds) {
-  if (!chefIds || chefIds.length === 0) return;
-
-  const eventChefLinks = chefIds.map(chefId => ({
-    event_id: eventId,
-    chef_id: chefId
-  }));
-
-  const { error } = await supabase
-    .from('event_chefs')
-    .insert(eventChefLinks);
-
-  if (error) throw new Error(`Error linking chefs to event: ${error.message}`);
-}
-
 // Delete events by titles
 export async function deleteEventsByTitles(titles) {
   const { error } = await supabase
@@ -132,24 +105,10 @@ export async function deleteEventsByTitles(titles) {
   return { message: 'Events deleted successfully', deleted: titles };
 }
 
-// Get events by titles (with embedding IDs for cleanup)
-export async function getEventsByTitles(titles) {
-  const { data, error } = await supabase
-    .from('events_new')
-    .select('id, title, embedding_id_en, embedding_id_he')
-    .in('title', titles);
-
-  if (error) throw new Error(`Error fetching events: ${error.message}`);
-  
-  return data || [];
-}
-
 // Handle venue updates - only update if venue changed or publishing draft
-export async function handleEventVenueUpdate({ eventId, venueName, venueAddress, venueInstagram, toPublish, venueChanged }) {
-  const shouldUpdate = toPublish || venueChanged;
-
+export async function handleEventVenueUpdate({ eventId, venueName, venueAddress, venueInstagram, shouldUpdate }) {
   if (!shouldUpdate) {
-    console.log('[VENUE] No venue update needed');
+    console.log('[VENUE] No venue update needed (draft mode or no changes to published event)');
     return null;
   }
 

@@ -36,32 +36,6 @@ export async function updateEmbeddingById(id, description, embedding) {
 }
 
 // Get embedding by ID
-export async function getEmbeddingById(id) {
-  const { data, error } = await supabase
-    .from('embeddings')
-    .select('*')
-    .eq('id', id)
-    .single();
-
-  if (error && error.code !== 'PGRST116') {
-    throw new Error(`Error finding embedding: ${error.message}`);
-  }
-
-  return data || null;
-}
-
-// Delete embedding by ID
-export async function deleteEmbeddingById(id) {
-  const { error } = await supabase
-    .from('embeddings')
-    .delete()
-    .eq('id', id);
-
-  if (error) throw new Error(`Error deleting embedding: ${error.message}`);
-  
-  return { message: 'Embedding deleted successfully', id };
-}
-
 // Insert or update embeddings when publishing/updating events
 export async function upsertEventEmbeddings(options) {
   const {
