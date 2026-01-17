@@ -1,4 +1,4 @@
-import { BORDER_WIDTH, POINTER, BOLD, FLEX, CENTER} from "../../../config/index.jsx";
+import { BORDER_WIDTH, POINTER, BOLD, FLEX, CENTER} from "../../../../config/index.jsx";
 export default function SaveAsDraft({ defaultChecked }) {
      return(<label
                 style={{

@@ -1,5 +1,5 @@
 import { Field, Textarea } from "@chakra-ui/react";
-import { FORM_FIELD_COLOR, TEXT_AREA_COLOR } from "../../../config/index.jsx"; 
+import { FORM_FIELD_COLOR, TEXT_AREA_COLOR } from "../../../../config/index.jsx"; 
 
 export default function DescriptionArea({ event, lang = 'en' }) {
   // Choose the right field from event

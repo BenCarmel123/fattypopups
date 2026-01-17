@@ -10,7 +10,7 @@ import {
   HOVER, 
   GRAY,
   FcGoogle 
-} from "../../config/index.jsx";
+} from "../../../config/index.jsx";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL

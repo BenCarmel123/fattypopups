@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react"
 import { Spinner } from '@chakra-ui/react';
-import EventCard from './components/EventCard.jsx';
-import { SUBHEADER_TEXT_1, SUBHEADER_TEXT_2 } from '../../config/index.jsx';
-import DynamicCard from './components/DynamicCard.jsx';
+import DisplayCard from './components/card/DisplayCard.jsx';
 import Header from '../../components/Header.jsx';
+import InstructionText from './components/InstructionText.jsx';
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -33,24 +32,10 @@ export default function HomePage() {
     <>
     <Header />
     <div className="mt-2 w-full flex flex-col items-center px-2 sm:px-4 md:px-8 box-border">
-      <h2 style={{
-      fontSize: '1rem',
-      fontWeight: '900',
-      color: '#51515b',
-      textAlign: 'center',
-      margin: '0.5rem',
-      width: 'fit-content', 
-      backgroundColor: 'transparent',
-      padding: '15px',
-      marginTop: '2rem',
-      marginBottom: '2rem',
-    }} >{SUBHEADER_TEXT_1} <br/> {SUBHEADER_TEXT_2} 
-    </h2>
+      <InstructionText />
       {events.map(evt => (
         <div key={evt.title} className="mb-8 w-full max-w-xl">
-          <DynamicCard>
-            <EventCard event={evt} />
-          </DynamicCard>
+          <DisplayCard event={evt} />
         </div>
       ))}
       <div style={{ height: '2.5rem' }} />
