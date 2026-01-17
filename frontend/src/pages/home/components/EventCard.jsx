@@ -1,16 +1,9 @@
 import React from 'react';
 import { Card, Button } from '@chakra-ui/react';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
-  formatDateRange,
-  handleMaps,
-  handleWhatsApp,
-  handleInstagram,
-  handleCalendar,
-  formatEventDescription,
-  defaultOnMouseEnter,
-  defaultOnMouseLeave,
-} from './utils';
+import { formatDateRange, formatEventDescription } from '../../../utils/formatting';
+import { handleMaps, handleWhatsApp, handleInstagram, handleCalendar } from '../../../utils/externalLinks';
+import { defaultOnMouseEnter, defaultOnMouseLeave } from '../../../utils/interactions';
 import {
   GRAY,
   CARD_BACKGROUND_COLOR,
@@ -18,7 +11,7 @@ import {
   EVENT_TITLE_PADDING_COLOR,
   DRAWER_DETAILS_FONT_COLOR,
   BORDER_COLOR,
-} from '../config/colors.jsx';
+} from '../../../config/colors.jsx';
 import {
   RESERVE,
   SHARE,
@@ -39,7 +32,7 @@ import {
   SOLID,
   NONE, 
   LINK_PADDING
-} from '../config/strings';
+} from '../../../config/strings.jsx';
 import { RiInstagramFill } from 'react-icons/ri';
 import { SiGooglemaps, SiGooglecalendar } from 'react-icons/si';
 import { GiForkKnifeSpoon } from 'react-icons/gi';

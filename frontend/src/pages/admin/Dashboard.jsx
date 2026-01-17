@@ -1,10 +1,10 @@
 import { Checkbox, Table } from "@chakra-ui/react"
 import { useState, useEffect } from "react"
-import { EDIT, LARGE, FLEX, AI } from "../../config/strings"
-import { BACKGROUND_COLOR } from "../../config/colors";
+import { EDIT, LARGE, FLEX, AI } from "../../config/strings.jsx"
+import { BACKGROUND_COLOR } from "../../config/colors.jsx";
 import MyAlert from "../../components/CustomAlert.jsx"; 
-import AdminActions from "../../components/AdminActions.jsx";
-import { AdminActionButton } from "../../components/Buttons";
+import AdminActions from "./components/AdminActions.jsx";
+import { AdminActionButton } from "../../components/Buttons.jsx";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
