@@ -1,7 +1,17 @@
-import { MINIMAL_TRANSITION, CENTER, APP_NAME, LARGE, XL, XXL } from "../../config/strings.jsx";
-import { WHITE, BORDER_COLOR, HOVER, GRAY } from "../../config/colors.jsx";
+import { 
+  MINIMAL_TRANSITION, 
+  CENTER, 
+  APP_NAME, 
+  LARGE, 
+  XL, 
+  XXL,
+  WHITE, 
+  BORDER_COLOR, 
+  HOVER, 
+  GRAY,
+  FcGoogle 
+} from "../../config/index.jsx";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import { FcGoogle } from "react-icons/fc";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL
 const LOGO_URL = process.env.REACT_APP_LOGO;

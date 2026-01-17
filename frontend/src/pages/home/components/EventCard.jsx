@@ -11,8 +11,6 @@ import {
   EVENT_TITLE_PADDING_COLOR,
   DRAWER_DETAILS_FONT_COLOR,
   BORDER_COLOR,
-} from '../../../config/colors.jsx';
-import {
   RESERVE,
   SHARE,
   XL,
@@ -31,12 +29,13 @@ import {
   SUBTLE,
   SOLID,
   NONE, 
-  LINK_PADDING
-} from '../../../config/strings.jsx';
-import { RiInstagramFill } from 'react-icons/ri';
-import { SiGooglemaps, SiGooglecalendar } from 'react-icons/si';
-import { GiForkKnifeSpoon } from 'react-icons/gi';
-import { FaWhatsapp } from 'react-icons/fa';
+  LINK_PADDING,
+  RiInstagramFill, 
+  SiGooglemaps, 
+  SiGooglecalendar, 
+  GiForkKnifeSpoon, 
+  FaWhatsapp
+} from '../../../config/index.jsx';
 
 const detailsBackgroundImageUrl = process.env.REACT_APP_DETAILS_BACKGROUND_IMAGE_URL;
 
@@ -208,7 +207,7 @@ export function CardBody({ event }) {
           event.chefs
             .map((chef, idx) => (
              <span
-                key={chef.id}
+                key={idx}
                 style={{
                   cursor: POINTER,
                   marginRight: idx < event.chefs.length - 1 ? 4 : 0,
@@ -224,7 +223,7 @@ export function CardBody({ event }) {
             ))
         }
         <SiGooglecalendar className={ACTION_BUTTON_SPACING} />
-        <EventAttributeSpan attribute={formatDateRange(event.startDatetime, event.endDatetime)} onClick={() => handleCalendar(event)} />
+        <EventAttributeSpan attribute={formatDateRange(event.start_datetime, event.end_datetime)} onClick={() => handleCalendar(event)} />
         <br />
         <div>
           <SiGooglemaps className={ACTION_BUTTON_SPACING} />
@@ -255,13 +254,13 @@ export function CardFooter({ event }) {
     <Card.Footer style={{ padding: '1.25rem 1rem 1rem 1rem', backgroundColor: FOOTER_BACKGROUND_COLOR }}>
       <div style={{ display: FLEX, alignItems: CENTER, justifyContent: CENTER, width: MAX, marginTop: '-15px', marginBottom: '-10px' }}>
         <div className="eventcard-actions" style={{ display: FLEX, alignItems: CENTER, justifyContent: CENTER, gap: '1rem', width: MAX, maxWidth: '340px', margin: '0 auto' }}>
-          <ActionButton onClick={() => window.open(event.reservationUrl, SELF, NO_OPENER)} ariaLabel={RESERVE}>
+          <ActionButton onClick={() => window.open(event.reservation_url, SELF, NO_OPENER)} ariaLabel={RESERVE}>
             <GiForkKnifeSpoon style={{ verticalAlign: 'middle', marginRight: '-0.3rem' }} />
-           <FooterOption text={RESERVE} onClick={() => window.open(event.reservationUrl, SELF, NO_OPENER)} />
+           <FooterOption text={RESERVE} onClick={() => window.open(event.reservation_url, SELF, NO_OPENER)} />
           </ActionButton>
-          <ActionButton onClick={() => handleWhatsApp(event.englishDescription)} ariaLabel="Share">
+          <ActionButton onClick={() => handleWhatsApp(event.english_description)} ariaLabel="Share">
             <FaWhatsapp style={{ verticalAlign: 'middle', marginRight: '-0.3rem' }} />
-            <FooterOption text={SHARE} onClick={() => handleWhatsApp(event.englishDescription)} />
+            <FooterOption text={SHARE} onClick={() => handleWhatsApp(event.english_description)} />
           </ActionButton>
         </div>
       </div>

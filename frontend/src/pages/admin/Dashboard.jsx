@@ -1,7 +1,6 @@
 import { Checkbox, Table } from "@chakra-ui/react"
 import { useState, useEffect } from "react"
-import { EDIT, LARGE, FLEX, AI } from "../../config/strings.jsx"
-import { BACKGROUND_COLOR } from "../../config/colors.jsx";
+import { EDIT, LARGE, FLEX, AI, BACKGROUND_COLOR, HTTP_DELETE, CONTENT_TYPE, APPLICATION_JSON, STATUS_ERROR } from "../../config/index.jsx"
 import MyAlert from "../../components/CustomAlert.jsx"; 
 import AdminActions from "./components/AdminActions.jsx";
 import { AdminActionButton } from "../../components/Buttons.jsx";
@@ -27,8 +26,8 @@ const Dashboard = ({ handleClick }) => {
   // Delete selected events
   const handleDeleteEvents = () => {
     fetch(`${SERVER_URL}/api/events`, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
+      method: HTTP_DELETE,
+      headers: { [CONTENT_TYPE]: APPLICATION_JSON },
       body: JSON.stringify({ titles: selection }),
     })
     .then(res => res.json())
@@ -44,7 +43,7 @@ const Dashboard = ({ handleClick }) => {
   // Edit selected event (only if one selected)
   const handleEditEvents = () => {
     if (selection.length !== 1) {
-        setAlert({ status: "error", description: "Please select exactly one event to edit." });
+        setAlert({ status: STATUS_ERROR, description: "Please select exactly one event to edit." });
       return
     }
     const eventToEdit = events.find(event => event.title === selection[0]);

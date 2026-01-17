@@ -1,5 +1,4 @@
-import { HOVER, GRAY } from '../config/colors.jsx';
-import { MINIMAL_TRANSITION, MINIMAL_TRANSFORM } from '../config/strings.jsx';
+import { HOVER, GRAY, MINIMAL_TRANSITION, MINIMAL_TRANSFORM } from '../config/index.jsx';
 
 export const defaultOnMouseEnter = (e) => {
     e.currentTarget.style.padding = '0.4rem 0.8rem';

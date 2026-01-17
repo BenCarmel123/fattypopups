@@ -1,9 +1,18 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { GiKnifeFork } from "react-icons/gi";
-import { AiOutlineMail } from "react-icons/ai";
-import { SECONDARY_COLOR, ABOUT_PAGE_BACKGROUND_COLOR, BLACK} from "../../config/colors.jsx";
-import { ABOUT_CREATORS_1, ABOUT_CREATORS_2, ABOUT_CREATORS_3, CONTACT, SELF, NO_OPENER } from "../../config/strings.jsx";
+import { 
+  GiKnifeFork, 
+  AiOutlineMail,
+  SECONDARY_COLOR, 
+  ABOUT_PAGE_BACKGROUND_COLOR, 
+  BLACK,
+  ABOUT_CREATORS_1, 
+  ABOUT_CREATORS_2, 
+  ABOUT_CREATORS_3, 
+  CONTACT, 
+  SELF, 
+  NO_OPENER 
+} from "../../config/index.jsx";
 import { BackButton } from "../../components/Buttons.jsx";
 
 const INSTA_LINK_HALLIE = process.env.REACT_APP_INSTA_LINK_HALLIE;

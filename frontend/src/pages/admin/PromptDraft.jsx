@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Textarea } from "@chakra-ui/react";
-import { POST, ENTER, UNKNOWN_ERROR, PROMPT_PLACEHOLDER, EDIT, DASHBOARD } from "../../config/strings.jsx";
+import { POST, ENTER, UNKNOWN_ERROR, PROMPT_PLACEHOLDER, EDIT, DASHBOARD, CONTENT_TYPE, TEXT_PLAIN } from "../../config/index.jsx";
 import { SubmitPromptButton, BackToDashboard } from '../../components/Buttons.jsx';
 import SpinnerOverlay from '../../components/SpinnerOverlay.jsx';
 
@@ -11,7 +11,7 @@ export const sendPrompt = async (prompt) => {
 
   const res = await fetch(`${SERVER_URL}/agent/draft`, {
     method: POST,
-    headers: { "Content-Type": "text/plain" },
+    headers: { [CONTENT_TYPE]: TEXT_PLAIN },
     body: prompt
   });
 

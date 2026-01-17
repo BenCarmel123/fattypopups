@@ -1,10 +1,26 @@
 import { Card, Stack, Input, Field } from "@chakra-ui/react";
-import { DASHBOARD } from "../../config/strings.jsx";
+import { 
+  DASHBOARD, 
+  FORM_FIELD_COLOR, 
+  TEXT_AREA_COLOR, 
+  TRANSPARENT, 
+  FORM_BACKGROUND_COLOR,
+  CENTER, 
+  FLEX, 
+  RELATIVE, 
+  FIXED, 
+  MAX, 
+  NONE, 
+  AUTO, 
+  XL,
+  PUT,
+  POST,
+  STATUS_ERROR,
+  STATUS_SUCCESS
+} from "../../config/index.jsx";
 import validateEvent from "./utils/validation.js";
 import  MyAlert  from "../../components/CustomAlert.jsx";
 import { useState } from "react";
-import { FORM_FIELD_COLOR, TEXT_AREA_COLOR, TRANSPARENT, FORM_BACKGROUND_COLOR } from "../../config/colors.jsx"; 
-import { CENTER, FLEX, RELATIVE, FIXED, MAX, NONE, AUTO, XL } from "../../config/strings.jsx";
 import { formatDate } from "../../utils/formatting.js";
 import { BackToDashboard, FileUploadButton, SubmitFormButton } from "../../components/Buttons.jsx";
 import DescriptionArea from "./components/DescriptionArea.jsx";
@@ -60,7 +76,7 @@ export default function EventForm({ event, isEdit, handleClick } ) {
         if (!(wasDraft && isDraft)) {
                 const validation = validateEvent(eventData, isEdit);
                 if (!validation.valid) {
-                setAlert({ status: "error", description: validation.error });
+                setAlert({ status: STATUS_ERROR, description: validation.error });
                 return; 
             }
         }
@@ -82,7 +98,7 @@ export default function EventForm({ event, isEdit, handleClick } ) {
         formData.append('is_draft', eventData.is_draft ? 'true' : 'false');
 
         const url = isEdit ? `${SERVER_URL}/api/events/${event.id}` : `${SERVER_URL}/api/events`;
-        const method = isEdit ? "PUT" : "POST";
+        const method = isEdit ? PUT : POST;
 
         try {
 
@@ -92,7 +108,7 @@ export default function EventForm({ event, isEdit, handleClick } ) {
             setLoading(false)
 
             setAlert({
-                status: "success",
+                status: STATUS_SUCCESS,
                 title: isEdit ? "Event Updated" : "Event Created",
             });
 
@@ -105,7 +121,7 @@ export default function EventForm({ event, isEdit, handleClick } ) {
         catch (err) {
             setLoading(false)
             setAlert({
-                status: "error",
+                status: STATUS_ERROR,
                 description: err.message,
             });
         } 
@@ -151,11 +167,11 @@ export default function EventForm({ event, isEdit, handleClick } ) {
                             </Field.Root>
                             <Field.Root>
                                 <Field.Label color={FORM_FIELD_COLOR}>Chef Names (comma separated)</Field.Label>
-                                <Input name="chef_names" defaultValue={event?.chef_names ? event.chef_names.join(', ') : ""} borderColor={TEXT_AREA_COLOR} borderWidth={2} _focus={{ borderColor: FORM_FIELD_COLOR }} />
+                                <Input name="chef_names" defaultValue={event?.chefs ? event.chefs.map(c => c.name).join(', ') : ""} borderColor={TEXT_AREA_COLOR} borderWidth={2} _focus={{ borderColor: FORM_FIELD_COLOR }} />
                             </Field.Root>
                             <Field.Root>
                                 <Field.Label color={FORM_FIELD_COLOR}>Chef Instagrams (comma separated)</Field.Label>
-                                <Input name="chef_instagrams" placeholder="@" defaultValue={event?.chef_instagrams ? event.chef_instagrams.join(', ') : ""} borderColor={TEXT_AREA_COLOR} borderWidth={2} _focus={{ borderColor: FORM_FIELD_COLOR }} />
+                                <Input name="chef_instagrams" placeholder="@" defaultValue={event?.chefs ? event.chefs.map(c => c.instagram_handle).join(', ') : ""} borderColor={TEXT_AREA_COLOR} borderWidth={2} _focus={{ borderColor: FORM_FIELD_COLOR }} />
                             </Field.Root>
                             <Field.Root>
                                 <Field.Label color={FORM_FIELD_COLOR}>Reservation URL</Field.Label>

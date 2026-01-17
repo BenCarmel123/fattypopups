@@ -5,22 +5,29 @@ export async function getEventsWithDetails(isAdmin = false) {
   try {
     const data = await getAllEventsWithRelations(isAdmin);
 
-    // Normalize the structure for frontend
+    // Normalize the structure for client
     return data.map(event => ({
       id: event.id,
       title: event.title,
-      startDatetime: event.start_datetime,
-      endDatetime: event.end_datetime,
+      start_datetime: event.start_datetime,
+      end_datetime: event.end_datetime,
       poster: event.poster,
-      reservationUrl: event.reservation_url,
-      englishDescription: event.english_description,
-      hebrewDescription: event.hebrew_description,
-      isDraft: event.is_draft,
-      createdAt: event.created_at,
-      embeddingIdEn: event.embedding_id_en,
-      embeddingIdHe: event.embedding_id_he,
-      venue: event.venue,
-      chefs: event.event_chefs.map(ec => ec.chef)
+      reservation_url: event.reservation_url,
+      english_description: event.english_description,
+      hebrew_description: event.hebrew_description,
+      is_draft: event.is_draft,
+      created_at: event.created_at,
+      embedding_id_en: event.embedding_id_en,
+      embedding_id_he: event.embedding_id_he,
+      venue: {
+        name: event.venue?.name || '',
+        address: event.venue?.address || '',
+        instagram_handle: event.venue?.instagram_handle || ''
+      },
+      chefs: event.event_chefs.map(ec => ({
+        name: ec.chef?.name || '',
+        instagram_handle: ec.chef?.instagram_handle || ''
+      })).filter(chef => chef.name)
     }));
   } catch (err) {
     console.log("[ERROR] Unexpected error fetching events:", err);

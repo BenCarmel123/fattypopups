@@ -1,4 +1,4 @@
-import { SHORT, NUMERIC } from '../config/strings.jsx';
+import { SHORT, NUMERIC } from '../config/index.jsx';
 
 // Helper to format date ranges from start and end dates of events
 export function formatDateRange(start, end) {
@@ -26,7 +26,7 @@ export function formatDateRange(start, end) {
 export function formatEventDescription(event) {
   return (
     <div style={{ textAlign: 'center' }}>
-      <p style={{ direction: 'ltr', unicodeBidi: 'isolate', textAlign: 'left', letterSpacing: '1.2px' }}>{event.englishDescription}</p>
+      <p style={{ direction: 'ltr', unicodeBidi: 'isolate', textAlign: 'left', letterSpacing: '1.2px' }}>{event.english_description}</p>
       <div
         style={{
           width: '50%',
@@ -37,7 +37,7 @@ export function formatEventDescription(event) {
         }}
       ></div>
       <p style={{ direction: 'rtl', unicodeBidi: 'isolate', textAlign: 'right', letterSpacing: '1.2px' }}>
-        {event.hebrewDescription}
+        {event.hebrew_description}
       </p>
     </div>
   );

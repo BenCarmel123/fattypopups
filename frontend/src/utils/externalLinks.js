@@ -1,4 +1,4 @@
-import { SELF, NO_OPENER } from '../config/strings.jsx';
+import { SELF, NO_OPENER } from '../config/index.jsx';
 
 // Function to open Google Maps with the given address
 export function handleMaps(address) {
@@ -22,10 +22,10 @@ export function handleInstagram(instagram) {
 }
 
 export function handleCalendar(event) {
-    const { title, startDatetime, endDatetime, venue, reservationUrl } = event;
-    const start = new Date(startDatetime).toISOString().replace(/-|:|\.\d\d\d/g,"");
-    const end = new Date(endDatetime).toISOString().replace(/-|:|\.\d\d\d/g,"");
-    const details = `For reservations, visit: ${reservationUrl}`;
+    const { title, start_datetime, end_datetime, venue, reservation_url } = event;
+    const start = new Date(start_datetime).toISOString().replace(/-|:|\.\d\d\d/g,"");
+    const end = new Date(end_datetime).toISOString().replace(/-|:|\.\d\d\d/g,"");
+    const details = `For reservations, visit: ${reservation_url}`;
     const location = venue?.address || '';
     const calendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${start}/${end}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(location)}&sf=true&output=xml`;
     window.open(calendarUrl, SELF, NO_OPENER);
