@@ -1,8 +1,8 @@
-import { upsertChefs } from '../chef/operations.js';
-import { upsertVenue } from '../venue/operations.js';
-import { processEventEmbeddings } from '../embeddings/orchestrator.js';
-import { insertEvent } from '../event/operations.js';
-import { linkChefsToEvent } from '../linking/operations.js';
+import { upsertChefs } from '../../entities/chef/operations.js';
+import { upsertVenue } from '../../entities/venue/operations.js';
+import { processEventEmbeddings } from '../../vector/orchestrator.js';
+import { insertEvent } from '../../entities/event/operations.js';
+import { linkChefsToEvent } from '../../entities/linking/operations.js';
 
 // Orchestrates creating an event with all related entities (venue, chefs, embeddings)
 export const orchestrateEventCreate = async (body, file) => {

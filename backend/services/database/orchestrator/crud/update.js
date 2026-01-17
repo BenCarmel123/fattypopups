@@ -1,11 +1,10 @@
-import { handleEventEmbeddingsUpdate } from "../embeddings/orchestrateEmbeddings.js";
-import { handleEventImageUpload } from "../../s3/upload.js";
-import { getEventById, updateEventById } from "../event/operations.js";
-import { computeUpdateState } from "../utils/computeState.js";
-import { getChefsForEvent } from "../linking/operations.js";
-import { getVenueById } from "../venue/operations.js";
-import { handleEventVenueUpdate } from "../event/operations.js";
-import { handleEventChefsUpdate } from "../chef/operations.js";
+import { handleEventEmbeddingsUpdate } from "../../vector/orchestrator.js";
+import { handleEventImageUpload } from "../../../s3/upload.js";
+import { getEventById, updateEventById, handleEventVenueUpdate } from "../../entities/event/operations.js";
+import { computeUpdateState } from "../../utils/computeState.js";
+import { getChefsForEvent } from "../../entities/linking/operations.js";
+import { getVenueById } from "../../entities/venue/operations.js";
+import { handleEventChefsUpdate } from "../../entities/chef/operations.js";
 
 // Orchestrates updating an event with all related operations (S3, embeddings, event data)
 export const orchestrateEventUpdate = async (id, body, file) => {

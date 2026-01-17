@@ -1,6 +1,6 @@
-import { generateEmbeddings } from "./generate.js";
+import { generateEmbeddings } from "../../embeddings/generate.js";
 import { insertEmbedding, upsertEventEmbeddings } from "./operations.js";
-import { updateEventById } from "../event/operations.js";
+import { updateEventById } from "../entities/event/operations.js";
 
 // Process embeddings for a new event - generate, store, and link to event
 // Returns object with embedding IDs or null if failed

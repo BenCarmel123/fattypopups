@@ -1,4 +1,4 @@
-import { deleteEventsByTitles } from '../event/operations.js';
+import { deleteEventsByTitles } from '../../entities/event/operations.js';
 
 // Orchestrates deleting events (only removes from events table, keeps all historical data)
 export const deleteEvents = async (titles) => {
