@@ -16,8 +16,19 @@ export const ABOUT_BUTTON_TEXT = "Our Story";
 export const BACK_BUTTON_TEXT = "← Back";
 export const POST = "POST";
 export const PUT = "PUT";
+export const GET = "GET";
+export const HTTP_DELETE = "DELETE";
 export const ENTER = "Enter";
 export const AUTH_TOKEN = "auth_token";
+
+// HTTP Headers
+export const CONTENT_TYPE = "Content-Type";
+export const APPLICATION_JSON = "application/json";
+export const TEXT_PLAIN = "text/plain";
+
+// Alert/Status Types
+export const STATUS_ERROR = "error";
+export const STATUS_SUCCESS = "success";
 
 // Informational content
 export const ABOUT_CREATORS_1 = "It all started pretty simply: two people who couldn’t stop talking about food started talking to each other about food.";

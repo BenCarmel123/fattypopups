@@ -1,10 +1,12 @@
 import express from 'express';
-import { getEvents } from '../services/database/event/getEvents.js';
-import { createEvent } from '../services/database/event/createEvent.js';
-import { updateEvent } from '../services/database/event/updateEvent.js';
-import { deleteEvent } from '../services/database/event/deleteEvent.js';
+import { 
+  getEventsWithDetails, 
+  orchestrateEventCreate, 
+  orchestrateEventUpdate, 
+  deleteEvents 
+} from '../services/database/orchestrator/index.js';
 // Multer imports
-import { upload, uploadMemory } from '../config/multer.js';
+import { upload, uploadMemory } from '../config/index.js';
 
 const eventRouter = express.Router();
 
@@ -12,7 +14,7 @@ const eventRouter = express.Router();
 eventRouter.get('/', async (req, res) => {
   try {
     const isAdmin = req.query.includeDrafts ? true : false;
-    const events = await getEvents(isAdmin);
+    const events = await getEventsWithDetails(isAdmin);
     res.json(events);
   } catch (err) {
     console.log("[ERROR] HTTP Error:", err);
@@ -23,7 +25,7 @@ eventRouter.get('/', async (req, res) => {
 // Add new event
 eventRouter.post('/', upload.single('poster'), async (req, res) => {
   try {
-    const newEvent = await createEvent(req.body, req.file);
+    const newEvent = await orchestrateEventCreate(req.body, req.file);
     res.json(newEvent);
   } catch (err) {
     console.log('[ERROR] HTTP Error:', err);
@@ -34,7 +36,7 @@ eventRouter.post('/', upload.single('poster'), async (req, res) => {
 // UPDATE event with image overwrite + embedding update
 eventRouter.put('/:id', uploadMemory.single('poster'), async (req, res) => {
   try {
-    const updatedEvent = await updateEvent(req.params.id, req.body, req.file);
+    const updatedEvent = await orchestrateEventUpdate(req.params.id, req.body, req.file);
     res.json(updatedEvent);
   } catch (err) {
     console.log('[ERROR] HTTP Error:', err);
@@ -45,12 +47,11 @@ eventRouter.put('/:id', uploadMemory.single('poster'), async (req, res) => {
 // Delete events by titles
 eventRouter.delete('/', async (req, res) => {
   const { titles } = req.body;
-
   if (!Array.isArray(titles) || titles.length === 0) {
     return res.status(400).json({ error: 'Titles must be a non-empty array' });
   }
   try {
-    const result = await deleteEvent(titles);
+    const result = await deleteEvents(titles);
     res.json(result);
   } catch (err) {
     console.log('[ERROR] HTTP Error:', err);

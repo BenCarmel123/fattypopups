@@ -1,4 +1,4 @@
-import { supabase } from '../../backend/config/supabase.js';
+import { supabase } from '../../backend/config/clients/supabase.js'
 
 export const deletePastEvents = async () => {
     try {

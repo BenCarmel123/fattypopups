@@ -1,6 +1,5 @@
 import { Button, Float, useFileUploadContext, FileUpload as ChakraFileUpload } from "@chakra-ui/react";
-import { LuFileImage, LuX } from "react-icons/lu";
-import { AUTO, SMALL, OUTLINE } from "../config/strings.jsx";
+import { LuFileImage, LuX, AUTO, SMALL, OUTLINE } from "../config/index.jsx";
 
 function FileUploadList()
 {
