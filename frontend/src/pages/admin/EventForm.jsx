@@ -1,14 +1,14 @@
 import { Card, Stack, Input, Field } from "@chakra-ui/react";
 import { DASHBOARD } from "../../config/strings.jsx";
-import validateEvent from "../../components/utils.jsx";
+import validateEvent from "./utils/validation.js";
 import  MyAlert  from "../../components/CustomAlert.jsx";
 import { useState } from "react";
 import { FORM_FIELD_COLOR, TEXT_AREA_COLOR, TRANSPARENT, FORM_BACKGROUND_COLOR } from "../../config/colors.jsx"; 
 import { CENTER, FLEX, RELATIVE, FIXED, MAX, NONE, AUTO, XL } from "../../config/strings.jsx";
-import { formatDate } from "../../components/utils.jsx";
+import { formatDate } from "../../utils/formatting.js";
 import { BackToDashboard, FileUploadButton, SubmitFormButton } from "../../components/Buttons.jsx";
-import DescriptionArea from "../../components/DescriptionArea.jsx";
-import SaveAsDraft from "../../components/SaveAsDraft.jsx";
+import DescriptionArea from "./components/DescriptionArea.jsx";
+import SaveAsDraft from "./components/SaveAsDraft.jsx";
 import SpinnerOverlay from "../../components/SpinnerOverlay.jsx";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
