@@ -17,5 +17,4 @@ export const oauth2Client = new google.auth.OAuth2(
   redirectUri
 );
 
-console.log(`🔐 Google OAuth configured (${process.env.NODE_ENV || 'development'} environment)`);
-console.log(`Redirect URI: ${redirectUri}`);
+console.log(`🔐 Google OAuth configured (${process.env.NODE_ENV || 'development'} environment) | Redirect URI: ${redirectUri}`);

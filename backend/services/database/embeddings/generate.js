@@ -30,14 +30,12 @@ export async function generateEmbeddings(englishDescription, hebrewDescription, 
     const promises = [];
     
     if (generateEnglish) {
-      console.log('[EMBEDDING] Queuing English embedding generation...');
       promises.push(
         generateEmbedding(englishDescription).then(embedding => ({ type: 'english', embedding }))
       );
     }
     
     if (generateHebrew) {
-      console.log('[EMBEDDING] Queuing Hebrew embedding generation...');
       promises.push(
         generateEmbedding(hebrewDescription).then(embedding => ({ type: 'hebrew', embedding }))
       );

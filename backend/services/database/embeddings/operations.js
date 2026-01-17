@@ -91,7 +91,6 @@ export async function upsertEventEmbeddings(options) {
           englishDescription,
           englishEmbedding
         );
-        console.log("[EMBEDDING] Updated English embedding ID:", currentEnglishId);
       }
       if (hebrewEmbedding) {
         await updateEmbeddingById(
@@ -99,9 +98,8 @@ export async function upsertEventEmbeddings(options) {
           hebrewDescription,
           hebrewEmbedding
         );
-        console.log("[EMBEDDING] Updated Hebrew embedding ID:", currentHebrewId);
       }
-      console.log("[EMBEDDING] Successfully updated embeddings");
+      console.log(`[EMBEDDING] Successfully updated embeddings - EN ID: ${englishEmbedding ? currentEnglishId : 'unchanged'} | HE ID: ${hebrewEmbedding ? currentHebrewId : 'unchanged'}`);
     } catch (e) {
       console.log("[ERROR] Error updating embeddings:", e);
     }

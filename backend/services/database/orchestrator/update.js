@@ -19,9 +19,9 @@ export const orchestrateEventUpdate = async (id, body, file) => {
   }
 
   // 2. Handle image upload to S3
-  console.log("[UPDATE] Handling image upload for event ID:", id);
+  console.log(`[UPDATE] Handling image upload for event ID: ${id}`);
   await handleEventImageUpload(id, body, file, currentEvent);
-  console.log("[UPDATE] Image upload completed");
+  console.log(`[UPDATE] Image upload completed for event ID: ${id}`);
 
   // 3. Fetch current venue and chefs for change detection
   const [currentVenue, currentChefs] = await Promise.all([

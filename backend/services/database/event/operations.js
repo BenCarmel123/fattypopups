@@ -112,12 +112,12 @@ export async function handleEventVenueUpdate({ eventId, venueName, venueAddress,
     return null;
   }
 
-  console.log('[VENUE] Processing venue update');
+  console.log('[VENUE] Processing venue update...');
   
   // Get or create venue, returns venue_id
   const venueId = await upsertVenue(venueName, venueAddress, venueInstagram);
   
-  console.log('[VENUE] Venue processed, ID:', venueId);
+  console.log(`[VENUE] Venue processed - ID: ${venueId}`);
   return venueId;
 }
 

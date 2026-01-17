@@ -35,19 +35,16 @@ authRouter.get('/google/callback', async (req, res) => {
   const payload = ticket.getPayload();
   const email = payload.email.toLowerCase();
 
-  console.log('[AUTH] Logged in as:', email);
-
   const isAdmin = validateEmail(email)
 
-  console.log("[AUTH] isAdmin:", isAdmin);
+  console.log(`[AUTH] Logged in as: ${email} | isAdmin: ${isAdmin}`);
 
   if (isAdmin) {
     const token = jwt.sign(
       { email, role: "admin" },
       process.env.JWT_SECRET,
       { expiresIn: "7d" });
-      console.log("[AUTH] GOOGLE CALLBACK");
-    console.log("[AUTH] JWT created:", !!token);
+    console.log(`[AUTH] GOOGLE CALLBACK - JWT created: ${!!token}`);
     return res.redirect(`${process.env.FRONTEND_URL}/${process.env.ADMIN_ROUTE}?token=${token}`);
     } 
   else return res.redirect(process.env.FRONTEND_URL);

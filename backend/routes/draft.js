@@ -7,7 +7,7 @@ import { orchestrateEventCreate } from '../services/database/orchestrator/index.
 const agentRouter = express.Router();
 
 agentRouter.post("/draft", async (req, res) => {
-  console.log("[REQUEST] Reached Endpoint\n")
+  console.log("[REQUEST] Reached /draft endpoint\n");
   const prompt = req.body;
 
   // Client error
@@ -18,11 +18,10 @@ agentRouter.post("/draft", async (req, res) => {
   try {
     // Generate draft
     const draft = await generateDraft(prompt);
-    console.log("[EVENT] Draft Generated\n")
+    console.log("[EVENT] Draft generated and event created\n");
 
     // Create event from draft
     const newEvent = await orchestrateEventCreate(draft, null);
-    console.log("[EVENT] Event Created\n")
 
     // Success response
     return res.status(200).json({ event: newEvent });

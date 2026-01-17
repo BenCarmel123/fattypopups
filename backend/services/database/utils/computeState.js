@@ -53,10 +53,7 @@ export function computeUpdateState(body, currentEvent, currentVenue, currentChef
   const changeFlags = computeContentChanges(body, currentEvent, currentVenue, currentChefs);
   const actionFlags = computeActionFlags(stateFlags, changeFlags, currentChefs);
 
-  console.log("[DEBUG] is_draft values - body:", body.is_draft, "| current:", currentEvent.is_draft);
-  console.log("[DEBUG] State:", stateFlags);
-  console.log("[DEBUG] Changes:", changeFlags);
-  console.log("[DEBUG] Actions:", actionFlags);
+  console.log(`[DEBUG] is_draft - body: ${body.is_draft} | current: ${currentEvent.is_draft} | State:`, stateFlags, '| Changes:', changeFlags, '| Actions:', actionFlags);
 
   return {
     ...stateFlags,

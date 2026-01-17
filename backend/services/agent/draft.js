@@ -19,8 +19,7 @@ const generateDraft =
         // Extract descriptions from output
         const englishDescription = extractDescriptionNaive("en", rawOutput);
         const hebrewDescription = extractDescriptionNaive("he", rawOutput);
-        console.log("[DRAFT] chef:", chefName, "| venue:", venueName, "| title:", eventTitle, "\n");
-        console.log("[DRAFT] english:", englishDescription, "| hebrew:", hebrewDescription, "\n");
+        console.log(`[DRAFT] chef: ${chefName} | venue: ${venueName} | title: ${eventTitle} | english: ${englishDescription} | hebrew: ${hebrewDescription}\n`);
 
         // Extract Date
         const today = new Date().toISOString().split('T')[0];

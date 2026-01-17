@@ -78,7 +78,7 @@ export async function handleEventChefsUpdate({ eventId, chefNames, chefInstagram
     return;
   }
 
-  console.log('[CHEFS] Processing chef updates');
+  console.log('[CHEFS] Processing chef updates...');
 
   // Get or create chefs, returns array of chef IDs
   const chefIds = await upsertChefs(chefNames, chefInstagrams);
@@ -86,10 +86,9 @@ export async function handleEventChefsUpdate({ eventId, chefNames, chefInstagram
   // Unlink existing chefs if updating already-published event
   if (shouldUnlink) {
     await unlinkChefsFromEvent(eventId);
-    console.log('[CHEFS] Unlinked old chefs for published event update');
   }
 
   // Link new/updated chefs
   await linkChefsToEvent(eventId, chefIds);
-  console.log('[CHEFS] Linked chefs. Chef IDs:', chefIds);
+  console.log(`[CHEFS] ${shouldUnlink ? 'Unlinked old chefs and linked' : 'Linked'} new chefs - Chef IDs: ${chefIds.join(', ')}`);
 }
