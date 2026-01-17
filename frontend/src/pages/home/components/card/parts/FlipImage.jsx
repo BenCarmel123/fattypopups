@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { formatEventDescription } from '../../../../utils/formatting';
-import { GRAY, MAX, BLOCK, OVERLAY_STYLE } from '../../../../config/index.jsx';
+import { formatEventDescription } from '../../../../../utils/formatting';
+import { GRAY, MAX, BLOCK, OVERLAY_STYLE } from '../../../../../config/index.jsx';
 
 const detailsBackgroundImageUrl = process.env.REACT_APP_DETAILS_BACKGROUND_IMAGE_URL;
 

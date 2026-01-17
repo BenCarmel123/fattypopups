@@ -1,8 +1,8 @@
 import { Card } from '@chakra-ui/react';
-import { formatDateRange } from '../../../../utils/formatting';
-import { handleMaps, handleInstagram, handleCalendar } from '../../../../utils/externalLinks';
+import { formatDateRange } from '../../../../../utils/formatting';
+import { handleMaps, handleInstagram, handleCalendar } from '../../../../../utils/externalLinks';
 import { CARD_BACKGROUND_COLOR, EVENT_TITLE_PADDING_COLOR, DRAWER_DETAILS_FONT_COLOR, BORDER_COLOR, CENTER, XL, MEDIUM, POINTER, ACTION_BUTTON_SPACING, RiInstagramFill, SiGooglemaps, SiGooglecalendar 
-} from '../../../../config/index.jsx';
+} from '../../../../../config/index.jsx';
 import EventAttributeSpan from './EventAttributeSpan.jsx';
 
 export default function CardBody({ event }) {

@@ -1,5 +1,5 @@
-import { defaultOnMouseEnter, defaultOnMouseLeave } from '../../../../utils/interactions';
-import { POINTER, LINK_PADDING } from '../../../../config/index.jsx';
+import { defaultOnMouseEnter, defaultOnMouseLeave } from '../../../../../utils/interactions';
+import { POINTER, LINK_PADDING } from '../../../../../config/index.jsx';
 
 export default function EventAttributeSpan({ attribute, onClick }) {
   return (
