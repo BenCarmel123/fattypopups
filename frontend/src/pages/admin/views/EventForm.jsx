@@ -1,13 +1,11 @@
-import { Card } from "@chakra-ui/react";
-import { DASHBOARD, TRANSPARENT, FORM_BACKGROUND_COLOR, CENTER, FLEX, RELATIVE, MAX, NONE, XL, PUT, POST, STATUS_ERROR, STATUS_SUCCESS } from "../../../config/index.jsx";
+import { DASHBOARD, CENTER, FLEX, RELATIVE, PUT, POST, STATUS_ERROR, STATUS_SUCCESS } from "../../../config/index.jsx";
 import validateEvent from "../utils/validation.js";
 import { extractEventDataFromForm, eventDataToFormData, shouldSkipValidation } from "../utils/formHelpers.js";
 import { getTomorrowDate, submitFormData } from "../utils/formUtils.js";
 import { useState } from "react";
-import { BackToDashboard, SubmitFormButton } from "../../../components/Buttons.jsx";
 import SpinnerOverlay from "../../../components/SpinnerOverlay.jsx";
-import AlertOverlay from "../components/form/AlertOverlay.jsx";
-import EventFormFields from "../components/form/EventFormFields.jsx";
+import FormAlert from "../components/form/Alert.jsx";
+import FormCard from "../components/form/structure/Card.jsx";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -64,20 +62,16 @@ export default function EventForm({ event, isEdit, handleClick } ) {
     }
 
     return (
-        <div className={CENTER} style={{ position: RELATIVE, display: FLEX, alignItems: CENTER, justifyContent: CENTER, minHeight: '100vh' }}>
+        <div className={CENTER} style={{ position: RELATIVE, display: FLEX, alignItems: CENTER, justifyContent: CENTER, minHeight: '100vh', paddingTop: '3rem' }}>
             <SpinnerOverlay isLoading={isLoading} />
-            <AlertOverlay alert={alert} onClose={() => setAlert(null)} />
-            <Card.Root backgroundColor={TRANSPARENT} marginBottom="4rem" maxW="800px" w={MAX} minW="300px" boxShadow={NONE} borderRadius={XL}>
-                <form onSubmit={handleEvent} style={{ backgroundColor: FORM_BACKGROUND_COLOR, enctype: "multipart/form-data", borderRadius: '1rem', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
-                    <Card.Body>
-                        <EventFormFields event={event} tomorrowStr={tomorrowStr} />
-                    </Card.Body>
-                    <Card.Footer gap="1rem">
-                        <SubmitFormButton text={isEdit ? "Update" : "Add"} />
-                        <BackToDashboard handleClick={handleClick(DASHBOARD, undefined)}></BackToDashboard>
-                    </Card.Footer>
-                </form>
-            </Card.Root>
+            <FormAlert alert={alert} onClose={() => setAlert(null)} />
+            <FormCard 
+                event={event} 
+                isEdit={isEdit} 
+                tomorrowStr={tomorrowStr} 
+                onSubmit={handleEvent} 
+                handleClick={handleClick}
+            />
         </div>
     );
 }

@@ -1,7 +1,7 @@
 import { Field, Textarea } from "@chakra-ui/react";
-import { FORM_FIELD_COLOR, TEXT_AREA_COLOR } from "../../../../config/index.jsx"; 
+import { FORM_FIELD_COLOR, TEXT_AREA_COLOR } from "../../../../../config/index.jsx"; 
 
-export default function DescriptionArea({ event, lang = 'en' }) {
+export default function FormTextArea({ event, lang = 'en' }) {
   // Choose the right field from event
   const value = lang === 'en' ? event?.english_description || "" : event?.hebrew_description || "";
   const label = lang === 'en' ? 'English Description' : 'Hebrew Description';
@@ -19,6 +19,7 @@ export default function DescriptionArea({ event, lang = 'en' }) {
         resize="vertical"
         minH="100px"
         onInput={(e) => e.target.style.height = `${e.target.scrollHeight}px`}
+        paddingLeft={4}
       />
     </Field.Root>
   );
