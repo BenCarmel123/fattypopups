@@ -1,5 +1,5 @@
 import { Card } from "@chakra-ui/react";
-import { TRANSPARENT, FORM_BACKGROUND_COLOR, MAX, NONE, XL } from "../../../../../config/index.jsx";
+import { TRANSPARENT, FORM_BACKGROUND_COLOR, MAX, NONE, XL, FORM_FIELD_COLOR } from "../../../../../config/index.jsx";
 import Body from "./Body.jsx";
 import Footer from "./Footer.jsx";
 
@@ -13,6 +13,10 @@ export default function FormCard({ event, isEdit, tomorrowStr, onSubmit, handleC
       minW="300px" 
       boxShadow={NONE} 
       borderRadius={XL}
+      style={{
+        border: `6px solid rgba(139, 162, 160, 0.54)`,
+        borderRadius: '1rem',
+      }}
     >
       <form 
         onSubmit={onSubmit} 

@@ -14,6 +14,7 @@ export default function FormInput({ label, name, type = "text", defaultValue = "
         borderColor={TEXT_AREA_COLOR}
         borderWidth={2}
         _focus={{ borderColor: FORM_FIELD_COLOR }}
+        paddingLeft={4}
       />
     </Field.Root>
   );

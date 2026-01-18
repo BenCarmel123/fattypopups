@@ -33,12 +33,16 @@ export default function FileUpload() {
     return (
         <ChakraFileUpload.Root name="poster" accept="image/*" maxFiles={1}>
             <ChakraFileUpload.HiddenInput />
-            <ChakraFileUpload.Trigger asChild>
-                <Button variant={OUTLINE} size={SMALL}>
-                    <LuFileImage /> Event Poster
-                </Button>
-            </ChakraFileUpload.Trigger>
-            <FileUploadList />
+            <div style={{ display: 'flex', gap: '2rem', alignItems: 'center', justifyContent: 'center' }}>
+                <ChakraFileUpload.Trigger asChild>
+                    <Button variant={OUTLINE} size={SMALL}>
+                        <LuFileImage /> Event Poster
+                    </Button>
+                </ChakraFileUpload.Trigger>
+                <FileUploadList />
+            </div>
         </ChakraFileUpload.Root>
     );
 };
+
+export { FileUploadList };

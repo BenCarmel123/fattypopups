@@ -1,4 +1,5 @@
 import React from "react";
+import { FORM_FIELD_COLOR } from "../../../../../config/index.jsx";
 
 export default function Section({ children, title }) {
   return (
@@ -15,10 +16,13 @@ export default function Section({ children, title }) {
           style={{
             fontWeight: 700,
             fontSize: '1.1rem',
-            marginBottom: '0.7rem',
-            color: '#6b7280',
+            marginBottom: '1.8rem',
+            color: FORM_FIELD_COLOR,
+            backgroundColor: 'rgba(139, 162, 160, 0.15)',
             letterSpacing: '0.01em',
             textAlign: 'center',
+            padding: '0.5rem 0.5rem',
+            borderRadius: '1rem',
           }}
         >
           {title}

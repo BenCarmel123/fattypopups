@@ -19,6 +19,7 @@ export default function FormTextArea({ event, lang = 'en' }) {
         resize="vertical"
         minH="100px"
         onInput={(e) => e.target.style.height = `${e.target.scrollHeight}px`}
+        paddingLeft={4}
       />
     </Field.Root>
   );
