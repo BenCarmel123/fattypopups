@@ -1,7 +1,6 @@
 import { DASHBOARD, CENTER, FLEX, RELATIVE, PUT, POST, STATUS_ERROR, STATUS_SUCCESS } from "../../../config/index.jsx";
-import validateEvent from "../utils/validation.js";
-import { extractEventDataFromForm, eventDataToFormData, shouldSkipValidation } from "../utils/formHelpers.js";
-import { getTomorrowDate, submitFormData } from "../utils/formUtils.js";
+import { validateEventSubmission } from "../utils/validation.js";
+import { extractEventDataFromForm, eventDataToFormData, getTomorrowDate, submitFormData } from "../utils/formHelpers.js";
 import { useState } from "react";
 import SpinnerOverlay from "../../../components/SpinnerOverlay.jsx";
 import FormAlert from "../components/form/Alert.jsx";
@@ -22,13 +21,11 @@ export default function EventForm({ event, isEdit, handleClick } ) {
         // Extract form data
         const eventData = extractEventDataFromForm(form);
 
-        // Validate if not both drafts
-        if (!shouldSkipValidation(event, eventData)) {
-            const validation = validateEvent(eventData, isEdit);
-            if (!validation.valid) {
-                setAlert({ status: STATUS_ERROR, description: validation.error });
-                return; 
-            }
+        // Validate based on draft status
+        const validation = validateEventSubmission(eventData, isEdit);
+        if (!validation.valid) {
+            setAlert({ status: STATUS_ERROR, description: validation.error });
+            return;
         }
 
         // Convert to FormData for upload

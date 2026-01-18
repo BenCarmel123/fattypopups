@@ -32,9 +32,25 @@ export const eventDataToFormData = (eventData) => {
   return formData;
 };
 
-// Check if validation should be skipped (when both old and new are drafts)
-export const shouldSkipValidation = (existingEvent, newEventData) => {
-  const wasDraft = existingEvent?.is_draft ?? true;
-  const isDraft = newEventData.is_draft;
-  return wasDraft && isDraft;
+// Get tomorrow's date in YYYY-MM-DD format
+export const getTomorrowDate = () => {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  return tomorrow.toISOString().split("T")[0];
 };
+
+// Generic API submit function
+export const submitFormData = async (url, method, formData) => {
+  const response = await fetch(url, {
+    method: method,
+    body: formData,
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Unknown error');
+  }
+
+  return response.json();
+};
+

@@ -41,7 +41,7 @@ export async function getVenueByName(name) {
 // Create a new venue
 export async function createVenue(name, address, instagram_handle) {
   if (!name || !address || !instagram_handle) {
-    throw new Error("Venue name, address, and instagram_handle are required");
+    throw new Error("Venue name, address, and Instagram handle are required");
   }
 
   const normalizedName = normalizeVenueName(name);
@@ -61,7 +61,7 @@ export async function createVenue(name, address, instagram_handle) {
 // Returns venue ID (does not update existing venue from user input)
 export async function upsertVenue(venueName, venueAddress, venueInstagram) {
   if (!venueName || !venueAddress || !venueInstagram) {
-    throw new Error("Venue name, address, and instagram_handle are required");
+    throw new Error("Venue name, address, and Instagram handle are required");
   }
 
   let venue = await getVenueByName(venueName);

@@ -25,7 +25,7 @@ export async function getChefByName(name) {
 // Create a new chef
 export async function createChef(name, instagram_handle) {
   if (!name || !instagram_handle) {
-    throw new Error("Chef name and instagram_handle are required");
+    throw new Error("Chef name and Instagram handle are required");
   }
 
   const normalizedName = normalizeChefName(name);
@@ -48,7 +48,7 @@ export async function upsertChefs(chefNamesString, chefInstagramsString) {
   const chefInstagramsArray = chefInstagramsString?.split(',').map(s => s.trim()).filter(Boolean) ?? [];
 
   if (chefNamesArray.length !== chefInstagramsArray.length) {
-    throw new Error("Chef names and instagrams must match in length");
+    throw new Error("Chef names and Instagrams must match in length");
   }
 
   const chefIds = [];

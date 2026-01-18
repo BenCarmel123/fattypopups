@@ -1,5 +1,5 @@
 import { Card } from "@chakra-ui/react";
-import { TRANSPARENT, FORM_BACKGROUND_COLOR, MAX, NONE, XL, FORM_FIELD_COLOR } from "../../../../../config/index.jsx";
+import { TRANSPARENT, FORM_BACKGROUND_COLOR, MAX, NONE, XL } from "../../../../../config/index.jsx";
 import Body from "./Body.jsx";
 import Footer from "./Footer.jsx";
 

@@ -83,17 +83,17 @@ export const NUMERIC = 'numeric';
 export const SHORT = 'short';
 
 // Validation error messages used across the frontend
-export const ERR_TITLE_REQUIRED = 'Title is required and must be a non-empty string.';
+export const ERR_TITLE_REQUIRED = 'Title is required.';
 export const ERR_START_REQUIRED = 'Start datetime is required and must be a valid date.';
 export const ERR_END_REQUIRED = 'End datetime is required and must be a valid date.';
 export const ERR_START_BEFORE_END = 'Start datetime must be before end datetime.';
-export const ERR_VENUE_INSTAGRAM_REQUIRED = 'Venue Instagram is required and must be a non-empty string.';
-export const ERR_VENUE_ADDRESS_REQUIRED = 'Venue address is required and must be a non-empty string.';
-export const ERR_CHEF_NAMES_REQUIRED = 'Chef names are required and must be a non-empty string.';
-export const ERR_CHEF_INSTAGRAMS_REQUIRED = 'Chef Instagrams are required and must be a non-empty string.';
+export const ERR_VENUE_INSTAGRAM_REQUIRED = 'Venue Instagram is required and .';
+export const ERR_VENUE_ADDRESS_REQUIRED = 'Venue address is required and .';
+export const ERR_CHEF_NAMES_REQUIRED = 'Chef names are required and .';
+export const ERR_CHEF_INSTAGRAMS_REQUIRED = 'Chef Instagrams are required and .';
 export const ERR_RESERVATION_URL_REQUIRED = 'Reservation URL is required and must be a valid URL.';
-export const ERR_ENGLISH_DESC_REQUIRED = 'English description is required and must be a non-empty string.';
-export const ERR_HEBREW_DESC_REQUIRED = 'Hebrew description is required and must be a non-empty string.';
+export const ERR_ENGLISH_DESC_REQUIRED = 'English description is required and .';
+export const ERR_HEBREW_DESC_REQUIRED = 'Hebrew description is required and .';
 export const ERR_POSTER_REQUIRED = 'Poster is required and must be a valid file.';
 export const UNKNOWN_ERROR = "Unknown error"
 export const PROMPT_PLACEHOLDER = "Describe the event..."

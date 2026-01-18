@@ -26,11 +26,17 @@ export const orchestrateEventCreate = async (body, file) => {
 
   console.log('[EVENT] Creating event - isDraft:', isDraft);
 
-  // 1. ALWAYS process venue and chefs (needed for editing, autocomplete, precision)
-  const [venueId, chefIds] = await Promise.all([
-    upsertVenue(venue_name, venue_address, venue_instagram),
-    upsertChefs(chef_names, chef_instagrams)
-  ]);
+  // 1. Process venue and chefs only if data is provided (drafts may be incomplete)
+  let venueId = null;
+  let chefIds = [];
+
+  if (venue_name && venue_address && venue_instagram) {
+    venueId = await upsertVenue(venue_name, venue_address, venue_instagram);
+  }
+
+  if (chef_names && chef_instagrams) {
+    chefIds = await upsertChefs(chef_names, chef_instagrams);
+  }
 
   // 2. Insert event into events_new
   const newEvent = await insertEvent({
@@ -45,8 +51,10 @@ export const orchestrateEventCreate = async (body, file) => {
     is_draft
   });
 
-  // 3. Link chefs to event (always, so frontend can load for editing)
-  await linkChefsToEvent(newEvent.id, chefIds);
+  // 3. Link chefs to event if any were created
+  if (chefIds.length > 0) {
+    await linkChefsToEvent(newEvent.id, chefIds);
+  }
 
   // 4. Generate embeddings ONLY for published events (drafts don't need RAG)
   if (!isDraft) {
