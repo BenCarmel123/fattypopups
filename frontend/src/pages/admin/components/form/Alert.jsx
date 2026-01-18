@@ -2,7 +2,7 @@ import { FIXED, MAX, FLEX, CENTER, AUTO } from "../../../../config/index.jsx";
 import MyAlert from "../../../../components/CustomAlert.jsx";
 
 // Reusable fixed alert overlay component
-export default function AlertOverlay({ alert, onClose }) {
+export default function FormAlert({ alert, onClose }) {
   if (!alert) return null;
 
   return (
