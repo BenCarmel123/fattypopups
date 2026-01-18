@@ -62,7 +62,7 @@ export default function EventForm({ event, isEdit, handleClick } ) {
     }
 
     return (
-        <div className={CENTER} style={{ position: RELATIVE, display: FLEX, alignItems: CENTER, justifyContent: CENTER, minHeight: '100vh' }}>
+        <div className={CENTER} style={{ position: RELATIVE, display: FLEX, alignItems: CENTER, justifyContent: CENTER, minHeight: '100vh', paddingTop: '3rem' }}>
             <SpinnerOverlay isLoading={isLoading} />
             <FormAlert alert={alert} onClose={() => setAlert(null)} />
             <FormCard 
