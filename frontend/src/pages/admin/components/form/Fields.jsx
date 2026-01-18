@@ -55,7 +55,7 @@ export default function FormFields({ event, tomorrowStr }) {
             </Section>
 
             {/* Image & Draft Section */}
-            <Section title="Image & Draft">
+            <Section title="Image">
                 <Stack gap={7} align="center">
                     <FileUploadButton />
                     {(event?.is_draft ?? true) && (

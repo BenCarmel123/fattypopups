@@ -67,7 +67,6 @@ export const orchestrateEventUpdate = async (id, body, file) => {
     hebrewChanged,
     englishDescription: body.english_description,
     hebrewDescription: body.hebrew_description,
-    chefNames: currentChefNames,
     currentEnglishId: currentEvent.embedding_id_en,
     currentHebrewId: currentEvent.embedding_id_he
   });

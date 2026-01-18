@@ -1,11 +1,10 @@
 import { supabase } from "../../../config/index.js";
 
 // Insert a single embedding into the database
-export async function insertEmbedding(language, description, embedding, chefNames) {
+export async function insertEmbedding(language, description, embedding) {
   const { data, error } = await supabase
     .from('embeddings')
     .insert({
-      chef_names: chefNames,
       language: language,
       description: description,
       embedding: embedding,
@@ -45,7 +44,6 @@ export async function upsertEventEmbeddings(options) {
     hebrewEmbedding,
     englishDescription,
     hebrewDescription,
-    chefNames,
     currentEnglishId,
     currentHebrewId
   } = options;
@@ -60,15 +58,13 @@ export async function upsertEventEmbeddings(options) {
       const enRow = await insertEmbedding(
         'en',
         englishDescription,
-        englishEmbedding,
-        chefNames
+        englishEmbedding
       );
 
       const heRow = await insertEmbedding(
         'he',
         hebrewDescription,
-        hebrewEmbedding,
-        chefNames
+        hebrewEmbedding
       );
 
       en_id = enRow.id;

@@ -4,7 +4,7 @@ import { updateEventById } from "../entities/event/operations.js";
 
 // Create embeddings for a new event - generate, store, and link to event
 // Returns object with embedding IDs or null if failed
-export async function createEventEmbeddings(eventId, englishDescription, hebrewDescription, chefNames) {
+export async function createEventEmbeddings(eventId, englishDescription, hebrewDescription) {
   console.log('[EMBEDDING] Starting embedding process for event:', eventId);
   
   // 1. Generate embeddings
@@ -23,8 +23,8 @@ export async function createEventEmbeddings(eventId, englishDescription, hebrewD
   let embedding_id_he = null;
 
   try {
-    const enRow = await insertEmbedding('en', englishDescription, english_embedding, chefNames);
-    const heRow = await insertEmbedding('he', hebrewDescription, hebrew_embedding, chefNames);
+    const enRow = await insertEmbedding('en', englishDescription, english_embedding);
+    const heRow = await insertEmbedding('he', hebrewDescription, hebrew_embedding);
 
     embedding_id_en = enRow.id;
     embedding_id_he = heRow.id;
@@ -55,7 +55,6 @@ export async function updateEventEmbeddings(options) {
     hebrewChanged,
     englishDescription,
     hebrewDescription,
-    chefNames,
     currentEnglishId,
     currentHebrewId
   } = options;
@@ -84,7 +83,6 @@ export async function updateEventEmbeddings(options) {
     hebrewEmbedding: newHebrewEmbedding,
     englishDescription,
     hebrewDescription,
-    chefNames,
     currentEnglishId,
     currentHebrewId
   });

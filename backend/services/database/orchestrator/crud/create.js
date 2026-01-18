@@ -23,7 +23,6 @@ export const orchestrateEventCreate = async (body, file) => {
 
   const poster = file?.location || null;
   const isDraft = is_draft === true || is_draft === "true";
-  const chefNamesArray = chef_names?.split(',').map(s => s.trim()) ?? [];
 
   console.log('[EVENT] Creating event - isDraft:', isDraft);
 
@@ -71,8 +70,7 @@ export const orchestrateEventCreate = async (body, file) => {
     createEventEmbeddings(
       newEvent.id,
       english_description,
-      hebrew_description,
-      chefNamesArray.join(", ")
+      hebrew_description
     )
   ]);
 
