@@ -93,6 +93,18 @@ export async function getAllEventsWithRelations(isAdmin = false) {
   return data;
 }
 
+// Get events by titles
+export async function getEventsByTitles(titles) {
+  const { data, error } = await supabase
+    .from('events_new')
+    .select('id, title')
+    .in('title', titles);
+
+  if (error) throw new Error(`Error fetching events: ${error.message}`);
+  
+  return data;
+}
+
 // Delete events by titles
 export async function deleteEventsByTitles(titles) {
   const { error } = await supabase

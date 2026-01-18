@@ -26,26 +26,7 @@ export const orchestrateEventCreate = async (body, file) => {
 
   console.log('[EVENT] Creating event - isDraft:', isDraft);
 
-  // Early return for drafts - minimal processing
-  if (isDraft) {
-    console.log('[EVENT] Draft mode - skipping venue, chefs, and embeddings');
-    return await insertEvent({
-      title,
-      start_datetime,
-      end_datetime,
-      venue_id: null,
-      poster,
-      reservation_url,
-      english_description,
-      hebrew_description,
-      is_draft
-    });
-  }
-
-  // Published event - full processing
-  console.log('[EVENT] Published mode - processing all relations');
-
-  // 1. Process venue and chefs in parallel (independent operations)
+  // 1. ALWAYS process venue and chefs (needed for editing, autocomplete, precision)
   const [venueId, chefIds] = await Promise.all([
     upsertVenue(venue_name, venue_address, venue_instagram),
     upsertChefs(chef_names, chef_instagrams)
@@ -64,15 +45,18 @@ export const orchestrateEventCreate = async (body, file) => {
     is_draft
   });
 
-  // 3. Link chefs and process embeddings in parallel (both use newEvent.id)
-  await Promise.all([
-    linkChefsToEvent(newEvent.id, chefIds),
-    createEventEmbeddings(
+  // 3. Link chefs to event (always, so frontend can load for editing)
+  await linkChefsToEvent(newEvent.id, chefIds);
+
+  // 4. Generate embeddings ONLY for published events (drafts don't need RAG)
+  if (!isDraft) {
+    console.log('[EVENT] Generating embeddings for published event');
+    await createEventEmbeddings(
       newEvent.id,
       english_description,
       hebrew_description
-    )
-  ]);
+    );
+  }
 
   return newEvent;
 };
