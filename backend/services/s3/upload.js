@@ -5,7 +5,7 @@ import { PutObjectCommand } from "@aws-sdk/client-s3";
 const fetchExistingImageUrl = async (id) => {
   try {
     const { data, error } = await supabase
-      .from('events')
+      .from('events_new')
       .select('poster')
       .eq('id', id)
       .single();

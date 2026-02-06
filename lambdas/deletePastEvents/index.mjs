@@ -5,7 +5,7 @@ export const deletePastEvents = async () => {
         const oldest_allowed_date = new Date();
         oldest_allowed_date.setDate(oldest_allowed_date.getDate() - 14);
         const { data, error } = await supabase
-            .from('events')
+            .from('events_new')
                 .delete()
                 .lt('end_datetime', oldest_allowed_date.toISOString())
                 .select('*');
