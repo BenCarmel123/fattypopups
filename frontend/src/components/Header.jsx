@@ -1,7 +1,18 @@
 import React from "react"
 import { Button } from "@chakra-ui/react";
-import { HEADER_BACKGROUND_COLOR, HEADER_BORDER_COLOR, SECONDARY_COLOR, TRANSPARENT } from './config/colors.jsx';
-import { APP_NAME, ABOUT_BUTTON_TEXT, SOLID, SMALL, XL, MINIMAL_TRANSFORM, MINIMAL_TRANSITION } from './config/strings.jsx';
+import { 
+  HEADER_BACKGROUND_COLOR, 
+  HEADER_BORDER_COLOR, 
+  SECONDARY_COLOR, 
+  TRANSPARENT,
+  APP_NAME, 
+  ABOUT_BUTTON_TEXT, 
+  SOLID, 
+  SMALL, 
+  XL, 
+  MINIMAL_TRANSFORM, 
+  MINIMAL_TRANSITION 
+} from '../config/index.jsx';
 
 const LOGO_URL = process.env.REACT_APP_LOGO;
 const ABOUT_ROUTE = process.env.REACT_APP_ABOUT_ROUTE;
@@ -41,7 +52,7 @@ export default function Header() {
       <div className="flex items-center justify-between max-w-3xl mx-auto w-full">
         <div className="flex items-center">
           {LOGO_URL ? (
-            <a aria-label={APP_NAME} className="flex items-center">
+            <a href="/" aria-label={APP_NAME} className="flex items-center">
               <img src={LOGO_URL} alt={APP_NAME} className="h-42 w-40 object-contain" style={{width:'7rem'}} />
             </a>
           ) : (

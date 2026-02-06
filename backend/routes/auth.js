@@ -1,5 +1,5 @@
 
-import { google } from 'googleapis';
+import { oauth2Client } from '../config/index.js';
 import express from 'express';
 import jwt from "jsonwebtoken";
 
@@ -15,10 +15,8 @@ const oauth2Client = new google.auth.OAuth2(
 const authRouter = express.Router();
 
 authRouter.get('/google', (req, res) => {
-  console.log("[AUTH] REDIRECT URI:", redirectUri);
   const url = oauth2Client.generateAuthUrl({
     scope: ['openid', 'email', 'profile'],
-    redirect_uri: redirectUri,
   });
 
   res.redirect(url);
@@ -46,22 +44,20 @@ authRouter.get('/google/callback', async (req, res) => {
   const payload = ticket.getPayload();
   const email = payload.email.toLowerCase();
 
-  console.log('[AUTH] Logged in as:', email);
-
   const isAdmin = validateEmail(email)
 
-  console.log("[AUTH] isAdmin:", isAdmin);
+  console.log(`[AUTH] Logged in as: ${email} | isAdmin: ${isAdmin}`);
 
   if (isAdmin) {
     const token = jwt.sign(
       { email, role: "admin" },
       process.env.JWT_SECRET,
       { expiresIn: "7d" });
-      console.log("[AUTH] GOOGLE CALLBACK");
+    console.log("[AUTH] GOOGLE CALLBACK");
     console.log("[AUTH] JWT created:", !!token);
     return res.redirect(`${process.env.FRONTEND_PROD_URL}/${process.env.ADMIN_ROUTE}?token=${token}`);
     } 
-  else return res.redirect(process.env.FRONTEND_PROD_URL);
+  else return res.redirect(process.env.FRONTEND_URL);
 })
 
 authRouter.get("/check", (req, res) => {

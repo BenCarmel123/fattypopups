@@ -1,6 +1,6 @@
 import { Alert } from "@chakra-ui/react";
-import { RED } from "./config/colors.jsx";
-import { MEDIUM, RELATIVE, SUBTLE } from "./config/strings.jsx";
+import { RED } from "../config/colors.jsx";
+import { MEDIUM, RELATIVE, SUBTLE } from "../config/strings.jsx";
 
 export default function MyAlert({ status = "info", title, description, onClose }) {
   return (
