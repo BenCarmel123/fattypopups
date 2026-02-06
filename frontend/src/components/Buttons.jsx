@@ -1,7 +1,19 @@
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@chakra-ui/react';
-import { WHITE, ADMIN_PANEL_COLOR, BACK_TO_DASHBOARD_BUTTON_COLOR } from './config/colors.jsx';
-import { SOLID, BOLD, XL, MEDIUM, MINIMAL_TRANSFORM, MINIMAL_TRANSITION, POINTER, BACK_BUTTON_TEXT, LARGE } from './config/strings.jsx';
+import { 
+  WHITE, 
+  ADMIN_PANEL_COLOR, 
+  BACK_TO_DASHBOARD_BUTTON_COLOR,
+  SOLID, 
+  BOLD, 
+  XL, 
+  MEDIUM, 
+  MINIMAL_TRANSFORM, 
+  MINIMAL_TRANSITION, 
+  POINTER, 
+  BACK_BUTTON_TEXT, 
+  LARGE 
+} from '../config/index.jsx';
 import { Send, Loader2 } from 'lucide-react';
 import FileUpload from "./FileUpload.jsx";
 
@@ -18,20 +30,21 @@ export function BackButton() {
     );
 }
 
-export function SubmitFormButton({ text }) {
+export function SubmitFormButton({ text, onClick }) {
     return (
- <Button 
+ <Button
     color={WHITE}
     backgroundColor={ADMIN_PANEL_COLOR}
-    variant={SOLID} 
-    size={MEDIUM} 
-    fontWeight={BOLD} 
-    px={4} 
-    py={4} 
-    boxShadow={MEDIUM} 
-    borderRadius={XL} 
-    _hover={{transition:MINIMAL_TRANSITION, transform: MINIMAL_TRANSFORM }} 
-    type="submit">
+    variant={SOLID}
+    size={MEDIUM}
+    fontWeight={BOLD}
+    px={4}
+    py={4}
+    boxShadow={MEDIUM}
+    borderRadius={XL}
+    _hover={{transition:MINIMAL_TRANSITION, transform: MINIMAL_TRANSFORM }}
+    type="submit"
+    onClick={onClick}>
     {text}
     </Button>
     );

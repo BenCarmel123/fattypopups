@@ -10,17 +10,14 @@ import 'dotenv/config';
 // Import routers 
 import eventRouter from './routes/events.js';
 import authRouter from './routes/auth.js';
-import agentRouter from './routes/agentDraft.js';
+import agentRouter from './routes/draft.js';
 
 // Initialize Express app
 const app = express();
 
 // Middleware
 app.use(cors({
-  origin: [
-    process.env.FRONTEND_LOCAL_URL,
-    process.env.FRONTEND_PROD_URL,
-  ],
+  origin: process.env.FRONTEND_URL,
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   credentials: true
 }));
@@ -31,7 +28,7 @@ app.use(express.text());
 
 // Logging middleware
 app.use((req, res, next) => {
-  console.log(`[REQUEST] - Incoming ${req.method} ${req.url}\n`);
+  console.log(`[REQUEST] Incoming ${req.method} ${req.url}\n`);
   next();
 });
 
@@ -47,6 +44,6 @@ app.use('/agent', agentRouter);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`[NETWORK] - Server running on port ${PORT}\n`);
+  console.log(`[NETWORK] Server running on port ${PORT}\n`);
 });
 
