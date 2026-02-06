@@ -13,14 +13,14 @@ export const extractEventDataFromForm = (form) => {
     english_description: form.english_description.value,
     hebrew_description: form.hebrew_description.value,
     poster: form.poster.files[0],
-    is_draft: form.is_draft ? !!form.is_draft.checked : false,
+    is_draft: form.is_draft ? form.is_draft.value === 'true' : false,
   };
 };
 
 // Convert event data object to FormData for multipart upload
 export const eventDataToFormData = (eventData) => {
   const formData = new FormData();
-  
+
   Object.entries(eventData).forEach(([key, value]) => {
     if (key === 'is_draft') {
       formData.append(key, value ? 'true' : 'false');
@@ -28,13 +28,22 @@ export const eventDataToFormData = (eventData) => {
       formData.append(key, value);
     }
   });
-  
+
   return formData;
 };
 
-// Check if validation should be skipped (when both old and new are drafts)
-export const shouldSkipValidation = (existingEvent, newEventData) => {
-  const wasDraft = existingEvent?.is_draft ?? true;
-  const isDraft = newEventData.is_draft;
-  return wasDraft && isDraft;
+// Set is_draft to true when "Save as Draft" button is clicked
+export const handleDraftClick = (e) => {
+  const form = e.currentTarget.closest('form');
+  if (form && form.is_draft) {
+    form.is_draft.value = 'true';
+  }
+};
+
+// Set is_draft to false when "Add"/"Update" button is clicked
+export const handleAddClick = (e) => {
+  const form = e.currentTarget.closest('form');
+  if (form && form.is_draft) {
+    form.is_draft.value = 'false';
+  }
 };

@@ -5,30 +5,26 @@ import Footer from "./Footer.jsx";
 
 export default function FormCard({ event, isEdit, tomorrowStr, onSubmit, handleClick }) {
   return (
-    <Card.Root 
-      backgroundColor={TRANSPARENT} 
-      marginBottom="4rem" 
-      maxW="800px" 
-      w={MAX} 
-      minW="300px" 
-      boxShadow={NONE} 
+    <Card.Root
+      backgroundColor={TRANSPARENT}
+      marginBottom="4rem"
+      maxW="800px"
+      w={MAX}
+      minW="300px"
+      boxShadow={NONE}
       borderRadius={XL}
-      style={{
-        border: `6px solid rgba(139, 162, 160, 0.54)`,
-        borderRadius: '1rem',
-      }}
     >
-      <form 
-        onSubmit={onSubmit} 
-        style={{ 
-          backgroundColor: FORM_BACKGROUND_COLOR, 
-          encType: "multipart/form-data", 
-          borderRadius: '1rem', 
-          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' 
+      <form
+        onSubmit={onSubmit}
+        style={{
+          backgroundColor: FORM_BACKGROUND_COLOR,
+          encType: "multipart/form-data",
+          borderRadius: '1rem',
+          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
         }}
       >
         <Body event={event} tomorrowStr={tomorrowStr} />
-        <Footer isEdit={isEdit} handleClick={handleClick} />
+        <Footer isEdit={isEdit} handleClick={handleClick} event={event} />
       </form>
     </Card.Root>
   );
