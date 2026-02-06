@@ -30,20 +30,21 @@ export function BackButton() {
     );
 }
 
-export function SubmitFormButton({ text }) {
+export function SubmitFormButton({ text, onClick }) {
     return (
- <Button 
+ <Button
     color={WHITE}
     backgroundColor={ADMIN_PANEL_COLOR}
-    variant={SOLID} 
-    size={MEDIUM} 
-    fontWeight={BOLD} 
-    px={4} 
-    py={4} 
-    boxShadow={MEDIUM} 
-    borderRadius={XL} 
-    _hover={{transition:MINIMAL_TRANSITION, transform: MINIMAL_TRANSFORM }} 
-    type="submit">
+    variant={SOLID}
+    size={MEDIUM}
+    fontWeight={BOLD}
+    px={4}
+    py={4}
+    boxShadow={MEDIUM}
+    borderRadius={XL}
+    _hover={{transition:MINIMAL_TRANSITION, transform: MINIMAL_TRANSFORM }}
+    type="submit"
+    onClick={onClick}>
     {text}
     </Button>
     );

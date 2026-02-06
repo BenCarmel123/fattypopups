@@ -1,6 +1,6 @@
 import { DASHBOARD, CENTER, FLEX, RELATIVE, PUT, POST, STATUS_ERROR, STATUS_SUCCESS } from "../../../config/index.jsx";
 import validateEvent from "../utils/validation.js";
-import { extractEventDataFromForm, eventDataToFormData, shouldSkipValidation } from "../utils/formHelpers.js";
+import { extractEventDataFromForm, eventDataToFormData } from "../utils/formHelpers.js";
 import { getTomorrowDate, submitFormData } from "../utils/formUtils.js";
 import { useState } from "react";
 import SpinnerOverlay from "../../../components/SpinnerOverlay.jsx";
@@ -22,13 +22,11 @@ export default function EventForm({ event, isEdit, handleClick } ) {
         // Extract form data
         const eventData = extractEventDataFromForm(form);
 
-        // Validate if not both drafts
-        if (!shouldSkipValidation(event, eventData)) {
-            const validation = validateEvent(eventData, isEdit);
-            if (!validation.valid) {
-                setAlert({ status: STATUS_ERROR, description: validation.error });
-                return; 
-            }
+        // Validate (drafts only need title, full events need everything)
+        const validation = validateEvent(eventData, isEdit, eventData.is_draft);
+        if (!validation.valid) {
+            setAlert({ status: STATUS_ERROR, description: validation.error });
+            return;
         }
 
         // Convert to FormData for upload
@@ -43,9 +41,17 @@ export default function EventForm({ event, isEdit, handleClick } ) {
             await submitFormData(url, method, formData);
             setLoading(false);
 
+            // Determine success message based on draft status and edit mode
+            let successTitle;
+            if (isEdit) {
+                successTitle = eventData.is_draft ? "Draft Updated" : "Event Updated";
+            } else {
+                successTitle = eventData.is_draft ? "Draft Created" : "Event Created";
+            }
+
             setAlert({
                 status: STATUS_SUCCESS,
-                title: isEdit ? "Event Updated" : "Event Created",
+                title: successTitle,
             });
 
             setTimeout(() => {

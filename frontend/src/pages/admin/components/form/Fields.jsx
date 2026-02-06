@@ -1,7 +1,6 @@
 import { Stack } from "@chakra-ui/react";
 import Input from "./fields/Input.jsx";
 import Description from "./fields/Description.jsx";
-import DraftCheckbox from "./fields/DraftCheckbox.jsx";
 import Section from "./structure/Section.jsx";
 import Row from "./structure/Row.jsx";
 import { FileUploadButton } from "../../../../components/Buttons.jsx";
@@ -54,13 +53,10 @@ export default function FormFields({ event, tomorrowStr }) {
                 </Stack>
             </Section>
 
-            {/* Image & Draft Section */}
-            <Section title="Image & Draft">
+            {/* Image Section */}
+            <Section title="Image">
                 <Stack gap={7} align="center">
                     <FileUploadButton />
-                    {(event?.is_draft ?? true) && (
-                        <DraftCheckbox defaultChecked={event?.is_draft || false} />
-                    )}
                 </Stack>
             </Section>
         </Stack>

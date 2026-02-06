@@ -17,11 +17,17 @@ import {
 
 
 // Helper to validate event data
-export default function validateEvent(event, isEdit) {
+export default function validateEvent(event, isEdit, isDraft = false) {
     const { title, start_datetime, end_datetime, venue_instagram, venue_address, chef_names, chef_instagrams, reservation_url, english_description, hebrew_description, poster } = event;
 
+    // Title is always required, even for drafts
     if (!title || typeof title !== STRING || !validator.isLength(title.trim(), { min: 1 })) {
         return { valid: false, error: ERR_TITLE_REQUIRED };
+    }
+
+    // If it's a draft, only title is required
+    if (isDraft) {
+        return { valid: true };
     }
 
     if (!start_datetime || isNaN(Date.parse(start_datetime))) {
