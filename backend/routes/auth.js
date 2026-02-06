@@ -3,15 +3,6 @@ import { oauth2Client } from '../config/index.js';
 import express from 'express';
 import jwt from "jsonwebtoken";
 
-const redirectUri = process.env.GOOGLE_REDIRECT_PROD_URI;
-
-// Initialize Google Auth
-const oauth2Client = new google.auth.OAuth2(
-  process.env.GOOGLE_CLIENT_ID,
-  process.env.GOOGLE_CLIENT_SECRET,
-  redirectUri
-);
-
 const authRouter = express.Router();
 
 authRouter.get('/google', (req, res) => {
