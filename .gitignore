@@ -11,3 +11,7 @@
 # Environment variable files
 .env
 
+# Claude assistant context
+CLAUDE.md
+.claude/
+
