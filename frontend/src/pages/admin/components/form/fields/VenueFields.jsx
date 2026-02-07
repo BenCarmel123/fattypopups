@@ -24,7 +24,7 @@ export default function VenueFields({ event }) {
     const updatedVenue = { ...venue, [field]: value };
 
     // Auto-fill other fields if this value exists in database
-    const matchingVenue = venueData.find(v => v[field] === value);
+    const matchingVenue = venueData.find(venue => venue[field] === value);
 
     if (matchingVenue) {
       // Fill all fields from the matching venue
@@ -42,7 +42,7 @@ export default function VenueFields({ event }) {
         <TypeaheadInput
           label="Venue Name"
           name="venue_name"
-          options={venueData.map(v => v.name)}
+          options={venueData.map(venue => venue.name)}
           value={venue.name}
           onChange={(value) => handleVenueChange('name', value)}
           placeholder=""
@@ -50,7 +50,7 @@ export default function VenueFields({ event }) {
         <TypeaheadInput
           label="Venue Instagram"
           name="venue_instagram"
-          options={venueData.map(v => v.instagram)}
+          options={venueData.map(venue => venue.instagram)}
           value={venue.instagram}
           onChange={(value) => handleVenueChange('instagram', value)}
           placeholder=""
@@ -59,7 +59,7 @@ export default function VenueFields({ event }) {
       <TypeaheadInput
         label="Venue Address"
         name="venue_address"
-        options={venueData.map(v => v.address)}
+        options={venueData.map(venue => venue.address)}
         value={venue.address}
         onChange={(value) => handleVenueChange('address', value)}
         placeholder=""
