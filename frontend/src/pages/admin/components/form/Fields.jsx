@@ -3,7 +3,8 @@ import Input from "./fields/Input.jsx";
 import Description from "./fields/Description.jsx";
 import Section from "./structure/Section.jsx";
 import Row from "./structure/Row.jsx";
-import ChefRows from "./fields/ChefRows.jsx";
+import ChefFields from "./fields/ChefFields.jsx";
+import VenueFields from "./fields/VenueFields.jsx";
 import { FileUploadButton } from "../../../../components/Buttons.jsx";
 import { formatDate } from "../../../../utils/formatting.js";
 
@@ -29,15 +30,8 @@ export default function FormFields({ event, tomorrowStr }) {
             {/* Venue & Chef Section */}
             <Section title="Venue & Chef">
                 <Stack gap={7}>
-                    <Row>
-                        <Input label="Venue Name" name="venue_name" 
-                            defaultValue={event?.venue?.name || ""} />
-                        <Input label="Venue Instagram" name="venue_instagram" placeholder="@"
-                            defaultValue={event?.venue?.instagram_handle || ""} />
-                    </Row>
-                    <Input label="Venue Address" name="venue_address"
-                        defaultValue={event?.venue?.address || ""} />
-                    <ChefRows event={event} />
+                    <VenueFields event={event} />
+                    <ChefFields event={event} />
                 </Stack>
             </Section>
 
@@ -51,7 +45,7 @@ export default function FormFields({ event, tomorrowStr }) {
 
             {/* Image Section */}
             <Section title="Image">
-                <Stack gap={7} align="center">
+                <Stack gap={7} align="flex-start">
                     <FileUploadButton />
                 </Stack>
             </Section>

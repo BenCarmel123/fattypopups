@@ -1,11 +1,10 @@
 import { Checkbox, Table } from "@chakra-ui/react"
 import { useState, useEffect } from "react"
-import { EDIT, LARGE, FLEX, AI, BACKGROUND_COLOR, HTTP_DELETE, CONTENT_TYPE, APPLICATION_JSON, STATUS_ERROR } from "../../../config/index.jsx"
-import MyAlert from "../../../components/CustomAlert.jsx"; 
+import { EDIT, LARGE, FLEX, AI, BACKGROUND_COLOR, STATUS_ERROR } from "../../../config/index.jsx"
+import MyAlert from "../../../components/CustomAlert.jsx";
 import AdminActions from "../components/AdminActions.jsx";
 import { AdminActionButton } from "../../../components/Buttons.jsx";
-
-const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+import { fetchEvents, deleteEvents } from "../../../utils/database/api.js";
 
 const Dashboard = ({ handleClick }) => {
   const [selection, setSelection] = useState([])
@@ -14,9 +13,8 @@ const Dashboard = ({ handleClick }) => {
   
   // Fetch events from the server
   useEffect(() => {
-    fetch(`${SERVER_URL}/api/events?includeDrafts=true`)
-      .then(res => res.json())
-      .then(data => setEvents(Array.isArray(data) ? data : []))
+    fetchEvents(true)
+      .then(data => setEvents(data))
       .catch(err => {
         console.log('[ERROR] Error fetching events:', err);
         setEvents([]);
@@ -25,19 +23,14 @@ const Dashboard = ({ handleClick }) => {
 
   // Delete selected events
   const handleDeleteEvents = () => {
-    fetch(`${SERVER_URL}/api/events`, {
-      method: HTTP_DELETE,
-      headers: { [CONTENT_TYPE]: APPLICATION_JSON },
-      body: JSON.stringify({ titles: selection }),
-    })
-    .then(res => res.json())
-    .then(data => {
-      setEvents(prev =>
-        prev.filter(ev => !data.deleted.includes(ev.title))
-      );
-      setSelection([]);
-    })
-  .catch(err => console.log("[ERROR] Error deleting events:", err));
+    deleteEvents(selection)
+      .then(data => {
+        setEvents(prev =>
+          prev.filter(ev => !data.deleted.includes(ev.title))
+        );
+        setSelection([]);
+      })
+      .catch(err => console.log("[ERROR] Error deleting events:", err));
   };
 
   // Edit selected event (only if one selected)

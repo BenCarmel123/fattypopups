@@ -57,6 +57,18 @@ export async function createVenue(name, address, instagram_handle) {
   return data;
 }
 
+// Get all venues from database
+export async function getAllVenues() {
+  const { data, error } = await supabase
+    .from('venues')
+    .select('name, address, instagram_handle')
+    .order('name');
+
+  if (error) throw new Error(`Error fetching venues: ${error.message}`);
+
+  return data;
+}
+
 // Upsert venue data - get existing or create new
 // Returns venue ID (does not update existing venue from user input)
 export async function upsertVenue(venueName, venueAddress, venueInstagram) {
@@ -65,13 +77,13 @@ export async function upsertVenue(venueName, venueAddress, venueInstagram) {
   }
 
   let venue = await getVenueByName(venueName);
-  
+
   if (!venue) {
     // Create new venue only if doesn't exist
     venue = await createVenue(venueName, venueAddress, venueInstagram);
   }
   // If venue exists, use existing data (don't update from user input)
-  
+
   return venue.id;
 }
 

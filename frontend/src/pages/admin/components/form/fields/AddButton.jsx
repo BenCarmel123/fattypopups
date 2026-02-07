@@ -13,6 +13,9 @@ export default function AddChef({ onClick, label, disabled = false }) {
       opacity={disabled ? 0.5 : 1}
       padding="0.25rem 0.5rem"
       fontSize="sm"
+      border="1px solid"
+      borderColor="gray.300"
+      borderRadius="md"
     >
       <Text>+</Text>
       <Text>{label}</Text>

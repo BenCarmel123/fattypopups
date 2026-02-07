@@ -71,6 +71,18 @@ export async function upsertChefs(chefNamesString, chefInstagramsString) {
   return chefIds;
 }
 
+// Get all chefs from database
+export async function getAllChefs() {
+  const { data, error } = await supabase
+    .from('chefs')
+    .select('name, instagram_handle')
+    .order('name');
+
+  if (error) throw new Error(`Error fetching chefs: ${error.message}`);
+
+  return data;
+}
+
 // Handle chef relationship updates - only update if chefs changed or publishing draft
 export async function handleEventChefsUpdate({ eventId, chefNames, chefInstagrams, shouldUpdate, shouldUnlink }) {
   if (!shouldUpdate) {
