@@ -8,7 +8,8 @@ dns.setDefaultResultOrder('ipv4first');
 import 'dotenv-flow/config';
 
 // Import routers
-import { eventRouter, authRouter, agentRouter, chefRouter } from './routes/index.js';
+import * as routers from './routes/index.js';
+const { eventRouter, authRouter, agentRouter, chefRouter, venueRouter } = routers;
 
 // Initialize Express app
 const app = express();
@@ -38,6 +39,7 @@ app.get('/', (req, res) => {
 // Routing
 app.use('/api/events', eventRouter);
 app.use('/api/chefs', chefRouter);
+app.use('/api/venues', venueRouter);
 app.use('/auth', authRouter);
 app.use('/agent', agentRouter);
 
