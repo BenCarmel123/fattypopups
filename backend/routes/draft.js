@@ -1,8 +1,6 @@
-// Require necessary modules and configure OpenAI client
 import 'dotenv/config';
-import { generateDraft } from '../services/agent/draft.js';
-import express from 'express';
-import { orchestrateEventCreate } from '../services/database/orchestrator/index.js'; 
+import { generateDraft } from '../services/agent/composeDraft.js';
+import express from 'express'; 
 
 const agentRouter = express.Router();
 
@@ -16,15 +14,13 @@ agentRouter.post("/draft", async (req, res) => {
   }
 
   try {
-    // Generate draft
+    // Generate draft data from AI
     const draft = await generateDraft(prompt);
-    console.log("[EVENT] Draft generated and event created\n");
+    console.log("[EVENT] Draft generated (not saved to DB)\n");
 
-    // Create event from draft
-    const newEvent = await orchestrateEventCreate(draft, null);
-
-    // Success response
-    return res.status(200).json({ event: newEvent });
+    // Return draft directly to frontend for admin review
+    // Admin will save it via form submission
+    return res.status(200).json({ event: draft });
 
   } catch (err) {
     console.error("[ERROR] Draft or event creation failed:", err, "\n");

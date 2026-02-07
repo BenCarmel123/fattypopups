@@ -61,3 +61,40 @@ export const handleAddClick = (e) => {
     form.is_draft.value = 'false';
   }
 };
+
+// Transform backend draft data to format expected by form components
+export const transformDraftToFormData = (draft) => {
+  console.log('[TRANSFORM INPUT]:', draft);
+  console.log('[TRANSFORM] chef_names:', draft?.chef_names);
+  console.log('[TRANSFORM] venue_name:', draft?.venue_name);
+
+  if (!draft) return null;
+
+  // Parse chef names and instagrams from comma-separated strings
+  const chefNames = draft.chef_names?.split(',').map(s => s.trim()).filter(Boolean) || [];
+  const chefInstagrams = draft.chef_instagrams?.split(',').map(s => s.trim()).filter(Boolean) || [];
+
+  // Build chefs array
+  const chefs = chefNames.map((name, i) => ({
+    name,
+    instagram_handle: chefInstagrams[i] || ''
+  }));
+
+  const venue = {
+    name: draft.venue_name || '',
+    address: draft.venue_address || '',
+    instagram_handle: draft.venue_instagram || ''
+  };
+
+  return {
+    title: draft.title,
+    start_datetime: draft.start_datetime,
+    end_datetime: draft.end_datetime,
+    reservation_url: draft.reservation_url,
+    english_description: draft.english_description,
+    hebrew_description: draft.hebrew_description,
+    is_draft: draft.is_draft,
+    chefs,
+    venue
+  };
+};

@@ -10,9 +10,10 @@ import FormCard from "../components/form/structure/Card.jsx";
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 export default function EventForm({ event, isEdit, handleClick } ) {
+    console.log('[EventForm] Received event:', event);
     const [alert, setAlert] = useState(undefined);
     const [isLoading, setLoading] = useState(false);
-    
+
     const tomorrowStr = getTomorrowDate();
 
     async function handleEvent(e) {
