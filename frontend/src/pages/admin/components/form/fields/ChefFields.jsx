@@ -11,7 +11,7 @@ const MAX_CHEFS = 5;
 export default function ChefFields({ event }) {
   const initialCount = event?.chefs?.length > 0 ? event.chefs.length : 1;
   const [chefCount, setChefCount] = useState(initialCount);
-  const [chefData, setChefData] = useState([]); // Now stores array of {name, instagram} objects
+  const [chefData, setChefData] = useState([]); 
 
   // Initialize chef values from event data
   const initialChefs = Array.from({ length: MAX_CHEFS }, (_, i) => ({

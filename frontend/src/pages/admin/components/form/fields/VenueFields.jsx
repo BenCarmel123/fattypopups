@@ -16,7 +16,7 @@ export default function VenueFields({ event }) {
   // Fetch venue data when component mounts
   useEffect(() => {
     fetchVenues()
-      .then(data => setVenueData(data)) // data is now array of {name, address, instagram}
+      .then(data => setVenueData(data)) 
       .catch(err => console.log('[ERROR] Failed to fetch venues:', err));
   }, []);
 
