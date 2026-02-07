@@ -3,6 +3,7 @@ import Input from "./fields/Input.jsx";
 import Description from "./fields/Description.jsx";
 import Section from "./structure/Section.jsx";
 import Row from "./structure/Row.jsx";
+import ChefRows from "./fields/ChefRows.jsx";
 import { FileUploadButton } from "../../../../components/Buttons.jsx";
 import { formatDate } from "../../../../utils/formatting.js";
 
@@ -34,14 +35,9 @@ export default function FormFields({ event, tomorrowStr }) {
                         <Input label="Venue Instagram" name="venue_instagram" placeholder="@"
                             defaultValue={event?.venue?.instagram_handle || ""} />
                     </Row>
-                    <Input label="Venue Address" name="venue_address" 
+                    <Input label="Venue Address" name="venue_address"
                         defaultValue={event?.venue?.address || ""} />
-                    <Row>
-                        <Input label="Chef Names (comma separated)" name="chef_names" 
-                            defaultValue={event?.chefs ? event.chefs.map(c => c.name).join(', ') : ""} />
-                        <Input label="Chef Instagrams (comma separated)" name="chef_instagrams" placeholder="@"
-                            defaultValue={event?.chefs ? event.chefs.map(c => c.instagram_handle).join(', ') : ""} />
-                    </Row>
+                    <ChefRows event={event} />
                 </Stack>
             </Section>
 

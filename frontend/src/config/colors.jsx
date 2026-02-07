@@ -21,7 +21,7 @@ export const BORDER_COLOR = '#cde6e5';
 export const DASHBOARD_HEADER_BACKGROUND_COLOR = '#cce6ff';
 export const ADMIN_PANEL_COLOR = '#a1c4fd';
 export const FORM_BACKGROUND_COLOR = '#ffffffcf';
-export const BACK_TO_DASHBOARD_BUTTON_COLOR = '#eb551b';
+export const BACK_TO_DASHBOARD_BUTTON_COLOR = '#f36262ff';
 
 // Misc colors / tokens
 export const FORM_FIELD_COLOR = '#2596be';

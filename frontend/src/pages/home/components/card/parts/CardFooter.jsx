@@ -1,7 +1,7 @@
 import { Card, Button } from '@chakra-ui/react';
 import { handleWhatsApp } from '../../../../../utils/externalLinks';
 import { defaultOnMouseEnter, defaultOnMouseLeave } from '../../../../../utils/interactions';
-import { GRAY, FOOTER_BACKGROUND_COLOR, RESERVE, SHARE, XL, XXL, FLEX, CENTER, MAX, POINTER, SELF, NO_OPENER, SUBTLE, NONE, GiForkKnifeSpoon, FaWhatsapp 
+import { GRAY, FOOTER_BACKGROUND_COLOR, RESERVE, SHARE, XL, XXL, FLEX, CENTER, MAX, SELF, NO_OPENER, SUBTLE, NONE, GiForkKnifeSpoon, FaWhatsapp
 } from '../../../../../config/index.jsx';
 
 /* -------------------------- ACTION BUTTON -------------------------- */

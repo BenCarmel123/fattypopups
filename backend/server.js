@@ -5,7 +5,7 @@ import dns from 'dns';
 
 // Ensure IPv4 is preferred
 dns.setDefaultResultOrder('ipv4first');
-import 'dotenv/config';
+import 'dotenv-flow/config';
 
 // Import routers 
 import eventRouter from './routes/events.js';

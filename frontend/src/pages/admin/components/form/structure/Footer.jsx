@@ -19,7 +19,7 @@ export default function FormFooter({ isEdit, handleClick, event }) {
             />
           )}
           <SubmitFormButton
-            text={isEdit ? "Update" : "Add"}
+            text={isEdit ? "Update" : "Publish"}
             onClick={handleAddClick}
           />
         </div>

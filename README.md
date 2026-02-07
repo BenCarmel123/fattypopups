@@ -105,12 +105,24 @@ REACT_APP_API_URL=http://localhost:5001
 
 **Development mode (with hot reload):**
 ```bash
-docker-compose -f docker-compose.dev.yml up --build
+npm run dev
+# or manually: docker-compose -f docker-compose.dev.yml up --build
+```
+
+**Stop development:**
+```bash
+npm run dev:down
 ```
 
 **Production mode:**
 ```bash
-docker-compose up --build
+npm run prod
+# or manually: docker-compose up --build
+```
+
+**Stop production:**
+```bash
+npm run prod:down
 ```
 
 **Services:**
