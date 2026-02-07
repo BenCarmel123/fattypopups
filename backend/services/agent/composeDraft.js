@@ -1,5 +1,5 @@
 import { GenerateDraftDetails } from "./api.js";
-import { getEntities } from "./utils/draftEntities.js";
+import { getEntities } from "./draftEntities.js";
 
 const REMINDER = "DON'T FORGET TO FILL"
 
