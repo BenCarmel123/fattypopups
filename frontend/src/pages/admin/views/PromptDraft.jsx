@@ -3,6 +3,7 @@ import { Textarea } from "@chakra-ui/react";
 import { POST, ENTER, UNKNOWN_ERROR, PROMPT_PLACEHOLDER, EDIT, DASHBOARD, CONTENT_TYPE, TEXT_PLAIN } from "../../../config/index.jsx";
 import { SubmitPromptButton, BackToDashboard } from '../../../components/Buttons.jsx';
 import SpinnerOverlay from '../../../components/SpinnerOverlay.jsx';
+import { transformDraftToFormData } from '../utils/formHelpers.js';
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL
 
@@ -44,10 +45,17 @@ export default function PromptDraft({ placeholder = PROMPT_PLACEHOLDER, handleCl
          
         try {
             setLoading(true)
-            const { event } = await sendPrompt(prompt);
+            const response = await sendPrompt(prompt);
+            console.log('[DEBUG] Full response:', response);
+            const { event } = response;
+            console.log('[DEBUG] Raw event from backend:', event);
             setPrompt('');
-            // Switch to ADD mode and pass the generated draft
-            handleClick(EDIT, event)();
+            // Transform draft data to form-compatible format
+            console.log('[DEBUG] About to transform...');
+            const transformedEvent = transformDraftToFormData(event);
+            console.log('[DEBUG] Transformed event:', transformedEvent);
+            // Switch to EDIT mode and pass the transformed draft
+            handleClick(EDIT, transformedEvent)();
             }
 
         catch (err) {
