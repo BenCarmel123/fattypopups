@@ -46,8 +46,8 @@ authRouter.get('/google/callback', async (req, res) => {
       { expiresIn: "7d" });
     console.log("[AUTH] GOOGLE CALLBACK");
     console.log("[AUTH] JWT created:", !!token);
-    return res.redirect(`${process.env.FRONTEND_PROD_URL}/${process.env.ADMIN_ROUTE}?token=${token}`);
-    } 
+    return res.redirect(`${process.env.FRONTEND_URL}/${process.env.ADMIN_ROUTE}?token=${token}`);
+    }
   else return res.redirect(process.env.FRONTEND_URL);
 })
 
@@ -70,7 +70,7 @@ authRouter.get("/check", (req, res) => {
         email: decoded.email,
       },
     });
-  } catch {
+  } catch (e) {
     console.log("[ERROR] JWT invalid:", e.message);
     return res.json({ authenticated: false });
   }
