@@ -8,12 +8,12 @@ venueRouter.get('/', async (req, res) => {
   try {
     const venues = await getAllVenues();
 
-    // Transform to frontend-friendly format
-    res.json({
-      names: venues.map(venue => venue.name),
-      addresses: venues.map(venue => venue.address),
-      instagrams: venues.map(venue => venue.instagram_handle)
-    });
+    // Return unified venue objects with name, address, and instagram
+    res.json(venues.map(venue => ({
+      name: venue.name,
+      address: venue.address,
+      instagram: venue.instagram_handle
+    })));
   } catch (err) {
     console.log('[ERROR] HTTP Error:', err);
     res.status(500).json({ error: err.message });
