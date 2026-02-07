@@ -226,7 +226,7 @@ npm start
 
 3. **Deployment:**
    - Merge to `main` triggers production deployment
-   - AWS Elastic Beanstalk handles container orchestration
+   - Render handles container orchestration
 
 ---
 
@@ -244,23 +244,6 @@ npm start
 
 ### Drafts
 - `POST /api/draft/generate` - Generate AI description
-
----
-
-## Contributing
-
-This is a personal learning project, but suggestions and feedback are welcome.
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
-
----
-
-## License
-
-This project is open source and available for educational purposes.
 
 ---
 
