@@ -1,4 +1,4 @@
-import { Stack, Button, HStack } from "@chakra-ui/react";
+import { Stack, Button } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import TypeaheadInput from "../../../../../components/form/TypeaheadInput";
 import { fetchChefs } from "../../../../../utils/database/api";
@@ -11,7 +11,7 @@ const MAX_CHEFS = 5;
 export default function ChefFields({ event }) {
   const initialCount = event?.chefs?.length > 0 ? event.chefs.length : 1;
   const [chefCount, setChefCount] = useState(initialCount);
-  const [chefData, setChefData] = useState({ names: [], instagrams: [] });
+  const [chefData, setChefData] = useState([]); 
 
   // Initialize chef values from event data
   const initialChefs = Array.from({ length: MAX_CHEFS }, (_, i) => ({
@@ -23,7 +23,7 @@ export default function ChefFields({ event }) {
   // Fetch chef data on mount
   useEffect(() => {
     fetchChefs()
-      .then(data => setChefData(data))
+      .then(data => setChefData(data)) 
       .catch(err => console.log('[ERROR] Failed to fetch chefs:', err));
   }, []);
 
@@ -37,6 +37,18 @@ export default function ChefFields({ event }) {
   const handleChefChange = (index, field, value) => {
     const newChefs = [...chefs];
     newChefs[index][field] = value;
+
+    // Auto-fill the other field if this value exists in database
+    const matchingChef = chefData.find(chef =>
+      field === 'name' ? chef.name === value : chef.instagram === value
+    );
+
+    if (matchingChef) {
+      // Fill the opposite field automatically
+      const oppositeField = field === 'name' ? 'instagram' : 'name';
+      newChefs[index][oppositeField] = matchingChef[oppositeField];
+    }
+
     setChefs(newChefs);
   };
 
@@ -55,7 +67,7 @@ export default function ChefFields({ event }) {
         <TypeaheadInput
           label={isFirstRow ? "Chef Name" : ""}
           name={`chef_name_${index}`}
-          options={chefData.names}
+          options={chefData.map(chef => chef.name)}
           value={chefs[index].name}
           onChange={(value) => handleChefChange(index, 'name', value)}
           placeholder=""
@@ -63,7 +75,7 @@ export default function ChefFields({ event }) {
         <TypeaheadInput
           label={isFirstRow ? "Instagram" : ""}
           name={`chef_instagram_${index}`}
-          options={chefData.instagrams}
+          options={chefData.map(chef => chef.instagram)}
           value={chefs[index].instagram}
           onChange={(value) => handleChefChange(index, 'instagram', value)}
           placeholder=""
