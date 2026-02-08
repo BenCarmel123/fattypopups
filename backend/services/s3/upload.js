@@ -64,10 +64,10 @@ const handleNoFileUpload = async (body, currentEvent) => {
 export const handleEventImageUpload = async (id, body, file, currentEvent) => {
   if (file) {
     console.log("[FILE] Uploaded file:", file);
-    
+
     // 1. Use poster from currentEvent if available, otherwise fetch
     const existingUrl = currentEvent?.poster || await fetchExistingImageUrl(id);
-    
+
     // 2. Generate S3 key and URL
     const { s3_key, s3_url } = generateS3KeyAndUrl(existingUrl, file, body.title);
     body.poster = s3_url;
