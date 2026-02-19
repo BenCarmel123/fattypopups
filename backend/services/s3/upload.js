@@ -2,6 +2,7 @@ import { supabase, s3 } from "../../config/index.js";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import sharp from 'sharp';
 import { slugify } from './utils.js';
+import { isTrue } from '../utils.js';
 
 // 1. Fetch existing image URL from event
 const fetchExistingImageUrl = async (id) => {
@@ -44,18 +45,19 @@ const uploadToS3 = async (s3_key, file) => {
 // Generate S3 key and URL for event image
 const generateS3KeyAndUrl = (existingUrl, file, title) => {
   const slug = title ? slugify(title) : file.originalname.replace(/\.[^.]+$/, '');
+  const folder = process.env.NODE_ENV === 'development' ? 'dev' : 'posters';
   const s3_key = existingUrl
     ? existingUrl.split(".amazonaws.com/")[1]
-    : `posters/${slug}.webp`;
-  const s3_url = `https://${process.env.AWS_S3_BUCKET_NAME}.s3.amazonaws.com/${s3_key}`;
+    : `${folder}/${slug}.webp`;
+  const s3_url = `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${s3_key}`;
 
   return { s3_key, s3_url };
 };
 
 // 3. Handle case when no file is uploaded
 const handleNoFileUpload = async (body, currentEvent) => {
-  const isDraft = body.is_draft === "true" || body.is_draft === true;
-  const wasDraft = currentEvent.is_draft === true || currentEvent.is_draft === "true";
+  const isDraft = isTrue(body.is_draft);
+  const wasDraft = isTrue(currentEvent.is_draft);
   const toPublish = wasDraft && !isDraft;
 
   if (toPublish && !currentEvent.poster) {
