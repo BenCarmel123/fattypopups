@@ -1,7 +1,6 @@
 import { supabase, s3 } from "../../config/index.js";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
-import sharp from 'sharp';
-import { slugify } from './utils.js';
+import { parseFilename, extractS3Key, buildS3Url } from './utils.js';
 import { isTrue } from '../utils.js';
 
 // 1. Fetch existing image URL from event
@@ -23,17 +22,12 @@ const fetchExistingImageUrl = async (id) => {
 // 2. Upload file to S3
 const uploadToS3 = async (s3_key, file) => {
   try {
-    const compressed = await sharp(file.buffer)
-      .resize({ width: 840, withoutEnlargement: true })
-      .webp({ quality: 80 })
-      .toBuffer();
-
     await s3.send(
       new PutObjectCommand({
         Bucket: process.env.AWS_S3_BUCKET_NAME,
         Key: s3_key,
-        Body: compressed,
-        ContentType: 'image/webp'
+        Body: file.buffer,
+        ContentType: file.mimetype
       })
     );
   } catch (err) {
@@ -44,12 +38,10 @@ const uploadToS3 = async (s3_key, file) => {
 
 // Generate S3 key and URL for event image
 const generateS3KeyAndUrl = (existingUrl, file, title) => {
-  const slug = title ? slugify(title) : file.originalname.replace(/\.[^.]+$/, '');
+  const { slug, ext } = parseFilename(file.originalname, title);
   const folder = process.env.NODE_ENV === 'development' ? 'dev' : 'posters';
-  const s3_key = existingUrl
-    ? existingUrl.split(".amazonaws.com/")[1]
-    : `${folder}/${slug}.webp`;
-  const s3_url = `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${s3_key}`;
+  const s3_key = existingUrl ? extractS3Key(existingUrl) : `${folder}/${slug}${ext}`;
+  const s3_url = buildS3Url(s3_key);
 
   return { s3_key, s3_url };
 };
