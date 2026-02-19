@@ -1,6 +1,6 @@
-import { getChefByName } from '../../database/entities/chef/operations.js';
-import { getVenueByName } from '../../database/entities/venue/operations.js';
-import { fetchVenueAddress } from './googleMaps.js';
+import { getChefByName } from '../database/entities/chef/operations.js';
+import { getVenueByName } from '../database/entities/venue/operations.js';
+import { fetchVenueAddress } from './utils/googleMaps.js';
 
 // Fetches chef entities from DB in parallel, creates placeholders for missing chefs
 async function getChefEntities(chefNames) {
