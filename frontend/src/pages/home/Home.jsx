@@ -3,6 +3,7 @@ import { Spinner } from '@chakra-ui/react';
 import DisplayCard from './components/card/DisplayCard.jsx';
 import Header from '../../components/Header.jsx';
 import InstructionText from './components/InstructionText.jsx';
+import EventIndexContext from './context/EventIndexContext.js';
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -33,10 +34,12 @@ export default function HomePage() {
     <Header />
     <div className="mt-2 w-full flex flex-col items-center px-2 sm:px-4 md:px-8 box-border">
       <InstructionText />
-      {events.map(evt => (
-        <div key={evt.title} className="mb-8 w-full max-w-xl">
-          <DisplayCard event={evt} />
-        </div>
+      {events.map((evt, index) => (
+        <EventIndexContext.Provider key={evt.title} value={index}>
+          <div className="mb-8 w-full max-w-xl">
+            <DisplayCard event={evt} />
+          </div>
+        </EventIndexContext.Provider>
       ))}
       <div style={{ height: '2.5rem' }} />
     </div>

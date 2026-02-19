@@ -93,6 +93,18 @@ export async function getAllEventsWithRelations(isAdmin = false) {
   return data;
 }
 
+// Get poster URLs for events by titles
+export async function getImageUrlsByTitles(titles) {
+  const { data, error } = await supabase
+    .from('events_new')
+    .select('poster')
+    .in('title', titles);
+
+  if (error) throw new Error(`Error fetching image URLs: ${error.message}`);
+
+  return data.map(row => row.poster);
+}
+
 // Delete events by titles
 export async function deleteEventsByTitles(titles) {
   const { error } = await supabase

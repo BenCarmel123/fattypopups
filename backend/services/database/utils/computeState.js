@@ -1,8 +1,9 @@
+import { isTrue } from '../../utils.js';
 
 // Helper: Compute draft/publish state transitions
 function computeStateTransitions(body, currentEvent) {
-  const isDraft = body.is_draft === "true" || body.is_draft === true; 
-  const wasDraft = currentEvent.is_draft === true || currentEvent.is_draft === "true"; 
+  const isDraft = isTrue(body.is_draft);
+  const wasDraft = isTrue(currentEvent.is_draft);
   
   return {
     isDraft,
