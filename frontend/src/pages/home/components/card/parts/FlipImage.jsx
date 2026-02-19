@@ -2,11 +2,13 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { formatEventDescription } from '../../../../../utils/formatting';
 import { GRAY, MAX, BLOCK, OVERLAY_STYLE } from '../../../../../config/index.jsx';
+import { useEventIndex } from '../../../context/EventIndexContext.js';
 
 const detailsBackgroundImageUrl = process.env.REACT_APP_DETAILS_BACKGROUND_IMAGE_URL;
 
 /* -------------------------- EVENT IMAGE -------------------------- */
 export function EventImage({ event }) {
+  const index = useEventIndex();
   return (
     <motion.div
       key="image"
@@ -19,6 +21,8 @@ export function EventImage({ event }) {
       <img
         src={event.poster}
         alt={event.title}
+        loading={index === 0 ? 'eager' : 'lazy'}
+        fetchpriority={index === 0 ? 'high' : 'low'}
         style={{
           width: MAX,
           height: 'auto',
