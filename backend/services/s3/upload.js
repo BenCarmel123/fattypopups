@@ -46,7 +46,7 @@ const generateS3KeyAndUrl = (existingUrl, file, title) => {
   const slug = title ? slugify(title) : file.originalname.replace(/\.[^.]+$/, '');
   const s3_key = existingUrl
     ? existingUrl.split(".amazonaws.com/")[1]
-    : `events/${Date.now()}_${slug}.webp`;
+    : `posters/${slug}.webp`;
   const s3_url = `https://${process.env.AWS_S3_BUCKET_NAME}.s3.amazonaws.com/${s3_key}`;
 
   return { s3_key, s3_url };
