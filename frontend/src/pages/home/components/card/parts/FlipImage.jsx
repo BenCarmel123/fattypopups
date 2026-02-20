@@ -22,7 +22,7 @@ export function EventImage({ event }) {
         src={event.poster}
         alt={event.title}
         loading={index === 0 ? 'eager' : 'lazy'}
-        fetchpriority={index === 0 ? 'high' : 'low'}
+        fetchPriority={index === 0 ? 'high' : 'low'}
         style={{
           width: MAX,
           height: 'auto',

@@ -3,8 +3,8 @@ import { upsertVenue } from '../../entities/venue/operations.js';
 import { createEventEmbeddings } from '../../vector/orchestrator.js';
 import { insertEvent } from '../../entities/event/operations.js';
 import { linkChefsToEvent } from '../../entities/linking/operations.js';
-import { handleEventImageUpload } from 'services/s3/upload.js';
-import { isTrue } from 'services/utils.js';
+import { handleEventImageUpload } from '#services/s3/upload.js';
+import { isTrue } from '#services/utils.js';
 
 // Orchestrates creating an event with all related entities (venue, chefs, embeddings)
 export const orchestrateEventCreate = async (body, file) => {

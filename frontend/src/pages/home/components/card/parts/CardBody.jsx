@@ -49,10 +49,10 @@ export default function CardBody({ event }) {
         <SiGooglecalendar className={ACTION_BUTTON_SPACING} />
         <EventAttributeSpan attribute={formatDateRange(event.start_datetime, event.end_datetime)} onClick={() => handleCalendar(event)} />
         <br />
-        <div>
+        <span style={{ display: 'block' }}>
           <SiGooglemaps className={ACTION_BUTTON_SPACING} />
           <EventAttributeSpan attribute={event.venue?.address} onClick={() => handleMaps(event.venue?.address)} />
-        </div>
+        </span>
       </Card.Description>
     </Card.Body>
   );
