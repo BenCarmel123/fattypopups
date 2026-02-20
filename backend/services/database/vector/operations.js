@@ -1,4 +1,5 @@
 import { supabase } from "#config/index.js";
+import { logger } from "../../../utils/logger.js";
 
 // Insert a single embedding into the database
 export async function insertEmbedding(language, description, embedding, chefNames) {
@@ -55,7 +56,7 @@ export async function upsertEventEmbeddings(options) {
 
   // [INSERT] When publishing a draft for the first time
   if (toPublish) {
-    console.log("[EMBEDDING] Inserting new embeddings for published event...");
+    logger.info("[EMBEDDING] Inserting new embeddings for published event...");
     try {
       const enRow = await insertEmbedding(
         'en',
@@ -73,17 +74,18 @@ export async function upsertEventEmbeddings(options) {
 
       en_id = enRow.id;
       he_id = heRow.id;
-      
-      console.log("[EMBEDDING] Successfully inserted embeddings - EN ID:", en_id, "| HE ID:", he_id);
+
+      logger.info("[EMBEDDING] Successfully inserted embeddings - EN ID:", en_id, "| HE ID:", he_id);
 
     } catch (e) {
-      console.log("[ERROR] Error inserting embeddings:", e);
+      logger.error("Error inserting embeddings:", e);
+      return { en_id: null, he_id: null, embeddingError: true };
     }
   }
 
   // [UPDATE] When updating already published event
   if (alreadyPublished) {
-    console.log("[EMBEDDING] Updating existing embeddings...");
+    logger.info("[EMBEDDING] Updating existing embeddings...");
     try {
       if (englishEmbedding) {
         await updateEmbeddingById(
@@ -99,9 +101,10 @@ export async function upsertEventEmbeddings(options) {
           hebrewEmbedding
         );
       }
-      console.log(`[EMBEDDING] Successfully updated embeddings - EN ID: ${englishEmbedding ? currentEnglishId : 'unchanged'} | HE ID: ${hebrewEmbedding ? currentHebrewId : 'unchanged'}`);
+      logger.info(`[EMBEDDING] Successfully updated embeddings - EN ID: ${englishEmbedding ? currentEnglishId : 'unchanged'} | HE ID: ${hebrewEmbedding ? currentHebrewId : 'unchanged'}`);
     } catch (e) {
-      console.log("[ERROR] Error updating embeddings:", e);
+      logger.error("Error updating embeddings:", e);
+      return { en_id, he_id, embeddingError: true };
     }
   }
 

@@ -1,6 +1,7 @@
 import { extractStreetAndNumber, extractInstagramHandle } from './parse.js';
 import { getOrCreateInstagram, getInstagramIfExists } from '../../database/entities/deprecated/instagram/scripts.js';
 import { getOrCreateAddress, getAddressIfExists } from '../../database/entities/deprecated/address/scripts.js';
+import { logger } from "../../../utils/logger.js";
 
 export async function fetchAddress(venueName) {
     const response = await fetch('https://places.googleapis.com/v1/places:searchText', {
@@ -47,30 +48,30 @@ export async function fetchInstagram(query) {
  * Runs operations in parallel for better performance
  */
 export async function fetchSpecificDetails(venueName, chefName) {
-  console.log('[DRAFT] Starting with:', { venueName, chefName }, '\n');
+  logger.info('[DRAFT] Starting with:', { venueName, chefName }, '\n');
   
   // Run all operations in parallel for performance
   const [addressResult, chefInstagramResult, venueInstagramResult] = await Promise.allSettled([
     // 1. Handle venue address: DB first, Google Places API as fallback
     venueName ? (async () => {
-      console.log('[ADDRESS] Checking DB for venue:', venueName, '\n');
+      logger.info('[ADDRESS] Checking DB for venue:', venueName, '\n');
       const existingAddress = await getAddressIfExists(venueName);
       
       if (existingAddress) {
-        console.log('[ADDRESS] Found in DB:', existingAddress.venue_address, '\n');
+        logger.info('[ADDRESS] Found in DB:', existingAddress.venue_address, '\n');
         // Use existing address from DB
         const venueAddress = { places: [{ formattedAddress: existingAddress.venue_address }] };
         const streetNumber = existingAddress.venue_address.split(',')[0]?.trim() || existingAddress.venue_address;
         return { venueAddress, streetNumber };
       } else {
-        console.log('[ADDRESS] Not in DB, calling Google Places API\n');
+        logger.info('[ADDRESS] Not in DB, calling Google Places API\n');
         // Not in DB - call Google Places API and save result
         const venueAddress = await fetchAddress(venueName);
         const streetNumber = extractStreetAndNumber(venueAddress);
         
         // Save to DB for future use
         if (venueAddress && venueAddress.places && venueAddress.places[0]) {
-          console.log('[ADDRESS] Saving to DB for future use\n');
+          logger.info('[ADDRESS] Saving to DB for future use\n');
           await getOrCreateAddress(venueName, venueAddress);
         }
         
@@ -80,27 +81,27 @@ export async function fetchSpecificDetails(venueName, chefName) {
 
     // 2. Handle chef Instagram: DB first, Google Search as fallback
     chefName ? (async () => {
-      console.log('[INSTAGRAM] Checking DB for chef:', chefName, '\n');
+      logger.info('[INSTAGRAM] Checking DB for chef:', chefName, '\n');
       const existingChefInstagram = await getInstagramIfExists(chefName, "chef");
       
       if (existingChefInstagram) {
-        console.log('[INSTAGRAM] Found chef in DB:', existingChefInstagram.handle, '\n');
+        logger.info('[INSTAGRAM] Found chef in DB:', existingChefInstagram.handle, '\n');
         // Use existing from DB
         return existingChefInstagram.handle;
       } else {
-        console.log('[INSTAGRAM] Chef not in DB, searching Google and saving\n');
+        logger.info('[INSTAGRAM] Chef not in DB, searching Google and saving\n');
         // Not in DB - search Google and save result
         const newChefRecord = await getOrCreateInstagram(chefName, "chef");
-        console.log('[INSTAGRAM] Chef Google search result:', newChefRecord?.handle || 'null', '\n');
+        logger.info('[INSTAGRAM] Chef Google search result:', newChefRecord?.handle || 'null', '\n');
         return newChefRecord?.handle || null;
       }
     })() : Promise.resolve(null),
 
     // 3. Handle venue Instagram: DB only, no Google fallback
     venueName ? (async () => {
-      console.log('[INSTAGRAM] Checking DB for venue:', venueName, '\n');
+      logger.info('[INSTAGRAM] Checking DB for venue:', venueName, '\n');
       const existingVenueInstagram = await getInstagramIfExists(venueName, "venue");
-      console.log('[INSTAGRAM] Venue DB result:', existingVenueInstagram?.handle || 'null', '\n');
+      logger.info('[INSTAGRAM] Venue DB result:', existingVenueInstagram?.handle || 'null', '\n');
       return existingVenueInstagram?.handle || null;
     })() : Promise.resolve(null)
   ]);
@@ -113,13 +114,13 @@ export async function fetchSpecificDetails(venueName, chefName) {
 
   // Log any errors
   if (addressResult.status === 'rejected') {
-    console.error('[ERROR] Address fetch failed:', addressResult.reason, '\n');
+    logger.error('[ERROR] Address fetch failed:', addressResult.reason, '\n');
   }
   if (chefInstagramResult.status === 'rejected') {
-    console.error('[ERROR] Chef Instagram fetch failed:', chefInstagramResult.reason, '\n');
+    logger.error('[ERROR] Chef Instagram fetch failed:', chefInstagramResult.reason, '\n');
   }
   if (venueInstagramResult.status === 'rejected') {
-    console.error('[ERROR] Venue Instagram fetch failed:', venueInstagramResult.reason, '\n');
+    logger.error('[ERROR] Venue Instagram fetch failed:', venueInstagramResult.reason, '\n');
   }
 
   const result = {
@@ -129,6 +130,6 @@ export async function fetchSpecificDetails(venueName, chefName) {
     venueInstagram
   };
 
-  console.log('[fetchSpecificDetails] Final result:', result, '\n');
+  logger.info('[fetchSpecificDetails] Final result:', result, '\n');
   return result;
 }

@@ -1,6 +1,7 @@
 import { GenerateDraftDetails } from "./api.js";
 import { extractChefNameNaive, extractDescriptionNaive, extractVenueNameNaive, extractTitleNaive } from "./utils/parse.js";
 import { fetchSpecificDetails } from "./utils/fetch.js";
+import { logger } from "../../utils/logger.js";
 
 const REMINDER = "!!!DO NOT FORGET TO FILL!!!"
 const generateDraft = 
@@ -19,7 +20,7 @@ const generateDraft =
         // Extract descriptions from output
         const englishDescription = extractDescriptionNaive("en", rawOutput);
         const hebrewDescription = extractDescriptionNaive("he", rawOutput);
-        console.log(`[DRAFT] chef: ${chefName} | venue: ${venueName} | title: ${eventTitle} | english: ${englishDescription} | hebrew: ${hebrewDescription}\n`);
+        logger.info(`[DRAFT] chef: ${chefName} | venue: ${venueName} | title: ${eventTitle} | english: ${englishDescription} | hebrew: ${hebrewDescription}\n`);
 
         // Extract Date
         const today = new Date().toISOString().split('T')[0];
@@ -41,7 +42,7 @@ const generateDraft =
             is_draft: true // DONE
         };
 
-        console.log("[TIME]", Date.now() - _startTime, "ms\n"); // TIME end
+        logger.info("[TIME]", Date.now() - _startTime, "ms\n"); // TIME end
         return result;
     }
 

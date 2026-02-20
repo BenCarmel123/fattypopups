@@ -1,6 +1,7 @@
 import { s3 } from "../../config/index.js";
 import { DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { extractS3Key } from "./utils.js";
+import { logger } from "../../utils/logger.js";
 
 export const deleteS3Images = async (urls) => {
   const validUrls = urls.filter(Boolean); // remove null/undefined (events without images)
@@ -13,9 +14,9 @@ export const deleteS3Images = async (urls) => {
           Bucket: process.env.AWS_S3_BUCKET_NAME,
           Key: key,
         }));
-        console.log(`[S3] Deleted image: ${key}`);
+        logger.info(`[S3] Deleted image: ${key}`);
       } catch (err) {
-        console.error(`[S3] Failed to delete image: ${key}`, err);
+        logger.error(`[S3] Failed to delete image: ${key}`, err);
       }
     })
   );

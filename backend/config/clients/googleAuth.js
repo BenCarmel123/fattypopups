@@ -1,5 +1,6 @@
 import dotenvFlow from 'dotenv-flow';
 import { google } from 'googleapis';
+import { logger } from "../../utils/logger.js";
 
 // Load environment variables
 dotenvFlow.config();
@@ -17,4 +18,4 @@ export const oauth2Client = new google.auth.OAuth2(
   redirectUri
 );
 
-console.log(`🔐 Google OAuth configured (${process.env.NODE_ENV || 'development'} environment) | Redirect URI: ${redirectUri}`);
+logger.info(`🔐 Google OAuth configured (${process.env.NODE_ENV || 'development'} environment) | Redirect URI: ${redirectUri}`);

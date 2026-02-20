@@ -1,4 +1,5 @@
 import { isTrue } from '../../utils.js';
+import { logger } from "../../../utils/logger.js";
 
 // Helper: Compute draft/publish state transitions
 function computeStateTransitions(body, currentEvent) {
@@ -54,7 +55,7 @@ export function computeUpdateState(body, currentEvent, currentVenue, currentChef
   const changeFlags = computeContentChanges(body, currentEvent, currentVenue, currentChefs);
   const actionFlags = computeActionFlags(stateFlags, changeFlags, currentChefs);
 
-  console.log(`[DEBUG] is_draft - body: ${body.is_draft} | current: ${currentEvent.is_draft} | State:`, stateFlags, '| Changes:', changeFlags, '| Actions:', actionFlags);
+  logger.debug(`is_draft - body: ${body.is_draft} | current: ${currentEvent.is_draft} | State:`, { stateFlags, changeFlags, actionFlags });
 
   return {
     ...stateFlags,

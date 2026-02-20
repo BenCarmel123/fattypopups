@@ -1,5 +1,6 @@
 import express from 'express';
 import { getAllChefs } from '../services/database/entities/chef/operations.js';
+import { logger } from "../utils/logger.js";
 
 const chefRouter = express.Router();
 
@@ -14,7 +15,7 @@ chefRouter.get('/', async (req, res) => {
       instagram: chef.instagram_handle
     })));
   } catch (err) {
-    console.log('[ERROR] HTTP Error:', err);
+    logger.error('HTTP Error:', err);
     res.status(500).json({ error: err.message });
   }
 });

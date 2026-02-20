@@ -2,6 +2,7 @@
 import { oauth2Client } from '../config/index.js';
 import express from 'express';
 import jwt from "jsonwebtoken";
+import { logger } from "../utils/logger.js";
 
 const authRouter = express.Router();
 
@@ -37,15 +38,15 @@ authRouter.get('/google/callback', async (req, res) => {
 
   const isAdmin = validateEmail(email)
 
-  console.log(`[AUTH] Logged in as: ${email} | isAdmin: ${isAdmin}`);
+  logger.info(`[AUTH] Logged in as: ${email} | isAdmin: ${isAdmin}`);
 
   if (isAdmin) {
     const token = jwt.sign(
       { email, role: "admin" },
       process.env.JWT_SECRET,
       { expiresIn: "7d" });
-    console.log("[AUTH] GOOGLE CALLBACK");
-    console.log("[AUTH] JWT created:", !!token);
+    logger.info("[AUTH] GOOGLE CALLBACK");
+    logger.info("[AUTH] JWT created:", !!token);
     return res.redirect(`${process.env.FRONTEND_URL}/${process.env.ADMIN_ROUTE}?token=${token}`);
     }
   else return res.redirect(process.env.FRONTEND_URL);
@@ -59,11 +60,11 @@ authRouter.get("/check", (req, res) => {
   }
 
   const token = authHeader.split(" ")[1];
-  console.log("[AUTH] AUTH CHECK");
+  logger.info("[AUTH] AUTH CHECK");
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log("[AUTH] JWT valid for:", decoded.email)
+    logger.info("[AUTH] JWT valid for:", decoded.email)
     return res.json({
       authenticated: true,
       user: {
@@ -71,7 +72,7 @@ authRouter.get("/check", (req, res) => {
       },
     });
   } catch (e) {
-    console.log("[ERROR] JWT invalid:", e.message);
+    logger.error("JWT invalid:", e.message);
     return res.json({ authenticated: false });
   }
 });

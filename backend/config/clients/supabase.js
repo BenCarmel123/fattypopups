@@ -1,5 +1,6 @@
 import dotenvFlow from 'dotenv-flow';
 import { createClient } from '@supabase/supabase-js';
+import { logger } from "../../utils/logger.js";
 
 // Automatically loads .env.development or .env.production based on NODE_ENV
 dotenvFlow.config();
@@ -13,4 +14,4 @@ if (!supabaseUrl || !supabaseKey) {
 
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
-console.log(`🗄️  Connected to Supabase (${process.env.NODE_ENV || 'development'} environment)`);
+logger.info(`🗄️  Connected to Supabase (${process.env.NODE_ENV || 'development'} environment)`);
