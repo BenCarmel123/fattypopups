@@ -6,13 +6,14 @@ import Login from "./views/Login.jsx";
 import PromptDraft from "./views/PromptDraft.jsx";
 import { handleTokenCheck } from "../../utils/auth.js";
 
+
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 export default function AdminPageHandler() {
-  
+
   // eslint-disable-next-line no-unused-vars
   const[isAuthenticated, setAuthenticated] = useState(false)
-  const[action, setAction] = useState(Config.LOGIN);
+  const[action, setAction] = useState(null);
   const[selectedEvent, setSelectedEvent] = useState(undefined);
 
   const handleClick = (action, selectedEvent) => () => {
@@ -41,6 +42,8 @@ export default function AdminPageHandler() {
         setAction(data.authenticated ? Config.DASHBOARD : Config.LOGIN);});
   }, []);
 
+   if (action === null) return null;
+
    switch(action) {
          case Config.ADD:
             return (<EventForm isEdit={false} handleClick={handleClick} event={selectedEvent} />);
@@ -50,7 +53,7 @@ export default function AdminPageHandler() {
             return (<Dashboard handleClick={handleClick} />);
          case Config.LOGIN:
             return (<Login />);
-         case Config.AI: 
+         case Config.AI:
             return (<PromptDraft handleClick={handleClick} />);
          default:
             return (<Login />);
