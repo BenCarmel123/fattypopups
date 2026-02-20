@@ -60,10 +60,13 @@ export const NONE = 'none';
 
 // Layout helpers
 export const CENTER = 'center';
+export const MIDDLE = 'middle';
 export const FLEX = 'flex';
 export const RELATIVE = 'relative';
+export const ABSOLUTE = 'absolute';
 export const FIXED = 'fixed';
 export const BLOCK = 'block';
+export const NOWRAP = 'nowrap';
 
 // Button / UI style tokens
 export const SUBTLE = 'subtle';
