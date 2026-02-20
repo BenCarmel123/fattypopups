@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '@chakra-ui/react';
-import { MEDIUM, LARGE, MAX, SOLID, BORDER_COLOR } from 'config/index.jsx';
+import { MEDIUM, LARGE, MAX, SOLID, BORDER_COLOR, BOLDER } from 'config/index.jsx';
 import CardBody from './parts/CardBody.jsx';
 import CardFooter from './parts/CardFooter.jsx';
 import FlipImage from './parts/FlipImage.jsx';
@@ -31,7 +31,7 @@ export default function EventCard({ event }) {
           borderColor: BORDER_COLOR,
           borderRadius: '50px',
           borderWidth: '1.5px',
-          fontWeight: 'bolder'
+          fontWeight: BOLDER
         }}
       >
         <FlipImage event={event} />
