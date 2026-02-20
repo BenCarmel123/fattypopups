@@ -1,5 +1,6 @@
 import { supabase } from "#config/index.js";
 import { upsertVenue } from "../venue/operations.js";
+import { logger } from "../../../../utils/logger.js";
 
 // Insert a new event into the events_new table
 export async function insertEvent(eventData) {
@@ -120,16 +121,16 @@ export async function deleteEventsByTitles(titles) {
 // Handle venue updates - only update if venue changed or publishing draft
 export async function handleEventVenueUpdate({ eventId, venueName, venueAddress, venueInstagram, shouldUpdate }) {
   if (!shouldUpdate) {
-    console.log('[VENUE] No venue update needed (draft mode or no changes to published event)');
+    logger.info('[VENUE] No venue update needed (draft mode or no changes to published event)');
     return null;
   }
 
-  console.log('[VENUE] Processing venue update...');
+  logger.info('[VENUE] Processing venue update...');
   
   // Get or create venue, returns venue_id
   const venueId = await upsertVenue(venueName, venueAddress, venueInstagram);
   
-  console.log(`[VENUE] Venue processed - ID: ${venueId}`);
+  logger.info(`[VENUE] Venue processed - ID: ${venueId}`);
   return venueId;
 }
 

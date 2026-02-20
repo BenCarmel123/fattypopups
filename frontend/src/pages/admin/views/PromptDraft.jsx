@@ -23,7 +23,6 @@ export const sendPrompt = async (prompt) => {
     throw new Error(event.error || Config.UNKNOWN_ERROR);
   }
 
-  console.log(event);
   return event;
 };
 

@@ -3,11 +3,12 @@ import 'dotenv/config';
 import { generateDraft } from '../services/agent/draft.js';
 import express from 'express';
 import { orchestrateEventCreate } from '../services/database/orchestrator/index.js'; 
+import { logger } from "../utils/logger.js";
 
 const agentRouter = express.Router();
 
 agentRouter.post("/draft", async (req, res) => {
-  console.log("[REQUEST] Reached /draft endpoint\n");
+  logger.info("[REQUEST] Reached /draft endpoint\n");
   const prompt = req.body;
 
   // Client error
@@ -18,7 +19,7 @@ agentRouter.post("/draft", async (req, res) => {
   try {
     // Generate draft
     const draft = await generateDraft(prompt);
-    console.log("[EVENT] Draft generated and event created\n");
+    logger.info("[EVENT] Draft generated and event created\n");
 
     // Create event from draft
     const newEvent = await orchestrateEventCreate(draft, null);
@@ -27,7 +28,7 @@ agentRouter.post("/draft", async (req, res) => {
     return res.status(200).json({ event: newEvent });
 
   } catch (err) {
-    console.error("[ERROR] Draft or event creation failed:", err, "\n");
+    logger.error("[ERROR] Draft or event creation failed:", err, "\n");
     return res.status(500).json({ error: "Draft or event creation failed" });
   }
 });

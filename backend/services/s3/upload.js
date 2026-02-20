@@ -2,6 +2,7 @@ import { supabase, s3 } from "../../config/index.js";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { parseFilename, extractS3Key, buildS3Url } from './utils.js';
 import { isTrue } from '../utils.js';
+import { logger } from "../../utils/logger.js";
 
 // 1. Fetch existing image URL from event
 const fetchExistingImageUrl = async (id) => {
@@ -14,7 +15,7 @@ const fetchExistingImageUrl = async (id) => {
     if (error) throw error;
     return data?.poster || null;
   } catch (err) {
-    console.log("[ERROR] Error fetching existing image URL:", err);
+    logger.error("Error fetching existing image URL:", err);
     return null;
   }
 };
@@ -31,7 +32,7 @@ const uploadToS3 = async (s3_key, file) => {
       })
     );
   } catch (err) {
-    console.log("[ERROR] Error uploading file:", err);
+    logger.error("Error uploading file:", err);
     throw err;
   }
 };
@@ -67,7 +68,7 @@ const handleNoFileUpload = async (body, currentEvent) => {
 // Main function: Handle event image upload/overwrite
 export const handleEventImageUpload = async (id, body, file, currentEvent) => {
   if (file) {
-    console.log("[FILE] Uploaded file:", file);
+    logger.info("[FILE] Uploaded file:", file);
     
     // 1. Use poster from currentEvent if available, otherwise fetch
     const existingUrl = currentEvent?.poster || await fetchExistingImageUrl(id);

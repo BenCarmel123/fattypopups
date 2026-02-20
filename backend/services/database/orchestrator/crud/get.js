@@ -1,4 +1,5 @@
 import { getAllEventsWithRelations } from '../../entities/event/operations.js';
+import { logger } from "../../../../utils/logger.js";
 
 // Get normalized events with all relations for API response
 export async function getEventsWithDetails(isAdmin = false) {
@@ -30,7 +31,7 @@ export async function getEventsWithDetails(isAdmin = false) {
       })).filter(chef => chef.name)
     }));
   } catch (err) {
-    console.log("[ERROR] Unexpected error fetching events:", err);
+    logger.error("Unexpected error fetching events:", err);
     throw err;
   }
 }

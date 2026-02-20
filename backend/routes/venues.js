@@ -1,5 +1,6 @@
 import express from 'express';
 import { getAllVenues } from '../services/database/entities/venue/operations.js';
+import { logger } from "../utils/logger.js";
 
 const venueRouter = express.Router();
 
@@ -15,7 +16,7 @@ venueRouter.get('/', async (req, res) => {
       instagram: venue.instagram_handle
     })));
   } catch (err) {
-    console.log('[ERROR] HTTP Error:', err);
+    logger.error('HTTP Error:', err);
     res.status(500).json({ error: err.message });
   }
 });
