@@ -1,5 +1,5 @@
 import React from "react";
-import { FORM_FIELD_COLOR, FORM_SECTION_HEADER_BG } from "config/index.jsx";
+import * as Config from 'config/index.jsx';
 
 export default function Section({ children, title }) {
   return (
@@ -17,8 +17,8 @@ export default function Section({ children, title }) {
             fontWeight: 700,
             fontSize: '1.1rem',
             marginBottom: '1.8rem',
-            color: FORM_FIELD_COLOR,
-            backgroundColor: FORM_SECTION_HEADER_BG,
+            color: Config.FORM_FIELD_COLOR,
+            backgroundColor: Config.FORM_SECTION_HEADER_BG,
             letterSpacing: '0.01em',
             textAlign: 'center',
             padding: '0.5rem 0.5rem',

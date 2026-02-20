@@ -1,5 +1,5 @@
 import { Stack, Button } from "@chakra-ui/react";
-import { DELETE_BUTTON_COLOR, DELETE_BUTTON_HOVER_COLOR } from "config/index.jsx";
+import * as Config from 'config/index.jsx';
 import { useState, useEffect } from "react";
 import TypeaheadInput from "components/form/TypeaheadInput";
 import { fetchChefs } from "utils/database/api";
@@ -88,9 +88,9 @@ export default function ChefFields({ event }) {
             right="-40px"
             top={isFirstRow ? "32px" : "4px"}
             size="xs"
-            bg={DELETE_BUTTON_COLOR}
+            bg={Config.DELETE_BUTTON_COLOR}
             color="white"
-            _hover={{ bg: DELETE_BUTTON_HOVER_COLOR }}
+            _hover={{ bg: Config.DELETE_BUTTON_HOVER_COLOR }}
             minW="28px"
             h="28px"
             p={0}

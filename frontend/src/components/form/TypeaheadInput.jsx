@@ -1,5 +1,5 @@
 import CreatableSelect from 'react-select/creatable';
-import { FORM_FIELD_COLOR, MAX } from 'config/index.jsx';
+import * as Config from 'config/index.jsx';
 
 // Generic typeahead input component
 export default function TypeaheadInput({
@@ -25,8 +25,8 @@ export default function TypeaheadInput({
   };
 
   return (
-    <div style={{ marginBottom: '1rem', width: MAX }}>
-      {label && <label style={{ display: 'block', marginBottom: '0.5rem', color: FORM_FIELD_COLOR }}>{label}</label>}
+    <div style={{ marginBottom: '1rem', width: Config.MAX }}>
+      {label && <label style={{ display: 'block', marginBottom: '0.5rem', color: Config.FORM_FIELD_COLOR }}>{label}</label>}
       <CreatableSelect
         options={selectOptions}
         value={selectedOption}

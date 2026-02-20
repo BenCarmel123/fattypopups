@@ -1,4 +1,4 @@
-import { UNKNOWN_ERROR } from 'config/index.jsx';
+import * as Config from 'config/index.jsx';
 
 const toFormData = (eventData) => {
   const formData = new FormData();
@@ -15,7 +15,7 @@ export const submitFormData = async (url, method, eventData) => {
 
   if (!response.ok) {
     const error = await response.json();
-    throw new Error(error.error || UNKNOWN_ERROR);
+    throw new Error(error.error || Config.UNKNOWN_ERROR);
   }
 
   return response.json();

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Textarea } from "@chakra-ui/react";
-import { POST, ENTER, UNKNOWN_ERROR, PROMPT_PLACEHOLDER, EDIT, DASHBOARD, CONTENT_TYPE, TEXT_PLAIN } from "config/index.jsx";
+import * as Config from 'config/index.jsx';
 import { SubmitPromptButton, BackToDashboard } from 'components/Buttons.jsx';
 import SpinnerOverlay from 'components/SpinnerOverlay.jsx';
 
@@ -10,8 +10,8 @@ export const sendPrompt = async (prompt) => {
   const _startTime = Date.now(); // TIME start
 
   const res = await fetch(`${SERVER_URL}/agent/draft`, {
-    method: POST,
-    headers: { [CONTENT_TYPE]: TEXT_PLAIN },
+    method: Config.POST,
+    headers: { [Config.CONTENT_TYPE]: Config.TEXT_PLAIN },
     body: prompt
   });
 
@@ -20,14 +20,14 @@ export const sendPrompt = async (prompt) => {
   console.log("[TIME]", Date.now() - _startTime, "ms"); // TIME end
 
   if (!res.ok) {
-    throw new Error(event.error || UNKNOWN_ERROR);
+    throw new Error(event.error || Config.UNKNOWN_ERROR);
   }
 
   console.log(event);
   return event;
 };
 
-export default function PromptDraft({ placeholder = PROMPT_PLACEHOLDER, handleClick }) {
+export default function PromptDraft({ placeholder = Config.PROMPT_PLACEHOLDER, handleClick }) {
     const [prompt, setPrompt] = useState('');
     const [isLoading, setLoading] = useState(false)
     const [requestInProgress, setRequestInProgress] = useState(false);
@@ -47,7 +47,7 @@ export default function PromptDraft({ placeholder = PROMPT_PLACEHOLDER, handleCl
             const { event } = await sendPrompt(prompt);
             setPrompt('');
             // Switch to ADD mode and pass the generated draft
-            handleClick(EDIT, event)();
+            handleClick(Config.EDIT, event)();
             }
 
         catch (err) {
@@ -62,7 +62,7 @@ export default function PromptDraft({ placeholder = PROMPT_PLACEHOLDER, handleCl
     };
 
     const handleKeyDown = (e) => {
-        if (e.key === ENTER && !e.shiftKey) {
+        if (e.key === Config.ENTER && !e.shiftKey) {
             e.preventDefault();
             handleSubmit(e);
         }
@@ -74,7 +74,7 @@ export default function PromptDraft({ placeholder = PROMPT_PLACEHOLDER, handleCl
         <form onSubmit={handleSubmit} className="min-h-screen flex items-center justify-center">
             <div className="relative flex items-end gap-2 p-1 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-200 w-full max-w-xl md:max-w-3xl lg:max-w-4xl">
             <div className="absolute -bottom-14 left-1/2 -translate-x-1/2">
-                <BackToDashboard handleClick={handleClick(DASHBOARD, undefined)} />
+                <BackToDashboard handleClick={handleClick(Config.DASHBOARD, undefined)} />
             </div>
             <Textarea
                 value={prompt}
