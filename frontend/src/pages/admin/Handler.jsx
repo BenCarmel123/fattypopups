@@ -5,6 +5,7 @@ import Dashboard from "./views/Dashboard.jsx";
 import Login from "./views/Login.jsx";
 import PromptDraft from "./views/PromptDraft.jsx";
 import { handleTokenCheck } from "../../utils/auth.js";
+import { fetchEvents } from "../../utils/database/api.js";
 
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
@@ -15,10 +16,13 @@ export default function AdminPageHandler() {
   const[isAuthenticated, setAuthenticated] = useState(false)
   const[action, setAction] = useState(null);
   const[selectedEvent, setSelectedEvent] = useState(undefined);
+  // Load from sessionStorage so dashboard renders instantly on remount
+  const cached = sessionStorage.getItem('admin_events');
+  const[events, setEvents] = useState(cached ? JSON.parse(cached) : []);
 
   const handleClick = (action, selectedEvent) => () => {
     setAction(action);
-    setSelectedEvent(selectedEvent || undefined); 
+    setSelectedEvent(selectedEvent || undefined);
   };
 
   // On Mount
@@ -39,6 +43,13 @@ export default function AdminPageHandler() {
       .then(res => res.json()).then(data => {
                if (!data.authenticated) localStorage.removeItem(Config.AUTH_TOKEN);
         setAuthenticated(data.authenticated);
+        if (data.authenticated) {
+          // Fetch fresh events from server, update state and sessionStorage cache
+          fetchEvents(true).then(fresh => {
+            setEvents(fresh);
+            sessionStorage.setItem('admin_events', JSON.stringify(fresh));
+          }).catch(() => setEvents([]));
+        }
         setAction(data.authenticated ? Config.DASHBOARD : Config.LOGIN);});
   }, []);
 
@@ -46,11 +57,11 @@ export default function AdminPageHandler() {
 
    switch(action) {
          case Config.ADD:
-            return (<EventForm isEdit={false} handleClick={handleClick} event={selectedEvent} />);
+            return (<EventForm isEdit={false} handleClick={handleClick} event={selectedEvent} setEvents={setEvents} />);
          case Config.EDIT:
-            return (<EventForm isEdit={true} handleClick={handleClick} event={selectedEvent} />);
+            return (<EventForm isEdit={true} handleClick={handleClick} event={selectedEvent} setEvents={setEvents} />);
          case Config.DASHBOARD:
-            return (<Dashboard handleClick={handleClick} />);
+            return (<Dashboard handleClick={handleClick} events={events} setEvents={setEvents} />);
          case Config.LOGIN:
             return (<Login />);
          case Config.AI:

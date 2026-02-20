@@ -8,7 +8,7 @@ import FormBody from "../components/form/structure/FormBody.jsx";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
-export default function EventForm({ event, isEdit, handleClick } ) {
+export default function EventForm({ event, isEdit, handleClick, setEvents } ) {
     const [alert, setAlert] = useState(undefined);
     const [isLoading, setLoading] = useState(false);
     const isDraftRef = useRef(false);
@@ -34,8 +34,22 @@ export default function EventForm({ event, isEdit, handleClick } ) {
 
         try {
             setLoading(true);
-            await submitFormData(url, method, eventData);
+            const savedEvent = await submitFormData(url, method, eventData);
             setLoading(false);
+            // Update state and sessionStorage cache so the dashboard reflects the change instantly
+            if (isEdit) {
+              setEvents(prev => {
+                const updated = prev.map(ev => ev.id === savedEvent.id ? savedEvent : ev);
+                sessionStorage.setItem('admin_events', JSON.stringify(updated));
+                return updated;
+              });
+            } else {
+              setEvents(prev => {
+                const updated = [...prev, savedEvent];
+                sessionStorage.setItem('admin_events', JSON.stringify(updated));
+                return updated;
+              });
+            }
 
             // Determine success message based on draft status and edit mode
             let successTitle;

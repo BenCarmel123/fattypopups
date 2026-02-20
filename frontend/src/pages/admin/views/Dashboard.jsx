@@ -1,33 +1,25 @@
 import { Checkbox, Table } from "@chakra-ui/react"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import * as Config from 'config/index.jsx'
 import MyAlert from "components/CustomAlert.jsx";
 import AdminActions from "../components/AdminActions.jsx";
 import { AdminActionButton, BackButton } from "components/Buttons.jsx";
-import { fetchEvents, deleteEvents } from "utils/database/api.js";
+import { deleteEvents } from "utils/database/api.js";
 
-const Dashboard = ({ handleClick }) => {
+const Dashboard = ({ handleClick, events, setEvents }) => {
   const [selection, setSelection] = useState([])
-  const [events, setEvents] = useState([])
   const [alert, setAlert] = useState(undefined);
-  
-  // Fetch events from the server
-  useEffect(() => {
-    fetchEvents(true)
-      .then(data => setEvents(data))
-      .catch(err => {
-        console.log('[ERROR] Error fetching events:', err);
-        setEvents([]);
-      });
-  }, [])
 
   // Delete selected events
   const handleDeleteEvents = () => {
     deleteEvents(selection)
       .then(data => {
-        setEvents(prev =>
-          prev.filter(ev => !data.deleted.includes(ev.title))
-        );
+        // Update state and sessionStorage cache so the list stays accurate on remount
+        setEvents(prev => {
+          const updated = prev.filter(ev => !data.deleted.includes(ev.title));
+          sessionStorage.setItem('admin_events', JSON.stringify(updated));
+          return updated;
+        });
         setSelection([]);
       })
       .catch(err => console.log("[ERROR] Error deleting events:", err));
