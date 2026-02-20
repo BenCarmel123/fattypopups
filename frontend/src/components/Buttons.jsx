@@ -1,20 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@chakra-ui/react';
-import { 
-  WHITE, 
-  ADMIN_PANEL_COLOR, 
-  BACK_TO_DASHBOARD_BUTTON_COLOR,
-  SOLID, 
-  BOLD, 
-  XL, 
-  MEDIUM, 
-  MINIMAL_TRANSFORM, 
-  MINIMAL_TRANSITION, 
-  POINTER, 
-  BACK_BUTTON_TEXT,
-  HOMEPAGE_BUTTON_TEXT,
-  LARGE 
-} from '../config/index.jsx';
+import * as Config from '../config/index.jsx';
 import { Send, Loader2 } from 'lucide-react';
 import FileUpload from "./FileUpload.jsx";
 
@@ -25,8 +11,8 @@ export function BackButton({ homepage = false }) {
             onClick={() => navigate(homepage ? '/' : -1)}
             className="text-sm text-gray-600 underline hover:text-gray-800"
             aria-label="Go back"
-            style={{ cursor: POINTER }}>
-            {homepage ? HOMEPAGE_BUTTON_TEXT : BACK_BUTTON_TEXT}
+            style={{ cursor: Config.POINTER }}>
+            {homepage ? Config.HOMEPAGE_BUTTON_TEXT : Config.BACK_BUTTON_TEXT}
         </button>
     );
 }
@@ -34,16 +20,16 @@ export function BackButton({ homepage = false }) {
 export function SubmitFormButton({ text, onClick, isDraft }) {
     return (
  <Button
-    color={WHITE}
-    backgroundColor={ADMIN_PANEL_COLOR}
-    variant={SOLID}
-    size={MEDIUM}
-    fontWeight={BOLD}
+    color={Config.WHITE}
+    backgroundColor={Config.ADMIN_PANEL_COLOR}
+    variant={Config.SOLID}
+    size={Config.MEDIUM}
+    fontWeight={Config.BOLD}
     px={4}
     py={4}
-    boxShadow={MEDIUM}
-    borderRadius={XL}
-    _hover={{transition:MINIMAL_TRANSITION, transform: MINIMAL_TRANSFORM }}
+    boxShadow={Config.MEDIUM}
+    borderRadius={Config.XL}
+    _hover={{transition:Config.MINIMAL_TRANSITION, transform: Config.MINIMAL_TRANSFORM }}
     type="submit"
     onClick={onClick}>
     {text}
@@ -52,18 +38,18 @@ export function SubmitFormButton({ text, onClick, isDraft }) {
 }
 
 export function BackToDashboard({ handleClick }) {
-    return (<Button 
-            color={WHITE}
-            backgroundColor={ BACK_TO_DASHBOARD_BUTTON_COLOR }
-            variant={SOLID} 
-            size={MEDIUM} 
-            fontWeight={BOLD} 
+    return (<Button
+            color={Config.WHITE}
+            backgroundColor={ Config.BACK_TO_DASHBOARD_BUTTON_COLOR }
+            variant={Config.SOLID}
+            size={Config.MEDIUM}
+            fontWeight={Config.BOLD}
             py={4}
             px={4}
-            boxShadow={MEDIUM} 
-            borderRadius={XL} 
+            boxShadow={Config.MEDIUM}
+            borderRadius={Config.XL}
             onClick={handleClick}
-            _hover={{transition:MINIMAL_TRANSITION, transform: MINIMAL_TRANSFORM }} >
+            _hover={{transition:Config.MINIMAL_TRANSITION, transform: Config.MINIMAL_TRANSFORM }} >
             Back
             </Button>);
 }
@@ -82,34 +68,34 @@ export function SubmitPromptButton({ prompt, isLoading}) {
 }
 
 export function FileUploadButton() {
-    return (<Button 
-            variant={SOLID}
-            size={LARGE}
-            fontWeight={BOLD}
-            px={2} 
-            py={2} 
-            boxShadow={MEDIUM}
-            borderRadius={XL} 
-            backgroundColor={ADMIN_PANEL_COLOR}
-            _hover={{ transform: MINIMAL_TRANSFORM }} 
-            transition={MINIMAL_TRANSITION}
+    return (<Button
+            variant={Config.SOLID}
+            size={Config.LARGE}
+            fontWeight={Config.BOLD}
+            px={2}
+            py={2}
+            boxShadow={Config.MEDIUM}
+            borderRadius={Config.XL}
+            backgroundColor={Config.ADMIN_PANEL_COLOR}
+            _hover={{ transform: Config.MINIMAL_TRANSFORM }}
+            transition={Config.MINIMAL_TRANSITION}
             as="label">
-            <FileUpload style={{ display: 'none'}} />
+            <FileUpload style={{ display: Config.NONE}} />
         </Button>);
 }
 
 export function AdminActionButton({ onClick, text }) {
     return (
         <Button
-            color={WHITE}
-            variant={SOLID}
+            color={Config.WHITE}
+            variant={Config.SOLID}
             px={6}
             py={6}
-            boxShadow={MEDIUM}
-            borderRadius={XL}
-            backgroundColor={ADMIN_PANEL_COLOR}
-            _hover={{ transform: MINIMAL_TRANSFORM }}
-            transition={MINIMAL_TRANSITION}
+            boxShadow={Config.MEDIUM}
+            borderRadius={Config.XL}
+            backgroundColor={Config.ADMIN_PANEL_COLOR}
+            _hover={{ transform: Config.MINIMAL_TRANSFORM }}
+            transition={Config.MINIMAL_TRANSITION}
             onClick={onClick}
         >
             {text}
