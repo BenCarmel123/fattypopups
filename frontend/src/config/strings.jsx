@@ -14,6 +14,7 @@ export const RESERVE = "Reserve";
 export const SHARE = "Share";
 export const ABOUT_BUTTON_TEXT = "Our Story";
 export const BACK_BUTTON_TEXT = "← Back";
+export const HOMEPAGE_BUTTON_TEXT = "← Homepage";
 export const POST = "POST";
 export const PUT = "PUT";
 export const GET = "GET";

@@ -1,4 +1,4 @@
-import { SUBHEADER_TEXT_1, SUBHEADER_TEXT_2 } from '../../../config/index.jsx';
+import { SUBHEADER_TEXT_1, SUBHEADER_TEXT_2 } from 'config/index.jsx';
 
 export default function InstructionText() {
     return (

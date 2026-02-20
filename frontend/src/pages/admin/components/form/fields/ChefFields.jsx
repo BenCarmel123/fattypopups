@@ -1,7 +1,7 @@
 import { Stack, Button } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
-import TypeaheadInput from "../../../../../components/form/TypeaheadInput";
-import { fetchChefs } from "../../../../../utils/database/api";
+import TypeaheadInput from "components/form/TypeaheadInput";
+import { fetchChefs } from "utils/database/api";
 import Row from "../structure/Row.jsx";
 import AddChef from "./AddButton.jsx";
 

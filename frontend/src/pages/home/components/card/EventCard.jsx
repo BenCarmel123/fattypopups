@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '@chakra-ui/react';
-import { MEDIUM, LARGE, MAX, SOLID } from '../../../../config/index.jsx';
+import { MEDIUM, LARGE, MAX, SOLID } from 'config/index.jsx';
 import CardBody from './parts/CardBody.jsx';
 import CardFooter from './parts/CardFooter.jsx';
 import FlipImage from './parts/FlipImage.jsx';

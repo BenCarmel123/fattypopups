@@ -1,5 +1,5 @@
 import React from "react";
-import { FORM_FIELD_COLOR } from "../../../../../config/index.jsx";
+import { FORM_FIELD_COLOR } from "config/index.jsx";
 
 export default function Section({ children, title }) {
   return (

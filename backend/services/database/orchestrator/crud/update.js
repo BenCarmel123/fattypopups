@@ -1,5 +1,5 @@
 import { updateEventEmbeddings } from "../../vector/orchestrator.js";
-import { handleEventImageUpload } from "../../../s3/upload.js";
+import { handleEventImageUpload } from "services/s3/upload.js";
 import { getEventById, updateEventById, handleEventVenueUpdate } from "../../entities/event/operations.js";
 import { computeUpdateState } from "../../utils/computeState.js";
 import { getChefsForEvent } from "../../entities/linking/operations.js";
