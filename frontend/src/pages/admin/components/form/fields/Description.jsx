@@ -1,5 +1,5 @@
 import { Field, Textarea } from "@chakra-ui/react";
-import { FORM_FIELD_COLOR, TEXT_AREA_COLOR } from "config/index.jsx"; 
+import * as Config from 'config/index.jsx'; 
 
 export default function FormTextArea({ event, lang = 'en' }) {
   // Choose the right field from event
@@ -9,13 +9,13 @@ export default function FormTextArea({ event, lang = 'en' }) {
 
   return (
     <Field.Root>
-      <Field.Label color={FORM_FIELD_COLOR}>{label}</Field.Label>
+      <Field.Label color={Config.FORM_FIELD_COLOR}>{label}</Field.Label>
       <Textarea
         name={name}
         defaultValue={value}
-        borderColor={TEXT_AREA_COLOR}
+        borderColor={Config.TEXT_AREA_COLOR}
         borderWidth={2}
-        _focus={{ borderColor: FORM_FIELD_COLOR }}
+        _focus={{ borderColor: Config.FORM_FIELD_COLOR }}
         resize="vertical"
         minH="100px"
         onInput={(e) => e.target.style.height = `${e.target.scrollHeight}px`}

@@ -1,18 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { 
-  GiKnifeFork, 
-  AiOutlineMail,
-  SECONDARY_COLOR, 
-  ABOUT_PAGE_BACKGROUND_COLOR, 
-  BLACK,
-  ABOUT_CREATORS_1, 
-  ABOUT_CREATORS_2, 
-  ABOUT_CREATORS_3, 
-  CONTACT, 
-  SELF, 
-  NO_OPENER 
-} from "../../config/index.jsx";
+import * as Config from '../../config/index.jsx';
+import { AiOutlineMail, GiKnifeFork } from '../../config/index.jsx';
 import { BackButton } from "../../components/Buttons.jsx";
 
 const INSTA_LINK_HALLIE = process.env.REACT_APP_INSTA_LINK_HALLIE;
@@ -40,10 +29,10 @@ export const ABOUT_SUBHEADER = ({ text, color, style }) => {
 
 export const ContactEmail = ({ email }) => {
   return (
-    <p className="text-sm text-gray-400 font-bold mt-0" style={{ color: SECONDARY_COLOR }}>
-        <span className="inline-flex items-center gap-2" style={{ color: SECONDARY_COLOR, marginBottom: '1.5rem' }}>
-          <AiOutlineMail className="inline-block" style={{ verticalAlign: 'middle', color: SECONDARY_COLOR }} />
-          <a href={`mailto:${email}`} className="underline" style={{ color: SECONDARY_COLOR }}>
+    <p className="text-sm text-gray-400 font-bold mt-0" style={{ color: Config.SECONDARY_COLOR }}>
+        <span className="inline-flex items-center gap-2" style={{ color: Config.SECONDARY_COLOR, marginBottom: '1.5rem' }}>
+          <AiOutlineMail className="inline-block" style={{ verticalAlign: 'middle', color: Config.SECONDARY_COLOR }} />
+          <a href={`mailto:${email}`} className="underline" style={{ color: Config.SECONDARY_COLOR }}>
             {email}
           </a>
         </span>
@@ -69,13 +58,13 @@ export default function AboutPage() {
   ];
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-6 py-20" style={{ backgroundColor: ABOUT_PAGE_BACKGROUND_COLOR, marginTop: '-40px' }}>
+    <div className="min-h-screen flex items-center justify-center px-6 py-20" style={{ backgroundColor: Config.ABOUT_PAGE_BACKGROUND_COLOR, marginTop: '-40px' }}>
       <div className="max-w-2xl w-full space-y-12">
         <div className="flex justify-center mb-7">
           <BackButton />
         </div>
-        <ABOUT_SUBHEADER text="About" color={BLACK} />
-        <ABOUT_SUBHEADER text="fatty popups" color={SECONDARY_COLOR} style={{ fontStyle: 'italic', fontWeight: '300' }} />
+        <ABOUT_SUBHEADER text="About" color={Config.BLACK} />
+        <ABOUT_SUBHEADER text="fatty popups" color={Config.SECONDARY_COLOR} style={{ fontStyle: 'italic', fontWeight: '300' }} />
 
       <div className="flex justify-center">
         <GiKnifeFork className="text-6xl text-gray-900" />
@@ -87,8 +76,8 @@ export default function AboutPage() {
             <motion.a
               key={creator.name}
               href={creator.instagram}
-              target={SELF}
-              rel={NO_OPENER}
+              target={Config.SELF}
+              rel={Config.NO_OPENER}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ 
@@ -126,11 +115,11 @@ export default function AboutPage() {
         </div>
 
   <div className="space-y-6 text-lg text-gray-600 leading-relaxed text-center pt-8" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', marginTop: '1rem' }}>
-          <ParagraphComponent text={ABOUT_CREATORS_1} />
-          <ParagraphComponent text={ABOUT_CREATORS_2} />
-          <ParagraphComponent text={ABOUT_CREATORS_3} />
-          <p className="text-md text-gray-400 pt-4 font-light" style={{ color: SECONDARY_COLOR }}>
-            {CONTACT}
+          <ParagraphComponent text={Config.ABOUT_CREATORS_1} />
+          <ParagraphComponent text={Config.ABOUT_CREATORS_2} />
+          <ParagraphComponent text={Config.ABOUT_CREATORS_3} />
+          <p className="text-md text-gray-400 pt-4 font-light" style={{ color: Config.SECONDARY_COLOR }}>
+            {Config.CONTACT}
           </p>
           <div className="flex flex-col items-center space-y-2 mt-2">
             <ContactEmail email={HALLIE_EMAIL} />

@@ -75,6 +75,7 @@ export const OUTLINE = 'outline';
 export const ACTION_BUTTON_SPACING = "inline-block mr-2.5";
 export const ACTION_BUTTON_HOVER = "cursor-pointer text-[20px] relative"
 export const BOLD = 'bold';
+export const BOLDER = 'bolder';
 export const MINIMAL_TRANSFORM = 'scale(1.05)';
 export const MINIMAL_TRANSITION = 'all 0.15s';
 export const OVERLAY_STYLE = { position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(255, 255, 255, 0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '1.5rem', fontWeight: 'bold', transition: 'opacity 0.3s' };

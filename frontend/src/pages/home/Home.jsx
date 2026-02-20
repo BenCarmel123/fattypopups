@@ -4,6 +4,7 @@ import DisplayCard from './components/card/DisplayCard.jsx';
 import Header from '../../components/Header.jsx';
 import InstructionText from './components/InstructionText.jsx';
 import EventIndexContext from './context/EventIndexContext.js';
+import { handleTokenCheck } from "utils/auth.js";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -31,7 +32,7 @@ export default function HomePage() {
 
   return (
     <>
-    <Header />
+    <Header token={handleTokenCheck} />
     <div className="mt-2 w-full flex flex-col items-center px-2 sm:px-4 md:px-8 box-border">
       <InstructionText />
       {events.map((evt, index) => (

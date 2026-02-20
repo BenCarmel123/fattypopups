@@ -1,4 +1,4 @@
-import { SHORT, NUMERIC } from '../config/index.jsx';
+import * as Config from '../config/index.jsx';
 
 // Helper to format date ranges from start and end dates of events
 export function formatDateRange(start, end) {
@@ -7,16 +7,16 @@ export function formatDateRange(start, end) {
         const endDate = new Date(end);
         const sameDay = startDate.getDate() === endDate.getDate() && startDate.getMonth() === endDate.getMonth() && startDate.getFullYear() === endDate.getFullYear();
         if (sameDay) {
-            return startDate.toLocaleDateString(undefined, { month: SHORT, day: NUMERIC });
+            return startDate.toLocaleDateString(undefined, { month: Config.SHORT, day: Config.NUMERIC });
         }
         const sameMonth = startDate.getMonth() === endDate.getMonth() && startDate.getFullYear() === endDate.getFullYear();
         if (sameMonth) {
-            return `${startDate.toLocaleDateString(undefined, { month: SHORT })} ${startDate.getDate()}-${endDate.getDate()}`;
+            return `${startDate.toLocaleDateString(undefined, { month: Config.SHORT })} ${startDate.getDate()}-${endDate.getDate()}`;
         } else {
-            return `${startDate.toLocaleDateString(undefined, { month: SHORT })} ${startDate.getDate()} -${endDate.toLocaleDateString(undefined, { month: SHORT })} ${endDate.getDate()}`;
+            return `${startDate.toLocaleDateString(undefined, { month: Config.SHORT })} ${startDate.getDate()} -${endDate.toLocaleDateString(undefined, { month: Config.SHORT })} ${endDate.getDate()}`;
         }
     } else if (start) {
-        return new Date(start).toLocaleDateString(undefined, { month: SHORT, day: NUMERIC });
+        return new Date(start).toLocaleDateString(undefined, { month: Config.SHORT, day: Config.NUMERIC });
     } else {
         return '';
     }

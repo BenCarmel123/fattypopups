@@ -1,4 +1,4 @@
-import { DASHBOARD, CENTER, FLEX, RELATIVE, PUT, POST, STATUS_ERROR, STATUS_SUCCESS } from "config/index.jsx";
+import * as Config from 'config/index.jsx';
 import validateEvent from "../utils/validation.js";
 import { extractEventData, submitFormData } from "../utils/form.js";
 import { useRef, useState } from "react";
@@ -24,13 +24,13 @@ export default function EventForm({ event, isEdit, handleClick } ) {
         // Validate (drafts only need title, full events need everything)
         const validation = validateEvent(eventData, isEdit, eventData.is_draft);
         if (!validation.valid) {
-            setAlert({ status: STATUS_ERROR, description: validation.error });
+            setAlert({ status: Config.STATUS_ERROR, description: validation.error });
             return;
         }
 
         // Determine URL and method
         const url = isEdit ? `${SERVER_URL}/api/events/${event.id}` : `${SERVER_URL}/api/events`;
-        const method = isEdit ? PUT : POST;
+        const method = isEdit ? Config.PUT : Config.POST;
 
         try {
             setLoading(true);
@@ -46,25 +46,25 @@ export default function EventForm({ event, isEdit, handleClick } ) {
             }
 
             setAlert({
-                status: STATUS_SUCCESS,
+                status: Config.STATUS_SUCCESS,
                 title: successTitle,
             });
 
             setTimeout(() => {
-                handleClick(DASHBOARD)();
+                handleClick(Config.DASHBOARD)();
             }, 750);
         } 
         catch (err) {
             setLoading(false);
             setAlert({
-                status: STATUS_ERROR,
+                status: Config.STATUS_ERROR,
                 description: err.message,
             });
         } 
     }
 
     return (
-        <div className={CENTER} style={{ position: RELATIVE, display: FLEX, alignItems: CENTER, justifyContent: CENTER, minHeight: '100vh', paddingTop: '3rem' }}>
+        <div className={Config.CENTER} style={{ position: Config.RELATIVE, display: Config.FLEX, alignItems: Config.CENTER, justifyContent: Config.CENTER, minHeight: '100vh', paddingTop: '3rem' }}>
             <SpinnerOverlay isLoading={isLoading} />
             <FormAlert alert={alert} onClose={() => setAlert(null)} />
             <FormBody

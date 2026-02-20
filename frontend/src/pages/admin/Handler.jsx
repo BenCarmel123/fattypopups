@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import EventForm from "./views/EventForm.jsx";
-import { ADD, EDIT, LOGIN, DASHBOARD, AI, AUTH_TOKEN } from "../../config/index.jsx";
+import * as Config from '../../config/index.jsx';
 import Dashboard from "./views/Dashboard.jsx";
 import Login from "./views/Login.jsx";
 import PromptDraft from "./views/PromptDraft.jsx";
@@ -12,7 +12,7 @@ export default function AdminPageHandler() {
   
   // eslint-disable-next-line no-unused-vars
   const[isAuthenticated, setAuthenticated] = useState(false)
-  const[action, setAction] = useState(LOGIN);
+  const[action, setAction] = useState(Config.LOGIN);
   const[selectedEvent, setSelectedEvent] = useState(undefined);
 
   const handleClick = (action, selectedEvent) => () => {
@@ -27,7 +27,7 @@ export default function AdminPageHandler() {
   // No Token
   if (!token) {
     setAuthenticated(false)
-    setAction(LOGIN)
+    setAction(Config.LOGIN)
     return
   }
 
@@ -36,21 +36,21 @@ export default function AdminPageHandler() {
   // Authorization Check
   fetch(`${SERVER_URL}/auth/check`, { headers: { Authorization: `Bearer ${token}`,},})
       .then(res => res.json()).then(data => {
-               if (!data.authenticated) localStorage.removeItem(AUTH_TOKEN);
+               if (!data.authenticated) localStorage.removeItem(Config.AUTH_TOKEN);
         setAuthenticated(data.authenticated);
-        setAction(data.authenticated ? DASHBOARD : LOGIN);});
+        setAction(data.authenticated ? Config.DASHBOARD : Config.LOGIN);});
   }, []);
 
    switch(action) {
-         case ADD:
+         case Config.ADD:
             return (<EventForm isEdit={false} handleClick={handleClick} event={selectedEvent} />);
-         case EDIT:
+         case Config.EDIT:
             return (<EventForm isEdit={true} handleClick={handleClick} event={selectedEvent} />);
-         case DASHBOARD:
+         case Config.DASHBOARD:
             return (<Dashboard handleClick={handleClick} />);
-         case LOGIN:
+         case Config.LOGIN:
             return (<Login />);
-         case AI: 
+         case Config.AI: 
             return (<PromptDraft handleClick={handleClick} />);
          default:
             return (<Login />);
