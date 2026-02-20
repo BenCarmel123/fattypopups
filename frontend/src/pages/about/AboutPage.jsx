@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import * as Config from '../../config/index.jsx';
+import { AiOutlineMail, GiKnifeFork } from '../../config/index.jsx';
 import { BackButton } from "../../components/Buttons.jsx";
 
 const INSTA_LINK_HALLIE = process.env.REACT_APP_INSTA_LINK_HALLIE;
