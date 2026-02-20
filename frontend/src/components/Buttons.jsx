@@ -11,26 +11,27 @@ import {
   MINIMAL_TRANSFORM, 
   MINIMAL_TRANSITION, 
   POINTER, 
-  BACK_BUTTON_TEXT, 
+  BACK_BUTTON_TEXT,
+  HOMEPAGE_BUTTON_TEXT,
   LARGE 
 } from '../config/index.jsx';
 import { Send, Loader2 } from 'lucide-react';
 import FileUpload from "./FileUpload.jsx";
 
-export function BackButton() {
+export function BackButton({ homepage = false }) {
   const navigate = useNavigate();
   return (
         <button
-            onClick={() => navigate(-1)}
+            onClick={() => navigate(homepage ? '/' : -1)}
             className="text-sm text-gray-600 underline hover:text-gray-800"
             aria-label="Go back"
             style={{ cursor: POINTER }}>
-            {BACK_BUTTON_TEXT}
+            {homepage ? HOMEPAGE_BUTTON_TEXT : BACK_BUTTON_TEXT}
         </button>
     );
 }
 
-export function SubmitFormButton({ text, onClick }) {
+export function SubmitFormButton({ text, onClick, isDraft }) {
     return (
  <Button
     color={WHITE}

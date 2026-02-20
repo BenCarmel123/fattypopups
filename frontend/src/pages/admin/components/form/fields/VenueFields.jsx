@@ -1,7 +1,7 @@
 import { Stack } from "@chakra-ui/react";
 import { useState, useEffect } from 'react';
-import TypeaheadInput from '../../../../../components/form/TypeaheadInput';
-import { fetchVenues } from '../../../../../utils/database/api';
+import TypeaheadInput from 'components/form/TypeaheadInput';
+import { fetchVenues } from 'utils/database/api';
 import Row from "../structure/Row.jsx";
 
 // Venue fields component - manages venue name, address, and instagram inputs

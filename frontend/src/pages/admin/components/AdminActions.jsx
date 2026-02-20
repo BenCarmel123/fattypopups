@@ -1,7 +1,7 @@
-import { ADD, FLEX, CENTER, BOLD } from "../../../config/strings.jsx";
-import { WHITE } from "../../../config/colors.jsx";
+import { ADD, FLEX, CENTER, BOLD } from "config/strings.jsx";
+import { WHITE } from "config/colors.jsx";
 import React from 'react';
-import { AdminActionButton } from '../../../components/Buttons.jsx';
+import { AdminActionButton } from 'components/Buttons.jsx';
 
 export default function AdminActions({ handleClick, handleEditEvents, handleDeleteEvents }) {
   return (

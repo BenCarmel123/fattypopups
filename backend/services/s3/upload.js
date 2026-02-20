@@ -48,6 +48,10 @@ const generateS3KeyAndUrl = (existingUrl, file, title) => {
 
 // 3. Handle case when no file is uploaded
 const handleNoFileUpload = async (body, currentEvent) => {
+  if (!currentEvent) {
+    delete body.poster;
+    return;
+  }
   const isDraft = isTrue(body.is_draft);
   const wasDraft = isTrue(currentEvent.is_draft);
   const toPublish = wasDraft && !isDraft;

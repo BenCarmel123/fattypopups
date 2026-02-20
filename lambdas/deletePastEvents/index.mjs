@@ -3,7 +3,7 @@ import { supabase } from '../../backend/config/clients/supabase.js'
 export const deletePastEvents = async () => {
     try {
         const oldest_allowed_date = new Date();
-        oldest_allowed_date.setDate(oldest_allowed_date.getDate() - 14);
+        oldest_allowed_date.setDate(oldest_allowed_date.getDate() - 2);
         const { data, error } = await supabase
             .from('events_new')
                 .delete()

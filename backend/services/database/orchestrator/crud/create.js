@@ -3,7 +3,8 @@ import { upsertVenue } from '../../entities/venue/operations.js';
 import { createEventEmbeddings } from '../../vector/orchestrator.js';
 import { insertEvent } from '../../entities/event/operations.js';
 import { linkChefsToEvent } from '../../entities/linking/operations.js';
-import { handleEventImageUpload } from '../../../s3/upload.js';
+import { handleEventImageUpload } from '#services/s3/upload.js';
+import { isTrue } from '#services/utils.js';
 
 // Orchestrates creating an event with all related entities (venue, chefs, embeddings)
 export const orchestrateEventCreate = async (body, file) => {
@@ -21,9 +22,8 @@ export const orchestrateEventCreate = async (body, file) => {
     hebrew_description,
     is_draft
   } = body;
-
   await handleEventImageUpload(null, body, file, null);
-  const isDraft = is_draft === true || is_draft === "true";
+  const isDraft = isTrue(is_draft);
   const chefNamesArray = chef_names?.split(',').map(s => s.trim()) ?? [];
 
   console.log('[EVENT] Creating event - isDraft:', isDraft);

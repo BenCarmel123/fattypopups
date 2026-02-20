@@ -13,7 +13,7 @@ import {
   ERR_HEBREW_DESC_REQUIRED, 
   ERR_POSTER_REQUIRED, 
   STRING 
-} from '../../../config/index.jsx';
+} from 'config/index.jsx';
 
 
 // Helper to validate event data

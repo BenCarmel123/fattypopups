@@ -1,9 +1,9 @@
 import { Card } from "@chakra-ui/react";
-import { TRANSPARENT, FORM_BACKGROUND_COLOR, MAX, NONE, XL } from "../../../../../config/index.jsx";
-import Body from "./Body.jsx";
-import Footer from "./Footer.jsx";
+import { TRANSPARENT, FORM_BACKGROUND_COLOR, MAX, NONE, XL } from "config/index.jsx";
+import FormFields from "./FormFields.jsx";
+import FormFooter from "./FormFooter.jsx";
 
-export default function FormCard({ event, isEdit, tomorrowStr, onSubmit, handleClick }) {
+export default function FormBody({ event, isEdit, onSubmit, handleClick, isDraftRef }) {
   return (
     <Card.Root
       backgroundColor={TRANSPARENT}
@@ -23,8 +23,10 @@ export default function FormCard({ event, isEdit, tomorrowStr, onSubmit, handleC
           boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
         }}
       >
-        <Body event={event} tomorrowStr={tomorrowStr} />
-        <Footer isEdit={isEdit} handleClick={handleClick} event={event} />
+        <Card.Body>
+          <FormFields event={event} />
+        </Card.Body>
+        <FormFooter isEdit={isEdit} handleClick={handleClick} event={event} isDraftRef={isDraftRef} />
       </form>
     </Card.Root>
   );

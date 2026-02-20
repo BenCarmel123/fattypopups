@@ -1,5 +1,5 @@
 import { HStack, Text } from "@chakra-ui/react";
-import { BACKGROUND_COLOR } from "../../../../../config/index.jsx";
+import { BACKGROUND_COLOR } from "config/index.jsx";
 
 export default function AddChef({ onClick, label, disabled = false }) {
   return (

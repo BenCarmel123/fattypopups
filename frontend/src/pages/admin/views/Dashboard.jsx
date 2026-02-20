@@ -1,10 +1,10 @@
 import { Checkbox, Table } from "@chakra-ui/react"
 import { useState, useEffect } from "react"
-import { EDIT, LARGE, FLEX, AI, BACKGROUND_COLOR, STATUS_ERROR } from "../../../config/index.jsx"
-import MyAlert from "../../../components/CustomAlert.jsx";
+import { EDIT, LARGE, FLEX, AI, BACKGROUND_COLOR, STATUS_ERROR, SUBTLE } from "config/index.jsx"
+import MyAlert from "components/CustomAlert.jsx";
 import AdminActions from "../components/AdminActions.jsx";
-import { AdminActionButton } from "../../../components/Buttons.jsx";
-import { fetchEvents, deleteEvents } from "../../../utils/database/api.js";
+import { AdminActionButton, BackButton } from "components/Buttons.jsx";
+import { fetchEvents, deleteEvents } from "utils/database/api.js";
 
 const Dashboard = ({ handleClick }) => {
   const [selection, setSelection] = useState([])
@@ -50,7 +50,7 @@ const Dashboard = ({ handleClick }) => {
       data-selected={selection.includes(event.title) ? "" : undefined}
     >
       <Table.Cell>
-      <Checkbox.Root variant={'subtle'} colorPalette={event.is_draft ? 'red' : 'blue'}
+      <Checkbox.Root variant={SUBTLE} colorPalette={event.is_draft ? 'red' : 'blue'}
         checked={selection.includes(event.title)}
         onCheckedChange=
         {({ checked }) => 
@@ -69,6 +69,7 @@ const Dashboard = ({ handleClick }) => {
   
   return (
     <div style={{ display: FLEX, flexDirection: 'column', alignItems: 'stretch', maxWidth: '1200px', minWidth: '400px', margin: '0 auto', padding: '2rem', borderRadius: '2rem' }}>
+      <BackButton homepage />
       {alert && <MyAlert {...alert} onClose={() => setAlert(null)} />}
       <Table.Root size={LARGE} marginTop="2rem">
         <Table.Header>

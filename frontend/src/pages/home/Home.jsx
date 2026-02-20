@@ -36,7 +36,7 @@ export default function HomePage() {
       <InstructionText />
       {events.map((evt, index) => (
         <EventIndexContext.Provider key={evt.title} value={index}>
-          <div className="mb-8 w-full max-w-xl">
+          <div className="mb-8 w-full max-w-xl relative">
             <DisplayCard event={evt} />
           </div>
         </EventIndexContext.Provider>

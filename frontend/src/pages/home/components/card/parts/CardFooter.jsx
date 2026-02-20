@@ -1,13 +1,13 @@
 import { Card, Button } from '@chakra-ui/react';
-import { handleWhatsApp } from '../../../../../utils/externalLinks';
-import { defaultOnMouseEnter, defaultOnMouseLeave } from '../../../../../utils/interactions';
-import { GRAY, FOOTER_BACKGROUND_COLOR, RESERVE, SHARE, XL, XXL, FLEX, CENTER, MAX, SELF, NO_OPENER, SUBTLE, NONE, GiForkKnifeSpoon, FaWhatsapp
-} from '../../../../../config/index.jsx';
+import { handleWhatsApp } from 'utils/externalLinks';
+import { defaultOnMouseEnter, defaultOnMouseLeave } from 'utils/interactions';
+import { GRAY, FOOTER_BACKGROUND_COLOR, RESERVE, SHARE, XL, XXL, FLEX, CENTER, MAX, SELF, NO_OPENER, SUBTLE, NONE, ABSOLUTE, MIDDLE, NOWRAP, GiForkKnifeSpoon, FaWhatsapp
+} from 'config/index.jsx';
 
 /* -------------------------- ACTION BUTTON -------------------------- */
 function ActionButton({ children, onClick, ariaLabel, className = '', fullCover = false }) {
   const baseStyle = { color: GRAY, minHeight: '2.6rem', minWidth: '2.2rem', padding: '0.45rem', transition: 'background 0.18s' };
-  const coverStyle = { position: 'absolute', top: 0, left: 0, width: MAX, height: MAX, padding: 0, minHeight: 0, minWidth: 0, border: NONE, zIndex: 2 };
+  const coverStyle = { position: ABSOLUTE, top: 0, left: 0, width: MAX, height: MAX, padding: 0, minHeight: 0, minWidth: 0, border: NONE, zIndex: 2 };
   const combinedStyle = fullCover ? { ...coverStyle } : baseStyle;
   return (
     <Button
@@ -31,7 +31,7 @@ const FooterOption = ({ text, onClick }) => {
     <p className="eventcard-action-text" style={{ 
       display: 'inline-flex', 
       alignItems: CENTER, 
-      whiteSpace: 'nowrap',
+      whiteSpace: NOWRAP,
     }} onMouseEnter={defaultOnMouseEnter} onMouseLeave={defaultOnMouseLeave} onClick={onClick}> 
       {text}
     </p>
@@ -44,11 +44,11 @@ export default function CardFooter({ event }) {
       <div style={{ display: FLEX, alignItems: CENTER, justifyContent: CENTER, width: MAX, marginTop: '-15px', marginBottom: '-10px' }}>
         <div className="eventcard-actions" style={{ display: FLEX, alignItems: CENTER, justifyContent: CENTER, gap: '1rem', width: MAX, maxWidth: '340px', margin: '0 auto' }}>
           <ActionButton onClick={() => window.open(event.reservation_url, SELF, NO_OPENER)} ariaLabel={RESERVE}>
-            <GiForkKnifeSpoon style={{ verticalAlign: 'middle', marginRight: '-0.3rem' }} />
+            <GiForkKnifeSpoon style={{ verticalAlign: MIDDLE, marginRight: '-0.3rem' }} />
            <FooterOption text={RESERVE} onClick={() => window.open(event.reservation_url, SELF, NO_OPENER)} />
           </ActionButton>
           <ActionButton onClick={() => handleWhatsApp(event.english_description)} ariaLabel="Share">
-            <FaWhatsapp style={{ verticalAlign: 'middle', marginRight: '-0.3rem' }} />
+            <FaWhatsapp style={{ verticalAlign: MIDDLE, marginRight: '-0.3rem' }} />
             <FooterOption text={SHARE} onClick={() => handleWhatsApp(event.english_description)} />
           </ActionButton>
         </div>

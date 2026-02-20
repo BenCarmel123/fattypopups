@@ -14,6 +14,7 @@ export const RESERVE = "Reserve";
 export const SHARE = "Share";
 export const ABOUT_BUTTON_TEXT = "Our Story";
 export const BACK_BUTTON_TEXT = "← Back";
+export const HOMEPAGE_BUTTON_TEXT = "← Homepage";
 export const POST = "POST";
 export const PUT = "PUT";
 export const GET = "GET";
@@ -59,10 +60,13 @@ export const NONE = 'none';
 
 // Layout helpers
 export const CENTER = 'center';
+export const MIDDLE = 'middle';
 export const FLEX = 'flex';
 export const RELATIVE = 'relative';
+export const ABSOLUTE = 'absolute';
 export const FIXED = 'fixed';
 export const BLOCK = 'block';
+export const NOWRAP = 'nowrap';
 
 // Button / UI style tokens
 export const SUBTLE = 'subtle';
@@ -102,5 +106,14 @@ export const PROMPT_PLACEHOLDER = "Describe the event..."
 export const STRING = 'string';
 export const TEXT = "text";
 export const LONG = "long";
+
+// Animation / interaction tokens
+export const EASE_IN_OUT = 'ease-in-out';
+export const MOUSE = 'mouse';
+
+// CSS value tokens
+export const CONTAIN = 'contain';
+export const FETCH_PRIORITY_HIGH = 'high';
+export const FETCH_PRIORITY_LOW = 'low';
 
 
