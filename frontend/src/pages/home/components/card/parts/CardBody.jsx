@@ -1,7 +1,7 @@
 import { Card } from '@chakra-ui/react';
 import { formatDateRange } from 'utils/formatting';
 import { handleMaps, handleInstagram, handleCalendar } from 'utils/externalLinks';
-import { CARD_BACKGROUND_COLOR, EVENT_TITLE_PADDING_COLOR, DRAWER_DETAILS_FONT_COLOR, BORDER_COLOR, CENTER, XL, MEDIUM, POINTER, ACTION_BUTTON_SPACING, RiInstagramFill, SiGooglemaps, SiGooglecalendar 
+import { CARD_BACKGROUND_COLOR, EVENT_TITLE_PADDING_COLOR, DRAWER_DETAILS_FONT_COLOR, BORDER_COLOR, CENTER, XL, MEDIUM, POINTER, BLOCK, ACTION_BUTTON_SPACING, RiInstagramFill, SiGooglemaps, SiGooglecalendar
 } from 'config/index.jsx';
 import EventAttributeSpan from './EventAttributeSpan.jsx';
 
@@ -35,7 +35,7 @@ export default function CardBody({ event }) {
                 style={{
                   cursor: POINTER,
                   marginRight: idx < event.chefs.length - 1 ? 4 : 0,
-                  display: "block",
+                  display: BLOCK,
                   marginLeft: idx === 0 ? 0 : "27px"  
                 }}
                 onClick={() => handleInstagram(chef.instagram_handle)}
@@ -49,7 +49,7 @@ export default function CardBody({ event }) {
         <SiGooglecalendar className={ACTION_BUTTON_SPACING} />
         <EventAttributeSpan attribute={formatDateRange(event.start_datetime, event.end_datetime)} onClick={() => handleCalendar(event)} />
         <br />
-        <span style={{ display: 'block' }}>
+        <span style={{ display: BLOCK }}>
           <SiGooglemaps className={ACTION_BUTTON_SPACING} />
           <EventAttributeSpan attribute={event.venue?.address} onClick={() => handleMaps(event.venue?.address)} />
         </span>

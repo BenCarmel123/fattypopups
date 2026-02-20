@@ -104,4 +104,13 @@ export const STRING = 'string';
 export const TEXT = "text";
 export const LONG = "long";
 
+// Animation / interaction tokens
+export const EASE_IN_OUT = 'ease-in-out';
+export const MOUSE = 'mouse';
+
+// CSS value tokens
+export const CONTAIN = 'contain';
+export const FETCH_PRIORITY_HIGH = 'high';
+export const FETCH_PRIORITY_LOW = 'low';
+
 

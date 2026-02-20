@@ -1,6 +1,6 @@
 import { Checkbox, Table } from "@chakra-ui/react"
 import { useState, useEffect } from "react"
-import { EDIT, LARGE, FLEX, AI, BACKGROUND_COLOR, STATUS_ERROR } from "config/index.jsx"
+import { EDIT, LARGE, FLEX, AI, BACKGROUND_COLOR, STATUS_ERROR, SUBTLE } from "config/index.jsx"
 import MyAlert from "components/CustomAlert.jsx";
 import AdminActions from "../components/AdminActions.jsx";
 import { AdminActionButton, BackButton } from "components/Buttons.jsx";
@@ -50,7 +50,7 @@ const Dashboard = ({ handleClick }) => {
       data-selected={selection.includes(event.title) ? "" : undefined}
     >
       <Table.Cell>
-      <Checkbox.Root variant={'subtle'} colorPalette={event.is_draft ? 'red' : 'blue'}
+      <Checkbox.Root variant={SUBTLE} colorPalette={event.is_draft ? 'red' : 'blue'}
         checked={selection.includes(event.title)}
         onCheckedChange=
         {({ checked }) => 

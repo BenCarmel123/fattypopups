@@ -36,3 +36,9 @@ export const HOVER = '#cde6e5';
 
 // Typography color tokens
 export const DRAWER_DETAILS_FONT_COLOR = 'gray.600';
+
+// Component-specific colors
+export const FLIP_IMAGE_BACKGROUND = '#fffaf5';
+export const DELETE_BUTTON_COLOR = '#f36262ff';
+export const DELETE_BUTTON_HOVER_COLOR = '#e04545';
+export const FORM_SECTION_HEADER_BG = 'rgba(139, 162, 160, 0.15)';
