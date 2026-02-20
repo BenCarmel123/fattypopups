@@ -2,6 +2,7 @@ import { Card } from '@chakra-ui/react';
 import { formatDateRange } from 'utils/formatting';
 import { handleMaps, handleInstagram, handleCalendar } from 'utils/externalLinks';
 import * as Config from 'config/index.jsx';
+import { RiInstagramFill, SiGooglecalendar, SiGooglemaps } from 'config/index.jsx';
 import EventAttributeSpan from './EventAttributeSpan.jsx';
 
 export default function CardBody({ event }) {
@@ -39,17 +40,17 @@ export default function CardBody({ event }) {
                 }}
                 onClick={() => handleInstagram(chef.instagram_handle)}
                 >
-                {(event.chefs.length === 1 || idx === 0) && <Config.RiInstagramFill className="inline-block mr-2.5 mb-1" />}
+                {(event.chefs.length === 1 || idx === 0) && <RiInstagramFill className="inline-block mr-2.5 mb-1" />}
                 <EventAttributeSpan attribute={chef.name} onClick={() => handleInstagram(chef.instagram_handle)} style={{ marginLeft: '3.5px' }} />
                 <br></br>
               </span>
             ))
         }
-        <Config.SiGooglecalendar className={Config.ACTION_BUTTON_SPACING} />
+        <SiGooglecalendar className={Config.ACTION_BUTTON_SPACING} />
         <EventAttributeSpan attribute={formatDateRange(event.start_datetime, event.end_datetime)} onClick={() => handleCalendar(event)} />
         <br />
         <span style={{ display: Config.BLOCK }}>
-          <Config.SiGooglemaps className={Config.ACTION_BUTTON_SPACING} />
+          <SiGooglemaps className={Config.ACTION_BUTTON_SPACING} />
           <EventAttributeSpan attribute={event.venue?.address} onClick={() => handleMaps(event.venue?.address)} />
         </span>
       </Card.Description>

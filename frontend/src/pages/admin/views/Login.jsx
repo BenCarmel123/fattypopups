@@ -1,4 +1,5 @@
 import * as Config from 'config/index.jsx';
+import { FcGoogle } from 'config/index.jsx';
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL
@@ -18,7 +19,7 @@ export default function Login() {
         <img src={LOGO_URL} alt={Config.APP_NAME} className="h-42 w-40" style={{width:'9rem', backgroundColor:Config.HOVER, borderRadius:"16px", padding:"10px"}} />
         <br></br>
         <Button onClick={handleGoogle} variant="outline" padding="0.8rem" size={Config.LARGE} rounded={Config.XXL} border="3px solid" borderColor={Config.BORDER_COLOR} _hover={{ bg: Config.HOVER }} transition={Config.MINIMAL_TRANSITION}>
-          <Config.FcGoogle />
+          <FcGoogle />
           <Text fontWeight="semibold" color={Config.GRAY} fontSize={Config.LARGE}>
             Admin
           </Text>
