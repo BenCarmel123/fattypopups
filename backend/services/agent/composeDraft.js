@@ -1,5 +1,6 @@
-import { GenerateDraftDetails } from "./api.js";
-import { getEntities } from "./draftEntities.js";
+import { GenerateDraftDetails } from "./llm.js";
+import { getEntities } from "./entities.js";
+import { translate } from "./utils/googleTranslate.js";
 
 const REMINDER = "***"
 
@@ -11,15 +12,19 @@ const generateDraft =
         // Get JSON from OpenAI
         const rawOutput = await GenerateDraftDetails(prompt, imageUrl);
         const openaiResponse = JSON.parse(rawOutput);
+        const english_description = openaiResponse.english_description
 
         // Extract and normalize chef names to array
         const chefNames = Array.isArray(openaiResponse.chef_names) ? openaiResponse.chef_names : [openaiResponse.chef_names];
         const venueName = openaiResponse.venue_name;
 
-        // Fetch venue and chef data from DB
-        const { chefEntities, venueEntity } = await getEntities(chefNames, venueName);
+        // Extract precise entities and translate English description 
+        const [{ chefEntities, venueEntity }, hebrew_description] = await Promise.all([
+            getEntities(chefNames, venueName),
+            translate(english_description)
+        ]);
+        
         const chefInstagrams = chefEntities.map(chef => chef.instagram_handle || REMINDER).join(',');
-
         // Build draft response
         const today = new Date().toISOString().split('T')[0];
         const result = {
@@ -32,8 +37,8 @@ const generateDraft =
             chef_names: chefNames.join(','),
             chef_instagrams: chefInstagrams,
             reservation_url: REMINDER,
-            english_description: openaiResponse.english_description,
-            hebrew_description: openaiResponse.hebrew_description,
+            english_description: english_description,
+            hebrew_description: hebrew_description,
             poster: imageUrl,
             is_draft: true
         };
