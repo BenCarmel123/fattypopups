@@ -1,19 +1,23 @@
 import React, { useState } from 'react';
 import { Textarea } from "@chakra-ui/react";
-import { POST, ENTER, UNKNOWN_ERROR, PROMPT_PLACEHOLDER, EDIT, DASHBOARD, CONTENT_TYPE, TEXT_PLAIN } from "../../../config/index.jsx";
+import { POST, ENTER, UNKNOWN_ERROR, PROMPT_PLACEHOLDER, ADD, DASHBOARD } from "../../../config/index.jsx";
 import { SubmitPromptButton, BackToDashboard } from '../../../components/Buttons.jsx';
 import SpinnerOverlay from '../../../components/SpinnerOverlay.jsx';
 import { transformDraftToFormData } from '../utils/formHelpers.js';
+import FileUpload from '../../../components/FileUpload.jsx';
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL
 
-export const sendPrompt = async (prompt) => {
+export const sendPrompt = async (prompt, file) => {
   const _startTime = Date.now(); // TIME start
+
+  const formData = new FormData();
+  formData.append('prompt', prompt);
+  if (file) formData.append('poster', file);
 
   const res = await fetch(`${SERVER_URL}/agent/draft`, {
     method: POST,
-    headers: { [CONTENT_TYPE]: TEXT_PLAIN },
-    body: prompt
+    body: formData
   });
 
   const event = await res.json();
@@ -45,7 +49,8 @@ export default function PromptDraft({ placeholder = PROMPT_PLACEHOLDER, handleCl
          
         try {
             setLoading(true)
-            const response = await sendPrompt(prompt);
+            const file = e.target.poster?.files[0] || null;
+            const response = await sendPrompt(prompt, file);
             console.log('[DEBUG] Full response:', response);
             const { event } = response;
             console.log('[DEBUG] Raw event from backend:', event);
@@ -54,8 +59,8 @@ export default function PromptDraft({ placeholder = PROMPT_PLACEHOLDER, handleCl
             console.log('[DEBUG] About to transform...');
             const transformedEvent = transformDraftToFormData(event);
             console.log('[DEBUG] Transformed event:', transformedEvent);
-            // Switch to EDIT mode and pass the transformed draft
-            handleClick(EDIT, transformedEvent)();
+            transformedEvent.file = file;
+            handleClick(ADD, transformedEvent)();
             }
 
         catch (err) {
@@ -79,7 +84,8 @@ export default function PromptDraft({ placeholder = PROMPT_PLACEHOLDER, handleCl
     return (
         <div>
         <SpinnerOverlay isLoading={isLoading} />
-        <form onSubmit={handleSubmit} className="min-h-screen flex items-center justify-center">
+        <form onSubmit={handleSubmit} className="min-h-screen flex flex-col items-center justify-center gap-4">
+            <FileUpload />
             <div className="relative flex items-end gap-2 p-1 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-200 w-full max-w-xl md:max-w-3xl lg:max-w-4xl">
             <div className="absolute -bottom-14 left-1/2 -translate-x-1/2">
                 <BackToDashboard handleClick={handleClick(DASHBOARD, undefined)} />

@@ -1,5 +1,5 @@
 // Extract form data into event object
-export const extractEventDataFromForm = (form) => {
+export const extractEventDataFromForm = (form, file) => {
   // Collect all chef fields (chef_name_0, chef_name_1, etc.)
   const chefNames = [];
   const chefInstagrams = [];
@@ -26,7 +26,7 @@ export const extractEventDataFromForm = (form) => {
     reservation_url: form.reservation_url.value,
     english_description: form.english_description.value,
     hebrew_description: form.hebrew_description.value,
-    poster: form.poster.files[0],
+    poster: form.poster.files[0] || file,
     is_draft: form.is_draft ? form.is_draft.value === 'true' : false,
   };
 };
@@ -93,6 +93,7 @@ export const transformDraftToFormData = (draft) => {
     reservation_url: draft.reservation_url,
     english_description: draft.english_description,
     hebrew_description: draft.hebrew_description,
+    poster: draft.poster,
     is_draft: draft.is_draft,
     chefs,
     venue

@@ -21,7 +21,7 @@ export default function EventForm({ event, isEdit, handleClick } ) {
         const form = e.target;
         
         // Extract form data
-        const eventData = extractEventDataFromForm(form);
+        const eventData = extractEventDataFromForm(form, event?.file);
 
         // Validate (drafts only need title, full events need everything)
         const validation = validateEvent(eventData, isEdit, eventData.is_draft);

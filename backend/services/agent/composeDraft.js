@@ -4,7 +4,7 @@ import { getEntities } from "./draftEntities.js";
 const REMINDER = "***"
 
 const generateDraft =
-    async (prompt, imageUrl) =>
+    async (prompt, imageUrl = null) =>
     {
         const _startTime = Date.now(); // TIME start
 
@@ -34,6 +34,7 @@ const generateDraft =
             reservation_url: REMINDER,
             english_description: openaiResponse.english_description,
             hebrew_description: openaiResponse.hebrew_description,
+            poster: imageUrl,
             is_draft: true
         };
 

@@ -1,5 +1,6 @@
 import { Button, Float, useFileUploadContext, FileUpload as ChakraFileUpload } from "@chakra-ui/react";
-import { LuFileImage, LuX, AUTO, SMALL, OUTLINE } from "../config/index.jsx";
+import { LuFileImage, LuX, AUTO, SMALL, OUTLINE, SOLID, LARGE, BOLD, MEDIUM, XL, MINIMAL_TRANSFORM, MINIMAL_TRANSITION } from "../config/index.jsx";
+import { ADMIN_PANEL_COLOR } from "../config/colors.jsx";
 
 function FileUploadList()
 {
@@ -28,8 +29,7 @@ function FileUploadList()
     );
 };
 
-// renamed to avoid shadowing the imported `FileUpload`
-export default function FileUpload() {
+function FileUploadTrigger() {
     return (
         <ChakraFileUpload.Root name="poster" accept="image/*" maxFiles={1}>
             <ChakraFileUpload.HiddenInput />
@@ -42,6 +42,25 @@ export default function FileUpload() {
                 <FileUploadList />
             </div>
         </ChakraFileUpload.Root>
+    );
+};
+
+export default function FileUpload() {
+    return (
+        <Button
+            variant={SOLID}
+            size={LARGE}
+            fontWeight={BOLD}
+            px={2}
+            py={2}
+            boxShadow={MEDIUM}
+            borderRadius={XL}
+            backgroundColor={ADMIN_PANEL_COLOR}
+            _hover={{ transform: MINIMAL_TRANSFORM }}
+            transition={MINIMAL_TRANSITION}
+            as="label">
+            <FileUploadTrigger />
+        </Button>
     );
 };
 

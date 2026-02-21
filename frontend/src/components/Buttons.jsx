@@ -1,21 +1,19 @@
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@chakra-ui/react';
-import { 
-  WHITE, 
-  ADMIN_PANEL_COLOR, 
+import {
+  WHITE,
+  ADMIN_PANEL_COLOR,
   BACK_TO_DASHBOARD_BUTTON_COLOR,
-  SOLID, 
-  BOLD, 
-  XL, 
-  MEDIUM, 
-  MINIMAL_TRANSFORM, 
-  MINIMAL_TRANSITION, 
-  POINTER, 
-  BACK_BUTTON_TEXT, 
-  LARGE 
+  SOLID,
+  BOLD,
+  XL,
+  MEDIUM,
+  MINIMAL_TRANSFORM,
+  MINIMAL_TRANSITION,
+  POINTER,
+  BACK_BUTTON_TEXT,
 } from '../config/index.jsx';
 import { Send, Loader2 } from 'lucide-react';
-import FileUpload from "./FileUpload.jsx";
 
 export function BackButton() {
   const navigate = useNavigate();
@@ -78,23 +76,6 @@ export function SubmitPromptButton({ prompt, isLoading}) {
                 <Send className="h-4 w-4" />
             )}
         </Button>)
-}
-
-export function FileUploadButton() {
-    return (<Button 
-            variant={SOLID}
-            size={LARGE}
-            fontWeight={BOLD}
-            px={2} 
-            py={2} 
-            boxShadow={MEDIUM}
-            borderRadius={XL} 
-            backgroundColor={ADMIN_PANEL_COLOR}
-            _hover={{ transform: MINIMAL_TRANSFORM }} 
-            transition={MINIMAL_TRANSITION}
-            as="label">
-            <FileUpload style={{ display: 'none'}} />
-        </Button>);
 }
 
 export function AdminActionButton({ onClick, text }) {
