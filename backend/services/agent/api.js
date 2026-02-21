@@ -19,7 +19,7 @@ export async function GenerateDraftDetails(prompt, imageUrl = null) {
 
   const response = await openai.responses.create({
     model: "gpt-4o-mini",
-    input: content,
+    input: [{ role: "user", content }],
     instructions: `${process.env.DRAFT_INSTRUCTIONS}`,
   });
 

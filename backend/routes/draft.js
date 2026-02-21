@@ -1,21 +1,24 @@
 import 'dotenv/config';
 import { generateDraft } from '../services/agent/composeDraft.js';
-import express from 'express'; 
+import express from 'express';
+import { handleEventImageUpload } from '../services/s3/upload.js';
+import { uploadMemory } from '../config/middleware/multer.js';
 
 const agentRouter = express.Router();
 
-agentRouter.post("/draft", async (req, res) => {
+agentRouter.post("/draft", uploadMemory.single('poster'), async (req, res) => {
   console.log("[REQUEST] Reached /draft endpoint\n");
-  const prompt = req.body;
-
+  const prompt = req.body.prompt;
   // Client error
   if (typeof prompt !== "string" || !prompt.trim()) {
     return res.status(400).json({ error: "A non-empty prompt is required" });
   }
 
   try {
+    const imageUrl = await handleEventImageUpload(null, {}, req.file, null);
+
     // Generate draft data from AI
-    const draft = await generateDraft(prompt);
+    const draft = await generateDraft(prompt, imageUrl);
     console.log("[EVENT] Draft generated (not saved to DB)\n");
 
     // Return draft directly to frontend for admin review

@@ -22,7 +22,7 @@ export const orchestrateEventCreate = async (body, file) => {
     is_draft
   } = body;
 
-  await handleEventImageUpload(null, body, file, null);
+  body.poster = await handleEventImageUpload(null, body, file, null);
   const isDraft = is_draft === true || is_draft === "true";
   const chefNamesArray = chef_names?.split(',').map(s => s.trim()) ?? [];
 

@@ -70,12 +70,14 @@ export const handleEventImageUpload = async (id, body, file, currentEvent) => {
 
     // 2. Generate S3 key and URL
     const { s3_key, s3_url } = generateS3KeyAndUrl(existingUrl, file, body.title);
-    body.poster = s3_url;
 
     // 3. Upload to S3
     await uploadToS3(s3_key, file);
+
+    return s3_url;
   } else {
     // 4. Handle no file upload case
     await handleNoFileUpload(body, currentEvent);
+    return null;
   }
 };

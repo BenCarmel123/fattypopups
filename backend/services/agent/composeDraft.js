@@ -4,12 +4,12 @@ import { getEntities } from "./draftEntities.js";
 const REMINDER = "***"
 
 const generateDraft =
-    async (prompt) =>
+    async (prompt, imageUrl) =>
     {
         const _startTime = Date.now(); // TIME start
 
         // Get JSON from OpenAI
-        const rawOutput = await GenerateDraftDetails(prompt);
+        const rawOutput = await GenerateDraftDetails(prompt, imageUrl);
         const openaiResponse = JSON.parse(rawOutput);
 
         // Extract and normalize chef names to array
