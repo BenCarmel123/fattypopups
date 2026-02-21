@@ -5,7 +5,7 @@ import { generateEmbedding } from '../embeddings/generate.js';
 import { searchSimilarDescriptions } from '../database/vector/search.js';
 
 // Function to generate draft details
-export async function GenerateDraftDetails(prompt, imageUrl = null) {
+export async function GenerateDraftDetails(prompt, posterUrl = null, contextUrl = null) {
   console.log("[AGENT] Prompt: " + prompt);
 
   // Embed prompt and fetch similar descriptions from pgvector
@@ -18,11 +18,11 @@ export async function GenerateDraftDetails(prompt, imageUrl = null) {
     { type: "input_text", text: `${prompt}\n\nRespond in JSON.` }
   ];
 
-  if (imageUrl) {
-    content.push({
-      type: "input_image",
-      image_url: imageUrl
-    });
+  if (posterUrl) {
+    content.push({ type: "input_image", image_url: posterUrl });
+  }
+  if (contextUrl) {
+    content.push({ type: "input_image", image_url: contextUrl });
   }
 
   const response = await openai.responses.create({

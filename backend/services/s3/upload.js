@@ -1,26 +1,9 @@
 import { supabase, s3 } from "../../config/index.js";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
-import { parseFilename, extractS3Key, buildS3Url } from './utils.js';
+import { generateS3KeyAndUrl } from './utils.js';
 import { isTrue } from '../utils.js';
 
-// 1. Fetch existing image URL from event
-const fetchExistingImageUrl = async (id) => {
-  try {
-    const { data, error } = await supabase
-      .from('events_new')
-      .select('poster')
-      .eq('id', id)
-      .single();
-    if (error) throw error;
-    return data?.poster || null;
-  } catch (err) {
-    console.log("[ERROR] Error fetching existing image URL:", err);
-    return null;
-  }
-};
-
-// 2. Upload file to S3
-const uploadToS3 = async (s3_key, file) => {
+export const uploadToS3 = async (s3_key, file) => {
   try {
     await s3.send(
       new PutObjectCommand({
@@ -36,17 +19,21 @@ const uploadToS3 = async (s3_key, file) => {
   }
 };
 
-// Generate S3 key and URL for event image
-const generateS3KeyAndUrl = (existingUrl, file, title) => {
-  const { slug, ext } = parseFilename(file.originalname, title);
-  const folder = process.env.NODE_ENV === 'development' ? 'dev' : 'posters';
-  const s3_key = existingUrl ? extractS3Key(existingUrl) : `${folder}/${slug}${ext}`;
-  const s3_url = buildS3Url(s3_key);
-
-  return { s3_key, s3_url };
+const fetchExistingImageUrl = async (id) => {
+  try {
+    const { data, error } = await supabase
+      .from('events_new')
+      .select('poster')
+      .eq('id', id)
+      .single();
+    if (error) throw error;
+    return data?.poster || null;
+  } catch (err) {
+    console.log("[ERROR] Error fetching existing image URL:", err);
+    return null;
+  }
 };
 
-// 3. Handle case when no file is uploaded
 const handleNoFileUpload = async (body, currentEvent) => {
   const isDraft = isTrue(body.is_draft);
   const wasDraft = isTrue(currentEvent.is_draft);
@@ -55,7 +42,6 @@ const handleNoFileUpload = async (body, currentEvent) => {
   if (toPublish && !currentEvent.poster) {
     throw new Error("Cannot publish draft: event must have an image.");
   } else {
-    // retain existing image
     delete body.poster;
   }
 };
