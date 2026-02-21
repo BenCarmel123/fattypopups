@@ -1,7 +1,6 @@
 import validator from 'validator';
 import * as Config from 'config/index.jsx';
 
-
 // Helper to validate event data
 export default function validateEvent(event, isEdit, isDraft = false) {
     const { title, start_datetime, end_datetime, venue_instagram, venue_address, chef_names, chef_instagrams, reservation_url, english_description, hebrew_description, poster } = event;
@@ -53,7 +52,7 @@ export default function validateEvent(event, isEdit, isDraft = false) {
     if (!hebrew_description || typeof hebrew_description !== Config.STRING || !validator.isLength(hebrew_description.trim(), { min: 1 })) {
         return { valid: false, error: Config.ERR_HEBREW_DESC_REQUIRED };
     }
-    
+
     if (!isEdit && (!poster || !(poster instanceof File))) {
         return { valid: false, error: Config.ERR_POSTER_REQUIRED };
     }

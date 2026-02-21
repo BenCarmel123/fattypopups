@@ -38,7 +38,7 @@ export async function createChef(name, instagram_handle) {
     .single();
 
   if (error) throw new Error(`Error creating chef: ${error.message}`);
-  
+
   return data;
 }
 
@@ -53,19 +53,19 @@ export async function upsertChefs(chefNamesString, chefInstagramsString) {
   }
 
   const chefIds = [];
-  
+
   for (let i = 0; i < chefNamesArray.length; i++) {
     const name = chefNamesArray[i];
     const instagram = chefInstagramsArray[i];
-    
+
     let chef = await getChefByName(name);
-    
+
     if (!chef) {
       // Create new chef only if doesn't exist
       chef = await createChef(name, instagram);
     }
     // If chef exists, use existing data (don't update from user input)
-    
+
     chefIds.push(chef.id);
   }
 

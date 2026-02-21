@@ -14,9 +14,9 @@ export default function EventForm({ event, isEdit, handleClick, setEvents } ) {
     const isDraftRef = useRef(false);
 
     async function handleEvent(e) {
-        e.preventDefault(); 
+        e.preventDefault();
         const form = e.target;
-        
+
         // Extract form data
         const eventData = extractEventData(form);
         eventData.is_draft = isDraftRef.current;
@@ -67,14 +67,14 @@ export default function EventForm({ event, isEdit, handleClick, setEvents } ) {
             setTimeout(() => {
                 handleClick(Config.DASHBOARD)();
             }, 750);
-        } 
+        }
         catch (err) {
             setLoading(false);
             setAlert({
                 status: Config.STATUS_ERROR,
                 description: err.message,
             });
-        } 
+        }
     }
 
     return (
@@ -82,9 +82,9 @@ export default function EventForm({ event, isEdit, handleClick, setEvents } ) {
             <SpinnerOverlay isLoading={isLoading} />
             <FormAlert alert={alert} onClose={() => setAlert(null)} />
             <FormBody
-                event={event} 
+                event={event}
                 isEdit={isEdit}
-                onSubmit={handleEvent} 
+                onSubmit={handleEvent}
                 handleClick={handleClick}
                 isDraftRef={isDraftRef}
             />

@@ -7,7 +7,7 @@ import { logger } from "../../../utils/logger.js";
 // Returns object with embedding IDs or null if failed
 export async function createEventEmbeddings(eventId, englishDescription, hebrewDescription, chefNames) {
   logger.info('Starting embedding process for event', { eventId });
-  
+
   // 1. Generate embeddings
   const { english: english_embedding, hebrew: hebrew_embedding } = await generateEmbeddings(
     englishDescription,
@@ -72,7 +72,7 @@ export async function updateEventEmbeddings(options) {
       toPublish || englishChanged,
       toPublish || hebrewChanged
     );
-    
+
     newEnglishEmbedding = embeddings.english;
     newHebrewEmbedding = embeddings.hebrew;
   }

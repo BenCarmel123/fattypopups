@@ -33,21 +33,20 @@ export const sendPrompt = async (prompt, file, contextFile) => {
   return event;
 };
 
-export default function PromptDraft({ placeholder = Config.PROMPT_PLACEHOLDER, handleClick }) {
+export default function AgentDraft({ placeholder = Config.PROMPT_PLACEHOLDER, handleClick }) {
     const [prompt, setPrompt] = useState('');
     const [isLoading, setLoading] = useState(false)
     const [requestInProgress, setRequestInProgress] = useState(false);
 
     const handleSubmit = async (e) => {
-
         if (requestInProgress) return; // Prevent duplicate
         setRequestInProgress(true);
         e.preventDefault();
-        if (!prompt.trim() || isLoading) 
-        {  
+        if (!prompt.trim() || isLoading)
+        {
             return;
         }
-         
+
         try {
             setLoading(true)
             const file = e.target.poster?.files[0] || null;
@@ -65,16 +64,13 @@ export default function PromptDraft({ placeholder = Config.PROMPT_PLACEHOLDER, h
             handleClick(Config.ADD, transformedEvent)();
             // Switch to ADD mode and pass the generated draft
             }
-
         catch (err) {
             console.error('[ERROR] Draft generation error:', err);
         }
-
         finally {
             setRequestInProgress(false);
             setLoading(false)
         }
-
     };
 
     const handleKeyDown = (e) => {
@@ -83,7 +79,7 @@ export default function PromptDraft({ placeholder = Config.PROMPT_PLACEHOLDER, h
             handleSubmit(e);
         }
     };
-    
+
     return (
         <div>
         <SpinnerOverlay isLoading={isLoading} />

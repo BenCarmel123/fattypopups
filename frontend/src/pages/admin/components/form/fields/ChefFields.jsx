@@ -12,7 +12,7 @@ const MAX_CHEFS = 5;
 export default function ChefFields({ event }) {
   const initialCount = event?.chefs?.length > 0 ? event.chefs.length : 1;
   const [chefCount, setChefCount] = useState(initialCount);
-  const [chefData, setChefData] = useState([]); 
+  const [chefData, setChefData] = useState([]);
 
   // Initialize chef values from event data
   const initialChefs = Array.from({ length: MAX_CHEFS }, (_, i) => ({
@@ -24,7 +24,7 @@ export default function ChefFields({ event }) {
   // Fetch chef data on mount
   useEffect(() => {
     fetchChefs()
-      .then(data => setChefData(data)) 
+      .then(data => setChefData(data))
       .catch(err => console.log('[ERROR] Failed to fetch chefs:', err));
   }, []);
 

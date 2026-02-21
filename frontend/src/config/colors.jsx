@@ -1,4 +1,3 @@
-
 // Brand / primary colors
 export const PRIMARY_COLOR = '#e0e4dd';
 export const SECONDARY_COLOR = '#368382';

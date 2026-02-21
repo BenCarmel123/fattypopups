@@ -29,9 +29,9 @@ export const orchestrateEventUpdate = async (id, body, file) => {
     currentEvent.venue_id ? getVenueById(currentEvent.venue_id) : null,
     getChefsForEvent(id)
   ]);
-  
+
   const currentChefNames = currentChefs.map(c => c.name).join(", ");
-  
+
   logger.info("[UPDATE] Venue:", currentVenue?.name || 'none', "| Chefs:", currentChefNames || 'none');
 
   // Save venue and chef data before deleting from body

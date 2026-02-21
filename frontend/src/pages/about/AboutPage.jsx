@@ -39,7 +39,6 @@ export const ContactEmail = ({ email }) => {
   );
 }
 
-
 export default function AboutPage() {
   const creators = [
     {
@@ -79,12 +78,12 @@ export default function AboutPage() {
               rel={Config.NO_OPENER}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ 
-                duration: 0.5, 
+              transition={{
+                duration: 0.5,
                 delay: index * 0.1,
                 ease: [0.25, 0.1, 0.25, 1]
               }}
-              whileHover={{ 
+              whileHover={{
                 y: -8,
                 transition: { duration: 0.3 }
               }}
@@ -92,7 +91,7 @@ export default function AboutPage() {
             >
                <div className="relative">
                   <div className="w-[7.7rem] h-[7.7rem] md:w-[9.9rem] md:h-[9.9rem] rounded-full overflow-hidden ring-2 ring-gray-100 group-hover:ring-4 group-hover:ring-gray-200 transition-all duration-300">
-                    <img 
+                    <img
                       src={creator.image}
                       alt={creator.name}
                       className={creator.name === "Ben"

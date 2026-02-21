@@ -21,7 +21,7 @@ function usePageTracking() {
 
 function RouteTracker() {
   usePageTracking();
-  return null; 
+  return null;
 }
 
 function App() {

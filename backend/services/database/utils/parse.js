@@ -8,7 +8,7 @@ export function normalizeName(name) {
     .trim()
     .split(/\s+/) // Split by whitespace
     .map(word => {
-      // Handle hyphenated names 
+      // Handle hyphenated names
       return word
         .split('-')
         .map(part => {

@@ -35,7 +35,7 @@ const Dashboard = ({ handleClick, events, setEvents }) => {
     handleClick(Config.EDIT, eventToEdit)();
   }
 
-  const eventRows = events.map((event) => 
+  const eventRows = events.map((event) =>
     (
     <Table.Row
       key={event.title}
@@ -45,12 +45,12 @@ const Dashboard = ({ handleClick, events, setEvents }) => {
       <Checkbox.Root variant={Config.SUBTLE} colorPalette={event.is_draft ? 'red' : 'blue'}
         checked={selection.includes(event.title)}
         onCheckedChange=
-        {({ checked }) => 
+        {({ checked }) =>
           {
-          setSelection(prev => checked === true ? 
+          setSelection(prev => checked === true ?
             [...prev, event.title] : prev.filter(title => title !== event.title));
           }
-        }> 
+        }>
           <Checkbox.HiddenInput />
           <Checkbox.Control />
         </Checkbox.Root>
@@ -58,7 +58,7 @@ const Dashboard = ({ handleClick, events, setEvents }) => {
       <Table.Cell>{event.title}</Table.Cell>
     </Table.Row>
     )  );
-  
+
   return (
     <div style={{ display: Config.FLEX, flexDirection: 'column', alignItems: 'stretch', maxWidth: '1200px', minWidth: '400px', margin: '0 auto', padding: '2rem', borderRadius: '2rem' }}>
       <BackButton homepage />

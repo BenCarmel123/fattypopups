@@ -1,4 +1,3 @@
-
 // App / page labels
 export const APP_NAME = "fatty popups";
 export const ADD = "ADD";
@@ -116,5 +115,3 @@ export const MOUSE = 'mouse';
 export const CONTAIN = 'contain';
 export const FETCH_PRIORITY_HIGH = 'high';
 export const FETCH_PRIORITY_LOW = 'low';
-
-

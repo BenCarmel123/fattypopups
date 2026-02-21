@@ -27,11 +27,11 @@ function ActionButton({ children, onClick, ariaLabel, className = '', fullCover 
 /* -------------------------- FOOTER ACTION BUTTON -------------------------- */
 const FooterOption = ({ text, onClick }) => {
   return (
-    <p className="eventcard-action-text" style={{ 
-      display: 'inline-flex', 
-      alignItems: Config.CENTER, 
+    <p className="eventcard-action-text" style={{
+      display: 'inline-flex',
+      alignItems: Config.CENTER,
       whiteSpace: Config.NOWRAP,
-    }} onMouseEnter={defaultOnMouseEnter} onMouseLeave={defaultOnMouseLeave} onClick={onClick}> 
+    }} onMouseEnter={defaultOnMouseEnter} onMouseLeave={defaultOnMouseLeave} onClick={onClick}>
       {text}
     </p>
   );

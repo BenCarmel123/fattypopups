@@ -12,5 +12,3 @@ root.render(
     </Config.Provider>
   </React.StrictMode>
 );
-
-

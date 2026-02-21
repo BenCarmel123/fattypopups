@@ -53,7 +53,7 @@ export async function createVenue(name, address, instagram_handle) {
     .single();
 
   if (error) throw new Error(`Error creating venue: ${error.message}`);
-  
+
   return data;
 }
 
@@ -86,4 +86,3 @@ export async function upsertVenue(venueName, venueAddress, venueInstagram) {
 
   return venue.id;
 }
-

@@ -18,12 +18,12 @@ const generateDraft =
         const chefNames = Array.isArray(openaiResponse.chef_names) ? openaiResponse.chef_names : [openaiResponse.chef_names];
         const venueName = openaiResponse.venue_name;
 
-        // Extract precise entities and translate English description 
+        // Extract precise entities and translate English description
         const [{ chefEntities, venueEntity }, hebrew_description] = await Promise.all([
             getEntities(chefNames, venueName),
             translate(english_description)
         ]);
-        
+
         const chefInstagrams = chefEntities.map(chef => chef.instagram_handle || REMINDER).join(',');
         // Build draft response
         const today = new Date().toISOString().split('T')[0];

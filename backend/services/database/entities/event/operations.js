@@ -33,7 +33,7 @@ export async function insertEvent(eventData) {
     .single();
 
   if (error) throw new Error(`Error creating event: ${error.message}`);
-  
+
   return data;
 }
 
@@ -62,7 +62,7 @@ export async function updateEventById(id, updates) {
     .single();
 
   if (error) throw new Error(`Error updating event: ${error.message}`);
-  
+
   return data;
 }
 
@@ -78,8 +78,8 @@ export async function getAllEventsWithRelations(isAdmin = false) {
         chef:chefs(id, name, instagram_handle)
       )
     `)
-    .order("is_draft", { ascending: true })        
-    .order("start_datetime", { ascending: true });  
+    .order("is_draft", { ascending: true })
+    .order("start_datetime", { ascending: true });
 
   if (!isAdmin) {
     query = query.eq("is_draft", false);
@@ -114,7 +114,7 @@ export async function deleteEventsByTitles(titles) {
     .in('title', titles);
 
   if (error) throw new Error(`Error deleting events: ${error.message}`);
-  
+
   return { message: 'Events deleted successfully', deleted: titles };
 }
 
@@ -126,11 +126,10 @@ export async function handleEventVenueUpdate({ eventId, venueName, venueAddress,
   }
 
   logger.info('[VENUE] Processing venue update...');
-  
+
   // Get or create venue, returns venue_id
   const venueId = await upsertVenue(venueName, venueAddress, venueInstagram);
-  
+
   logger.info(`[VENUE] Venue processed - ID: ${venueId}`);
   return venueId;
 }
-

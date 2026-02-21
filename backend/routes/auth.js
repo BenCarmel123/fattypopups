@@ -1,4 +1,3 @@
-
 import { oauth2Client } from '../config/index.js';
 import express from 'express';
 import jwt from "jsonwebtoken";
@@ -78,6 +77,3 @@ authRouter.get("/check", (req, res) => {
 });
 
 export default authRouter;
-
-
-

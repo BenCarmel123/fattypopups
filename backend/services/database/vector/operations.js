@@ -15,7 +15,7 @@ export async function insertEmbedding(language, description, embedding, chefName
     .single();
 
   if (error) throw new Error(`Error inserting embedding: ${error.message}`);
-  
+
   return data;
 }
 
@@ -32,7 +32,7 @@ export async function updateEmbeddingById(id, description, embedding) {
     .single();
 
   if (error) throw new Error(`Error updating embedding: ${error.message}`);
-  
+
   return data;
 }
 

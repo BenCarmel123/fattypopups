@@ -34,5 +34,4 @@ agentRouter.post("/draft", uploadMemory.fields([{ name: 'poster' }, { name: 'con
   }
 });
 
-
 export default agentRouter;

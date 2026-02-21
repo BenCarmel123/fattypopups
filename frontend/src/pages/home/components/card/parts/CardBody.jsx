@@ -35,7 +35,7 @@ export default function CardBody({ event }) {
                   cursor: Config.POINTER,
                   marginRight: idx < event.chefs.length - 1 ? 4 : 0,
                   display: Config.BLOCK,
-                  marginLeft: idx === 0 ? 0 : "27px"  
+                  marginLeft: idx === 0 ? 0 : "27px"
                 }}
                 onClick={() => handleInstagram(chef.instagram_handle)}
                 >

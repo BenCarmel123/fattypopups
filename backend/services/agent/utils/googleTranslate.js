@@ -1,4 +1,3 @@
-
 export async function translate(english_description) {
     const response = await fetch(`https://translation.googleapis.com/language/translate/v2?key=${process.env.GOOGLE_TRANSLATE_API_KEY}`, {
         method: 'POST',

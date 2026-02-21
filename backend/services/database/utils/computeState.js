@@ -5,7 +5,7 @@ import { logger } from "../../../utils/logger.js";
 function computeStateTransitions(body, currentEvent) {
   const isDraft = isTrue(body.is_draft);
   const wasDraft = isTrue(currentEvent.is_draft);
-  
+
   return {
     isDraft,
     wasDraft,
@@ -21,7 +21,7 @@ function computeContentChanges(body, currentEvent, currentVenue, currentChefs) {
   const englishChanged = body.english_description !== currentEvent.english_description;
   const hebrewChanged = body.hebrew_description !== currentEvent.hebrew_description;
   const venueChanged = currentVenue?.name !== body.venue_name;
-  
+
   // Compute chef changes by comparing sorted name lists
   const currentChefNames = currentChefs?.map(c => c.name).sort().join(',') || '';
   const incomingChefNames = body.chef_names
@@ -36,11 +36,11 @@ function computeContentChanges(body, currentEvent, currentVenue, currentChefs) {
 function computeActionFlags(stateFlags, changeFlags, currentChefs) {
   const { toPublish, alreadyPublished } = stateFlags;
   const { venueChanged, chefsChanged } = changeFlags;
-  
+
   // Only update when publishing or updating already-published content
   const shouldUpdateVenue = toPublish || (alreadyPublished && venueChanged);
   const shouldUpdateChefs = toPublish || (alreadyPublished && chefsChanged);
-  
+
   // Unlink chefs when republishing (was published before) or updating published content
   const hasExistingChefs = currentChefs && currentChefs.length > 0;
   const isRepublishing = toPublish && hasExistingChefs;

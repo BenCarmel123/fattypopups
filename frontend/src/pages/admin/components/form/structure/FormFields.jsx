@@ -54,6 +54,6 @@ export default function FormFields({ event }) {
                     <FileUpload />
                 </Stack>
             </Section>
-        </Stack>   
+        </Stack>
     );
 }

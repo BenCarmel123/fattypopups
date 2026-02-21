@@ -3,15 +3,13 @@ import EventForm from "./views/EventForm.jsx";
 import * as Config from '../../config/index.jsx';
 import Dashboard from "./views/Dashboard.jsx";
 import Login from "./views/Login.jsx";
-import PromptDraft from "./views/PromptDraft.jsx";
+import AgentDraft from "./views/AgentDraft.jsx";
 import { handleTokenCheck } from "../../utils/auth.js";
 import { fetchEvents } from "../../utils/database/api.js";
-
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 export default function AdminPageHandler() {
-
   // eslint-disable-next-line no-unused-vars
   const[isAuthenticated, setAuthenticated] = useState(false)
   const[action, setAction] = useState(null);
@@ -65,11 +63,8 @@ export default function AdminPageHandler() {
          case Config.LOGIN:
             return (<Login />);
          case Config.AI:
-            return (<PromptDraft handleClick={handleClick} />);
+            return (<AgentDraft handleClick={handleClick} />);
          default:
             return (<Login />);
    }
   }
-      
-      
-

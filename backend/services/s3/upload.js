@@ -55,7 +55,7 @@ const handleNoFileUpload = async (body, currentEvent) => {
 export const handleEventImageUpload = async (id, body, file, currentEvent) => {
   if (file) {
     logger.info("[FILE] Uploaded file:", file);
-    
+
     // 1. Use poster from currentEvent if available, otherwise fetch
     const existingUrl = currentEvent?.poster || await fetchExistingImageUrl(id);
 

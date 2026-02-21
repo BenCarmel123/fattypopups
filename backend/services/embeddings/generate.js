@@ -20,7 +20,7 @@ export async function generateEmbedding(description) {
 // If no flags provided, generates both by default
 export async function generateEmbeddings(englishDescription, hebrewDescription, generateEnglish = true, generateHebrew = true) {
   logger.info(`[EMBEDDING] Starting embedding generation - English: ${generateEnglish} | Hebrew: ${generateHebrew}`);
-  
+
   const result = {
     english: null,
     hebrew: null
@@ -29,13 +29,13 @@ export async function generateEmbeddings(englishDescription, hebrewDescription, 
   try {
     // Build array of promises for parallel execution
     const promises = [];
-    
+
     if (generateEnglish) {
       promises.push(
         generateEmbedding(englishDescription).then(embedding => ({ type: 'english', embedding }))
       );
     }
-    
+
     if (generateHebrew) {
       promises.push(
         generateEmbedding(hebrewDescription).then(embedding => ({ type: 'hebrew', embedding }))
@@ -45,7 +45,7 @@ export async function generateEmbeddings(englishDescription, hebrewDescription, 
     // Execute all generations in parallel
     if (promises.length > 0) {
       const results = await Promise.all(promises);
-      
+
       // Map results back to their respective languages
       results.forEach(({ type, embedding }) => {
         result[type] = embedding;
