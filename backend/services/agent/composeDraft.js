@@ -1,5 +1,5 @@
-import { GenerateDraftDetails } from "./api.js";
-import { getEntities } from "./draftEntities.js";
+import { GenerateDraftDetails } from "./llm.js";
+import { getEntities } from "./entities.js";
 import { translate } from "./utils/googleTranslate.js";
 
 const REMINDER = "***"
