@@ -3,6 +3,7 @@ import { upsertVenue } from '../../entities/venue/operations.js';
 import { createEventEmbeddings } from '../../vector/orchestrator.js';
 import { insertEvent } from '../../entities/event/operations.js';
 import { linkChefsToEvent } from '../../entities/linking/operations.js';
+import { handleEventImageUpload } from '../../../s3/upload.js';
 
 // Orchestrates creating an event with all related entities (venue, chefs, embeddings)
 export const orchestrateEventCreate = async (body, file) => {
@@ -21,7 +22,7 @@ export const orchestrateEventCreate = async (body, file) => {
     is_draft
   } = body;
 
-  const poster = file?.location || null;
+  body.poster = await handleEventImageUpload(null, body, file, null);
   const isDraft = is_draft === true || is_draft === "true";
   const chefNamesArray = chef_names?.split(',').map(s => s.trim()) ?? [];
 
@@ -35,7 +36,7 @@ export const orchestrateEventCreate = async (body, file) => {
       start_datetime,
       end_datetime,
       venue_id: null,
-      poster,
+      poster: body.poster,
       reservation_url,
       english_description,
       hebrew_description,
@@ -58,7 +59,7 @@ export const orchestrateEventCreate = async (body, file) => {
     start_datetime,
     end_datetime,
     venue_id: venueId,
-    poster,
+    poster: body.poster,
     reservation_url,
     english_description,
     hebrew_description,

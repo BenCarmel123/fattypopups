@@ -6,7 +6,7 @@ import {
   deleteEvents 
 } from '../services/database/orchestrator/index.js';
 // Multer imports
-import { upload, uploadMemory } from '../config/index.js';
+import { uploadMemory } from '../config/index.js';
 
 const eventRouter = express.Router();
 
@@ -23,7 +23,7 @@ eventRouter.get('/', async (req, res) => {
 });
 
 // Add new event
-eventRouter.post('/', upload.single('poster'), async (req, res) => {
+eventRouter.post('/', uploadMemory.single('poster'), async (req, res) => {
   try {
     const newEvent = await orchestrateEventCreate(req.body, req.file);
     res.json(newEvent);

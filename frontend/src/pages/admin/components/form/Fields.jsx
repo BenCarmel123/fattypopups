@@ -5,7 +5,7 @@ import Section from "./structure/Section.jsx";
 import Row from "./structure/Row.jsx";
 import ChefFields from "./fields/ChefFields.jsx";
 import VenueFields from "./fields/VenueFields.jsx";
-import { FileUploadButton } from "../../../../components/Buttons.jsx";
+import FileUpload from "../../../../components/FileUpload.jsx";
 import { formatDate } from "../../../../utils/formatting.js";
 
 export default function FormFields({ event, tomorrowStr }) {
@@ -46,7 +46,7 @@ export default function FormFields({ event, tomorrowStr }) {
             {/* Image Section */}
             <Section title="Image">
                 <Stack gap={7} align="flex-start">
-                    <FileUploadButton />
+                    <FileUpload />
                 </Stack>
             </Section>
         </Stack>
