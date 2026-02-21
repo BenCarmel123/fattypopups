@@ -13,3 +13,11 @@ export const parseFilename = (originalname, title) => {
 
 export const buildS3Url = (s3_key) =>
   `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${s3_key}`;
+
+export const generateS3KeyAndUrl = (existingUrl, file, title) => {
+  const { slug, ext } = parseFilename(file.originalname, title);
+  const folder = process.env.NODE_ENV === 'development' ? 'dev' : 'posters';
+  const s3_key = existingUrl ? extractS3Key(existingUrl) : `${folder}/${slug}${ext}`;
+  const s3_url = buildS3Url(s3_key);
+  return { s3_key, s3_url };
+};

@@ -1,12 +1,12 @@
 import 'dotenv/config';
 import { generateDraft } from '../services/agent/composeDraft.js';
 import express from 'express';
-import { handleEventImageUpload } from '../services/s3/upload.js';
+import { uploadDraftImages } from '../services/s3/draftUpload.js';
 import { uploadMemory } from '../config/middleware/multer.js';
 
 const agentRouter = express.Router();
 
-agentRouter.post("/draft", uploadMemory.single('poster'), async (req, res) => {
+agentRouter.post("/draft", uploadMemory.fields([{ name: 'poster' }, { name: 'context_image' }]), async (req, res) => {
   console.log("[REQUEST] Reached /draft endpoint\n");
   const prompt = req.body.prompt;
   // Client error
@@ -15,10 +15,12 @@ agentRouter.post("/draft", uploadMemory.single('poster'), async (req, res) => {
   }
 
   try {
-    const imageUrl = await handleEventImageUpload(null, {}, req.file, null);
-
+    const { posterUrl, contextUrl } = await uploadDraftImages(
+      req.files?.poster?.[0] ?? null,
+      req.files?.context_image?.[0] ?? null,
+    );
     // Generate draft data from AI
-    const draft = await generateDraft(prompt, imageUrl);
+    const draft = await generateDraft(prompt, posterUrl, contextUrl);
     console.log("[EVENT] Draft generated (not saved to DB)\n");
 
     // Return draft directly to frontend for admin review

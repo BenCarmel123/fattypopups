@@ -4,16 +4,17 @@ import { POST, ENTER, UNKNOWN_ERROR, PROMPT_PLACEHOLDER, ADD, DASHBOARD } from "
 import { SubmitPromptButton, BackToDashboard } from '../../../components/Buttons.jsx';
 import SpinnerOverlay from '../../../components/SpinnerOverlay.jsx';
 import { transformDraftToFormData } from '../utils/formHelpers.js';
-import FileUpload from '../../../components/FileUpload.jsx';
+import FileUpload, { ContextFileUpload } from '../../../components/FileUpload.jsx';
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL
 
-export const sendPrompt = async (prompt, file) => {
+export const sendPrompt = async (prompt, file, contextFile) => {
   const _startTime = Date.now(); // TIME start
 
   const formData = new FormData();
   formData.append('prompt', prompt);
   if (file) formData.append('poster', file);
+  if (contextFile) formData.append('context_image', contextFile);
 
   const res = await fetch(`${SERVER_URL}/agent/draft`, {
     method: POST,
@@ -50,7 +51,8 @@ export default function PromptDraft({ placeholder = PROMPT_PLACEHOLDER, handleCl
         try {
             setLoading(true)
             const file = e.target.poster?.files[0] || null;
-            const response = await sendPrompt(prompt, file);
+            const contextFile = e.target.context_image?.files[0] || null;
+            const response = await sendPrompt(prompt, file, contextFile);
             console.log('[DEBUG] Full response:', response);
             const { event } = response;
             console.log('[DEBUG] Raw event from backend:', event);
@@ -85,7 +87,10 @@ export default function PromptDraft({ placeholder = PROMPT_PLACEHOLDER, handleCl
         <div>
         <SpinnerOverlay isLoading={isLoading} />
         <form onSubmit={handleSubmit} className="min-h-screen flex flex-col items-center justify-center gap-4">
-            <FileUpload />
+            <div style={{ display: 'flex', gap: '1.5rem' }}>
+                <FileUpload />
+                <ContextFileUpload />
+            </div>
             <div className="relative flex items-end gap-2 p-1 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-200 w-full max-w-xl md:max-w-3xl lg:max-w-4xl">
             <div className="absolute -bottom-14 left-1/2 -translate-x-1/2">
                 <BackToDashboard handleClick={handleClick(DASHBOARD, undefined)} />

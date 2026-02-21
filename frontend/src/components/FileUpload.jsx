@@ -29,14 +29,14 @@ function FileUploadList()
     );
 };
 
-function FileUploadTrigger() {
+function FileUploadTrigger({ name, label }) {
     return (
-        <ChakraFileUpload.Root name="poster" accept="image/*" maxFiles={1}>
+        <ChakraFileUpload.Root name={name} accept="image/*" maxFiles={1}>
             <ChakraFileUpload.HiddenInput />
             <div style={{ display: 'flex', gap: '2rem', alignItems: 'center', justifyContent: 'center' }}>
                 <ChakraFileUpload.Trigger asChild>
                     <Button variant={OUTLINE} size={SMALL}>
-                        <LuFileImage /> Event Poster
+                        <LuFileImage /> {label}
                     </Button>
                 </ChakraFileUpload.Trigger>
                 <FileUploadList />
@@ -45,7 +45,7 @@ function FileUploadTrigger() {
     );
 };
 
-export default function FileUpload() {
+function FileUploadButton({ name, label }) {
     return (
         <Button
             variant={SOLID}
@@ -59,9 +59,17 @@ export default function FileUpload() {
             _hover={{ transform: MINIMAL_TRANSFORM }}
             transition={MINIMAL_TRANSITION}
             as="label">
-            <FileUploadTrigger />
+            <FileUploadTrigger name={name} label={label} />
         </Button>
     );
+};
+
+export default function FileUpload() {
+    return <FileUploadButton name="poster" label="Event Poster" />;
+};
+
+export function ContextFileUpload() {
+    return <FileUploadButton name="context_image" label="Context Image" />;
 };
 
 export { FileUploadList };

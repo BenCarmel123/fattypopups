@@ -5,12 +5,12 @@ import { translate } from "./utils/googleTranslate.js";
 const REMINDER = "***"
 
 const generateDraft =
-    async (prompt, imageUrl = null) =>
+    async (prompt, posterUrl = null, contextUrl = null) =>
     {
         const _startTime = Date.now(); // TIME start
 
         // Get JSON from OpenAI
-        const rawOutput = await GenerateDraftDetails(prompt, imageUrl);
+        const rawOutput = await GenerateDraftDetails(prompt, posterUrl, contextUrl);
         const openaiResponse = JSON.parse(rawOutput);
         const english_description = openaiResponse.english_description
 
@@ -39,7 +39,7 @@ const generateDraft =
             reservation_url: REMINDER,
             english_description: english_description,
             hebrew_description: hebrew_description,
-            poster: imageUrl,
+            poster: posterUrl,
             is_draft: true
         };
 
