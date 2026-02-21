@@ -2,14 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import { Provider } from "./config/provider.jsx";
+import * as Config from "./config/index.jsx";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Provider>
+    <Config.Provider>
       <App />
-    </Provider>
+    </Config.Provider>
   </React.StrictMode>
 );
 

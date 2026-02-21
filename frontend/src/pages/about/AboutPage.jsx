@@ -1,7 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
 import * as Config from '../../config/index.jsx';
-import { AiOutlineMail, GiKnifeFork } from '../../config/index.jsx';
 import { BackButton } from "../../components/Buttons.jsx";
 
 const INSTA_LINK_HALLIE = process.env.REACT_APP_INSTA_LINK_HALLIE;
@@ -31,7 +30,7 @@ export const ContactEmail = ({ email }) => {
   return (
     <p className="text-sm text-gray-400 font-bold mt-0" style={{ color: Config.SECONDARY_COLOR }}>
         <span className="inline-flex items-center gap-2" style={{ color: Config.SECONDARY_COLOR, marginBottom: '1.5rem' }}>
-          <AiOutlineMail className="inline-block" style={{ verticalAlign: 'middle', color: Config.SECONDARY_COLOR }} />
+          <Config.AiOutlineMail className="inline-block" style={{ verticalAlign: 'middle', color: Config.SECONDARY_COLOR }} />
           <a href={`mailto:${email}`} className="underline" style={{ color: Config.SECONDARY_COLOR }}>
             {email}
           </a>
@@ -67,7 +66,7 @@ export default function AboutPage() {
         <ABOUT_SUBHEADER text="fatty popups" color={Config.SECONDARY_COLOR} style={{ fontStyle: 'italic', fontWeight: '300' }} />
 
       <div className="flex justify-center">
-        <GiKnifeFork className="text-6xl text-gray-900" />
+        <Config.GiKnifeFork className="text-6xl text-gray-900" />
       </div>
 
         {/* Profile Pictures */}

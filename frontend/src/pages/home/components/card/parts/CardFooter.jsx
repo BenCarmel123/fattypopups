@@ -2,7 +2,6 @@ import { Card, Button } from '@chakra-ui/react';
 import { handleWhatsApp } from 'utils/externalLinks';
 import { defaultOnMouseEnter, defaultOnMouseLeave } from 'utils/interactions';
 import * as Config from 'config/index.jsx';
-import { GiForkKnifeSpoon, FaWhatsapp } from 'config/index.jsx';
 
 /* -------------------------- ACTION BUTTON -------------------------- */
 function ActionButton({ children, onClick, ariaLabel, className = '', fullCover = false }) {
@@ -44,11 +43,11 @@ export default function CardFooter({ event }) {
       <div style={{ display: Config.FLEX, alignItems: Config.CENTER, justifyContent: Config.CENTER, width: Config.MAX, marginTop: '-15px', marginBottom: '-10px' }}>
         <div className="eventcard-actions" style={{ display: Config.FLEX, alignItems: Config.CENTER, justifyContent: Config.CENTER, gap: '1rem', width: Config.MAX, maxWidth: '340px', margin: '0 auto' }}>
           <ActionButton onClick={() => window.open(event.reservation_url, Config.SELF, Config.NO_OPENER)} ariaLabel={Config.RESERVE}>
-            <GiForkKnifeSpoon style={{ verticalAlign: Config.MIDDLE, marginRight: '-0.3rem' }} />
+            <Config.GiForkKnifeSpoon style={{ verticalAlign: Config.MIDDLE, marginRight: '-0.3rem' }} />
            <FooterOption text={Config.RESERVE} onClick={() => window.open(event.reservation_url, Config.SELF, Config.NO_OPENER)} />
           </ActionButton>
           <ActionButton onClick={() => handleWhatsApp(event.english_description)} ariaLabel="Share">
-            <FaWhatsapp style={{ verticalAlign: Config.MIDDLE, marginRight: '-0.3rem' }} />
+            <Config.FaWhatsapp style={{ verticalAlign: Config.MIDDLE, marginRight: '-0.3rem' }} />
             <FooterOption text={Config.SHARE} onClick={() => handleWhatsApp(event.english_description)} />
           </ActionButton>
         </div>

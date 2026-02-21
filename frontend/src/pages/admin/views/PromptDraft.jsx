@@ -62,7 +62,7 @@ export default function PromptDraft({ placeholder = Config.PROMPT_PLACEHOLDER, h
             const transformedEvent = transformDraftToFormData(event);
             console.log('[DEBUG] Transformed event:', transformedEvent);
             transformedEvent.file = file;
-            handleClick(ADD, transformedEvent)();
+            handleClick(Config.ADD, transformedEvent)();
             // Switch to ADD mode and pass the generated draft
             }
 

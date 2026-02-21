@@ -1,6 +1,5 @@
 import { Button, Float, useFileUploadContext, FileUpload as ChakraFileUpload } from "@chakra-ui/react";
 import * as Config from "../config/index.jsx";
-import { LuFileImage, LuX } from "../config/index.jsx";
 
 function FileUploadList()
 {
@@ -20,7 +19,7 @@ function FileUploadList()
                     <ChakraFileUpload.ItemPreviewImage />
                     <Float placement="top-end">
                         <ChakraFileUpload.ItemDeleteTrigger boxSize="4" layerStyle="fill.solid">
-                            <LuX />
+                            <Config.LuX />
                         </ChakraFileUpload.ItemDeleteTrigger>
                     </Float>
                 </ChakraFileUpload.Item>
@@ -36,7 +35,7 @@ function FileUploadTrigger({ name, label }) {
             <div style={{ display: Config.FLEX, gap: '2rem', alignItems: Config.CENTER, justifyContent: Config.CENTER }}>
                 <ChakraFileUpload.Trigger asChild>
                     <Button variant={Config.OUTLINE} size={Config.SMALL}>
-                        <LuFileImage /> {label}
+                        <Config.LuFileImage /> {label}
                     </Button>
                 </ChakraFileUpload.Trigger>
                 <FileUploadList />
