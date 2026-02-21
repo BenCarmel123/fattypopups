@@ -29,21 +29,47 @@ function FileUploadList()
     );
 };
 
-// renamed to avoid shadowing the imported `FileUpload`
-export default function FileUpload() {
+function FileUploadTrigger({ name, label }) {
     return (
-        <ChakraFileUpload.Root name="poster" accept="image/*" maxFiles={1}>
+        <ChakraFileUpload.Root name={name} accept="image/*" maxFiles={1}>
             <ChakraFileUpload.HiddenInput />
             <div style={{ display: Config.FLEX, gap: '2rem', alignItems: Config.CENTER, justifyContent: Config.CENTER }}>
                 <ChakraFileUpload.Trigger asChild>
                     <Button variant={Config.OUTLINE} size={Config.SMALL}>
-                        <LuFileImage /> Event Poster
+                        <LuFileImage /> {label}
                     </Button>
                 </ChakraFileUpload.Trigger>
                 <FileUploadList />
             </div>
         </ChakraFileUpload.Root>
     );
+};
+
+function FileUploadButton({ name, label }) {
+    return (
+        <Button
+            variant={Config.SOLID}
+            size={Config.LARGE}
+            fontWeight={Config.BOLD}
+            px={2}
+            py={2}
+            boxShadow={Config.MEDIUM}
+            borderRadius={Config.XL}
+            backgroundColor={Config.ADMIN_PANEL_COLOR}
+            _hover={{ transform: Config.MINIMAL_TRANSFORM }}
+            transition={Config.MINIMAL_TRANSITION}
+            as="label">
+            <FileUploadTrigger name={name} label={label} />
+        </Button>
+    );
+};
+
+export default function FileUpload() {
+    return <FileUploadButton name="poster" label="Event Poster" />;
+};
+
+export function ContextFileUpload() {
+    return <FileUploadButton name="context_image" label="Context Image" />;
 };
 
 export { FileUploadList };

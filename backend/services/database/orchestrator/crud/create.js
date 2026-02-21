@@ -23,7 +23,8 @@ export const orchestrateEventCreate = async (body, file) => {
     hebrew_description,
     is_draft
   } = body;
-  await handleEventImageUpload(null, body, file, null);
+
+  body.poster = await handleEventImageUpload(null, body, file, null);
   const isDraft = isTrue(is_draft);
   const chefNamesArray = chef_names?.split(',').map(s => s.trim()) ?? [];
 

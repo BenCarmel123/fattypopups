@@ -1,15 +1,14 @@
-// Require necessary modules and configure OpenAI client
 import 'dotenv/config';
-import { generateDraft } from '../services/agent/draft.js';
+import { generateDraft } from '../services/agent/composeDraft.js';
 import express from 'express';
-import { orchestrateEventCreate } from '../services/database/orchestrator/index.js'; 
+import { uploadDraftImages } from '../services/s3/draftUpload.js';
+import { uploadMemory } from '../config/middleware/multer.js';
 import { logger } from "../utils/logger.js";
 
 const agentRouter = express.Router();
 
-agentRouter.post("/draft", async (req, res) => {
+agentRouter.post("/draft", uploadMemory.fields([{ name: 'poster' }, { name: 'context_image' }]), async (req, res) => {
   logger.info("[REQUEST] Reached /draft endpoint\n");
-  const prompt = req.body;
 
   // Client error
   if (typeof prompt !== "string" || !prompt.trim()) {
@@ -17,15 +16,17 @@ agentRouter.post("/draft", async (req, res) => {
   }
 
   try {
-    // Generate draft
-    const draft = await generateDraft(prompt);
+    const { posterUrl, contextUrl } = await uploadDraftImages(
+      req.files?.poster?.[0] ?? null,
+      req.files?.context_image?.[0] ?? null,
+    );
+    // Generate draft data from AI
+    const draft = await generateDraft(prompt, posterUrl, contextUrl);
     logger.info("[EVENT] Draft generated and event created\n");
 
-    // Create event from draft
-    const newEvent = await orchestrateEventCreate(draft, null);
-
-    // Success response
-    return res.status(200).json({ event: newEvent });
+    // Return draft directly to frontend for admin review
+    // Admin will save it via form submission
+    return res.status(200).json({ event: draft });
 
   } catch (err) {
     logger.error("[ERROR] Draft or event creation failed:", err, "\n");

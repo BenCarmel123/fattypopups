@@ -50,5 +50,75 @@ export const extractEventData = (form) => {
     english_description: form.english_description.value,
     hebrew_description: form.hebrew_description.value,
     poster: form.poster.files[0],
+    is_draft: form.is_draft ? form.is_draft.value === 'true' : false,
+  };
+};
+
+// Convert event data object to FormData for multipart upload
+export const eventDataToFormData = (eventData) => {
+  const formData = new FormData();
+
+  Object.entries(eventData).forEach(([key, value]) => {
+    if (key === 'is_draft') {
+      formData.append(key, value ? 'true' : 'false');
+    } else {
+      formData.append(key, value);
+    }
+  });
+
+  return formData;
+};
+
+// Set is_draft to true when "Save as Draft" button is clicked
+export const handleDraftClick = (e) => {
+  const form = e.currentTarget.closest('form');
+  if (form && form.is_draft) {
+    form.is_draft.value = 'true';
+  }
+};
+
+// Set is_draft to false when "Add"/"Update" button is clicked
+export const handleAddClick = (e) => {
+  const form = e.currentTarget.closest('form');
+  if (form && form.is_draft) {
+    form.is_draft.value = 'false';
+  }
+};
+
+// Transform backend draft data to format expected by form components
+export const transformDraftToFormData = (draft) => {
+  console.log('[TRANSFORM INPUT]:', draft);
+  console.log('[TRANSFORM] chef_names:', draft?.chef_names);
+  console.log('[TRANSFORM] venue_name:', draft?.venue_name);
+
+  if (!draft) return null;
+
+  // Parse chef names and instagrams from comma-separated strings
+  const chefNames = draft.chef_names?.split(',').map(s => s.trim()).filter(Boolean) || [];
+  const chefInstagrams = draft.chef_instagrams?.split(',').map(s => s.trim()).filter(Boolean) || [];
+
+  // Build chefs array
+  const chefs = chefNames.map((name, i) => ({
+    name,
+    instagram_handle: chefInstagrams[i] || ''
+  }));
+
+  const venue = {
+    name: draft.venue_name || '',
+    address: draft.venue_address || '',
+    instagram_handle: draft.venue_instagram || ''
+  };
+
+  return {
+    title: draft.title,
+    start_datetime: draft.start_datetime,
+    end_datetime: draft.end_datetime,
+    reservation_url: draft.reservation_url,
+    english_description: draft.english_description,
+    hebrew_description: draft.hebrew_description,
+    poster: draft.poster,
+    is_draft: draft.is_draft,
+    chefs,
+    venue
   };
 };
