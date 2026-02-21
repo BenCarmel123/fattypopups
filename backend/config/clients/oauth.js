@@ -18,4 +18,4 @@ export const oauth2Client = new google.auth.OAuth2(
   redirectUri
 );
 
-logger.info(`🔐 Google OAuth configured (${process.env.NODE_ENV || 'development'} environment) | Redirect URI: ${redirectUri}`);
+logger.info(`[AUTH] Google OAuth configured (${process.env.NODE_ENV || 'development'} environment) | Redirect URI: ${redirectUri}`);

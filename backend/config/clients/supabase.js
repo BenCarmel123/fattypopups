@@ -14,4 +14,4 @@ if (!supabaseUrl || !supabaseKey) {
 
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
-logger.info(`🗄️  Connected to Supabase (${process.env.NODE_ENV || 'development'} environment)`);
+logger.info(`[SUPABASE] Connected to Supabase (${process.env.NODE_ENV || 'development'} environment)`);
