@@ -1,14 +1,15 @@
 import { updateEventEmbeddings } from "../../vector/orchestrator.js";
-import { handleEventImageUpload } from "../../../s3/upload.js";
+import { handleEventImageUpload } from "#services/s3/upload.js";
 import { getEventById, updateEventById, handleEventVenueUpdate } from "../../entities/event/operations.js";
 import { computeUpdateState } from "../../utils/computeState.js";
 import { getChefsForEvent } from "../../entities/linking/operations.js";
 import { getVenueById } from "../../entities/venue/operations.js";
 import { handleEventChefsUpdate } from "../../entities/chef/operations.js";
+import { logger } from "../../../../utils/logger.js";
 
 // Orchestrates updating an event with all related operations (S3, embeddings, event data)
 export const orchestrateEventUpdate = async (id, body, file) => {
-  console.log("[UPDATE] Starting update for event ID:", id, "| File attached:", !!file);
+  logger.info("[UPDATE] Starting update for event ID:", id, "| File attached:", !!file);
 
   // 1. Fetch current event data
   const currentEvent = await getEventById(id, 'english_description, hebrew_description, embedding_id_en, embedding_id_he, is_draft, poster, venue_id');
@@ -18,10 +19,10 @@ export const orchestrateEventUpdate = async (id, body, file) => {
   }
 
   // 2. Handle image upload to S3
-  console.log(`[UPDATE] Handling image upload for event ID: ${id}`);
+  logger.info(`[UPDATE] Handling image upload for event ID: ${id}`);
   const uploadedUrl = await handleEventImageUpload(id, body, file, currentEvent);
   if (uploadedUrl) body.poster = uploadedUrl;
-  console.log(`[UPDATE] Image upload completed for event ID: ${id}`);
+  logger.info(`[UPDATE] Image upload completed for event ID: ${id}`);
 
   // 3. Fetch current venue and chefs for change detection
   const [currentVenue, currentChefs] = await Promise.all([
@@ -31,7 +32,7 @@ export const orchestrateEventUpdate = async (id, body, file) => {
   
   const currentChefNames = currentChefs.map(c => c.name).join(", ");
   
-  console.log("[UPDATE] Venue:", currentVenue?.name || 'none', "| Chefs:", currentChefNames || 'none');
+  logger.info("[UPDATE] Venue:", currentVenue?.name || 'none', "| Chefs:", currentChefNames || 'none');
 
   // Save venue and chef data before deleting from body
   const venueName = body.venue_name;
@@ -104,6 +105,6 @@ export const orchestrateEventUpdate = async (id, body, file) => {
   const updatedEvent = await updateEventById(id, body);
 
   // 9. Return updated event
-  console.log("[UPDATE] Event update completed for ID:", id);
+  logger.info("[UPDATE] Event update completed for ID:", id);
   return updatedEvent;
 };

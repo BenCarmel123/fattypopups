@@ -1,10 +1,11 @@
 import express from 'express';
-import { 
-  getEventsWithDetails, 
-  orchestrateEventCreate, 
-  orchestrateEventUpdate, 
-  deleteEvents 
+import {
+  getEventsWithDetails,
+  orchestrateEventCreate,
+  orchestrateEventUpdate,
+  deleteEvents
 } from '../services/database/orchestrator/index.js';
+import { logger } from "../utils/logger.js";
 // Multer imports
 import { uploadMemory } from '../config/index.js';
 
@@ -17,7 +18,7 @@ eventRouter.get('/', async (req, res) => {
     const events = await getEventsWithDetails(isAdmin);
     res.json(events);
   } catch (err) {
-    console.log("[ERROR] HTTP Error:", err);
+    logger.error("HTTP Error:", err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -28,7 +29,7 @@ eventRouter.post('/', uploadMemory.single('poster'), async (req, res) => {
     const newEvent = await orchestrateEventCreate(req.body, req.file);
     res.json(newEvent);
   } catch (err) {
-    console.log('[ERROR] HTTP Error:', err);
+    logger.error('HTTP Error:', err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -39,7 +40,7 @@ eventRouter.put('/:id', uploadMemory.single('poster'), async (req, res) => {
     const updatedEvent = await orchestrateEventUpdate(req.params.id, req.body, req.file);
     res.json(updatedEvent);
   } catch (err) {
-    console.log('[ERROR] HTTP Error:', err);
+    logger.error('HTTP Error:', err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -54,7 +55,7 @@ eventRouter.delete('/', async (req, res) => {
     const result = await deleteEvents(titles);
     res.json(result);
   } catch (err) {
-    console.log('[ERROR] HTTP Error:', err);
+    logger.error('HTTP Error:', err);
     res.status(500).json({ error: err.message });
   }
 });

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '@chakra-ui/react';
-import { MEDIUM, LARGE, MAX, SOLID } from '../../../../config/index.jsx';
+import * as Config from 'config/index.jsx';
 import CardBody from './parts/CardBody.jsx';
 import CardFooter from './parts/CardFooter.jsx';
 import FlipImage from './parts/FlipImage.jsx';
@@ -18,20 +18,20 @@ export default function EventCard({ event }) {
         }
       `}</style>
         <Card.Root
-        size={MEDIUM}
+        size={Config.MEDIUM}
         overflow="hidden"
-        rounded={LARGE}
+        rounded={Config.LARGE}
         style={{
           margin: '0 auto',
-          width: MAX,
+          width: Config.MAX,
           maxWidth: 'clamp(260px, 86vw, 420px)',
           minWidth: 0,
           boxSizing: 'border-box',
-          borderStyle: SOLID,
-          borderColor: '#cde6e5',
+          borderStyle: Config.SOLID,
+          borderColor: Config.BORDER_COLOR,
           borderRadius: '50px',
           borderWidth: '1.5px',
-          fontWeight: 'bolder'
+          fontWeight: Config.BOLDER
         }}
       >
         <FlipImage event={event} />

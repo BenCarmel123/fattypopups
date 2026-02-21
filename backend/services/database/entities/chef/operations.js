@@ -1,6 +1,7 @@
-import { supabase } from "../../../../config/index.js";
+import { supabase } from "#config/index.js";
 import { normalizeChefName } from "../../utils/parse.js";
 import { unlinkChefsFromEvent, linkChefsToEvent } from "../linking/operations.js";
+import { logger } from "../../../../utils/logger.js";
 
 // Check if chef exists by name
 // Returns the chef object if found, null otherwise
@@ -86,11 +87,11 @@ export async function getAllChefs() {
 // Handle chef relationship updates - only update if chefs changed or publishing draft
 export async function handleEventChefsUpdate({ eventId, chefNames, chefInstagrams, shouldUpdate, shouldUnlink }) {
   if (!shouldUpdate) {
-    console.log('[CHEFS] No chef update needed (draft mode or no changes to published event)');
+    logger.info('[CHEFS] No chef update needed (draft mode or no changes to published event)');
     return;
   }
 
-  console.log('[CHEFS] Processing chef updates...');
+  logger.info('[CHEFS] Processing chef updates...');
 
   // Get or create chefs, returns array of chef IDs
   const chefIds = await upsertChefs(chefNames, chefInstagrams);
@@ -102,5 +103,5 @@ export async function handleEventChefsUpdate({ eventId, chefNames, chefInstagram
 
   // Link new/updated chefs
   await linkChefsToEvent(eventId, chefIds);
-  console.log(`[CHEFS] ${shouldUnlink ? 'Unlinked old chefs and linked' : 'Linked'} new chefs - Chef IDs: ${chefIds.join(', ')}`);
+  logger.info(`[CHEFS] ${shouldUnlink ? 'Unlinked old chefs and linked' : 'Linked'} new chefs - Chef IDs: ${chefIds.join(', ')}`);
 }

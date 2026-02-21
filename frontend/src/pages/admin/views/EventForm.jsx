@@ -1,46 +1,55 @@
-import { DASHBOARD, CENTER, FLEX, RELATIVE, PUT, POST, STATUS_ERROR, STATUS_SUCCESS } from "../../../config/index.jsx";
+import * as Config from 'config/index.jsx';
 import validateEvent from "../utils/validation.js";
-import { extractEventDataFromForm, eventDataToFormData } from "../utils/formHelpers.js";
-import { getTomorrowDate, submitFormData } from "../utils/formUtils.js";
-import { useState } from "react";
-import SpinnerOverlay from "../../../components/SpinnerOverlay.jsx";
-import FormAlert from "../components/form/Alert.jsx";
-import FormCard from "../components/form/structure/Card.jsx";
+import { extractEventData, submitFormData } from "../utils/form.js";
+import { useRef, useState } from "react";
+import SpinnerOverlay from "components/SpinnerOverlay.jsx";
+import FormAlert from "../components/form/FormAlert.jsx";
+import FormBody from "../components/form/structure/FormBody.jsx";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
-export default function EventForm({ event, isEdit, handleClick } ) {
-    console.log('[EventForm] Received event:', event);
+export default function EventForm({ event, isEdit, handleClick, setEvents } ) {
     const [alert, setAlert] = useState(undefined);
     const [isLoading, setLoading] = useState(false);
-
-    const tomorrowStr = getTomorrowDate();
+    const isDraftRef = useRef(false);
 
     async function handleEvent(e) {
         e.preventDefault(); 
         const form = e.target;
         
         // Extract form data
-        const eventData = extractEventDataFromForm(form, event?.file);
+        const eventData = extractEventData(form);
+        eventData.is_draft = isDraftRef.current;
 
         // Validate (drafts only need title, full events need everything)
         const validation = validateEvent(eventData, isEdit, eventData.is_draft);
         if (!validation.valid) {
-            setAlert({ status: STATUS_ERROR, description: validation.error });
+            setAlert({ status: Config.STATUS_ERROR, description: validation.error });
             return;
         }
 
-        // Convert to FormData for upload
-        const formData = eventDataToFormData(eventData);
-
         // Determine URL and method
         const url = isEdit ? `${SERVER_URL}/api/events/${event.id}` : `${SERVER_URL}/api/events`;
-        const method = isEdit ? PUT : POST;
+        const method = isEdit ? Config.PUT : Config.POST;
 
         try {
             setLoading(true);
-            await submitFormData(url, method, formData);
+            const savedEvent = await submitFormData(url, method, eventData);
             setLoading(false);
+            // Update state and sessionStorage cache so the dashboard reflects the change instantly
+            if (isEdit) {
+              setEvents(prev => {
+                const updated = prev.map(ev => ev.id === savedEvent.id ? savedEvent : ev);
+                sessionStorage.setItem('admin_events', JSON.stringify(updated));
+                return updated;
+              });
+            } else {
+              setEvents(prev => {
+                const updated = [...prev, savedEvent];
+                sessionStorage.setItem('admin_events', JSON.stringify(updated));
+                return updated;
+              });
+            }
 
             // Determine success message based on draft status and edit mode
             let successTitle;
@@ -51,33 +60,33 @@ export default function EventForm({ event, isEdit, handleClick } ) {
             }
 
             setAlert({
-                status: STATUS_SUCCESS,
+                status: Config.STATUS_SUCCESS,
                 title: successTitle,
             });
 
             setTimeout(() => {
-                handleClick(DASHBOARD)();
+                handleClick(Config.DASHBOARD)();
             }, 750);
         } 
         catch (err) {
             setLoading(false);
             setAlert({
-                status: STATUS_ERROR,
+                status: Config.STATUS_ERROR,
                 description: err.message,
             });
         } 
     }
 
     return (
-        <div className={CENTER} style={{ position: RELATIVE, display: FLEX, alignItems: CENTER, justifyContent: CENTER, minHeight: '100vh', paddingTop: '3rem' }}>
+        <div className={Config.CENTER} style={{ position: Config.RELATIVE, display: Config.FLEX, alignItems: Config.CENTER, justifyContent: Config.CENTER, minHeight: '100vh', paddingTop: '3rem' }}>
             <SpinnerOverlay isLoading={isLoading} />
             <FormAlert alert={alert} onClose={() => setAlert(null)} />
-            <FormCard 
+            <FormBody
                 event={event} 
-                isEdit={isEdit} 
-                tomorrowStr={tomorrowStr} 
+                isEdit={isEdit}
                 onSubmit={handleEvent} 
                 handleClick={handleClick}
+                isDraftRef={isDraftRef}
             />
         </div>
     );

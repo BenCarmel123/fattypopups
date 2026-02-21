@@ -1,9 +1,10 @@
 import { openai } from "../../config/index.js";
+import { logger } from "../../utils/logger.js";
 
 // Function to generate embedding using OpenAI API
 export async function generateEmbedding(description) {
   if (!openai) {
-    console.warn("OpenAI client is not initialized. Skipping embedding creation.");
+    logger.warn("OpenAI client is not initialized. Skipping embedding creation.");
     return null; // Return a fallback value or handle gracefully
   }
   const embeddingResponse = await openai.embeddings.create({
@@ -18,7 +19,7 @@ export async function generateEmbedding(description) {
 // Pass true/false for each language to control what gets generated
 // If no flags provided, generates both by default
 export async function generateEmbeddings(englishDescription, hebrewDescription, generateEnglish = true, generateHebrew = true) {
-  console.log(`[EMBEDDING] Starting embedding generation - English: ${generateEnglish} | Hebrew: ${generateHebrew}`);
+  logger.info(`[EMBEDDING] Starting embedding generation - English: ${generateEnglish} | Hebrew: ${generateHebrew}`);
   
   const result = {
     english: null,
@@ -50,11 +51,12 @@ export async function generateEmbeddings(englishDescription, hebrewDescription, 
         result[type] = embedding;
         const status = embedding ? 'SUCCESS' : 'NULL';
         const lang = type === 'english' ? 'English' : 'Hebrew';
-        console.log(`[EMBEDDING] ${lang} embedding generated:`, status);
+        logger.info(`[EMBEDDING] ${lang} embedding generated:`, status);
       });
     }
   } catch (e) {
-    console.log(`[ERROR] Embedding generation error: ${e.message}`, e.stack);
+    logger.error(`Embedding generation error: ${e.message}`, e.stack);
+    return { english: null, hebrew: null, generationError: true };
   }
 
   return result;

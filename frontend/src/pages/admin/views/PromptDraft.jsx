@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Textarea } from "@chakra-ui/react";
-import { POST, ENTER, UNKNOWN_ERROR, PROMPT_PLACEHOLDER, ADD, DASHBOARD } from "../../../config/index.jsx";
-import { SubmitPromptButton, BackToDashboard } from '../../../components/Buttons.jsx';
-import SpinnerOverlay from '../../../components/SpinnerOverlay.jsx';
-import { transformDraftToFormData } from '../utils/formHelpers.js';
+import { transformDraftToFormData } from '../utils/form.js';
 import FileUpload, { ContextFileUpload } from '../../../components/FileUpload.jsx';
+import * as Config from 'config/index.jsx';
+import { SubmitPromptButton, BackToDashboard } from 'components/Buttons.jsx';
+import SpinnerOverlay from 'components/SpinnerOverlay.jsx';
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL
 
@@ -17,8 +17,9 @@ export const sendPrompt = async (prompt, file, contextFile) => {
   if (contextFile) formData.append('context_image', contextFile);
 
   const res = await fetch(`${SERVER_URL}/agent/draft`, {
-    method: POST,
-    body: formData
+    method: Config.POST,
+    body: formData,
+    headers: { [Config.CONTENT_TYPE]: Config.TEXT_PLAIN },
   });
 
   const event = await res.json();
@@ -26,14 +27,13 @@ export const sendPrompt = async (prompt, file, contextFile) => {
   console.log("[TIME]", Date.now() - _startTime, "ms"); // TIME end
 
   if (!res.ok) {
-    throw new Error(event.error || UNKNOWN_ERROR);
+    throw new Error(event.error || Config.UNKNOWN_ERROR);
   }
 
-  console.log(event);
   return event;
 };
 
-export default function PromptDraft({ placeholder = PROMPT_PLACEHOLDER, handleClick }) {
+export default function PromptDraft({ placeholder = Config.PROMPT_PLACEHOLDER, handleClick }) {
     const [prompt, setPrompt] = useState('');
     const [isLoading, setLoading] = useState(false)
     const [requestInProgress, setRequestInProgress] = useState(false);
@@ -63,6 +63,7 @@ export default function PromptDraft({ placeholder = PROMPT_PLACEHOLDER, handleCl
             console.log('[DEBUG] Transformed event:', transformedEvent);
             transformedEvent.file = file;
             handleClick(ADD, transformedEvent)();
+            // Switch to ADD mode and pass the generated draft
             }
 
         catch (err) {
@@ -77,7 +78,7 @@ export default function PromptDraft({ placeholder = PROMPT_PLACEHOLDER, handleCl
     };
 
     const handleKeyDown = (e) => {
-        if (e.key === ENTER && !e.shiftKey) {
+        if (e.key === Config.ENTER && !e.shiftKey) {
             e.preventDefault();
             handleSubmit(e);
         }
@@ -93,7 +94,7 @@ export default function PromptDraft({ placeholder = PROMPT_PLACEHOLDER, handleCl
             </div>
             <div className="relative flex items-end gap-2 p-1 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-200 w-full max-w-xl md:max-w-3xl lg:max-w-4xl">
             <div className="absolute -bottom-14 left-1/2 -translate-x-1/2">
-                <BackToDashboard handleClick={handleClick(DASHBOARD, undefined)} />
+                <BackToDashboard handleClick={handleClick(Config.DASHBOARD, undefined)} />
             </div>
             <Textarea
                 value={prompt}

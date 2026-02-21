@@ -1,6 +1,6 @@
 import { Button, Float, useFileUploadContext, FileUpload as ChakraFileUpload } from "@chakra-ui/react";
-import { LuFileImage, LuX, AUTO, SMALL, OUTLINE, SOLID, LARGE, BOLD, MEDIUM, XL, MINIMAL_TRANSFORM, MINIMAL_TRANSITION } from "../config/index.jsx";
-import { ADMIN_PANEL_COLOR } from "../config/colors.jsx";
+import * as Config from "../config/index.jsx";
+import { LuFileImage, LuX } from "../config/index.jsx";
 
 function FileUploadList()
 {
@@ -11,7 +11,7 @@ function FileUploadList()
         <ChakraFileUpload.ItemGroup>
             {files.map((file) => (
                 <ChakraFileUpload.Item
-                    w={AUTO}
+                    w={Config.AUTO}
                     boxSize="20"
                     p="2"
                     file={file}
@@ -33,9 +33,9 @@ function FileUploadTrigger({ name, label }) {
     return (
         <ChakraFileUpload.Root name={name} accept="image/*" maxFiles={1}>
             <ChakraFileUpload.HiddenInput />
-            <div style={{ display: 'flex', gap: '2rem', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ display: Config.FLEX, gap: '2rem', alignItems: Config.CENTER, justifyContent: Config.CENTER }}>
                 <ChakraFileUpload.Trigger asChild>
-                    <Button variant={OUTLINE} size={SMALL}>
+                    <Button variant={Config.OUTLINE} size={Config.SMALL}>
                         <LuFileImage /> {label}
                     </Button>
                 </ChakraFileUpload.Trigger>
@@ -48,16 +48,16 @@ function FileUploadTrigger({ name, label }) {
 function FileUploadButton({ name, label }) {
     return (
         <Button
-            variant={SOLID}
-            size={LARGE}
-            fontWeight={BOLD}
+            variant={Config.SOLID}
+            size={Config.LARGE}
+            fontWeight={Config.BOLD}
             px={2}
             py={2}
-            boxShadow={MEDIUM}
-            borderRadius={XL}
-            backgroundColor={ADMIN_PANEL_COLOR}
-            _hover={{ transform: MINIMAL_TRANSFORM }}
-            transition={MINIMAL_TRANSITION}
+            boxShadow={Config.MEDIUM}
+            borderRadius={Config.XL}
+            backgroundColor={Config.ADMIN_PANEL_COLOR}
+            _hover={{ transform: Config.MINIMAL_TRANSFORM }}
+            transition={Config.MINIMAL_TRANSITION}
             as="label">
             <FileUploadTrigger name={name} label={label} />
         </Button>

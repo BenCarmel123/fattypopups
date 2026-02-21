@@ -1,5 +1,5 @@
 import { deleteEventsByTitles, getImageUrlsByTitles } from '../../entities/event/operations.js';
-import { deleteS3Images } from '../../../s3/delete.js';
+import { deleteS3Images } from '#services/s3/delete.js';
 
 export const deleteEvents = async (titles) => {
   if (!Array.isArray(titles) || titles.length === 0) {

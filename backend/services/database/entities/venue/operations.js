@@ -1,4 +1,4 @@
-import { supabase } from "../../../../config/index.js";
+import { supabase } from "#config/index.js";
 import { normalizeVenueName } from "../../utils/parse.js";
 
 // Get venue by ID

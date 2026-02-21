@@ -1,5 +1,28 @@
+import * as Config from 'config/index.jsx';
+
+const toFormData = (eventData) => {
+  const formData = new FormData();
+  Object.entries(eventData).forEach(([key, value]) => { formData.append(key, value); });
+  return formData;
+};
+
+export const submitFormData = async (url, method, eventData) => {
+  const formData = toFormData(eventData);
+  const response = await fetch(url, {
+    method: method,
+    body: formData,
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || Config.UNKNOWN_ERROR);
+  }
+
+  return response.json();
+};
+
 // Extract form data into event object
-export const extractEventDataFromForm = (form, file) => {
+export const extractEventData = (form) => {
   // Collect all chef fields (chef_name_0, chef_name_1, etc.)
   const chefNames = [];
   const chefInstagrams = [];
@@ -26,7 +49,7 @@ export const extractEventDataFromForm = (form, file) => {
     reservation_url: form.reservation_url.value,
     english_description: form.english_description.value,
     hebrew_description: form.hebrew_description.value,
-    poster: form.poster.files[0] || file,
+    poster: form.poster.files[0],
     is_draft: form.is_draft ? form.is_draft.value === 'true' : false,
   };
 };

@@ -1,16 +1,16 @@
-import { SELF, NO_OPENER } from '../config/index.jsx';
+import * as Config from '../config/index.jsx';
 
 // Function to open Google Maps with the given address
 export function handleMaps(address) {
   const query = encodeURIComponent(address, 'Tel-Aviv');
   const url = `https://www.google.com/maps/search/?api=1&query=${query}`;
-  window.open(url, SELF, NO_OPENER);
+  window.open(url, Config.SELF, Config.NO_OPENER);
 }
 
 // Function to open WhatsApp with pre-filled message
 export function handleWhatsApp(description) {
         const desc = description || '';
-        window.open(`https://wa.me/?text=${encodeURIComponent(`${window.location.href}\n\n${desc}`)}`, SELF, NO_OPENER);
+        window.open(`https://wa.me/?text=${encodeURIComponent(`${window.location.href}\n\n${desc}`)}`, Config.SELF, Config.NO_OPENER);
     }
 
 export function handleInstagram(instagram) {
@@ -28,5 +28,5 @@ export function handleCalendar(event) {
     const details = `For reservations, visit: ${reservation_url}`;
     const location = venue?.address || '';
     const calendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${start}/${end}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(location)}&sf=true&output=xml`;
-    window.open(calendarUrl, SELF, NO_OPENER);
+    window.open(calendarUrl, Config.SELF, Config.NO_OPENER);
 }

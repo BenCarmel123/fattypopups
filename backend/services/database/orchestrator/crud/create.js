@@ -3,7 +3,9 @@ import { upsertVenue } from '../../entities/venue/operations.js';
 import { createEventEmbeddings } from '../../vector/orchestrator.js';
 import { insertEvent } from '../../entities/event/operations.js';
 import { linkChefsToEvent } from '../../entities/linking/operations.js';
-import { handleEventImageUpload } from '../../../s3/upload.js';
+import { handleEventImageUpload } from '#services/s3/upload.js';
+import { isTrue } from '#services/utils.js';
+import { logger } from "../../../../utils/logger.js";
 
 // Orchestrates creating an event with all related entities (venue, chefs, embeddings)
 export const orchestrateEventCreate = async (body, file) => {
@@ -23,14 +25,14 @@ export const orchestrateEventCreate = async (body, file) => {
   } = body;
 
   body.poster = await handleEventImageUpload(null, body, file, null);
-  const isDraft = is_draft === true || is_draft === "true";
+  const isDraft = isTrue(is_draft);
   const chefNamesArray = chef_names?.split(',').map(s => s.trim()) ?? [];
 
-  console.log('[EVENT] Creating event - isDraft:', isDraft);
+  logger.info('[EVENT] Creating event - isDraft:', isDraft);
 
   // Early return for drafts - minimal processing
   if (isDraft) {
-    console.log('[EVENT] Draft mode - skipping venue, chefs, and embeddings');
+    logger.info('[EVENT] Draft mode - skipping venue, chefs, and embeddings');
     return await insertEvent({
       title,
       start_datetime,
@@ -45,7 +47,7 @@ export const orchestrateEventCreate = async (body, file) => {
   }
 
   // Published event - full processing
-  console.log('[EVENT] Published mode - processing all relations');
+  logger.info('[EVENT] Published mode - processing all relations');
 
   // 1. Process venue and chefs in parallel (independent operations)
   const [venueId, chefIds] = await Promise.all([

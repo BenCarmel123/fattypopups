@@ -14,6 +14,7 @@ export const RESERVE = "Reserve";
 export const SHARE = "Share";
 export const ABOUT_BUTTON_TEXT = "Our Story";
 export const BACK_BUTTON_TEXT = "← Back";
+export const HOMEPAGE_BUTTON_TEXT = "← Homepage";
 export const POST = "POST";
 export const PUT = "PUT";
 export const GET = "GET";
@@ -59,10 +60,13 @@ export const NONE = 'none';
 
 // Layout helpers
 export const CENTER = 'center';
+export const MIDDLE = 'middle';
 export const FLEX = 'flex';
 export const RELATIVE = 'relative';
+export const ABSOLUTE = 'absolute';
 export const FIXED = 'fixed';
 export const BLOCK = 'block';
+export const NOWRAP = 'nowrap';
 
 // Button / UI style tokens
 export const SUBTLE = 'subtle';
@@ -71,6 +75,7 @@ export const OUTLINE = 'outline';
 export const ACTION_BUTTON_SPACING = "inline-block mr-2.5";
 export const ACTION_BUTTON_HOVER = "cursor-pointer text-[20px] relative"
 export const BOLD = 'bold';
+export const BOLDER = 'bolder';
 export const MINIMAL_TRANSFORM = 'scale(1.05)';
 export const MINIMAL_TRANSITION = 'all 0.15s';
 export const OVERLAY_STYLE = { position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(255, 255, 255, 0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '1.5rem', fontWeight: 'bold', transition: 'opacity 0.3s' };
@@ -102,5 +107,14 @@ export const PROMPT_PLACEHOLDER = "Describe the event..."
 export const STRING = 'string';
 export const TEXT = "text";
 export const LONG = "long";
+
+// Animation / interaction tokens
+export const EASE_IN_OUT = 'ease-in-out';
+export const MOUSE = 'mouse';
+
+// CSS value tokens
+export const CONTAIN = 'contain';
+export const FETCH_PRIORITY_HIGH = 'high';
+export const FETCH_PRIORITY_LOW = 'low';
 
 

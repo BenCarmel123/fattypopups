@@ -8,11 +8,10 @@ Built with Node.js, React, PostgreSQL, and AWS - designed as a production learni
 
 ## Features
 
-- **AI-Generated Event Content** - Bilingual (English/Hebrew) event descriptions via OpenAI API
+- **AI-Generated Event Content** - Bilingual (English/Hebrew) event creation via OpenAI API
 - **Dynamic Image Uploads** - AWS S3 integration for event posters and chef profiles
 - **Admin Dashboard** - Complete event management with modular form components
-- **Vector Search** - Semantic search and recommendations using PostgreSQL pgvector
-- **Automated Cleanup** - AWS Lambda function removes events older than 14 days
+- **Automated Cleanup** - AWS Lambda function removes events older than 2 days
 - **Dockerized Setup** - Separate dev and production environments with Docker Compose
 
 ---
@@ -185,6 +184,19 @@ npm start
 - Supports multiple images per event
 - Automatic URL generation
 - Implementation in `backend/services/s3/`
+
+### Logging System
+- Modular logger utility with consistent formatting
+- Log levels: info, warn, error, debug
+- Standardized format: `[LEVEL] timestamp message`
+- Located in `backend/utils/logger.js`
+- All 25+ backend files use consistent logging
+
+### Error Handling
+- Services: log error + throw (critical) or return error flag (non-critical)
+- Routes: log error + respond with HTTP 500
+- No silent failures - all errors are communicated and observable
+- Error flags allow graceful degradation for non-essential features
 
 ---
 
