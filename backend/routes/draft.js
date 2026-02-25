@@ -9,7 +9,7 @@ const agentRouter = express.Router();
 
 agentRouter.post("/draft", uploadMemory.fields([{ name: 'poster' }, { name: 'context_image' }]), async (req, res) => {
   logger.info("[REQUEST] Reached /draft endpoint\n");
-
+  const prompt = req.body?.prompt;
   // Client error
   if (typeof prompt !== "string" || !prompt.trim()) {
     return res.status(400).json({ error: "A non-empty prompt is required" });
