@@ -19,7 +19,6 @@ export const sendPrompt = async (prompt, file, contextFile) => {
   const res = await fetch(`${SERVER_URL}/agent/draft`, {
     method: Config.POST,
     body: formData,
-    headers: { [Config.CONTENT_TYPE]: Config.TEXT_PLAIN },
   });
 
   const event = await res.json();
