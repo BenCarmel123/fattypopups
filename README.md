@@ -11,12 +11,24 @@ Designed as a production learning sandbox for end-to-end product ownership.
 ```
 fattypopups/
 ├── backend/                 # Express.js API server
-│   ├── routes/             # API endpoints (events, auth, draft)
-│   ├── services/           # Business logic
-│   │   ├── database/       # Supabase/PostgreSQL operations
-│   │   ├── agent/          # AI agent service
+│   ├── routes/             # API endpoints (events, auth, draft, chefs, venues)
+│   ├── services/           # Business logic layers
+│   │   ├── entities/       # CRUD operations (chef, venue, event, linking)
+│   │   │   └── utils/      # Parse utilities (normalizeChefName, normalizeVenueName)
+│   │   ├── orchestrator/   # Event creation/update coordination
+│   │   │   ├── crud/       # Create, update, delete, get operations
+│   │   │   └── utils/      # computeUpdateState for change detection
+│   │   ├── embeddings/     # Vector embeddings pipeline
+│   │   │   ├── generate.js # OpenAI embedding generation
+│   │   │   ├── search.js   # pgvector semantic search
+│   │   │   └── storage/    # Embedding persistence & orchestration
+│   │   ├── agent/          # Draft generation pipeline
+│   │   │   ├── enrich.js   # Enrich chef/venue data from DB & APIs
+│   │   │   ├── llm.js      # OpenAI API for descriptions
+│   │   │   └── google/     # Google APIs (Maps, Translate)
 │   │   ├── s3/             # AWS S3 file uploads
-│   │   └── embeddings/     # OpenAI embeddings
+│   │   └── (other services)
+│   ├── utils/              # Shared utilities (logger, isTrue)
 │   ├── config/             # Clients & middleware
 │   └── server.js           # Entry point
 │
