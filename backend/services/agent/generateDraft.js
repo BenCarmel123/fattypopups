@@ -1,6 +1,6 @@
 import { generateDraftDetails } from "./llm.js";
 import { getEntities } from "./entities.js";
-import { translate } from "./utils/googleTranslate.js";
+import { translate } from "./google/googleTranslate.js";
 import { logger } from "../../utils/logger.js";
 
 const REMINDER = "***"
