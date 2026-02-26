@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAllChefs } from '../services/database/entities/chef/operations.js';
+import { getAllChefs } from '../services/entities/chef/operations.js';
 import { logger } from "../utils/logger.js";
 
 const chefRouter = express.Router();

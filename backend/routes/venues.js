@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAllVenues } from '../services/database/entities/venue/operations.js';
+import { getAllVenues } from '../services/entities/venue/operations.js';
 import { logger } from "../utils/logger.js";
 
 const venueRouter = express.Router();

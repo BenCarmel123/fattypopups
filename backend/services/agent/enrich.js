@@ -1,5 +1,5 @@
-import { getChefByName } from '../database/entities/chef/operations.js';
-import { getVenueByName } from '../database/entities/venue/operations.js';
+import { getChefByName } from '../entities/chef/operations.js';
+import { getVenueByName } from '../entities/venue/operations.js';
 import { fetchVenueAddress } from './google/googleMaps.js';
 
 // Enriches chef data by looking up in DB, creates placeholders for missing chefs

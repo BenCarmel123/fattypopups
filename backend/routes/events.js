@@ -4,7 +4,7 @@ import {
   orchestrateEventCreate,
   orchestrateEventUpdate,
   deleteEvents
-} from '../services/database/orchestrator/index.js';
+} from '../services/orchestrator/index.js';
 import { logger } from "../utils/logger.js";
 // Multer imports
 import { uploadMemory } from '../config/index.js';

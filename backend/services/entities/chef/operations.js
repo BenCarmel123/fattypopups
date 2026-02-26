@@ -1,5 +1,5 @@
 import { supabase } from "#config/index.js";
-import { normalizeChefName } from "../../utils/parse.js";
+import { normalizeChefName } from "../utils/parse.js";
 import { unlinkChefsFromEvent, linkChefsToEvent } from "../linking/operations.js";
 import { logger } from "../../../../utils/logger.js";
 
