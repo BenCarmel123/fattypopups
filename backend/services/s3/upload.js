@@ -1,7 +1,7 @@
 import { supabase, s3 } from "../../config/index.js";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { generateS3KeyAndUrl } from './utils.js';
-import { isTrue } from '../utils.js';
+import { isTrue } from '../../utils/isTrue.js';
 import { logger } from "../../utils/logger.js";
 
 export const uploadToS3 = async (s3_key, file) => {

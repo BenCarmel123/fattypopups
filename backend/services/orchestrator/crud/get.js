@@ -1,5 +1,5 @@
 import { getAllEventsWithRelations } from '../../entities/event/operations.js';
-import { logger } from "../../../../utils/logger.js";
+import { logger } from "../../../utils/logger.js";
 
 // Get normalized events with all relations for API response
 export async function getEventsWithDetails(isAdmin = false) {

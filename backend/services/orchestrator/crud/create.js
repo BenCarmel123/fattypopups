@@ -1,11 +1,11 @@
 import { upsertChefs } from '../../entities/chef/operations.js';
 import { upsertVenue } from '../../entities/venue/operations.js';
-import { createEventEmbeddings } from '../../../embeddings/storage/orchestrator.js';
+import { createEventEmbeddings } from '../../embeddings/storage/orchestrator.js';
 import { insertEvent } from '../../entities/event/operations.js';
 import { linkChefsToEvent } from '../../entities/linking/operations.js';
 import { handleEventImageUpload } from '#services/s3/upload.js';
 import { isTrue } from '../../../utils/isTrue.js';
-import { logger } from "../../../../utils/logger.js";
+import { logger } from "../../../utils/logger.js";
 
 // Orchestrates creating an event with all related entities (venue, chefs, embeddings)
 export const orchestrateEventCreate = async (body, file) => {

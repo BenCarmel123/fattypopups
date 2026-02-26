@@ -1,4 +1,4 @@
-import { supabase } from "../../../config/index.js";
+import { supabase } from "../../config/index.js";
 
 export async function searchSimilarDescriptions(embedding, limit = 5) {
     // Calls the match_embeddings SQL function defined in Supabase

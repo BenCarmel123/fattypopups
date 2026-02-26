@@ -1,6 +1,6 @@
 import { supabase } from "#config/index.js";
 import { upsertVenue } from "../venue/operations.js";
-import { logger } from "../../../../utils/logger.js";
+import { logger } from "../../../utils/logger.js";
 
 // Insert a new event into the events_new table
 export async function insertEvent(eventData) {
