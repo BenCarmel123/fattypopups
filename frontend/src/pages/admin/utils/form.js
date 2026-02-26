@@ -87,9 +87,6 @@ export const handleAddClick = (e) => {
 
 // Transform backend draft data to format expected by form components
 export const transformDraftToFormData = (draft) => {
-  console.log('[TRANSFORM INPUT]:', draft);
-  console.log('[TRANSFORM] chef_names:', draft?.chef_names);
-  console.log('[TRANSFORM] venue_name:', draft?.venue_name);
 
   if (!draft) return null;
 

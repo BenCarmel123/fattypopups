@@ -2,8 +2,8 @@ import { getChefByName } from '../database/entities/chef/operations.js';
 import { getVenueByName } from '../database/entities/venue/operations.js';
 import { fetchVenueAddress } from './google/googleMaps.js';
 
-// Fetches chef entities from DB in parallel, creates placeholders for missing chefs
-async function getChefEntities(chefNames) {
+// Enriches chef data by looking up in DB, creates placeholders for missing chefs
+async function enrichChefEntities(chefNames) {
   const chefEntitiesFromDB = await Promise.all(
     chefNames.map(name => getChefByName(name))
   );
@@ -23,8 +23,8 @@ async function getChefEntities(chefNames) {
   return chefEntities;
 }
 
-// Fetches venue entity from DB, creates placeholder with address if missing
-async function getVenueEntity(venueName) {
+// Enriches venue data from DB, fetches address from Google Maps if missing
+async function enrichVenueEntity(venueName) {
   let venueEntity = await getVenueByName(venueName);
 
   if (!venueEntity) {
@@ -39,11 +39,11 @@ async function getVenueEntity(venueName) {
   return venueEntity;
 }
 
-// Fetches both chef and venue entities in parallel for draft generation
-export async function getEntities(chefNames, venueName) {
+// Enriches both chef and venue data in parallel for draft generation
+export async function enrichEntities(chefNames, venueName) {
   const [chefEntities, venueEntity] = await Promise.all([
-    getChefEntities(chefNames),
-    getVenueEntity(venueName)
+    enrichChefEntities(chefNames),
+    enrichVenueEntity(venueName)
   ]);
 
   return { chefEntities, venueEntity };

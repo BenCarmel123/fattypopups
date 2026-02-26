@@ -2,7 +2,7 @@
 import 'dotenv/config';
 import { openai } from '../../config/index.js';
 import { generateEmbedding } from '../embeddings/generate.js';
-import { searchSimilarDescriptions } from '../database/vector/search.js';
+import { searchSimilarDescriptions } from '../embeddings/search.js';
 import { logger } from '../../utils/logger.js';
 
 // Function to generate draft details

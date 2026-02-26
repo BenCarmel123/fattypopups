@@ -1,5 +1,5 @@
 import { generateDraftDetails } from "./llm.js";
-import { getEntities } from "./entities.js";
+import { enrichEntities } from "./enrich.js";
 import { translate } from "./google/googleTranslate.js";
 import { logger } from "../../utils/logger.js";
 
@@ -26,7 +26,7 @@ const generateDraft =
         // Extract precise entities and translate English description
         logger.info("[DRAFT] Fetching entities and translating description");
         const [{ chefEntities, venueEntity }, hebrew_description] = await Promise.all([
-            getEntities(chefNames, venueName),
+            enrichEntities(chefNames, venueName),
             translate(english_description)
         ]);
         logger.info("[DRAFT] Entities fetched and translation complete");
