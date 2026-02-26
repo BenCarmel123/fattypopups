@@ -3,10 +3,10 @@ import 'dotenv/config';
 import { openai } from '../../config/index.js';
 import { generateEmbedding } from '../embeddings/generate.js';
 import { searchSimilarDescriptions } from '../database/vector/search.js';
+import { logger } from '../../utils/logger.js';
 
 // Function to generate draft details
-export async function GenerateDraftDetails(prompt, posterUrl = null, contextUrl = null) {
-  console.log("[AGENT] Prompt: " + prompt);
+export async function generateDraftDetails(prompt, posterUrl = null, contextUrl = null) {
 
   // Embed prompt and fetch similar descriptions from pgvector
   const promptEmbedding = await generateEmbedding(prompt);
@@ -25,6 +25,7 @@ export async function GenerateDraftDetails(prompt, posterUrl = null, contextUrl 
     content.push({ type: "input_image", image_url: contextUrl });
   }
 
+  logger.info("[AGENT] About to call OpenAI API");
   const response = await openai.responses.create({
     model: "gpt-4o-mini",
     input: [{ role: "user", content }],
@@ -32,7 +33,8 @@ export async function GenerateDraftDetails(prompt, posterUrl = null, contextUrl 
     text: { format: { type: "json_object" } }
   });
 
-  console.log("[AGENT] " + response.output_text);
+  logger.info("[AGENT] OpenAI response received");
+  logger.info("[AGENT] " + response.output_text);
   if (!response.output_text) throw new Error("LLM returned empty output");
   return response.output_text;
 }
