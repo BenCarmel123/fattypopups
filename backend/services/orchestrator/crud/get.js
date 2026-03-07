@@ -1,13 +1,17 @@
 import { getAllEventsWithRelations } from '../../entities/event/operations.js';
 import { logger } from "../../../utils/logger.js";
+import { redis } from "../../../config/index.js";
+const REDIS_TTL = process.env.REDIS_TTL || 1800; 
 
-// Get normalized events with all relations for API response
+// Get normalized events with all relations
 export async function getEventsWithDetails(isAdmin = false) {
+  const key = `events:${isAdmin ? 'admin' : 'public'}`;
+  const cached = await redis.get(key); 
+  if (cached) return JSON.parse(cached);
   try {
     const data = await getAllEventsWithRelations(isAdmin);
-
     // Normalize the structure for client
-    return data.map(event => ({
+    const normalizedData = data.map(event => ({
       id: event.id,
       title: event.title,
       start_datetime: event.start_datetime,
@@ -30,6 +34,8 @@ export async function getEventsWithDetails(isAdmin = false) {
         instagram_handle: ec.chef?.instagram_handle || ''
       })).filter(chef => chef.name)
     }));
+    await redis.set(key, JSON.stringify(normalizedData), 'EX', REDIS_TTL);
+    return normalizedData;
   } catch (err) {
     logger.error("Unexpected error fetching events:", err);
     throw err;
