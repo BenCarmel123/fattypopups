@@ -6,6 +6,7 @@ import { getChefsForEvent } from "../../entities/linking/operations.js";
 import { getVenueById } from "../../entities/venue/operations.js";
 import { handleEventChefsUpdate } from "../../entities/chef/operations.js";
 import { logger } from "../../../utils/logger.js";
+import { invalidateEventsCache } from '../../cache/invalidation.js';
 
 // Orchestrates updating an event with all related operations (S3, embeddings, event data)
 export const orchestrateEventUpdate = async (id, body, file) => {
@@ -105,6 +106,7 @@ export const orchestrateEventUpdate = async (id, body, file) => {
   const updatedEvent = await updateEventById(id, body);
 
   // 9. Return updated event
+  await invalidateEventsCache();
   logger.info("[UPDATE] Event update completed for ID:", id);
   return updatedEvent;
 };

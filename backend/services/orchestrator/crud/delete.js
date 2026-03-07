@@ -1,5 +1,6 @@
 import { deleteEventsByTitles, getImageUrlsByTitles } from '../../entities/event/operations.js';
 import { deleteS3Images } from '#services/s3/delete.js';
+import { invalidateEventsCache } from '../../cache/invalidation.js';
 
 export const deleteEvents = async (titles) => {
   if (!Array.isArray(titles) || titles.length === 0) {
@@ -10,5 +11,6 @@ export const deleteEvents = async (titles) => {
   await deleteS3Images(imageUrls);
   const result = await deleteEventsByTitles(titles);
 
+  await invalidateEventsCache();
   return result;
 };

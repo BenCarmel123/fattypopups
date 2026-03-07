@@ -6,8 +6,12 @@ const REDIS_TTL = process.env.REDIS_TTL || 1800;
 // Get normalized events with all relations
 export async function getEventsWithDetails(isAdmin = false) {
   const key = `events:${isAdmin ? 'admin' : 'public'}`;
-  const cached = await redis.get(key); 
-  if (cached) return JSON.parse(cached);
+  const cached = await redis.get(key);
+  if (cached) {
+    logger.info(`[Cache] HIT with key - ${key}`);
+    return JSON.parse(cached);
+  }
+  logger.info(`[Cache] MISS with key - ${key}`);
   try {
     const data = await getAllEventsWithRelations(isAdmin);
     // Normalize the structure for client

@@ -6,6 +6,7 @@ import { linkChefsToEvent } from '../../entities/linking/operations.js';
 import { handleEventImageUpload } from '#services/s3/upload.js';
 import { isTrue } from '../../../utils/isTrue.js';
 import { logger } from "../../../utils/logger.js";
+import { invalidateEventsCache } from '../../cache/invalidation.js';
 
 // Orchestrates creating an event with all related entities (venue, chefs, embeddings)
 export const orchestrateEventCreate = async (body, file) => {
@@ -33,7 +34,7 @@ export const orchestrateEventCreate = async (body, file) => {
   // Early return for drafts - minimal processing
   if (isDraft) {
     logger.info('[EVENT] Draft mode - skipping venue, chefs, and embeddings');
-    return await insertEvent({
+    const draftEvent = await insertEvent({
       title,
       start_datetime,
       end_datetime,
@@ -44,6 +45,8 @@ export const orchestrateEventCreate = async (body, file) => {
       hebrew_description,
       is_draft
     });
+    await invalidateEventsCache();
+    return draftEvent;
   }
 
   // Published event - full processing
@@ -79,5 +82,6 @@ export const orchestrateEventCreate = async (body, file) => {
     )
   ]);
 
+  await invalidateEventsCache();
   return newEvent;
 };
