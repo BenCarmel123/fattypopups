@@ -24,7 +24,7 @@ authRouter.get('/google/callback', async (req, res) => {
 }
   const code = req.query.code;
 
-  const { tokens } = await oauth2Client.getToken(code);
+  const { tokens } = oauth2Client.getToken(code);
   oauth2Client.setCredentials(tokens);
 
   const ticket = await oauth2Client.verifyIdToken({

@@ -24,7 +24,7 @@ export const orchestrateEventCreate = async (body, file) => {
     is_draft
   } = body;
 
-  body.poster = await handleEventImageUpload(null, body, file, null);
+  body.poster = await handleEventImageUpload(id=null, body, file, currentEvent=null);
   const isDraft = isTrue(is_draft);
   const chefNamesArray = chef_names?.split(',').map(s => s.trim()) ?? [];
 
@@ -68,7 +68,7 @@ export const orchestrateEventCreate = async (body, file) => {
     is_draft
   });
 
-  // 3. Link chefs and process embeddings in parallel (both use newEvent.id)
+  // 3. Link chefs and process embeddings in parallel
   await Promise.all([
     linkChefsToEvent(newEvent.id, chefIds),
     createEventEmbeddings(
