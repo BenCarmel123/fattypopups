@@ -6,12 +6,14 @@ const REDIS_TTL = process.env.REDIS_TTL || 1800;
 // Get normalized events with all relations
 export async function getEventsWithDetails(isAdmin = false) {
   const key = `events:${isAdmin ? 'admin' : 'public'}`;
-  const cached = await redis.get(key);
-  if (cached) {
-    logger.info(`[Cache] HIT with key - ${key}`);
-    return JSON.parse(cached);
+  if (redis) {
+    const cached = await redis.get(key);
+    if (cached) {
+      logger.info(`[Cache] HIT with key - ${key}`);
+      return JSON.parse(cached);
+    }
+    logger.info(`[Cache] MISS with key - ${key}`);
   }
-  logger.info(`[Cache] MISS with key - ${key}`);
   try {
     const data = await getAllEventsWithRelations(isAdmin);
     // Normalize the structure for client
@@ -38,7 +40,7 @@ export async function getEventsWithDetails(isAdmin = false) {
         instagram_handle: ec.chef?.instagram_handle || ''
       })).filter(chef => chef.name)
     }));
-    await redis.set(key, JSON.stringify(normalizedData), 'EX', REDIS_TTL);
+    if (redis) await redis.set(key, JSON.stringify(normalizedData), 'EX', REDIS_TTL);
     return normalizedData;
   } catch (err) {
     logger.error("Unexpected error fetching events:", err);
