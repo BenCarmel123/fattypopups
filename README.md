@@ -75,9 +75,10 @@ fattypopups/
 ## Tech Stack
 
 - **Frontend** - React 19, Chakra UI, Tailwind CSS 4, React Router, Axios
-- **Backend** - Node.js 18, Express.js, Nodemon
+- **Backend** - Node.js 18, Express.js, PM2
 - **Database** - Supabase / PostgreSQL with pgvector
+- **Cache** - Redis (ioredis) via Upstash in production, local Docker in development. Optional — app falls back to direct DB queries if unavailable
 - **AI** - OpenAI API (embeddings + descriptions)
-- **Cloud** - AWS S3, Lambda, EventBridge
-- **Auth** - JWT tokens
-- **Containerization** - Docker & Docker Compose
+- **Cloud** - AWS EC2 (backend), AWS Amplify (frontend), AWS S3, Lambda, EventBridge
+- **Auth** - JWT tokens + Google OAuth
+- **Containerization** - Docker & Docker Compose (development only)
