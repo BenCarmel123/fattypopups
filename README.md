@@ -10,29 +10,20 @@ Designed as a production learning sandbox for end-to-end product ownership.
 
 ```
 fattypopups/
-├── backend/                 # Express.js API server
-│   ├── routes/             # API endpoints (events, auth, draft, chefs, venues)
+├── backend/            
+│   ├── routes/             # API endpoints
 │   ├── services/           # Business logic layers
+│   │   ├── agent/          # AI draft generation 
+│   │   ├── cache/          
+│   │   ├── embeddings/     # pgvector embeddings (generate, search, store)
 │   │   ├── entities/       # CRUD operations (chef, venue, event, linking)
-│   │   │   └── utils/      # Parse utilities (normalizeChefName, normalizeVenueName)
 │   │   ├── orchestrator/   # Event creation/update coordination
-│   │   │   ├── crud/       # Create, update, delete, get operations
-│   │   │   └── utils/      # computeUpdateState for change detection
-│   │   ├── embeddings/     # Vector embeddings pipeline
-│   │   │   ├── generate.js # OpenAI embedding generation
-│   │   │   ├── search.js   # pgvector semantic search
-│   │   │   └── storage/    # Embedding persistence & orchestration
-│   │   ├── agent/          # Draft generation pipeline
-│   │   │   ├── enrich.js   # Enrich chef/venue data from DB & APIs
-│   │   │   ├── llm.js      # OpenAI API for descriptions
-│   │   │   └── google/     # Google APIs (Maps, Translate)
-│   │   ├── s3/             # AWS S3 file uploads
-│   │   └── (other services)
-│   ├── utils/              # Shared utilities (logger, isTrue)
-│   ├── config/             # Clients & middleware
+│   │   └── s3/             
+│   ├── config/             
+│   ├── utils/              
 │   └── server.js           # Entry point
 │
-├── frontend/               # React application
+├── frontend/             
 │   ├── src/
 │   │   ├── pages/          # Main page components
 │   │   │   ├── home/       # Public event listing
@@ -44,18 +35,10 @@ fattypopups/
 ├── lambdas/                # AWS Lambda functions
 │   └── cleanup/            # Scheduled cleanup (2-day retention)
 │
-├── docker-compose.yml      # Production setup
-├── docker-compose.dev.yml  # Development with hot reload
+├── docker/                 # Docker Compose configuration
+│   └── docker-compose.yml  # Development with hot reload
 └── CLAUDE.md               # Developer guidelines
 ```
-
-## Key Features
-
-- **AI-Generated Descriptions** - OpenAI API (English/Hebrew) at `backend/services/agent/`
-- **Vector Search** - pgvector embeddings for semantic search at `backend/services/embeddings/`
-- **Admin Dashboard** - Modular form with validation & draft saving at `frontend/src/pages/admin/`
-- **File Upload System** - Direct S3 uploads at `backend/services/s3/`
-- **Automated Cleanup** - Lambda removes events older than 2 days & cleans temp S3 files, runs daily via EventBridge at `lambdas/cleanup/`
 
 ## API Endpoints
 
@@ -74,11 +57,19 @@ fattypopups/
 
 ## Tech Stack
 
-- **Frontend** - React 19, Chakra UI, Tailwind CSS 4, React Router, Axios
+- **Cloud** - AWS EC2, Amplify, S3, Lambda, EventBridge
 - **Backend** - Node.js 18, Express.js, PM2
-- **Database** - Supabase / PostgreSQL with pgvector
-- **Cache** - Redis (ioredis) via Upstash in production, local Docker in development. Optional — app falls back to direct DB queries if unavailable
-- **AI** - OpenAI API (embeddings + descriptions)
-- **Cloud** - AWS EC2 (backend), AWS Amplify (frontend), AWS S3, Lambda, EventBridge
-- **Auth** - JWT tokens + Google OAuth
-- **Containerization** - Docker & Docker Compose (development only)
+- **Database** - PostgreSQL (Supabase) with pgvector
+- **Cache** - Redis via Upstash (prod) / Docker (dev)
+- **LLM** - OpenAI
+- **Auth** - JWT + Google OAuth
+- **Frontend** - React 19, Chakra UI
+- **Dev** - Docker Compose, Claude Code 
+
+## External APIs
+- **OpenAI** - Text generation & vector embeddings
+- **AWS S3** - Image storage & retrieval
+- **Supabase** - PostgreSQL client & RPC (pgvector search)
+- **Google OAuth** - Admin authentication
+- **Google Places** - Venue location enrichment
+- **Google Translate** - English → Hebrew description translation

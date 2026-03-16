@@ -1,9 +1,7 @@
 {
   "scripts": {
-    "dev": "docker-compose -f docker-compose.dev.yml up --build",
-    "dev:down": "docker-compose -f docker-compose.dev.yml down",
-    "prod": "docker-compose up --build",
-    "prod:down": "docker-compose down"
+    "dev": "docker-compose -f docker/docker-compose.yml up --build",
+    "dev:down": "docker-compose -f docker/docker-compose.yml down"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.13"
