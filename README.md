@@ -42,18 +42,22 @@ fattypopups/
 
 ## API Endpoints
 
+> Routes marked 🔒 require a valid JWT in the `Authorization: Bearer <token>` header.
+
 ### Events
-- `GET /api/events` - List all events
-- `POST /api/events` - Create new event (requires auth)
-- `PUT /api/events/:id` - Update event (requires auth)
-- `DELETE /api/events/:id` - Delete event (requires auth)
+- `GET /api/events` - List published events
+- `GET /api/events/drafts` - List all events including drafts 🔒
+- `POST /api/events` - Create new event 🔒
+- `PUT /api/events/:id` - Update event 🔒
+- `DELETE /api/events` - Delete events by title 🔒
 
 ### Authentication
-- `POST /api/auth/login` - Admin login
-- `POST /api/auth/register` - Admin registration
+- `GET /api/auth/google` - Initiate Google OAuth flow
+- `GET /api/auth/google/callback` - Google OAuth callback, issues JWT
+- `GET /api/auth/check` - Verify JWT validity
 
 ### Drafts
-- `POST /api/draft/generate` - Generate AI description
+- `POST /api/draft` - Generate AI draft from prompt 🔒
 
 ## Tech Stack
 
