@@ -6,16 +6,26 @@ import {
   deleteEvents
 } from '../services/orchestrator/index.js';
 import { logger } from "../utils/logger.js";
-// Multer imports
 import { uploadMemory } from '../config/index.js';
+import { isAuthorized } from '../config/middleware/isAuthorized.js';
 
 const eventRouter = express.Router();
 
-// Fetch all events
+// Fetch published events
 eventRouter.get('/', async (req, res) => {
   try {
-    const isAdmin = req.query.includeDrafts ? true : false;
-    const events = await getEventsWithDetails(isAdmin);
+    const events = await getEventsWithDetails(false);
+    res.json(events);
+  } catch (err) {
+    logger.error("HTTP Error:", err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Fetch all events including drafts (admin only)
+eventRouter.get('/drafts', isAuthorized, async (req, res) => {
+  try {
+    const events = await getEventsWithDetails(true);
     res.json(events);
   } catch (err) {
     logger.error("HTTP Error:", err);
@@ -24,7 +34,7 @@ eventRouter.get('/', async (req, res) => {
 });
 
 // Add new event
-eventRouter.post('/', uploadMemory.single('poster'), async (req, res) => {
+eventRouter.post('/', isAuthorized, uploadMemory.single('poster'), async (req, res) => {
   try {
     const newEvent = await orchestrateEventCreate(req.body, req.file);
     res.json(newEvent);
@@ -35,7 +45,7 @@ eventRouter.post('/', uploadMemory.single('poster'), async (req, res) => {
 });
 
 // UPDATE event with image overwrite + embedding update
-eventRouter.put('/:id', uploadMemory.single('poster'), async (req, res) => {
+eventRouter.put('/:id', isAuthorized, uploadMemory.single('poster'), async (req, res) => {
   try {
     const updatedEvent = await orchestrateEventUpdate(req.params.id, req.body, req.file);
     res.json(updatedEvent);
@@ -46,7 +56,7 @@ eventRouter.put('/:id', uploadMemory.single('poster'), async (req, res) => {
 });
 
 // Delete events by titles
-eventRouter.delete('/', async (req, res) => {
+eventRouter.delete('/', isAuthorized, async (req, res) => {
   const { titles } = req.body;
   if (!Array.isArray(titles) || titles.length === 0) {
     return res.status(400).json({ error: 'Titles must be a non-empty array' });

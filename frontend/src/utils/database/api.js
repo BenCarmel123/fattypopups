@@ -1,4 +1,5 @@
 // API helper functions for database operations
+import * as Config from 'config/index.jsx';
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -6,8 +7,11 @@ const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 // Fetch all events, optionally including drafts
 export async function fetchEvents(includeDrafts = false) {
-  const url = `${SERVER_URL}/api/events${includeDrafts ? '?includeDrafts=true' : ''}`;
-  const response = await fetch(url);
+  const url = includeDrafts ? `${SERVER_URL}/api/events/drafts` : `${SERVER_URL}/api/events`;
+  const token = localStorage.getItem(Config.AUTH_TOKEN);
+  const response = await fetch(url, {
+    headers: includeDrafts ? { 'Authorization': `Bearer ${token}` } : {}
+  });
 
   if (!response.ok) {
     throw new Error('Failed to fetch events');
@@ -21,7 +25,7 @@ export async function fetchEvents(includeDrafts = false) {
 export async function deleteEvents(titles) {
   const response = await fetch(`${SERVER_URL}/api/events`, {
     method: 'DELETE',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem(Config.AUTH_TOKEN)}` },
     body: JSON.stringify({ titles }),
   });
 

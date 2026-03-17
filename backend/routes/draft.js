@@ -4,10 +4,11 @@ import express from 'express';
 import { uploadDraftImages } from '../services/s3/draftUpload.js';
 import { uploadMemory } from '../config/middleware/multer.js';
 import { logger } from "../utils/logger.js";
+import { isAuthorized } from '../config/middleware/isAuthorized.js';
 
 const agentRouter = express.Router();
 
-agentRouter.post("/draft", uploadMemory.fields([{ name: 'poster' }, { name: 'context_image' }]), async (req, res) => {
+agentRouter.post("/draft", isAuthorized, uploadMemory.fields([{ name: 'poster' }, { name: 'context_image' }]), async (req, res) => {
   logger.info("[REQUEST] Reached /draft endpoint\n");
   const prompt = req.body?.prompt;
   // Client error
