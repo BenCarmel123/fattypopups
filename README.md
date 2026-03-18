@@ -63,6 +63,12 @@ fattypopups/
 ### Drafts
 - `POST /agent/draft` - Generate AI draft from prompt 🔒
 
+## CI/CD Pipeline
+
+**CI** (on PR to `main`): API route checks, npm audit, unit tests (all block merge), ESLint (non-blocking)
+
+**CD** (on push to `main`): SSH into EC2, reset, pull, install, restart PM2
+
 ## Tech Stack
 
 - **Cloud** - AWS EC2, Amplify, S3, Lambda, EventBridge
