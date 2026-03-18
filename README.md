@@ -61,7 +61,7 @@ fattypopups/
 - `GET /auth/check` - Verify JWT validity
 
 ### Drafts
-- `POST /agent` - Generate AI draft from prompt 🔒
+- `POST /agent/draft` - Generate AI draft from prompt 🔒
 
 ## Tech Stack
 

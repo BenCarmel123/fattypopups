@@ -44,4 +44,4 @@ jobs:
           check "https://api.fattypopups.com/api/events/drafts" "GET"
           check "https://api.fattypopups.com/api/events" "POST"
           check "https://api.fattypopups.com/api/events" "DELETE"
-          check "https://api.fattypopups.com/agent" "POST"
+          check "https://api.fattypopups.com/agent/draft" "POST"
