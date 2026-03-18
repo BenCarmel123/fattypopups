@@ -52,12 +52,12 @@ fattypopups/
 - `DELETE /api/events` - Delete events by title 🔒
 
 ### Authentication
-- `GET /api/auth/google` - Initiate Google OAuth flow
-- `GET /api/auth/google/callback` - Google OAuth callback, issues JWT
-- `GET /api/auth/check` - Verify JWT validity
+- `GET /auth/google` - Initiate Google OAuth flow
+- `GET /auth/google/callback` - Google OAuth callback, issues JWT
+- `GET /auth/check` - Verify JWT validity
 
 ### Drafts
-- `POST /api/draft` - Generate AI draft from prompt 🔒
+- `POST /agent` - Generate AI draft from prompt 🔒
 
 ## Tech Stack
 
