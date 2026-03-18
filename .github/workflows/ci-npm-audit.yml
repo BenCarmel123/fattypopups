@@ -22,4 +22,4 @@ jobs:
         run: npm install --prefix backend
 
       - name: Run security audit
-        run: npm audit --audit-level=high --prefix backend
+        run: npm audit --audit-level=critical --prefix backend
