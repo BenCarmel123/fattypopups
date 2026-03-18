@@ -4,6 +4,7 @@ import { createEventEmbeddings } from '../../embeddings/storage/orchestrator.js'
 import { insertEvent } from '../../entities/event/operations.js';
 import { linkChefsToEvent } from '../../entities/linking/operations.js';
 import { handleEventImageUpload } from '#services/s3/upload.js';
+import { notifyUsers } from '#services/twilio/notify.js';
 import { isTrue } from '../../../utils/isTrue.js';
 import { logger } from "../../../utils/logger.js";
 import { invalidateEventsCache } from '../../cache/invalidation.js';
@@ -71,6 +72,7 @@ export const orchestrateEventCreate = async (body, file) => {
     is_draft
   });
 
+  // TODO: make embeddings async (fire-and-forget with cron retry)
   // 3. Link chefs and process embeddings in parallel
   await Promise.all([
     linkChefsToEvent(newEvent.id, chefIds),
@@ -82,6 +84,11 @@ export const orchestrateEventCreate = async (body, file) => {
     )
   ]);
 
-  await invalidateEventsCache();
+  await Promise.all([
+    invalidateEventsCache(),
+    // TODO: Implement Whatsapp messaging
+    notifyUsers()
+  ]);
+
   return newEvent;
 };
