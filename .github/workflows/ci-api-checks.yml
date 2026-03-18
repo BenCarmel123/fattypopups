@@ -1,0 +1,47 @@
+name: API Checks
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check public routes return 200
+        run: |
+          check() {
+            local url=$1
+            local expected=$2
+            local actual=$(curl -s -o /dev/null -w "%{http_code}" "$url")
+            if [ "$actual" != "$expected" ]; then
+              echo "FAIL: $url returned $actual (expected $expected)"
+              exit 1
+            else
+              echo "PASS: $url returned $actual"
+            fi
+          }
+
+          check "https://api.fattypopups.com/api/events" "200"
+
+      - name: Check protected routes return 401 without token
+        run: |
+          check() {
+            local url=$1
+            local method=$2
+            local expected="401"
+            local actual=$(curl -s -o /dev/null -w "%{http_code}" -X "$method" "$url")
+            if [ "$actual" != "$expected" ]; then
+              echo "FAIL: $method $url returned $actual (expected $expected)"
+              exit 1
+            else
+              echo "PASS: $method $url returned $actual"
+            fi
+          }
+
+          check "https://api.fattypopups.com/api/events/drafts" "GET"
+          check "https://api.fattypopups.com/api/events" "POST"
+          check "https://api.fattypopups.com/api/events" "DELETE"
+          check "https://api.fattypopups.com/agent" "POST"
