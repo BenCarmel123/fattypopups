@@ -19,8 +19,12 @@ fattypopups/
 │   │   ├── entities/       # CRUD operations (chef, venue, event, linking)
 │   │   ├── orchestrator/   # Event creation/update coordination
 │   │   └── s3/             
-│   ├── config/             
-│   ├── utils/              
+│   ├── config/
+│   ├── utils/
+│   ├── tests/              # Unit tests (mirrors services/ structure)
+│   │   ├── routes/
+│   │   ├── services/
+│   │   └── utils/
 │   └── server.js           # Entry point
 │
 ├── frontend/             
