@@ -41,9 +41,7 @@ fattypopups/
 │   ├── cleanup/            # Scheduled cleanup (1-day retention)
 │   └── verify-embeddings/  # Verifies all published events have embeddings, regenerates missing ones
 │
-├── docker/                 # Docker Compose configuration
-│   └── docker-compose.yml  # Development with hot reload
-└── CLAUDE.md               # Developer guidelines
+└── docker/                 # Docker Compose configuration (local only)
 ```
 
 ## API Endpoints
