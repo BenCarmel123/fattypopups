@@ -1,6 +1,8 @@
+import { getTimestamp } from './timestamp.js';
+
 const formatMessage = (level, message, data) => {
-  const timestamp = new Date().toISOString();
-  return data ? `[${level}] ${timestamp} ${message} ${JSON.stringify(data)}` : `[${level}] ${timestamp} ${message}`;
+  const timestamp = getTimestamp();
+  return data ? `[${level}] ${timestamp}\n${message} ${JSON.stringify(data)}` : `[${level}] ${timestamp}\n${message}`;
 };
 
 export const logger = {
