@@ -77,6 +77,9 @@ export default function AgentDraft({ placeholder = Config.PROMPT_PLACEHOLDER, ha
         <div>
         <SpinnerOverlay isLoading={isLoading} />
         <form onSubmit={handleSubmit} className="min-h-screen flex flex-col items-center justify-center gap-4">
+            <div className="w-full max-w-xl md:max-w-3xl lg:max-w-4xl pl-6">
+                <BackButton variant="default" onBack={() => handleClick(Config.DASHBOARD, undefined)()} />
+            </div>
             <div className="relative flex items-end gap-2 p-1 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-200 w-full max-w-xl md:max-w-3xl lg:max-w-4xl">
             <Textarea
                 value={prompt}
@@ -91,8 +94,7 @@ export default function AgentDraft({ placeholder = Config.PROMPT_PLACEHOLDER, ha
             />
             <SubmitPromptButton prompt={prompt} isLoading={isLoading} />
             </div>
-            <div style={{ display: 'flex', gap: '1.5rem', justifyContent: Config.CENTER }}>
-                <BackButton variant="default" onBack={() => handleClick(Config.DASHBOARD, undefined)()} />
+            <div className="flex gap-4 scale-[90%] md:scale-100 origin-center">
                 <FileUpload />
                 <ContextFileUpload />
             </div>

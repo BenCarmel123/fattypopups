@@ -42,7 +42,7 @@ const Dashboard = ({ handleClick, events, setEvents }) => {
 
   return (
     <div className={Config.CENTER} style={{ position: Config.RELATIVE, display: Config.FLEX, alignItems: Config.CENTER, justifyContent: Config.CENTER, minHeight: '100vh', paddingTop: '3rem' }}>
-    <div style={{ display: Config.FLEX, flexDirection: 'column', alignItems: 'stretch', maxWidth: '1200px', minWidth: '400px', width: '100%', padding: '2rem', borderRadius: '2rem' }}>
+    <div style={{ display: Config.FLEX, flexDirection: 'column', alignItems: 'stretch', maxWidth: '1200px', width: '100%', padding: '1rem', borderRadius: '2rem' }}>
       <SpinnerOverlay isLoading={deleting} />
       {alert && <MyAlert {...alert} onClose={() => setAlert(null)} />}
       <Table.Root size={Config.LARGE} marginTop="2rem">
