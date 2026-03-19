@@ -14,7 +14,13 @@ const generateDraft =
         logger.info("[DRAFT] Calling generateDraftDetails");
         const rawOutput = await generateDraftDetails(prompt, posterUrl, contextUrl);
         logger.info("[DRAFT] Raw output received, parsing JSON");
-        const openaiResponse = JSON.parse(rawOutput);
+        let openaiResponse;
+        try {
+            openaiResponse = JSON.parse(rawOutput);
+        } catch (parseError) {
+            logger.error("[DRAFT] Failed to parse LLM output as JSON:", rawOutput);
+            throw new Error("LLM returned invalid JSON");
+        }
         logger.info("[DRAFT] JSON parsed successfully");
         const english_description = openaiResponse.english_description
 
@@ -36,8 +42,8 @@ const generateDraft =
         const today = new Date().toISOString().split('T')[0];
         const result = {
             title: openaiResponse.event_title,
-            start_datetime: today,
-            end_datetime: today,
+            start_datetime: openaiResponse.start_datetime || today,
+            end_datetime: openaiResponse.end_datetime || today,
             venue_name: venueName,
             venue_instagram: venueEntity.instagram_handle || REMINDER,
             venue_address: venueEntity.address || REMINDER,
