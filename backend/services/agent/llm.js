@@ -28,7 +28,7 @@ export async function generateDraftDetails(prompt, posterUrl = null, contextUrl 
 
   logger.info("[AGENT] About to call OpenAI API");
   const response = await openai.responses.create({
-    model: "gpt-4o-mini",
+    model: "gpt-4o",
     input: [{ role: "user", content }],
     instructions: `${INSTRUCTIONS}`,
     text: { format: { type: "json_object" } }
