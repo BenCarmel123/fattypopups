@@ -26,7 +26,7 @@ export default function TypeaheadInput({
 
   return (
     <div style={{ marginBottom: '1rem', width: Config.MAX }}>
-      {label && <label style={{ display: 'block', marginBottom: '0.5rem', color: Config.FORM_FIELD_COLOR }}>{label}</label>}
+      {label && <label style={{ display: 'block', marginBottom: '0.5rem', color: Config.FORM_INPUT_COLOR }}>{label}</label>}
       <CreatableSelect
         options={selectOptions}
         value={selectedOption}

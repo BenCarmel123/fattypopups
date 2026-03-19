@@ -6,7 +6,6 @@ import { fetchChefs } from "utils/database/api";
 import Row from "../structure/Row.jsx";
 import AddChef from "./AddButton.jsx";
 
-// TODO: Merge the two TypeaheadInput instances into one modular component
 const MAX_CHEFS = 5;
 
 export default function ChefFields({ event }) {
@@ -88,9 +87,9 @@ export default function ChefFields({ event }) {
             right="-40px"
             top={isFirstRow ? "32px" : "4px"}
             size="xs"
-            bg={Config.DELETE_BUTTON_COLOR}
+            bg={Config.DANGER_COLOR}
             color="white"
-            _hover={{ bg: Config.DELETE_BUTTON_HOVER_COLOR }}
+            _hover={{ bg: Config.DANGER_HOVER_COLOR }}
             minW="28px"
             h="28px"
             p={0}

@@ -3,7 +3,7 @@ import { Textarea } from "@chakra-ui/react";
 import { transformDraftToFormData } from '../utils/form.js';
 import FileUpload, { ContextFileUpload } from '../../../components/FileUpload.jsx';
 import * as Config from 'config/index.jsx';
-import { SubmitPromptButton, BackToDashboard } from 'components/Buttons.jsx';
+import { SubmitPromptButton, BackButton } from 'components/Buttons.jsx';
 import SpinnerOverlay from 'components/SpinnerOverlay.jsx';
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL
@@ -77,14 +77,7 @@ export default function AgentDraft({ placeholder = Config.PROMPT_PLACEHOLDER, ha
         <div>
         <SpinnerOverlay isLoading={isLoading} />
         <form onSubmit={handleSubmit} className="min-h-screen flex flex-col items-center justify-center gap-4">
-            <div style={{ display: 'flex', gap: '1.5rem' }}>
-                <FileUpload />
-                <ContextFileUpload />
-            </div>
             <div className="relative flex items-end gap-2 p-1 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-200 w-full max-w-xl md:max-w-3xl lg:max-w-4xl">
-            <div className="absolute -bottom-14 left-1/2 -translate-x-1/2">
-                <BackToDashboard handleClick={handleClick(Config.DASHBOARD, undefined)} />
-            </div>
             <Textarea
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
@@ -97,6 +90,11 @@ export default function AgentDraft({ placeholder = Config.PROMPT_PLACEHOLDER, ha
                 rows={1}
             />
             <SubmitPromptButton prompt={prompt} isLoading={isLoading} />
+            </div>
+            <div style={{ display: 'flex', gap: '1.5rem', justifyContent: Config.CENTER }}>
+                <BackButton variant="default" onBack={() => handleClick(Config.DASHBOARD, undefined)()} />
+                <FileUpload />
+                <ContextFileUpload />
             </div>
         </form>
         </div>

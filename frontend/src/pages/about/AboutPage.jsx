@@ -1,7 +1,9 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import * as Config from '../../config/index.jsx';
 import { BackButton } from "../../components/Buttons.jsx";
+import * as Colors from '../../config/colors.jsx';
 
 const INSTA_LINK_HALLIE = process.env.REACT_APP_INSTA_LINK_HALLIE;
 const INSTA_LINK_BEN = process.env.REACT_APP_INSTA_LINK_BEN;
@@ -40,6 +42,8 @@ export const ContactEmail = ({ email }) => {
 }
 
 export default function AboutPage() {
+  const navigate = useNavigate();
+
   const creators = [
     {
       name: "Ben",
@@ -59,7 +63,7 @@ export default function AboutPage() {
     <div className="min-h-screen flex items-center justify-center px-6 py-20" style={{ backgroundColor: Config.ABOUT_PAGE_BACKGROUND_COLOR, marginTop: '-40px' }}>
       <div className="max-w-2xl w-full space-y-12">
         <div className="flex justify-center mb-7">
-          <BackButton />
+          <BackButton variant="about" onBack={() => navigate('/')} />
         </div>
         <ABOUT_SUBHEADER text="About" color={Config.BLACK} />
         <ABOUT_SUBHEADER text="fatty popups" color={Config.SECONDARY_COLOR} style={{ fontStyle: 'italic', fontWeight: '300' }} />

@@ -11,7 +11,7 @@ export default function CardBody({ event }) {
         textAlign={Config.CENTER}
         fontSize={Config.XL}
         fontWeight={Config.BOLDER}
-        color={Config.DRAWER_DETAILS_FONT_COLOR}
+        color="gray.600"
         mt={-1}
         mb={1}
         borderRadius="20px"
@@ -23,7 +23,7 @@ export default function CardBody({ event }) {
       >
         {event.title}
       </Card.Title>
-      <Card.Description fontSize={Config.MEDIUM} color={Config.DRAWER_DETAILS_FONT_COLOR} paddingRight={4} paddingLeft={4} lineHeight={3.5}>
+      <Card.Description fontSize={Config.MEDIUM} color="gray.600" paddingRight={4} paddingLeft={4} lineHeight={3.5}>
         {event.chefs &&
           Array.isArray(event.chefs) &&
           event.chefs.length > 0 &&

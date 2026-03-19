@@ -43,9 +43,25 @@ function FileUploadList({ existingImage })
     );
 };
 
-function FileUploadTrigger({ name, label, existingImage }) {
+function InnerFileUploadButton({ label, existingImage }) {
+    const fileUpload = useFileUploadContext();
+    const files = fileUpload?.acceptedFiles || [];
+    const isSelected = files.length > 0 || existingImage;
+
     return (
-        <ChakraFileUpload.Root name={name} accept="image/*" maxFiles={1}>
+        <Button
+            variant={Config.SOLID}
+            size={Config.LARGE}
+            fontWeight={Config.BOLD}
+            px={6}
+            py={6}
+            boxShadow={Config.MEDIUM}
+            borderRadius={Config.XL}
+            backgroundColor={isSelected ? '#1a365d' : Config.ADMIN_PANEL_COLOR}
+            color={Config.WHITE}
+            _hover={{ boxShadow: '0 12px 24px rgba(0,0,0,0.15)', backgroundColor: '#1a365d' }}
+            transition={Config.MINIMAL_TRANSITION}
+            as="label">
             <ChakraFileUpload.HiddenInput />
             <div style={{ display: Config.FLEX, gap: '2rem', alignItems: Config.CENTER, justifyContent: Config.CENTER }}>
                 <ChakraFileUpload.Trigger asChild>
@@ -55,26 +71,15 @@ function FileUploadTrigger({ name, label, existingImage }) {
                 </ChakraFileUpload.Trigger>
                 <FileUploadList existingImage={existingImage} />
             </div>
-        </ChakraFileUpload.Root>
+        </Button>
     );
-};
+}
 
 function FileUploadButton({ name, label, existingImage }) {
     return (
-        <Button
-            variant={Config.SOLID}
-            size={Config.LARGE}
-            fontWeight={Config.BOLD}
-            px={2}
-            py={2}
-            boxShadow={Config.MEDIUM}
-            borderRadius={Config.XL}
-            backgroundColor={Config.ADMIN_PANEL_COLOR}
-            _hover={{ transform: Config.MINIMAL_TRANSFORM }}
-            transition={Config.MINIMAL_TRANSITION}
-            as="label">
-            <FileUploadTrigger name={name} label={label} existingImage={existingImage} />
-        </Button>
+        <ChakraFileUpload.Root name={name} accept="image/*" maxFiles={1}>
+            <InnerFileUploadButton label={label} existingImage={existingImage} />
+        </ChakraFileUpload.Root>
     );
 };
 
