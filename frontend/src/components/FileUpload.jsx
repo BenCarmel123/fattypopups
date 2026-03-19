@@ -1,11 +1,26 @@
-import { Button, Float, useFileUploadContext, FileUpload as ChakraFileUpload } from "@chakra-ui/react";
+import { Button, Float, Image, useFileUploadContext, FileUpload as ChakraFileUpload } from "@chakra-ui/react";
 import * as Config from "../config/index.jsx";
 
-function FileUploadList()
+function ExistingImagePreview({ src }) {
+    if (!src) return null;
+    return (
+        <Image
+            src={src}
+            alt="Current poster"
+            boxSize="20"
+            objectFit="cover"
+            borderRadius="md"
+            border="1px solid"
+            borderColor="gray.200"
+        />
+    );
+}
+
+function FileUploadList({ existingImage })
 {
     const fileUpload = useFileUploadContext();
     const files = fileUpload?.acceptedFiles || [];
-    if (files.length === 0) return null;
+    if (files.length === 0) return <ExistingImagePreview src={existingImage} />;
     return (
         <ChakraFileUpload.ItemGroup>
             {files.map((file) => (
@@ -28,7 +43,7 @@ function FileUploadList()
     );
 };
 
-function FileUploadTrigger({ name, label }) {
+function FileUploadTrigger({ name, label, existingImage }) {
     return (
         <ChakraFileUpload.Root name={name} accept="image/*" maxFiles={1}>
             <ChakraFileUpload.HiddenInput />
@@ -38,13 +53,13 @@ function FileUploadTrigger({ name, label }) {
                         <Config.LuFileImage /> {label}
                     </Button>
                 </ChakraFileUpload.Trigger>
-                <FileUploadList />
+                <FileUploadList existingImage={existingImage} />
             </div>
         </ChakraFileUpload.Root>
     );
 };
 
-function FileUploadButton({ name, label }) {
+function FileUploadButton({ name, label, existingImage }) {
     return (
         <Button
             variant={Config.SOLID}
@@ -58,13 +73,13 @@ function FileUploadButton({ name, label }) {
             _hover={{ transform: Config.MINIMAL_TRANSFORM }}
             transition={Config.MINIMAL_TRANSITION}
             as="label">
-            <FileUploadTrigger name={name} label={label} />
+            <FileUploadTrigger name={name} label={label} existingImage={existingImage} />
         </Button>
     );
 };
 
-export default function FileUpload() {
-    return <FileUploadButton name="poster" label="Event Poster" />;
+export default function FileUpload({ existingImage }) {
+    return <FileUploadButton name="poster" label="Event Poster" existingImage={existingImage} />;
 };
 
 export function ContextFileUpload() {

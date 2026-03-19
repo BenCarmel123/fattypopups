@@ -51,7 +51,7 @@ export default function FormFields({ event }) {
             {/* Image Section */}
             <Section title="Image">
                 <Stack gap={7} align="flex-start">
-                    <FileUpload />
+                    <FileUpload existingImage={event?.poster} />
                 </Stack>
             </Section>
         </Stack>
