@@ -27,14 +27,11 @@ export default function AdminPageHandler() {
   useEffect(() => {
   const token = handleTokenCheck();
 
-  // No Token
   if (!token) {
     setAuthenticated(false)
     setAction(Config.LOGIN)
     return
   }
-
-  console.log("[AUTH] pending token to /auth/check");
 
   // Authorization Check
   fetch(`${SERVER_URL}/auth/check`, { headers: { Authorization: `Bearer ${token}`,},})

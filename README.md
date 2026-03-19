@@ -63,6 +63,25 @@ fattypopups/
 ### Drafts
 - `POST /agent/draft` - Generate AI draft from prompt 🔒
 
+## Testing
+
+**Framework:** Vitest — run with `npm test` from `backend/`
+
+Tests live in `backend/tests/` mirroring the `services/` structure:
+
+| Area | Files |
+|---|---|
+| Routes | auth, chefs, draft, events, venues |
+| Agent | generateDraft, googleMaps, googleTranslate, twilio |
+| Cache | invalidation |
+| Embeddings | generate, search, storage |
+| Entities | chef, event, venue, linking, parse |
+| Orchestrator | computeState |
+| S3 | upload, draftUpload, helpers, utils |
+| Utils | isTrue, timestamp |
+
+Each file contains one focused test (1 `describe`, 1 `it`).
+
 ## CI/CD Pipeline
 
 **CI** (on PR to `main`): API route checks, npm audit, unit tests (all block merge), ESLint (non-blocking)
@@ -72,7 +91,7 @@ fattypopups/
 ## Tech Stack
 
 - **Cloud** - AWS EC2, Amplify, S3, Lambda, EventBridge
-- **Backend** - Node.js 18, Express.js, PM2
+- **Backend** - Node.js 20, Express.js, PM2
 - **Database** - PostgreSQL (Supabase) with pgvector
 - **Cache** - Redis via Upstash (prod) / Docker (dev)
 - **LLM** - OpenAI
@@ -87,3 +106,4 @@ fattypopups/
 - **Google OAuth** - Admin authentication
 - **Google Places** - Venue location enrichment
 - **Google Translate** - English → Hebrew description translation
+- **Twilio** - WhatsApp notifications

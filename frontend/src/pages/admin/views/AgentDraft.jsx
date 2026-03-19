@@ -50,14 +50,9 @@ export default function AgentDraft({ placeholder = Config.PROMPT_PLACEHOLDER, ha
             const file = e.target.poster?.files[0] || null;
             const contextFile = e.target.context_image?.files[0] || null;
             const response = await sendPrompt(prompt, file, contextFile);
-            console.log('[DEBUG] Full response:', response);
             const { event } = response;
-            console.log('[DEBUG] Raw event from backend:', event);
             setPrompt('');
-            // Transform draft data to form-compatible format
-            console.log('[DEBUG] About to transform...');
             const transformedEvent = transformDraftToFormData(event);
-            console.log('[DEBUG] Transformed event:', transformedEvent);
             transformedEvent.file = file;
             handleClick(Config.ADD, transformedEvent)();
             // Switch to ADD mode and pass the generated draft
