@@ -1,4 +1,4 @@
-name: Unit Tests
+name: Backend Unit Tests
 
 on:
   pull_request:
@@ -16,11 +16,10 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
 
       - name: Install dependencies
         run: npm install --prefix backend
 
-      # TODO: install and configure test runner (e.g. Jest)
       - name: Run unit tests
-        run: echo "No tests yet"
+        run: npm test --prefix backend
