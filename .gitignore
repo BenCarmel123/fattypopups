@@ -18,3 +18,7 @@ node_modules/
 CLAUDE.md
 .claude/
 
+# Local tooling
+.serena/
+.docker/
+
