@@ -1,0 +1,10 @@
+{
+  "name": "fattypopups-verify-embeddings",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.mjs",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.84.0",
+    "openai": "^4.0.0"
+  }
+}
