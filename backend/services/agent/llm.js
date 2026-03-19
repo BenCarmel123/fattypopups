@@ -13,7 +13,8 @@ export async function generateDraftDetails(prompt, posterUrl = null, contextUrl 
   const similarDescriptions = await searchSimilarDescriptions(promptEmbedding);
   const examplesBlock = similarDescriptions.map(d => `- "${d}"`).join('\n');
   // Inject examples into instructions before calling OpenAI
-  const INSTRUCTIONS = process.env.DRAFT_INSTRUCTIONS + `\n\nHere are examples of past event descriptions in our style:\n${examplesBlock}`
+  const today = new Date().toISOString().split('T')[0];
+  const INSTRUCTIONS = process.env.DRAFT_INSTRUCTIONS + `\n\nToday's date is ${today}.\n\nHere are examples of past event descriptions in our style:\n${examplesBlock}`
   const content = [
     { type: "input_text", text: `${prompt}\n\nRespond in JSON.` }
   ];

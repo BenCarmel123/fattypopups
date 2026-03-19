@@ -36,8 +36,8 @@ const generateDraft =
         const today = new Date().toISOString().split('T')[0];
         const result = {
             title: openaiResponse.event_title,
-            start_datetime: today,
-            end_datetime: today,
+            start_datetime: openaiResponse.start_datetime || today,
+            end_datetime: openaiResponse.end_datetime || today,
             venue_name: venueName,
             venue_instagram: venueEntity.instagram_handle || REMINDER,
             venue_address: venueEntity.address || REMINDER,
