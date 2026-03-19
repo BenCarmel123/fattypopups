@@ -1,4 +1,4 @@
-name: Unit Tests
+name: Backend Unit Tests
 
 on:
   pull_request:
@@ -21,6 +21,5 @@ jobs:
       - name: Install dependencies
         run: npm install --prefix backend
 
-      # TODO: install and configure test runner (e.g. Jest)
       - name: Run unit tests
-        run: echo "No tests yet"
+        run: npm test --prefix backend
