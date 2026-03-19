@@ -10,7 +10,6 @@ services:
       - PORT=5001
     volumes:
       - ./backend:/app
-      - /app/node_modules
     command: npx nodemon server.js
 
   redis:

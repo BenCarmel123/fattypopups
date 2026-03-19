@@ -5,4 +5,4 @@ export { s3 } from './clients/s3.js';
 export { upload, uploadMemory } from './middleware/multer.js';
 export { oauth2Client } from './clients/oauth.js';
 export { redis } from './clients/redis.js';
-export { twilio } from './clients/twilio.js';
+export { twilioClient } from './clients/twilio.js';

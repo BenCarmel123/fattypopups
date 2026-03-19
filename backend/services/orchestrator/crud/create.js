@@ -26,7 +26,7 @@ export const orchestrateEventCreate = async (body, file) => {
     is_draft
   } = body;
 
-  body.poster = await handleEventImageUpload(id=null, body, file, currentEvent=null);
+  body.poster = await handleEventImageUpload(null, body, file, null);
   const isDraft = isTrue(is_draft);
   const chefNamesArray = chef_names?.split(',').map(s => s.trim()) ?? [];
 
@@ -86,8 +86,7 @@ export const orchestrateEventCreate = async (body, file) => {
 
   await Promise.all([
     invalidateEventsCache(),
-    // TODO: Implement Whatsapp messaging
-    notifyUsers()
+    //notifyUsers(newEvent.title)
   ]);
 
   return newEvent;

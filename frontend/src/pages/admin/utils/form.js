@@ -8,8 +8,10 @@ const toFormData = (eventData) => {
 
 export const submitFormData = async (url, method, eventData) => {
   const formData = toFormData(eventData);
+  const token = localStorage.getItem(Config.AUTH_TOKEN);
   const response = await fetch(url, {
     method: method,
+    headers: { Authorization: `Bearer ${token}` },
     body: formData,
   });
 

@@ -52,12 +52,13 @@ const handleNoFileUpload = async (body, currentEvent) => {
 };
 
 // Main function: Handle event image upload/overwrite
+// id and currentEvent are null on create, populated on update
 export const handleEventImageUpload = async (id, body, file, currentEvent) => {
   if (file) {
-    logger.info("[FILE] Uploaded file:", file);
+    logger.info(`[FILE] Uploaded file: ${file.originalname} (${file.mimetype}, ${file.size} bytes)`);
 
     // 1. Use poster from currentEvent if available, otherwise fetch
-    const existingUrl = currentEvent?.poster || await fetchExistingImageUrl(id);
+    const existingUrl = currentEvent?.poster || (id ? await fetchExistingImageUrl(id) : null);
 
     // 2. Generate S3 key and URL
     const { s3_key, s3_url } = generateS3KeyAndUrl(existingUrl, file, body.title);
