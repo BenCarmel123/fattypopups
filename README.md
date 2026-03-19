@@ -10,15 +10,16 @@ Designed as a production learning sandbox for end-to-end product ownership.
 
 ```
 fattypopups/
-├── backend/            
-│   ├── routes/             # API endpoints
+├── backend/
+│   ├── routes/             # API endpoint definitions 
+│   ├── controllers/        # Request/response handlers per resource
 │   ├── services/           # Business logic layers
-│   │   ├── agent/          # AI draft generation 
-│   │   ├── cache/          
+│   │   ├── agent/          # AI draft generation
+│   │   ├── cache/
 │   │   ├── embeddings/     # pgvector embeddings (generate, search, store)
 │   │   ├── entities/       # CRUD operations (chef, venue, event, linking)
 │   │   ├── orchestrator/   # Event creation/update coordination
-│   │   └── s3/             
+│   │   └── s3/
 │   ├── config/
 │   ├── utils/
 │   ├── tests/              # Unit tests (mirrors services/ structure)
@@ -37,7 +38,8 @@ fattypopups/
 │   └── public/             # Static assets
 │
 ├── lambdas/                # AWS Lambda functions
-│   └── cleanup/            # Scheduled cleanup (2-day retention)
+│   ├── cleanup/            # Scheduled cleanup (1-day retention)
+│   └── verify-embeddings/  # Verifies all published events have embeddings, regenerates missing ones
 │
 ├── docker/                 # Docker Compose configuration
 │   └── docker-compose.yml  # Development with hot reload
@@ -97,7 +99,8 @@ Each file contains one focused test (1 `describe`, 1 `it`).
 - **LLM** - OpenAI
 - **Auth** - JWT + Google OAuth
 - **Frontend** - React 19, Chakra UI
-- **Dev** - Docker Compose, Claude Code 
+- **Testing** - Vitest (ESM-native unit tests)
+- **Dev** - Docker Compose, Claude Code
 
 ## External APIs
 - **OpenAI** - Text generation & vector embeddings
@@ -106,4 +109,4 @@ Each file contains one focused test (1 `describe`, 1 `it`).
 - **Google OAuth** - Admin authentication
 - **Google Places** - Venue location enrichment
 - **Google Translate** - English → Hebrew description translation
-- **Twilio** - WhatsApp notifications
+- **Twilio** - WhatsApp notifications (currently disabled)

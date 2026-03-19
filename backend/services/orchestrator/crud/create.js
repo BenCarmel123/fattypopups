@@ -72,22 +72,15 @@ export const orchestrateEventCreate = async (body, file) => {
     is_draft
   });
 
-  // TODO: make embeddings async (fire-and-forget with cron retry)
-  // 3. Link chefs and process embeddings in parallel
-  await Promise.all([
-    linkChefsToEvent(newEvent.id, chefIds),
-    createEventEmbeddings(
-      newEvent.id,
-      english_description,
-      hebrew_description,
-      chefNamesArray.join(", ")
-    )
-  ]);
+  // 3. Link chefs (must complete before response)
+  await linkChefsToEvent(newEvent.id, chefIds);
 
-  await Promise.all([
+  // 4. Fire-and-forget: embeddings and cache run after response is sent
+  Promise.all([
+    createEventEmbeddings(newEvent.id, english_description, hebrew_description, chefNamesArray.join(", ")),
     invalidateEventsCache(),
-    //notifyUsers(newEvent.title)
-  ]);
+    // notifyUsers(newEvent.title),
+  ]).catch(err => logger.error('[EVENT] Background processing error:', err));
 
   return newEvent;
 };
