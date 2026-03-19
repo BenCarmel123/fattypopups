@@ -5,16 +5,16 @@ import * as Config from 'config/index.jsx';
 export default function FormInput({ label, name, type = "text", defaultValue = "", placeholder = "", onChange }) {
   return (
     <Field.Root>
-      <Field.Label color={Config.FORM_FIELD_COLOR}>{label}</Field.Label>
+      <Field.Label color={Config.FORM_INPUT_COLOR}>{label}</Field.Label>
       <Input
         name={name}
         type={type}
         defaultValue={defaultValue}
         placeholder={placeholder}
         onChange={onChange}
-        borderColor={Config.TEXT_AREA_COLOR}
+        borderColor={Config.FORM_BORDER_COLOR}
         borderWidth={2}
-        _focus={{ borderColor: Config.FORM_FIELD_COLOR }}
+        _focus={{ borderColor: Config.FORM_INPUT_COLOR }}
         paddingLeft={4}
       />
     </Field.Root>

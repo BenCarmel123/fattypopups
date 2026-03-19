@@ -1,56 +1,86 @@
-import { useNavigate } from 'react-router-dom';
 import { Button } from '@chakra-ui/react';
 import * as Config from '../config/index.jsx';
-import { Send, Loader2 } from 'lucide-react';
+import { Send, Loader2, ArrowLeft, Home } from 'lucide-react';
 
-export function BackButton({ homepage = false }) {
-  const navigate = useNavigate();
+function StyledButton({ children, bgColor, hoverBg, textColor = Config.WHITE, onClick, ...props }) {
   return (
-        <button
-            onClick={() => navigate(homepage ? '/' : -1)}
-            className="text-sm text-gray-600 underline hover:text-gray-800"
-            aria-label="Go back"
-            style={{ cursor: Config.POINTER }}>
-            {homepage ? Config.HOMEPAGE_BUTTON_TEXT : Config.BACK_BUTTON_TEXT}
-        </button>
-    );
+    <Button
+      onClick={onClick}
+      color={textColor}
+      variant={Config.SOLID}
+      boxShadow={Config.MEDIUM}
+      borderRadius={Config.XL}
+      backgroundColor={bgColor}
+      _hover={{ boxShadow: '0 12px 24px rgba(0,0,0,0.15)', backgroundColor: hoverBg }}
+      transition={Config.MINIMAL_TRANSITION}
+      {...props}
+    >
+      {children}
+    </Button>
+  );
+}
+
+export function BackButton({ homepage = false, variant = 'default', onBack }) {
+  let bgColor = '#f1f5f9';
+  let textColor = '#4b5563';
+  let hoverBg = '#e2e8f0';
+
+  if (variant === 'about') {
+    bgColor = Config.SECONDARY_COLOR;
+    textColor = Config.WHITE;
+    hoverBg = '#2a6563';
+  } else if (homepage) {
+    bgColor = '#f1f5f9';
+    textColor = '#4b5563';
+    hoverBg = '#e2e8f0';
+  }
+
+  return (
+    <StyledButton
+      onClick={onBack}
+      bgColor={bgColor}
+      hoverBg={hoverBg}
+      textColor={textColor}
+      px={4}
+      py={4}
+      aria-label="Go back"
+    >
+      {homepage ? <Home size={20} /> : <ArrowLeft size={20} />}
+    </StyledButton>
+  );
 }
 
 export function SubmitFormButton({ text, onClick, isDraft }) {
-    return (
- <Button
-    color={Config.WHITE}
-    backgroundColor={Config.ADMIN_PANEL_COLOR}
-    variant={Config.SOLID}
-    size={Config.MEDIUM}
-    fontWeight={Config.BOLD}
-    px={4}
-    py={4}
-    boxShadow={Config.MEDIUM}
-    borderRadius={Config.XL}
-    _hover={{transition:Config.MINIMAL_TRANSITION, transform: Config.MINIMAL_TRANSFORM }}
-    type="submit"
-    onClick={onClick}>
-    {text}
-    </Button>
-    );
+  return (
+    <StyledButton
+      bgColor={Config.ADMIN_PANEL_COLOR}
+      hoverBg="#1a365d"
+      onClick={onClick}
+      size={Config.MEDIUM}
+      fontWeight={Config.BOLD}
+      px={6}
+      py={6}
+      type="submit"
+    >
+      {text}
+    </StyledButton>
+  );
 }
 
 export function BackToDashboard({ handleClick }) {
-    return (<Button
-            color={Config.WHITE}
-            backgroundColor={ Config.BACK_TO_DASHBOARD_BUTTON_COLOR }
-            variant={Config.SOLID}
-            size={Config.MEDIUM}
-            fontWeight={Config.BOLD}
-            py={4}
-            px={4}
-            boxShadow={Config.MEDIUM}
-            borderRadius={Config.XL}
-            onClick={handleClick}
-            _hover={{transition:Config.MINIMAL_TRANSITION, transform: Config.MINIMAL_TRANSFORM }} >
-            Back
-            </Button>);
+  return (
+    <StyledButton
+      bgColor="#f1f5f9"
+      hoverBg="#e2e8f0"
+      textColor="#4b5563"
+      onClick={handleClick}
+      px={4}
+      py={4}
+      aria-label="Back to dashboard"
+    >
+      <ArrowLeft size={20} />
+    </StyledButton>
+  );
 }
 
 export function SubmitPromptButton({ prompt, isLoading}) {
@@ -67,20 +97,15 @@ export function SubmitPromptButton({ prompt, isLoading}) {
 }
 
 export function AdminActionButton({ onClick, text }) {
-    return (
-        <Button
-            color={Config.WHITE}
-            variant={Config.SOLID}
-            px={6}
-            py={6}
-            boxShadow={Config.MEDIUM}
-            borderRadius={Config.XL}
-            backgroundColor={Config.ADMIN_PANEL_COLOR}
-            _hover={{ transform: Config.MINIMAL_TRANSFORM }}
-            transition={Config.MINIMAL_TRANSITION}
-            onClick={onClick}
-        >
-            {text}
-        </Button>
-    );
+  return (
+    <StyledButton
+      bgColor={Config.ADMIN_PANEL_COLOR}
+      hoverBg="#1a365d"
+      onClick={onClick}
+      px={6}
+      py={6}
+    >
+      {text}
+    </StyledButton>
+  );
 }

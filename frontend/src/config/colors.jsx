@@ -17,27 +17,17 @@ export const ABOUT_PAGE_BACKGROUND_COLOR = '#fffaee';
 export const BACKGROUND_COLOR = '#a1c4fd';
 export const EVENT_TITLE_PADDING_COLOR = 'rgb(205 230 229 / 22%)';
 export const BORDER_COLOR = '#cde6e5';
-export const DASHBOARD_HEADER_BACKGROUND_COLOR = '#cce6ff';
 export const ADMIN_PANEL_COLOR = '#a1c4fd';
 export const FORM_BACKGROUND_COLOR = '#ffffffcf';
-export const BACK_TO_DASHBOARD_BUTTON_COLOR = '#f36262ff';
 
 // Misc colors / tokens
-export const FORM_FIELD_COLOR = '#2596be';
-export const TEXT_AREA_COLOR = '#bbb';
-export const CHECKBOX_COLOR = '#bbb';
+export const FORM_INPUT_COLOR = '#2596be';
+export const FORM_BORDER_COLOR = '#bbb';
+
+// Semantic action colors
+export const DANGER_COLOR = '#f36262ff';
+export const DANGER_HOVER_COLOR = '#e04545';
 
 // Utility colors
-export const BLUE = '#0000ff';
-export const RED = '#ff0000';
 export const TRANSPARENT = 'transparent';
 export const HOVER = '#cde6e5';
-
-// Typography color tokens
-export const DRAWER_DETAILS_FONT_COLOR = 'gray.600';
-
-// Component-specific colors
-export const FLIP_IMAGE_BACKGROUND = '#fffaf5';
-export const DELETE_BUTTON_COLOR = '#f36262ff';
-export const DELETE_BUTTON_HOVER_COLOR = '#e04545';
-export const FORM_SECTION_HEADER_BG = 'rgba(139, 162, 160, 0.15)';

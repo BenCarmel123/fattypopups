@@ -30,7 +30,7 @@ export function EventImage({ event }) {
           minWidth: 0,
           objectFit: Config.CONTAIN,
           display: Config.BLOCK,
-          background: Config.FLIP_IMAGE_BACKGROUND,
+          background: '#fffaf5',
         }}
       />
     </motion.div>
@@ -86,7 +86,7 @@ export default function FlipImage({ event }) {
             <p
               style={{
                 padding: '1rem',
-                background: Config.FLIP_IMAGE_BACKGROUND,
+                background: '#fffaf5',
                 borderRadius: '1rem',
                 whiteSpace: 'pre-line',
                 fontSize: '1rem',

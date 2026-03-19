@@ -9,13 +9,13 @@ export default function FormTextArea({ event, lang = 'en' }) {
 
   return (
     <Field.Root>
-      <Field.Label color={Config.FORM_FIELD_COLOR}>{label}</Field.Label>
+      <Field.Label color={Config.FORM_INPUT_COLOR}>{label}</Field.Label>
       <Textarea
         name={name}
         defaultValue={value}
-        borderColor={Config.TEXT_AREA_COLOR}
+        borderColor={Config.FORM_BORDER_COLOR}
         borderWidth={2}
-        _focus={{ borderColor: Config.FORM_FIELD_COLOR }}
+        _focus={{ borderColor: Config.FORM_INPUT_COLOR }}
         resize="vertical"
         minH="100px"
         onInput={(e) => e.target.style.height = `${e.target.scrollHeight}px`}
