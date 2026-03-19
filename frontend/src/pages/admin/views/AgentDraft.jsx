@@ -9,21 +9,20 @@ import SpinnerOverlay from 'components/SpinnerOverlay.jsx';
 const SERVER_URL = process.env.REACT_APP_SERVER_URL
 
 export const sendPrompt = async (prompt, file, contextFile) => {
-  const _startTime = Date.now(); // TIME start
 
   const formData = new FormData();
   formData.append('prompt', prompt);
   if (file) formData.append('poster', file);
   if (contextFile) formData.append('context_image', contextFile);
 
+  const token = localStorage.getItem(Config.AUTH_TOKEN);
   const res = await fetch(`${SERVER_URL}/agent/draft`, {
     method: Config.POST,
+    headers: { Authorization: `Bearer ${token}` },
     body: formData,
   });
 
   const event = await res.json();
-
-  console.log("[TIME]", Date.now() - _startTime, "ms"); // TIME end
 
   if (!res.ok) {
     throw new Error(event.error || Config.UNKNOWN_ERROR);
