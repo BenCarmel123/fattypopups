@@ -12,7 +12,7 @@ export const getEvents = async (_req, res) => {
     res.json(events);
   } catch (err) {
     logger.error("HTTP Error:", err);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
@@ -22,7 +22,7 @@ export const getDraftEvents = async (_req, res) => {
     res.json(events);
   } catch (err) {
     logger.error("HTTP Error:", err);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
@@ -32,7 +32,7 @@ export const createEvent = async (req, res) => {
     res.json(newEvent);
   } catch (err) {
     logger.error('HTTP Error:', err);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
@@ -42,7 +42,7 @@ export const updateEvent = async (req, res) => {
     res.json(updatedEvent);
   } catch (err) {
     logger.error('HTTP Error:', err);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
@@ -56,6 +56,6 @@ export const deleteEventsByTitles = async (req, res) => {
     res.json(result);
   } catch (err) {
     logger.error('HTTP Error:', err);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };

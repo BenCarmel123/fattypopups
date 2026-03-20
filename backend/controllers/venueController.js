@@ -11,6 +11,6 @@ export const getVenues = async (_req, res) => {
     })));
   } catch (err) {
     logger.error('HTTP Error:', err);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
