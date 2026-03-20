@@ -32,6 +32,7 @@ export async function generateDraftDetails(prompt, posterUrl = null, contextUrl 
     model: "gpt-4o",
     input: [{ role: "user", content }],
     instructions: `${INSTRUCTIONS}`,
+    temperature: 0.3,
     text: { format: { type: "json_object" } }
   });
 
