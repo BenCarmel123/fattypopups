@@ -5,17 +5,13 @@ import Header from '../../components/Header.jsx';
 import InstructionText from './components/InstructionText.jsx';
 import EventIndexContext from './context/EventIndexContext.js';
 import { handleTokenCheck } from "utils/auth.js";
-
-const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+import { fetchEvents } from "../../controller/events.js";
 
 export default function HomePage() {
   const [events, setEvents] = useState(null);
   useEffect(() => {
-    fetch(`${SERVER_URL}/api/events`)
-      .then(res => res.json())
-      .then(data => {
-        setEvents(Array.isArray(data) ? data : []);
-      })
+    fetchEvents()
+      .then(data => setEvents(Array.isArray(data) ? data : []))
       .catch(err => {
         console.log('[ERROR] Error fetching events:', err);
         setEvents([]);

@@ -5,31 +5,7 @@ import FileUpload, { ContextFileUpload } from '../../../components/FileUpload.js
 import * as Config from 'config/index.jsx';
 import { SubmitPromptButton, BackButton } from 'components/Buttons.jsx';
 import SpinnerOverlay from 'components/SpinnerOverlay.jsx';
-
-const SERVER_URL = process.env.REACT_APP_SERVER_URL
-
-export const sendPrompt = async (prompt, file, contextFile) => {
-
-  const formData = new FormData();
-  formData.append('prompt', prompt);
-  if (file) formData.append('poster', file);
-  if (contextFile) formData.append('context_image', contextFile);
-
-  const token = localStorage.getItem(Config.AUTH_TOKEN);
-  const res = await fetch(`${SERVER_URL}/agent/draft`, {
-    method: Config.POST,
-    headers: { Authorization: `Bearer ${token}` },
-    body: formData,
-  });
-
-  const event = await res.json();
-
-  if (!res.ok) {
-    throw new Error(event.error || Config.UNKNOWN_ERROR);
-  }
-
-  return event;
-};
+import { sendPrompt } from '../../../controller/agent.js';
 
 export default function AgentDraft({ placeholder = Config.PROMPT_PLACEHOLDER, handleClick }) {
     const [prompt, setPrompt] = useState('');
@@ -49,9 +25,15 @@ export default function AgentDraft({ placeholder = Config.PROMPT_PLACEHOLDER, ha
             setLoading(true)
             const file = e.target.poster?.files[0] || null;
             const contextFile = e.target.context_image?.files[0] || null;
-            const response = await sendPrompt(prompt, file, contextFile);
+            const formData = new FormData();
+            formData.append('prompt', prompt);
+            if (file) formData.append('poster', file);
+            if (contextFile) formData.append('context_image', contextFile);
+
+            const response = await sendPrompt(formData);
             const { event } = response;
             setPrompt('');
+            
             const transformedEvent = transformDraftToFormData(event);
             transformedEvent.file = file;
             handleClick(Config.ADD, transformedEvent)();

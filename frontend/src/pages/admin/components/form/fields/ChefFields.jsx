@@ -2,7 +2,7 @@ import { Stack, Button } from "@chakra-ui/react";
 import * as Config from 'config/index.jsx';
 import { useState, useEffect } from "react";
 import TypeaheadInput from "components/form/TypeaheadInput";
-import { fetchChefs } from "utils/database/api";
+import { fetchChefs } from "../../../../../controller/chefs.js";
 import Row from "../structure/Row.jsx";
 import AddChef from "./AddButton.jsx";
 
