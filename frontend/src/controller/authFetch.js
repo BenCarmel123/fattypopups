@@ -2,13 +2,14 @@ import * as Config from 'config/index.jsx';
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
-export const authFetch = async (path, options = {}) => {
+export const authFetch = async (path, { method = 'GET', headers = {}, body = undefined } = {}) => {
   const token = localStorage.getItem(Config.AUTH_TOKEN);
   const response = await fetch(`${SERVER_URL}${path}`, {
-    ...options,
+    method,
+    body,
     headers: {
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...options.headers,
+      ...headers,
     },
   });
 
