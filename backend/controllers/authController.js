@@ -9,7 +9,7 @@ const isAdminEmail = (email) => {
   return adminEmails.includes(email);
 };
 
-export const redirectToGoogle = (req, res) => {
+export const redirectToGoogle = (_req, res) => {
   const url = oauth2Client.generateAuthUrl({
     scope: ['openid', 'email', 'profile'],
   });

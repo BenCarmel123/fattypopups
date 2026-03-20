@@ -27,13 +27,13 @@ app.use(express.json());
 app.use(express.text());
 
 // Logging middleware
-app.use((req, res, next) => {
-  logger.info(`Incoming ${req.method} ${req.url}`);
+app.use((req, _res, next) => {
+  logger.info(`[Request] Incoming ${req.method} ${req.url}`);
   next();
 });
 
 // For Debugging
-app.get('/', (req, res) => {
+app.get('/', (_req, res) => {
   res.send(' FattyPopups backend is running!');
 });
 
