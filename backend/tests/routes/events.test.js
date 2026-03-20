@@ -10,11 +10,11 @@ vi.mock('../../services/orchestrator/index.js', () => ({
 }));
 
 vi.mock('../../config/middleware/isAuthorized.js', () => ({
-  isAuthorized: (req, res, next) => next(),
+  isAuthorized: (_req, _res, next) => next(),
 }));
 
 vi.mock('../../config/index.js', () => ({
-  uploadMemory: { single: () => (req, res, next) => next() },
+  uploadMemory: { single: () => (_req, _res, next) => next() },
 }));
 
 const { default: eventRouter } = await import('../../routes/events.js');
