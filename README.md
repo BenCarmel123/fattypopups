@@ -34,7 +34,8 @@ fattypopups/
 │   │   │   ├── home/       # Public event listing
 │   │   │   └── admin/      # Dashboard, EventForm, Login
 │   │   ├── components/     # Reusable UI components
-│   │   └── utils/          # Helper functions
+│   │   ├── controller/     # API client layer 
+│   │   └── utils/          # Helper functions 
 │   └── public/             # Static assets
 │
 ├── lambdas/                # AWS Lambda functions

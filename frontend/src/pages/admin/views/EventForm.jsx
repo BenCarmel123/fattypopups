@@ -1,12 +1,12 @@
 import * as Config from 'config/index.jsx';
 import validateEvent from "../utils/validation.js";
-import { extractEventData, submitFormData } from "../utils/form.js";
+import { extractEventData, eventDataToFormData } from "../utils/form.js";
+import { submitEvent } from "../../../controller/events.js";
 import { useRef, useState } from "react";
 import SpinnerOverlay from "components/SpinnerOverlay.jsx";
 import FormAlert from "../components/form/FormAlert.jsx";
 import FormBody from "../components/form/structure/FormBody.jsx";
 
-const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 export default function EventForm({ event, isEdit, handleClick, setEvents } ) {
     const [alert, setAlert] = useState(undefined);
@@ -28,13 +28,9 @@ export default function EventForm({ event, isEdit, handleClick, setEvents } ) {
             return;
         }
 
-        // Determine URL and method
-        const url = isEdit ? `${SERVER_URL}/api/events/${event.id}` : `${SERVER_URL}/api/events`;
-        const method = isEdit ? Config.PUT : Config.POST;
-
         try {
             setLoading(true);
-            const savedEvent = await submitFormData(url, method, eventData);
+            const savedEvent = await submitEvent(eventDataToFormData(eventData), isEdit ? event.id : null);
             setLoading(false);
             // Update state and sessionStorage cache so the dashboard reflects the change instantly
             if (isEdit) {

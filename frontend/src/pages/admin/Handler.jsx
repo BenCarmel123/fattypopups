@@ -5,9 +5,8 @@ import Dashboard from "./views/Dashboard.jsx";
 import Login from "./views/Login.jsx";
 import AgentDraft from "./views/AgentDraft.jsx";
 import { handleTokenCheck } from "../../utils/auth.js";
-import { fetchEvents } from "../../utils/database/api.js";
-
-const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+import { fetchEvents } from "../../controller/events.js";
+import { checkAuth } from "../../controller/auth.js";
 
 export default function AdminPageHandler() {
   // eslint-disable-next-line no-unused-vars
@@ -34,18 +33,18 @@ export default function AdminPageHandler() {
   }
 
   // Authorization Check
-  fetch(`${SERVER_URL}/auth/check`, { headers: { Authorization: `Bearer ${token}`,},})
-      .then(res => res.json()).then(data => {
-               if (!data.authenticated) localStorage.removeItem(Config.AUTH_TOKEN);
+  checkAuth()
+      .then(data => {
+        if (!data.authenticated) localStorage.removeItem(Config.AUTH_TOKEN);
         setAuthenticated(data.authenticated);
         if (data.authenticated) {
-          // Fetch fresh events from server, update state and sessionStorage cache
           fetchEvents(true).then(fresh => {
             setEvents(fresh);
             sessionStorage.setItem('admin_events', JSON.stringify(fresh));
           }).catch(() => setEvents([]));
         }
-        setAction(data.authenticated ? Config.DASHBOARD : Config.LOGIN);});
+        setAction(data.authenticated ? Config.DASHBOARD : Config.LOGIN);
+      }).catch(() => setAction(Config.LOGIN));
   }, []);
 
    if (action === null) return null;

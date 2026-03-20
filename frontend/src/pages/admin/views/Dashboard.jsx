@@ -3,7 +3,7 @@ import { useState } from "react"
 import * as Config from 'config/index.jsx'
 import MyAlert from "components/CustomAlert.jsx";
 import AdminActions from "../components/AdminActions.jsx";
-import { deleteEvents } from "utils/database/api.js";
+import { deleteEvents } from "../../../controller/events.js";
 import { FaTrash, FaPen } from "config/index.jsx";
 import SpinnerOverlay from "components/SpinnerOverlay.jsx";
 

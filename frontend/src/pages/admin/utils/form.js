@@ -1,31 +1,6 @@
-import * as Config from 'config/index.jsx';
-
-const toFormData = (eventData) => {
-  const formData = new FormData();
-  Object.entries(eventData).forEach(([key, value]) => { formData.append(key, value); });
-  return formData;
-};
-
-export const submitFormData = async (url, method, eventData) => {
-  const formData = toFormData(eventData);
-  const token = localStorage.getItem(Config.AUTH_TOKEN);
-  const response = await fetch(url, {
-    method: method,
-    headers: { Authorization: `Bearer ${token}` },
-    body: formData,
-  });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || Config.UNKNOWN_ERROR);
-  }
-
-  return response.json();
-};
 
 // Extract form data into event object
 export const extractEventData = (form) => {
-  // Collect all chef fields (chef_name_0, chef_name_1, etc.)
   const chefNames = [];
   const chefInstagrams = [];
 

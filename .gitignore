@@ -21,4 +21,5 @@ CLAUDE.md
 # Local tooling
 .serena/
 .docker/
+docker/
 
