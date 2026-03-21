@@ -1,6 +1,6 @@
 
-// Extract form data into event object
-export const extractEventData = (form) => {
+// Parse form into FormData for upload and validation
+export const parseFormData = (form) => {
   const chefNames = [];
   const chefInstagrams = [];
 
@@ -14,7 +14,7 @@ export const extractEventData = (form) => {
     }
   }
 
-  return {
+  const fields = {
     title: form.title.value,
     start_datetime: form.start_datetime.value,
     end_datetime: form.end_datetime.value,
@@ -27,22 +27,11 @@ export const extractEventData = (form) => {
     english_description: form.english_description.value,
     hebrew_description: form.hebrew_description.value,
     poster: form.poster.files[0],
-    is_draft: form.is_draft ? form.is_draft.value === 'true' : false,
+    is_draft: form.is_draft ? form.is_draft.value : 'false',
   };
-};
 
-// Convert event data object to FormData for multipart upload
-export const eventDataToFormData = (eventData) => {
   const formData = new FormData();
-
-  Object.entries(eventData).forEach(([key, value]) => {
-    if (key === 'is_draft') {
-      formData.append(key, value ? 'true' : 'false');
-    } else {
-      formData.append(key, value);
-    }
-  });
-
+  Object.entries(fields).forEach(([key, value]) => formData.append(key, value));
   return formData;
 };
 
@@ -62,8 +51,8 @@ export const handleAddClick = (e) => {
   }
 };
 
-// Transform backend draft data to format expected by form components
-export const transformDraftToFormData = (draft) => {
+// Parse LLM generated draft data to format expected by form components
+export const parseLLMOutput = (draft) => {
 
   if (!draft) return null;
 
