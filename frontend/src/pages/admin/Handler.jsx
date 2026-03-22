@@ -9,8 +9,7 @@ import { fetchEvents } from "../../controller/events.js";
 import { checkAuth } from "../../controller/auth.js";
 
 export default function AdminPageHandler() {
-  // eslint-disable-next-line no-unused-vars
-  const[isAuthenticated, setAuthenticated] = useState(false)
+  const[_isAuthenticated, setAuthenticated] = useState(false)
   const[action, setAction] = useState(null);
   const[selectedEvent, setSelectedEvent] = useState(undefined);
   // Load from sessionStorage so dashboard renders instantly on remount

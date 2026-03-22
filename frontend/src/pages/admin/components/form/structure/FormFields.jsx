@@ -52,6 +52,7 @@ export default function FormFields({ event }) {
             <Section title="Image">
                 <Stack gap={7} align="flex-start">
                     <FileUpload existingImage={event?.poster} />
+                    <input type="hidden" name="poster_url" defaultValue={event?.poster || ""} />
                 </Stack>
             </Section>
         </Stack>

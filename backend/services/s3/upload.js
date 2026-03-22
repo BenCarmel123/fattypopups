@@ -11,8 +11,8 @@ export const uploadToS3 = async (s3_key, file) => {
         Bucket: process.env.AWS_S3_BUCKET_NAME,
         Key: s3_key,
         Body: file.buffer,
-        ContentType: file.mimetype
-      })
+        ContentType: file.mimetype,
+})
     );
   } catch (err) {
     logger.error("Error uploading file:", err);
@@ -36,8 +36,9 @@ const fetchExistingImageUrl = async (id) => {
 };
 
 const handleNoFileUpload = async (body, currentEvent) => {
+  logger.debug("Poster is: ", body.poster);
   if (!currentEvent) {
-    delete body.poster;
+    if (typeof body.poster !== 'string') delete body.poster;
     return;
   }
   const isDraft = isTrue(body.is_draft);

@@ -2,8 +2,8 @@ import validator from 'validator';
 import * as Config from 'config/index.jsx';
 
 // Helper to validate event data
-export default function validateEvent(formData, isEdit, isDraft = false) {
-    const { title, start_datetime, end_datetime, venue_instagram, venue_address, chef_names, chef_instagrams, reservation_url, english_description, hebrew_description, poster } = Object.fromEntries(formData.entries());
+export default function validateEvent(formData, _isEdit, isDraft = false) {
+    const { title, start_datetime, end_datetime, venue_instagram, venue_address, chef_names, chef_instagrams, reservation_url, english_description, hebrew_description } = Object.fromEntries(formData.entries());
 
     // Title is always required, even for drafts
     if (!title?.trim()) return { valid: false, error: Config.ERR_TITLE_REQUIRED };
@@ -12,7 +12,7 @@ export default function validateEvent(formData, isEdit, isDraft = false) {
     if (isDraft) return { valid: true };
 
     // Validate date fields
-    const dateFields = [ [start_datetime, Config.ERR_START_REQUsIRED], [end_datetime, Config.ERR_END_REQUIRED] ];
+    const dateFields = [ [start_datetime, Config.ERR_START_REQUIRED], [end_datetime, Config.ERR_END_REQUIRED] ];
     for (const [value, error] of dateFields) {
         if (!value || isNaN(Date.parse(value))) return { valid: false, error };
     }
@@ -34,7 +34,6 @@ export default function validateEvent(formData, isEdit, isDraft = false) {
 
     if (!reservation_url || !validator.isURL(reservation_url)) return { valid: false, error: Config.ERR_RESERVATION_URL_REQUIRED };
 
-    if (!isEdit && (!poster || !(poster instanceof File))) return { valid: false, error: Config.ERR_POSTER_REQUIRED };
 
     return { valid: true };
 }

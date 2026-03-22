@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import FormAlert from '../components/form/FormAlert.jsx';
 import { Textarea } from "@chakra-ui/react";
 import { parseLLMOutput } from '../utils/form.js';
 import FileUpload, { ContextFileUpload } from '../../../components/FileUpload.jsx';
@@ -11,6 +12,7 @@ export default function AgentDraft({ placeholder = Config.PROMPT_PLACEHOLDER, ha
     const [prompt, setPrompt] = useState('');
     const [isLoading, setLoading] = useState(false)
     const [requestInProgress, setRequestInProgress] = useState(false);
+    const [alert, setAlert] = useState(undefined);
 
     const handleSubmit = async (e) => {
         if (requestInProgress) return; // Prevent duplicate
@@ -32,14 +34,13 @@ export default function AgentDraft({ placeholder = Config.PROMPT_PLACEHOLDER, ha
 
             setPrompt('');
             const generatedFormData = parseLLMOutput(event);
-            generatedFormData.file = posterImage;
             handleClick(Config.ADD, generatedFormData)();
 
             // Switch to ADD mode and pass the generated draft
             }
 
         catch (err) {
-            console.error('[ERROR] Draft generation error:', err);
+            setAlert({ status: Config.STATUS_ERROR, description: err.message.split('\n')[0] });
         }
 
         finally {
@@ -58,6 +59,7 @@ export default function AgentDraft({ placeholder = Config.PROMPT_PLACEHOLDER, ha
     return (
         <div>
         <SpinnerOverlay isLoading={isLoading} />
+        <FormAlert alert={alert} onClose={() => setAlert(null)} />
         <form onSubmit={handleSubmit} className="min-h-screen flex flex-col items-center justify-center gap-4">
             <div className="w-full max-w-xl md:max-w-3xl lg:max-w-4xl pl-6">
                 <BackButton variant="default" onBack={() => handleClick(Config.DASHBOARD, undefined)()} />

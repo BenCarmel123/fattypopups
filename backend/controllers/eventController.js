@@ -28,7 +28,7 @@ export const getDraftEvents = async (_req, res) => {
 
 export const createEvent = async (req, res) => {
   try {
-    const newEvent = await orchestrateEventCreate(req.body, req.file);
+const newEvent = await orchestrateEventCreate(req.body, req.file);
     res.json(newEvent);
   } catch (err) {
     logger.error('HTTP Error:', err);
