@@ -1,11 +1,15 @@
+import React from 'react';
 import { Button, Float, Image, useFileUploadContext, FileUpload as ChakraFileUpload } from "@chakra-ui/react";
 import * as Config from "../config/index.jsx";
 
-function ExistingImagePreview({ src }) {
-    if (!src) return null;
+function ExistingImagePreview({ src, onError }) {
+    const [hidden, setHidden] = React.useState(false);
+    if (!src || hidden) return null;
+    const handleError = () => { setHidden(true); onError?.(); };
     return (
         <Image
             src={src}
+            onError={handleError}
             alt="Current poster"
             boxSize="20"
             objectFit="cover"
@@ -16,11 +20,11 @@ function ExistingImagePreview({ src }) {
     );
 }
 
-function FileUploadList({ existingImage })
+function FilePreview({ existingImage, onImageError })
 {
     const fileUpload = useFileUploadContext();
     const files = fileUpload?.acceptedFiles || [];
-    if (files.length === 0) return <ExistingImagePreview src={existingImage} />;
+    if (files.length === 0) return <ExistingImagePreview src={existingImage} onError={onImageError} />;
     return (
         <ChakraFileUpload.ItemGroup>
             {files.map((file) => (
@@ -44,9 +48,10 @@ function FileUploadList({ existingImage })
 };
 
 function InnerFileUploadButton({ label, existingImage }) {
+    const [imageValid, setImageValid] = React.useState(!!existingImage);
     const fileUpload = useFileUploadContext();
     const files = fileUpload?.acceptedFiles || [];
-    const isSelected = files.length > 0 || existingImage;
+    const isSelected = files.length > 0 || imageValid;
 
     return (
         <Button
@@ -69,7 +74,7 @@ function InnerFileUploadButton({ label, existingImage }) {
                         <Config.LuFileImage /> {label}
                     </Button>
                 </ChakraFileUpload.Trigger>
-                <FileUploadList existingImage={existingImage} />
+                <FilePreview existingImage={existingImage} onImageError={() => setImageValid(false)} />
             </div>
         </Button>
     );
@@ -91,4 +96,4 @@ export function ContextFileUpload() {
     return <FileUploadButton name="context_image" label="Context Image" />;
 };
 
-export { FileUploadList };
+export { FilePreview };

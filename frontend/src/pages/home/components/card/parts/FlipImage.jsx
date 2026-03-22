@@ -5,8 +5,8 @@ import * as Config from 'config/index.jsx';
 import { useEventIndex } from 'pages/home/context/EventIndexContext.js';
 
 const detailsBackgroundImageUrl = process.env.REACT_APP_DETAILS_BACKGROUND_IMAGE_URL;
+const LOGO_URL = process.env.REACT_APP_LOGO;
 
-/* -------------------------- EVENT IMAGE -------------------------- */
 export function EventImage({ event }) {
   const index = useEventIndex();
   return (
@@ -20,6 +20,8 @@ export function EventImage({ event }) {
     >
       <img
         src={event.poster}
+        // When no image -> fallback to logo
+        onError={(e) => { e.currentTarget.src = LOGO_URL; }}
         alt={event.title}
         loading={index === 0 ? 'eager' : 'lazy'}
         fetchPriority={index === 0 ? Config.FETCH_PRIORITY_HIGH : Config.FETCH_PRIORITY_LOW}
@@ -37,7 +39,6 @@ export function EventImage({ event }) {
   );
 }
 
-/* -------------------------- FLIP IMAGE -------------------------- */
 export default function FlipImage({ event }) {
   const [showDetails, setShowDetails] = React.useState(false);
   const [VisibleOverlay, setOverlayVisible] = React.useState(false);
