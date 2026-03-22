@@ -52,6 +52,8 @@ export default function FormFields({ event }) {
             <Section title="Image">
                 <Stack gap={7} align="flex-start">
                     <FileUpload existingImage={event?.poster} />
+                    {/* Stores S3 URL through form submission when no new file is selected (AI draft) */}
+                    <input type="hidden" name="poster_url" defaultValue={event?.poster || ""} />
                 </Stack>
             </Section>
         </Stack>

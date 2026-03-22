@@ -54,9 +54,7 @@ export function computeUpdateState(body, currentEvent, currentVenue, currentChef
   const stateFlags = computeStateTransitions(body, currentEvent);
   const changeFlags = computeContentChanges(body, currentEvent, currentVenue, currentChefs);
   const actionFlags = computeActionFlags(stateFlags, changeFlags, currentChefs);
-
-  logger.debug(`is_draft - body: ${body.is_draft} | current: ${currentEvent.is_draft} | State:`, { stateFlags, changeFlags, actionFlags });
-
+  
   return {
     ...stateFlags,
     ...changeFlags,

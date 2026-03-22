@@ -26,7 +26,8 @@ export const orchestrateEventCreate = async (body, file) => {
     is_draft
   } = body;
 
-  body.poster = await handleEventImageUpload(null, body, file, null);
+  const uploadedUrl = await handleEventImageUpload(null, body, file, null);
+  if (uploadedUrl) body.poster = uploadedUrl;
   const isDraft = isTrue(is_draft);
   const chefNamesArray = chef_names?.split(',').map(s => s.trim()) ?? [];
 

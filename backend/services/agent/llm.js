@@ -27,9 +27,9 @@ export async function generateDraftDetails(prompt, posterUrl = null, contextUrl 
     content.push({ type: "input_image", image_url: contextUrl });
   }
 
-  logger.info("[AGENT] About to call OpenAI API");
+  logger.info("[AGENT] Calling OpenAI API");
   const response = await openai.responses.create({
-    model: "gpt-4o",
+    model: "gpt-5.4",
     input: [{ role: "user", content }],
     instructions: `${INSTRUCTIONS}`,
     temperature: 0.3,

@@ -15,7 +15,7 @@ export const createDraft = async (req, res) => {
       req.files?.poster?.[0] ?? null,
       req.files?.context_image?.[0] ?? null,
     );
-    logger.info('[DRAFT] Images uploaded, calling generateDraft');
+    logger.info('[DRAFT] Images uploaded');
     const draft = await generateDraft(prompt, posterUrl, contextUrl);
     logger.info('[DRAFT] Draft generated successfully');
     return res.status(200).json({ event: draft });

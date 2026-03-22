@@ -11,8 +11,8 @@ export const uploadToS3 = async (s3_key, file) => {
         Bucket: process.env.AWS_S3_BUCKET_NAME,
         Key: s3_key,
         Body: file.buffer,
-        ContentType: file.mimetype
-      })
+        ContentType: file.mimetype,
+})
     );
   } catch (err) {
     logger.error("Error uploading file:", err);
@@ -36,17 +36,21 @@ const fetchExistingImageUrl = async (id) => {
 };
 
 const handleNoFileUpload = async (body, currentEvent) => {
+// keep poster if it's already an S3 URL (AI-generated draft)
   if (!currentEvent) {
-    delete body.poster;
+    if (typeof body.poster !== 'string') delete body.poster;
     return;
   }
   const isDraft = isTrue(body.is_draft);
   const wasDraft = isTrue(currentEvent.is_draft);
+  // True when transitioning a draft to a published event
   const toPublish = wasDraft && !isDraft;
 
+  // TODO: enforce poster requirement when publishing once fallback image is implemented
   if (toPublish && !currentEvent.poster) {
     throw new Error("Cannot publish draft: event must have an image.");
   } else {
+    // No new file uploaded — let the DB keep its existing poster
     delete body.poster;
   }
 };

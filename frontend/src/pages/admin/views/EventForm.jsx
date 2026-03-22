@@ -1,6 +1,6 @@
 import * as Config from 'config/index.jsx';
 import validateEvent from "../utils/validation.js";
-import { extractEventData, eventDataToFormData } from "../utils/form.js";
+import { parseFormData } from "../utils/form.js";
 import { submitEvent } from "../../../controller/events.js";
 import { useRef, useState } from "react";
 import SpinnerOverlay from "components/SpinnerOverlay.jsx";
@@ -13,47 +13,37 @@ export default function EventForm({ event, isEdit, handleClick, setEvents } ) {
     const [isLoading, setLoading] = useState(false);
     const isDraftRef = useRef(false);
 
+    function handleSavedEvent(savedEvent) {
+        setEvents(prev => {
+            const updated = isEdit
+                ? prev.map(ev => ev.id === savedEvent.id ? savedEvent : ev)
+                : [...prev, savedEvent];
+            sessionStorage.setItem('admin_events', JSON.stringify(updated));
+            return updated;
+        });
+        if (isEdit) return savedEvent.is_draft ? "Draft Updated" : "Event Updated";
+        return savedEvent.is_draft ? "Draft Created" : "Event Created";
+    }
+
     async function handleEvent(e) {
         e.preventDefault();
         const form = e.target;
 
-        // Extract form data
-        const eventData = extractEventData(form);
-        eventData.is_draft = isDraftRef.current;
+        // Parse form data including draft status for validation and submission
+        const formData = parseFormData(form, isDraftRef.current);
 
-        // Validate (drafts only need title, full events need everything)
-        const validation = validateEvent(eventData, isEdit, eventData.is_draft);
-        if (!validation.valid) {
-            setAlert({ status: Config.STATUS_ERROR, description: validation.error });
+const validationResult = validateEvent(formData, isEdit, isDraftRef.current);
+        if (!validationResult.valid) {
+            setAlert({ status: Config.STATUS_ERROR, description: validationResult.error });
             return;
         }
 
         try {
             setLoading(true);
-            const savedEvent = await submitEvent(eventDataToFormData(eventData), isEdit ? event.id : null);
+            const savedEvent = await submitEvent(formData, isEdit ? event.id : null);
             setLoading(false);
             // Update state and sessionStorage cache so the dashboard reflects the change instantly
-            if (isEdit) {
-              setEvents(prev => {
-                const updated = prev.map(ev => ev.id === savedEvent.id ? savedEvent : ev);
-                sessionStorage.setItem('admin_events', JSON.stringify(updated));
-                return updated;
-              });
-            } else {
-              setEvents(prev => {
-                const updated = [...prev, savedEvent];
-                sessionStorage.setItem('admin_events', JSON.stringify(updated));
-                return updated;
-              });
-            }
-
-            // Determine success message based on draft status and edit mode
-            let successTitle;
-            if (isEdit) {
-                successTitle = eventData.is_draft ? "Draft Updated" : "Event Updated";
-            } else {
-                successTitle = eventData.is_draft ? "Draft Created" : "Event Created";
-            }
+            const successTitle = handleSavedEvent(savedEvent);
 
             setAlert({
                 status: Config.STATUS_SUCCESS,
@@ -64,6 +54,7 @@ export default function EventForm({ event, isEdit, handleClick, setEvents } ) {
                 handleClick(Config.DASHBOARD)();
             }, 750);
         }
+        
         catch (err) {
             setLoading(false);
             setAlert({

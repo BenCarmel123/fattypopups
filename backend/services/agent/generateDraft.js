@@ -11,7 +11,6 @@ const generateDraft =
         const _startTime = Date.now(); // TIME start
 
         // Get JSON from OpenAI
-        logger.info("[DRAFT] Calling generateDraftDetails");
         const rawOutput = await generateDraftDetails(prompt, posterUrl, contextUrl);
         logger.info("[DRAFT] Raw output received, parsing JSON");
         let openaiResponse;
