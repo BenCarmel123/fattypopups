@@ -1,3 +1,4 @@
+// Legacy: WhatsApp notifications are currently disabled but kept for future reactivation
 import { twilioClient } from '../../config/clients/twilio.js';
 
 export const notifyUsers = async (title) => {

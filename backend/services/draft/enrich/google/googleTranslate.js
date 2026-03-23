@@ -1,4 +1,4 @@
-import { logger } from '../../../utils/logger.js';
+import { logger } from '../../../../utils/logger.js';
 
 export async function translate(english_description) {
     logger.info("[TRANSLATE] Calling Google Translate API");

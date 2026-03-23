@@ -6,9 +6,9 @@ import FileUpload, { ContextFileUpload } from '../../../components/FileUpload.js
 import * as Config from 'config/index.jsx';
 import { SubmitPromptButton, BackButton } from 'components/Buttons.jsx';
 import SpinnerOverlay from 'components/SpinnerOverlay.jsx';
-import { sendPrompt } from '../../../controller/agent.js';
+import { sendPrompt } from '../../../controller/draft.js';
 
-export default function AgentDraft({ placeholder = Config.PROMPT_PLACEHOLDER, handleClick }) {
+export default function DraftBuilder({ placeholder = Config.PROMPT_PLACEHOLDER, handleClick }) {
     const [prompt, setPrompt] = useState('');
     const [isLoading, setLoading] = useState(false)
     const [requestInProgress, setRequestInProgress] = useState(false);
@@ -78,7 +78,7 @@ export default function AgentDraft({ placeholder = Config.PROMPT_PLACEHOLDER, ha
             />
             <SubmitPromptButton prompt={prompt} isLoading={isLoading} />
             </div>
-            <div className="flex gap-4 scale-[90%] md:scale-100 origin-center">
+            <div className="flex flex-col md:flex-row gap-4 scale-[90%] md:scale-100 origin-center">
                 <FileUpload />
                 <ContextFileUpload />
             </div>

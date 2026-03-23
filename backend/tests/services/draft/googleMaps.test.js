@@ -6,7 +6,7 @@ global.fetch = vi.fn().mockResolvedValue({
   }),
 });
 
-const { fetchVenueAddress } = await import('../../../services/agent/google/googleMaps.js');
+const { fetchVenueAddress } = await import('../../../services/draft/enrich/google/googleMaps.js');
 
 describe('fetchVenueAddress', () => {
   it('returns only the street and number from the formatted address', async () => {

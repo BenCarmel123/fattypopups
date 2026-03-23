@@ -1,4 +1,4 @@
-import { generateDraft } from '../services/agent/generateDraft.js';
+import { orchestrateDraft } from '../services/draft/orchestrateDraft.js';
 import { uploadDraftImages } from '../services/s3/draftUpload.js';
 import { logger } from '../utils/logger.js';
 
@@ -16,7 +16,7 @@ export const createDraft = async (req, res) => {
       req.files?.context_image?.[0] ?? null,
     );
     logger.info('[DRAFT] Images uploaded');
-    const draft = await generateDraft(prompt, posterUrl, contextUrl);
+    const draft = await orchestrateDraft(prompt, posterUrl, contextUrl);
     logger.info('[DRAFT] Draft generated successfully');
     return res.status(200).json({ event: draft });
   } catch (err) {

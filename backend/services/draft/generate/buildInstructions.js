@@ -1,4 +1,6 @@
-export const DRAFT_INSTRUCTIONS = `\
+import { fetchStyleExamples } from './similaritySearch.js';
+
+const DRAFT_INSTRUCTIONS = `\
 You are a content assistant for FattyPopups, a food popup event platform. Your job is to generate clean, accurate event drafts from user input.
 
 The user provides free-text input and optionally an image of the event poster.
@@ -28,3 +30,9 @@ Return a JSON object with these exact keys:
 - For dates: extract from the poster or prompt. Use today's date (injected below) to infer the correct year if the poster only shows a day/month. If no date info is available, return empty string for both datetime fields.
 - Times should be in 24-hour format (e.g. 19:00 for 7pm). If no time is mentioned, use 19:00 as a reasonable default for start and 22:00 for end.
 `;
+
+export async function buildInstructions(prompt) {
+  const examplesBlock = await fetchStyleExamples(prompt);
+  const today = new Date().toISOString().split('T')[0];
+  return DRAFT_INSTRUCTIONS + `\n\nToday's date is ${today}.\n\nHere are examples of past event descriptions in our style:\n${examplesBlock}`;
+}
