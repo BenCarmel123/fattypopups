@@ -14,7 +14,9 @@ fattypopups/
 │   ├── routes/             # API endpoint definitions 
 │   ├── controllers/        # Request/response handlers per resource
 │   ├── services/           # Business logic layers
-│   │   ├── agent/          # AI draft generation
+│   │   ├── draft/          # AI draft generation pipeline
+│   │   │   ├── generate/   # LLM call, instructions, similarity search
+│   │   │   └── enrich/     # Entity enrichment, translation
 │   │   ├── cache/
 │   │   ├── embeddings/     # pgvector embeddings (generate, search, store)
 │   │   ├── entities/       # CRUD operations (chef, venue, event, linking)
@@ -73,7 +75,7 @@ Tests live in `backend/tests/` mirroring the `services/` structure:
 | Area | Files |
 |---|---|
 | Routes | auth, chefs, draft, events, venues |
-| Agent | generateDraft, googleMaps, googleTranslate, twilio |
+| Draft | orchestrateDraft, googleMaps, googleTranslate |
 | Cache | invalidation |
 | Embeddings | generate, search, storage |
 | Entities | chef, event, venue, linking, parse |

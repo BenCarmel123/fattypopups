@@ -6,7 +6,7 @@ global.fetch = vi.fn().mockResolvedValue({
   }),
 });
 
-const { translate } = await import('../../../services/agent/google/googleTranslate.js');
+const { translate } = await import('../../../services/draft/enrich/google/googleTranslate.js');
 
 describe('translate', () => {
   it('returns the translated text from the Google Translate response', async () => {

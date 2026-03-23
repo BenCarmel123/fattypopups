@@ -3,7 +3,7 @@ import EventForm from "./views/EventForm.jsx";
 import * as Config from '../../config/index.jsx';
 import Dashboard from "./views/Dashboard.jsx";
 import Login from "./views/Login.jsx";
-import AgentDraft from "./views/AgentDraft.jsx";
+import DraftBuilder from "./views/DraftBuilder.jsx";
 import { handleTokenCheck } from "../../utils/auth.js";
 import { fetchEvents } from "../../controller/events.js";
 import { checkAuth } from "../../controller/auth.js";
@@ -58,7 +58,7 @@ export default function AdminPageHandler() {
          case Config.LOGIN:
             return (<Login />);
          case Config.AI:
-            return (<AgentDraft handleClick={handleClick} />);
+            return (<DraftBuilder handleClick={handleClick} />);
          default:
             return (<Login />);
    }

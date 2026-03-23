@@ -10,7 +10,7 @@ import 'dotenv-flow/config';
 
 // Import routers
 import * as routers from './routes/index.js';
-const { eventRouter, authRouter, agentRouter, chefRouter, venueRouter } = routers;
+const { eventRouter, authRouter, draftRouter, chefRouter, venueRouter } = routers;
 
 // Initialize Express app
 const app = express();
@@ -42,7 +42,7 @@ app.use('/api/events', eventRouter);
 app.use('/api/chefs', chefRouter);
 app.use('/api/venues', venueRouter);
 app.use('/auth', authRouter);
-app.use('/agent', agentRouter);
+app.use('/agent', draftRouter);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, '0.0.0.0', () => {
