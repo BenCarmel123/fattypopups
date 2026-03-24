@@ -1,4 +1,4 @@
-import { createSlug } from '../../../services/s3/helpers.js';
+import { createSlug } from '../../../services/s3/utils.js';
 
 describe('createSlug', () => {
   it('returns null for falsy input', () => {

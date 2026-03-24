@@ -4,7 +4,7 @@ import { extractS3Key } from "./utils.js";
 import { logger } from "../../utils/logger.js";
 
 export const deleteS3Images = async (urls) => {
-  const validUrls = urls.filter(Boolean); // remove null/undefined (events without images)
+  const validUrls = urls.filter(Boolean); // remove events without images
 
   await Promise.all(
     validUrls.map(async (url) => {

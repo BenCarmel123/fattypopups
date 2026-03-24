@@ -1,0 +1,40 @@
+import { openai } from '../../../../config/index.js';
+import { logger } from '../../../../utils/logger.js';
+import { buildVisionInstructions } from './buildVisionInstructions.js';
+
+export async function analyzeImage(posterUrl = null, contextUrl = null) {
+  if (!posterUrl && !contextUrl) {
+    return { extractedText: "", cropCoordinates: null };
+  }
+
+  const content = [];
+
+  if (posterUrl) {
+    content.push({ type: "input_image", image_url: posterUrl });
+  }
+  if (contextUrl) {
+    content.push({ type: "input_image", image_url: contextUrl });
+  }
+
+  const instructions = buildVisionInstructions();
+  content.push({ type: "input_text", text: "Analyze these images. Respond in JSON." });
+
+  logger.info("[VISION] Calling OpenAI Vision API");
+  const response = await openai.responses.create({
+    model: "gpt-5.4",
+    input: [{ role: "user", content }],
+    instructions,
+    temperature: 0.2,
+    text: { format: { type: "json_object" } }
+  });
+
+  logger.info("[VISION] " + response.output_text);
+  if (!response.output_text) throw new Error("Vision API returned empty output");
+
+  try {
+    return JSON.parse(response.output_text);
+  } catch (parseError) {
+    logger.error("[VISION] Failed to parse output as JSON:", response.output_text);
+    throw new Error("Vision API returned invalid JSON");
+  }
+}
