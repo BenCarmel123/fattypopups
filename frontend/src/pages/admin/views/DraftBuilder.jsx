@@ -52,7 +52,7 @@ export default function DraftBuilder({ placeholder = Config.PROMPT_PLACEHOLDER, 
     const handleKeyDown = (e) => {
         if (e.key === Config.ENTER && !e.shiftKey) {
             e.preventDefault();
-            handleSubmit(e);
+            e.target.closest('form').requestSubmit();
         }
     };
 
