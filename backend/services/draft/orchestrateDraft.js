@@ -17,9 +17,9 @@ const imagePipeline = async (posterUrl, cropCoordinates) => {
     return url;
 };
 
-const textPipeline = async (prompt, styleExamples) => {
+const textPipeline = async (prompt, styleExamples, visionResponseId) => {
     logger.info("[TEXT PIPELINE] Starting LLM + enrich");
-    const llmResponse = await generateDraftDetails(prompt, styleExamples);
+    const llmResponse = await generateDraftDetails(prompt, styleExamples, visionResponseId);
     const enriched = await formatDraft(llmResponse);
     logger.info("[TEXT PIPELINE] Complete");
     return { llmResponse, enriched };
@@ -31,7 +31,7 @@ const orchestrateDraft =
         const _startTime = Date.now();
 
         // Stage 1 — Parallel: vision analysis + similarity search
-        const [{ extractedText, cropCoordinates }, styleExamples] = await Promise.all([
+        const [{ extractedText, cropCoordinates, visionResponseId }, styleExamples] = await Promise.all([
             analyzeImage(posterUrl, contextUrl),
             fetchStyleExamples(prompt)
         ]);
@@ -43,7 +43,7 @@ const orchestrateDraft =
         // Stage 2 — Parallel: image pipeline (crop → upload) + text pipeline (LLM → enrich)
         const [croppedPosterUrl, { llmResponse, enriched }] = await Promise.all([
             imagePipeline(posterUrl, cropCoordinates),
-            textPipeline(enrichedPrompt, styleExamples)
+            textPipeline(enrichedPrompt, styleExamples, visionResponseId)
         ]);
 
         const result = {

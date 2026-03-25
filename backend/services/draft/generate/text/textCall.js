@@ -3,18 +3,44 @@ import { openai } from '../../../../config/index.js';
 import { logger } from '../../../../utils/logger.js';
 import { buildTextInstructions } from './buildTextInstructions.js';
 
-export async function generateDraftDetails(prompt, styleExamples) {
+const DRAFT_SCHEMA = {
+  type: "json_schema",
+  name: "draft",
+  strict: true,
+  schema: {
+    type: "object",
+    properties: {
+      chef_names: { type: "array", items: { type: "string" } },
+      venue_name: { type: "string" },
+      event_title: { type: "string" },
+      english_description: { type: "string" },
+      hebrew_description: { type: "string" },
+      start_datetime: { type: "string" },
+      end_datetime: { type: "string" }
+    },
+    required: ["chef_names", "venue_name", "event_title", "english_description", "hebrew_description", "start_datetime", "end_datetime"],
+    additionalProperties: false
+  }
+};
+
+export async function generateDraftDetails(prompt, styleExamples, visionResponseId = null) {
 
   const instructions = buildTextInstructions(styleExamples);
 
-  logger.info("[LLM] Calling OpenAI API");
-  const response = await openai.responses.create({
+  const requestParams = {
     model: "gpt-5.4",
-    input: [{ role: "user", content: `${prompt}\n\nRespond in JSON.` }],
+    input: [{ role: "user", content: prompt }],
     instructions,
-    temperature: 0.2,
-    text: { format: { type: "json_object" } }
-  });
+    reasoning: { effort: "none" },
+    text: { format: DRAFT_SCHEMA, verbosity: "low" }
+  };
+
+  if (visionResponseId) {
+    requestParams.previous_response_id = visionResponseId;
+  }
+
+  logger.info("[LLM] Calling OpenAI API");
+  const response = await openai.responses.create(requestParams);
 
   logger.info("[LLM] " + response.output_text);
   if (!response.output_text) throw new Error("LLM returned empty output");

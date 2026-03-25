@@ -78,7 +78,7 @@ Tests live in `backend/tests/` mirroring the `services/` structure:
 | Area | Files |
 |---|---|
 | Routes | auth, chefs, draft, events, venues |
-| Draft | orchestrateDraft, googleMaps, googleTranslate |
+| Draft | orchestrateDraft, googleMaps |
 | Cache | invalidation |
 | Embeddings | generate, search, storage |
 | Entities | chef, event, venue, linking, parse |
