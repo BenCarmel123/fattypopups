@@ -1,30 +1,64 @@
-import { generateDraftDetails } from "./generate/callLLM.js";
+const ONTOPO_URL = "https://ontopo.com/he/il";
+const today = new Date().toISOString().split('T')[0];
+
+import { analyzeImage } from "./generate/vision/visionCall.js";
+import { fetchStyleExamples } from "./generate/text/similaritySearch.js";
+import { generateDraftDetails } from "./generate/text/textCall.js";
+import { cropPoster } from "./image/crop.js";
+import { uploadCroppedPoster } from "./image/upload.js";
 import { formatDraft } from "./enrich/formatDraft.js";
 import { logger } from "../../utils/logger.js";
+
+const imagePipeline = async (posterUrl, cropCoordinates) => {
+    logger.info("[IMAGE PIPELINE] Starting crop + upload");
+    const croppedBuffer = await cropPoster(posterUrl, cropCoordinates);
+    const url = await uploadCroppedPoster(croppedBuffer);
+    logger.info("[IMAGE PIPELINE] Complete");
+    return url;
+};
+
+const textPipeline = async (prompt, styleExamples, visionResponseId) => {
+    logger.info("[TEXT PIPELINE] Starting LLM + enrich");
+    const llmResponse = await generateDraftDetails(prompt, styleExamples, visionResponseId);
+    const enriched = await formatDraft(llmResponse);
+    logger.info("[TEXT PIPELINE] Complete");
+    return { llmResponse, enriched };
+};
 
 const orchestrateDraft =
     async (prompt, posterUrl = null, contextUrl = null) =>
     {
         const _startTime = Date.now();
 
-        const openaiResponse = await generateDraftDetails(prompt, posterUrl, contextUrl);
+        // Stage 1 — Parallel: vision analysis + similarity search
+        const [{ extractedText, cropCoordinates, visionResponseId }, styleExamples] = await Promise.all([
+            analyzeImage(posterUrl, contextUrl),
+            fetchStyleExamples(prompt)
+        ]);
 
-        const enriched = await formatDraft(openaiResponse);
-        const today = new Date().toISOString().split('T')[0];
+        const enrichedPrompt = extractedText
+            ? `${prompt}\n\nExtracted from poster:\n${extractedText}`
+            : prompt;
+
+        // Stage 2 — Parallel: image pipeline (crop → upload) + text pipeline (LLM → enrich)
+        const [croppedPosterUrl, { llmResponse, enriched }] = await Promise.all([
+            imagePipeline(posterUrl, cropCoordinates),
+            textPipeline(enrichedPrompt, styleExamples, visionResponseId)
+        ]);
 
         const result = {
-            title: openaiResponse.event_title,
-            start_datetime: openaiResponse.start_datetime || today,
-            end_datetime: openaiResponse.end_datetime || today,
+            title: llmResponse.event_title,
+            start_datetime: llmResponse.start_datetime || today,
+            end_datetime: llmResponse.end_datetime || today,
             venue_name: enriched.venueName,
             venue_instagram: enriched.venueInstagram,
             venue_address: enriched.venueAddress,
             chef_names: enriched.chefNames.join(','),
             chef_instagrams: enriched.chefInstagrams,
-            reservation_url: "***",
+            reservation_url: ONTOPO_URL,
             english_description: enriched.english_description,
             hebrew_description: enriched.hebrew_description,
-            poster: posterUrl,
+            poster: croppedPosterUrl || posterUrl,
             is_draft: true
         };
 

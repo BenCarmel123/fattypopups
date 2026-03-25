@@ -1,5 +1,5 @@
-import { generateEmbedding } from '../../embeddings/generate.js';
-import { searchSimilarDescriptions } from '../../embeddings/search.js';
+import { generateEmbedding } from '../../../embeddings/generate.js';
+import { searchSimilarDescriptions } from '../../../embeddings/search.js';
 
 // Embeds the prompt and retrieves similar past event descriptions from vector DB
 export async function fetchStyleExamples(prompt) {

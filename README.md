@@ -15,8 +15,11 @@ fattypopups/
 │   ├── controllers/        # Request/response handlers per resource
 │   ├── services/           # Business logic layers
 │   │   ├── draft/          # AI draft generation pipeline
-│   │   │   ├── generate/   # LLM call, instructions, similarity search
-│   │   │   └── enrich/     # Entity enrichment, translation
+│   │   │   ├── generate/
+│   │   │   │   ├── vision/ # OpenAI call with image input (text extraction, crop coordinates)
+│   │   │   │   └── text/   # OpenAI call with text input (draft generation, similarity search)
+│   │   │   ├── image/      # Image processing: crop, upload
+│   │   │   └── enrich/     # Entity enrichment
 │   │   ├── cache/
 │   │   ├── embeddings/     # pgvector embeddings (generate, search, store)
 │   │   ├── entities/       # CRUD operations (chef, venue, event, linking)
@@ -24,7 +27,7 @@ fattypopups/
 │   │   └── s3/
 │   ├── config/
 │   ├── utils/
-│   ├── tests/              # Unit tests (mirrors services/ structure)
+│   ├── tests/              # Unit tests 
 │   │   ├── routes/
 │   │   ├── services/
 │   │   └── utils/
@@ -75,12 +78,12 @@ Tests live in `backend/tests/` mirroring the `services/` structure:
 | Area | Files |
 |---|---|
 | Routes | auth, chefs, draft, events, venues |
-| Draft | orchestrateDraft, googleMaps, googleTranslate |
+| Draft | orchestrateDraft, googleMaps |
 | Cache | invalidation |
 | Embeddings | generate, search, storage |
 | Entities | chef, event, venue, linking, parse |
 | Orchestrator | computeState |
-| S3 | upload, draftUpload, helpers, utils |
+| S3 | upload, draftUpload, utils |
 | Utils | isTrue, timestamp |
 
 Each file contains one focused test (1 `describe`, 1 `it`).
@@ -97,17 +100,16 @@ Each file contains one focused test (1 `describe`, 1 `it`).
 - **Backend** - Node.js 20, Express.js, PM2
 - **Database** - PostgreSQL (Supabase) with pgvector
 - **Cache** - Redis via Upstash (prod) / Docker (dev)
-- **LLM** - OpenAI
+- **AI** - OpenAI (vision + text + translation), Sharp (image processing)
 - **Auth** - JWT + Google OAuth
 - **Frontend** - React 19, Chakra UI
 - **Testing** - Vitest (ESM-native unit tests)
 - **Dev** - Docker Compose, Claude Code
 
 ## External APIs
-- **OpenAI** - Text generation & vector embeddings
+- **OpenAI** - Vision analysis, text generation, Hebrew translation & vector embeddings
 - **AWS S3** - Image storage & retrieval
 - **Supabase** - PostgreSQL client & RPC (pgvector search)
 - **Google OAuth** - Admin authentication
 - **Google Places** - Venue location enrichment
-- **Google Translate** - English → Hebrew description translation
 - **Twilio** - WhatsApp notifications (currently disabled)
