@@ -3,6 +3,7 @@ import { vi } from 'vitest';
 const mockLlmOutput = (overrides = {}) => ({
   event_title: 'Test Popup',
   english_description: 'A great popup event.',
+  hebrew_description: 'אירוע פופ-אפ נהדר.',
   chef_names: ['Chef A'],
   venue_name: 'Venue X',
   start_datetime: '2024-06-01',
@@ -10,8 +11,28 @@ const mockLlmOutput = (overrides = {}) => ({
   ...overrides,
 });
 
-vi.mock('../../../services/draft/generate/callLLM.js', () => ({
+vi.mock('../../../services/draft/generate/vision/visionCall.js', () => ({
+  analyzeImage: vi.fn().mockResolvedValue({
+    extractedText: '',
+    cropCoordinates: null,
+    visionResponseId: null,
+  }),
+}));
+
+vi.mock('../../../services/draft/generate/text/similaritySearch.js', () => ({
+  fetchStyleExamples: vi.fn().mockResolvedValue(''),
+}));
+
+vi.mock('../../../services/draft/generate/text/textCall.js', () => ({
   generateDraftDetails: vi.fn().mockResolvedValue(mockLlmOutput()),
+}));
+
+vi.mock('../../../services/draft/image/crop.js', () => ({
+  cropPoster: vi.fn().mockResolvedValue(null),
+}));
+
+vi.mock('../../../services/draft/image/upload.js', () => ({
+  uploadCroppedPoster: vi.fn().mockResolvedValue(null),
 }));
 
 vi.mock('../../../services/draft/enrich/formatDraft.js', () => ({
@@ -27,7 +48,7 @@ vi.mock('../../../services/draft/enrich/formatDraft.js', () => ({
 }));
 
 const { orchestrateDraft } = await import('../../../services/draft/orchestrateDraft.js');
-const { generateDraftDetails } = await import('../../../services/draft/generate/callLLM.js');
+const { generateDraftDetails } = await import('../../../services/draft/generate/text/textCall.js');
 const { formatDraft } = await import('../../../services/draft/enrich/formatDraft.js');
 
 describe('orchestrateDraft', () => {
@@ -51,10 +72,10 @@ describe('orchestrateDraft', () => {
     expect(result.is_draft).toBe(true);
   });
 
-  it('uses *** as placeholder for reservation_url', async () => {
+  it('uses ontopo URL for reservation_url', async () => {
     generateDraftDetails.mockResolvedValueOnce(mockLlmOutput());
     const result = await orchestrateDraft('prompt');
-    expect(result.reservation_url).toBe('***');
+    expect(result.reservation_url).toBe('https://ontopo.com/he/il');
   });
 
   it('uses *** for missing venue instagram', async () => {
