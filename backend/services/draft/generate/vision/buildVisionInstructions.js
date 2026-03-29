@@ -22,11 +22,8 @@ Guidelines:
 - extractedText should include everything readable — don't filter or summarize
 - cropCoordinates MUST exclude ALL app UI overlays and surrounding elements, including: status bars, navigation bars, profile headers, usernames, like/comment/share rows, captions, carousel dots/indicators, profile icon buttons, mute/unmute buttons, tag buttons, and any semi-transparent overlays on the photo edges. Crop to ONLY the raw photo or poster content — no UI whatsoever.
 - Instagram-specific overlays to crop out (already account for these in your returned coordinates — do not leave them in):
-  - Top: profile/avatar icon sits top-left corner of the photo; status bar above the photo
-  - Top-right: mute/sound icon overlaid on the photo
-  - Bottom-left: tag people icon overlaid on the photo
-  - Bottom: carousel dots sit just below the photo; like/comment/share row below that
-- Be aggressive on the bottom: carousel dots and tag icons add significant UI below the actual photo content.
+  - Top: crop tight — no gap between the top of the poster and where the feed chrome ends
+  - Bottom: exclude carousel dots, likes, comments, tag icon, and sound icon
 
 Example: For a typical Instagram feed post, return something like: { "top": 17, "left": 3, "bottom": 68, "right": 97 }
 `;

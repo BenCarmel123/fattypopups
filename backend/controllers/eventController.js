@@ -28,11 +28,11 @@ export const getDraftEvents = async (_req, res) => {
 };
 
 export const createEvent = async (req, res) => {
-  const check = EventBodySchema.safeParse(req.body);
-  if (!check.success) return res.status(400).json({ error: check.error.issues });
+  const parsed = EventBodySchema.safeParse(req.body);
+  if (!parsed.success) return res.status(400).json({ error: parsed.error.issues });
 
   try {
-    const newEvent = await orchestrateEventCreate(check.data, req.file);
+    const newEvent = await orchestrateEventCreate(parsed.data, req.file);
     res.json(newEvent);
   } catch (err) {
     logger.error('HTTP Error:', err);
@@ -41,11 +41,11 @@ export const createEvent = async (req, res) => {
 };
 
 export const updateEvent = async (req, res) => {
-  const check = EventBodySchema.safeParse(req.body);
-  if (!check.success) return res.status(400).json({ error: check.error.issues });
+  const parsed = EventBodySchema.safeParse(req.body);
+  if (!parsed.success) return res.status(400).json({ error: parsed.error.issues });
 
   try {
-    const updatedEvent = await orchestrateEventUpdate(req.params.id, check.data, req.file);
+    const updatedEvent = await orchestrateEventUpdate(req.params.id, parsed.data, req.file);
     res.json(updatedEvent);
   } catch (err) {
     logger.error('HTTP Error:', err);
@@ -54,11 +54,11 @@ export const updateEvent = async (req, res) => {
 };
 
 export const deleteEventsByTitles = async (req, res) => {
-  const check = DeleteBodySchema.safeParse(req.body);
-  if (!check.success) return res.status(400).json({ error: check.error.issues });
+  const parsed = DeleteBodySchema.safeParse(req.body);
+  if (!parsed.success) return res.status(400).json({ error: parsed.error.issues });
 
   try {
-    const deleted = await deleteEvents(check.data.titles);
+    const deleted = await deleteEvents(parsed.data.titles);
     res.json(deleted);
   } catch (err) {
     logger.error('HTTP Error:', err);

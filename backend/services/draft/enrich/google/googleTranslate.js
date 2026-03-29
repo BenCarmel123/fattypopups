@@ -16,11 +16,11 @@ export async function translate(english_description) {
     });
     logger.info("[TRANSLATE] Response received from Google Translate");
     const data = await response.json();
-    const check = TranslateResponseSchema.safeParse(data);
-    if (!check.success) {
-        logger.error("[TRANSLATE] Unexpected response shape:", check.error.issues);
+    const parsed = TranslateResponseSchema.safeParse(data);
+    if (!parsed.success) {
+        logger.error("[TRANSLATE] Unexpected response shape:", parsed.error.issues);
         throw new Error("Google Translate returned unexpected response");
     }
     logger.info("[TRANSLATE] Translation complete");
-    return check.data.data.translations[0].translatedText;
+    return parsed.data.data.translations[0].translatedText;
 }

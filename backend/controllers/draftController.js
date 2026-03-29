@@ -4,10 +4,10 @@ import { logger } from '../utils/logger.js';
 import { DraftBodySchema } from '../schemas/draft.schema.js';
 
 export const createDraft = async (req, res) => {
-  const check = DraftBodySchema.safeParse(req.body);
-  if (!check.success) return res.status(400).json({ error: check.error.issues });
+  const parsed = DraftBodySchema.safeParse(req.body);
+  if (!parsed.success) return res.status(400).json({ error: parsed.error.issues });
 
-  const { prompt } = check.data;
+  const { prompt } = parsed.data;
 
   try {
     logger.info('[DRAFT] Uploading images');
