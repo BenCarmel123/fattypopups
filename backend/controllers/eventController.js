@@ -5,6 +5,7 @@ import {
   deleteEvents
 } from '../services/orchestrator/index.js';
 import { logger } from '../utils/logger.js';
+import { EventBodySchema, DeleteBodySchema } from '../schemas/event.schema.js';
 
 export const getEvents = async (_req, res) => {
   try {
@@ -27,8 +28,11 @@ export const getDraftEvents = async (_req, res) => {
 };
 
 export const createEvent = async (req, res) => {
+  const check = EventBodySchema.safeParse(req.body);
+  if (!check.success) return res.status(400).json({ error: check.error.issues });
+
   try {
-    const newEvent = await orchestrateEventCreate(req.body, req.file);
+    const newEvent = await orchestrateEventCreate(check.data, req.file);
     res.json(newEvent);
   } catch (err) {
     logger.error('HTTP Error:', err);
@@ -37,8 +41,11 @@ export const createEvent = async (req, res) => {
 };
 
 export const updateEvent = async (req, res) => {
+  const check = EventBodySchema.safeParse(req.body);
+  if (!check.success) return res.status(400).json({ error: check.error.issues });
+
   try {
-    const updatedEvent = await orchestrateEventUpdate(req.params.id, req.body, req.file);
+    const updatedEvent = await orchestrateEventUpdate(req.params.id, check.data, req.file);
     res.json(updatedEvent);
   } catch (err) {
     logger.error('HTTP Error:', err);
@@ -47,13 +54,12 @@ export const updateEvent = async (req, res) => {
 };
 
 export const deleteEventsByTitles = async (req, res) => {
-  const { titles } = req.body;
-  if (!Array.isArray(titles) || titles.length === 0) {
-    return res.status(400).json({ error: 'Titles must be a non-empty array' });
-  }
+  const check = DeleteBodySchema.safeParse(req.body);
+  if (!check.success) return res.status(400).json({ error: check.error.issues });
+
   try {
-    const result = await deleteEvents(titles);
-    res.json(result);
+    const deleted = await deleteEvents(check.data.titles);
+    res.json(deleted);
   } catch (err) {
     logger.error('HTTP Error:', err);
     res.status(500).json({ error: 'Internal Server Error' });

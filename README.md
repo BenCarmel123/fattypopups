@@ -103,6 +103,7 @@ Each file contains one focused test (1 `describe`, 1 `it`).
 - **AI** - OpenAI (vision + text + translation), Sharp (image processing)
 - **Auth** - JWT + Google OAuth
 - **Frontend** - React 19, Chakra UI
+- **Validation** - Zod (schema validation at HTTP and API boundaries)
 - **Testing** - Vitest (ESM-native unit tests)
 - **Dev** - Docker Compose, Claude Code
 
