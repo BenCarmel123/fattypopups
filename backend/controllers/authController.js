@@ -50,7 +50,12 @@ export const checkAuth = (req, res) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    logger.info('[AUTH] JWT valid for:', decoded.email);
+    const emailToName = {
+      [process.env.BEN_EMAIL?.toLowerCase()]: 'Ben',
+      [process.env.HALLIE_EMAIL?.toLowerCase()]: 'Hallie'
+    };
+    const name = emailToName[decoded.email?.toLowerCase()] ?? decoded.email;
+    logger.info('[AUTH] JWT valid for:', name);
     return res.json({ authenticated: true, user: { email: decoded.email } });
   } catch (e) {
     logger.error('JWT invalid:', e.message);

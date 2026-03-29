@@ -23,7 +23,7 @@ const DRAFT_SCHEMA = {
   }
 };
 
-export async function generateDraftDetails(prompt, styleExamples, visionResponseId = null) {
+export async function generateDraftDetails(prompt, styleExamples) {
 
   const instructions = buildTextInstructions(styleExamples);
 
@@ -31,15 +31,11 @@ export async function generateDraftDetails(prompt, styleExamples, visionResponse
     model: "gpt-5.4",
     input: [{ role: "user", content: prompt }],
     instructions,
-    reasoning: { effort: "none" },
+    reasoning: { effort: "low" },
     text: { format: DRAFT_SCHEMA, verbosity: "low" }
   };
 
-  if (visionResponseId) {
-    requestParams.previous_response_id = visionResponseId;
-  }
-
-  logger.info("[LLM] Calling OpenAI API");
+  logger.info("[LLM] Calling OpenAI API with Text");
   const response = await openai.responses.create(requestParams);
 
   logger.info("[LLM] " + response.output_text);

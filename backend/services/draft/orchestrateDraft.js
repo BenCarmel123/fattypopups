@@ -8,6 +8,7 @@ import { cropPoster } from "./image/crop.js";
 import { uploadCroppedPoster } from "./image/upload.js";
 import { formatDraft } from "./enrich/formatDraft.js";
 import { logger } from "../../utils/logger.js";
+import { resolveEndDatetime } from "../../utils/datetime.js";
 
 const imagePipeline = async (posterUrl, cropCoordinates) => {
     logger.info("[IMAGE PIPELINE] Starting crop + upload");
@@ -17,9 +18,9 @@ const imagePipeline = async (posterUrl, cropCoordinates) => {
     return url;
 };
 
-const textPipeline = async (prompt, styleExamples, visionResponseId) => {
+const textPipeline = async (prompt, styleExamples) => {
     logger.info("[TEXT PIPELINE] Starting LLM + enrich");
-    const llmResponse = await generateDraftDetails(prompt, styleExamples, visionResponseId);
+    const llmResponse = await generateDraftDetails(prompt, styleExamples);
     const enriched = await formatDraft(llmResponse);
     logger.info("[TEXT PIPELINE] Complete");
     return { llmResponse, enriched };
@@ -31,7 +32,7 @@ const orchestrateDraft =
         const _startTime = Date.now();
 
         // Stage 1 — Parallel: vision analysis + similarity search
-        const [{ extractedText, cropCoordinates, visionResponseId }, styleExamples] = await Promise.all([
+        const [{ extractedText, cropCoordinates }, styleExamples] = await Promise.all([
             analyzeImage(posterUrl, contextUrl),
             fetchStyleExamples(prompt)
         ]);
@@ -43,13 +44,13 @@ const orchestrateDraft =
         // Stage 2 — Parallel: image pipeline (crop → upload) + text pipeline (LLM → enrich)
         const [croppedPosterUrl, { llmResponse, enriched }] = await Promise.all([
             imagePipeline(posterUrl, cropCoordinates),
-            textPipeline(enrichedPrompt, styleExamples, visionResponseId)
+            textPipeline(enrichedPrompt, styleExamples)
         ]);
 
         const result = {
             title: llmResponse.event_title,
             start_datetime: llmResponse.start_datetime || today,
-            end_datetime: llmResponse.end_datetime || today,
+            end_datetime: resolveEndDatetime(llmResponse.start_datetime || today, llmResponse.end_datetime),
             venue_name: enriched.venueName,
             venue_instagram: enriched.venueInstagram,
             venue_address: enriched.venueAddress,

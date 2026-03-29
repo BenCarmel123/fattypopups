@@ -44,12 +44,12 @@ export async function analyzeImage(posterUrl = null, contextUrl = null) {
   const instructions = buildVisionInstructions();
   content.push({ type: "input_text", text: "Analyze these images." });
 
-  logger.info("[VISION] Calling OpenAI Vision API");
+  logger.info("[VISION] Calling OpenAI API with Image");
   const response = await openai.responses.create({
     model: "gpt-5.4",
     input: [{ role: "user", content }],
     instructions,
-    reasoning: { effort: "none" },
+    reasoning: { effort: "low" },
     text: { format: VISION_SCHEMA, verbosity: "low" }
   });
 
@@ -57,9 +57,7 @@ export async function analyzeImage(posterUrl = null, contextUrl = null) {
   if (!response.output_text) throw new Error("Vision API returned empty output");
 
   try {
-    const parsed = JSON.parse(response.output_text);
-    parsed.visionResponseId = response.id;
-    return parsed;
+    return JSON.parse(response.output_text);
   } catch (parseError) {
     logger.error("[VISION] Failed to parse output as JSON:", response.output_text);
     throw new Error("Vision API returned invalid JSON");
