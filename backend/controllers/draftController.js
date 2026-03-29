@@ -1,13 +1,13 @@
 import { orchestrateDraft } from '../services/draft/orchestrateDraft.js';
 import { uploadDraftImages } from '../services/s3/draftUpload.js';
 import { logger } from '../utils/logger.js';
+import { DraftBodySchema } from '../schemas/draft.schema.js';
 
 export const createDraft = async (req, res) => {
-  const prompt = req.body?.prompt;
+  const parsed = DraftBodySchema.safeParse(req.body);
+  if (!parsed.success) return res.status(400).json({ error: 'A non-empty prompt is required' });
 
-  if (typeof prompt !== 'string' || !prompt.trim()) {
-    return res.status(400).json({ error: 'A non-empty prompt is required' });
-  }
+  const { prompt } = parsed.data;
 
   try {
     logger.info('[DRAFT] Uploading images');

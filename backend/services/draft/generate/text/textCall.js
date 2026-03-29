@@ -2,28 +2,9 @@ import 'dotenv/config';
 import { openai } from '../../../../config/index.js';
 import { logger } from '../../../../utils/logger.js';
 import { buildTextInstructions } from './buildTextInstructions.js';
+import { DRAFT_SCHEMA } from '../../../../schemas/openai.schema.js';
 
-const DRAFT_SCHEMA = {
-  type: "json_schema",
-  name: "draft",
-  strict: true,
-  schema: {
-    type: "object",
-    properties: {
-      chef_names: { type: "array", items: { type: "string" } },
-      venue_name: { type: "string" },
-      event_title: { type: "string" },
-      english_description: { type: "string" },
-      hebrew_description: { type: "string" },
-      start_datetime: { type: "string" },
-      end_datetime: { type: "string" }
-    },
-    required: ["chef_names", "venue_name", "event_title", "english_description", "hebrew_description", "start_datetime", "end_datetime"],
-    additionalProperties: false
-  }
-};
-
-export async function generateDraftDetails(prompt, styleExamples, visionResponseId = null) {
+export async function generateDraftDetails(prompt, styleExamples) {
 
   const instructions = buildTextInstructions(styleExamples);
 
@@ -31,15 +12,11 @@ export async function generateDraftDetails(prompt, styleExamples, visionResponse
     model: "gpt-5.4",
     input: [{ role: "user", content: prompt }],
     instructions,
-    reasoning: { effort: "none" },
+    reasoning: { effort: "low" },
     text: { format: DRAFT_SCHEMA, verbosity: "low" }
   };
 
-  if (visionResponseId) {
-    requestParams.previous_response_id = visionResponseId;
-  }
-
-  logger.info("[LLM] Calling OpenAI API");
+  logger.info("[LLM] Calling OpenAI API with Text");
   const response = await openai.responses.create(requestParams);
 
   logger.info("[LLM] " + response.output_text);

@@ -23,13 +23,15 @@ Return a JSON object with these exact keys:
 ## Guidelines
 - Do Not Invent!
 - No Hebrew at all other than hebrew_description
+- hebrew_description: casual food-blog tone, keep chef and venue names in their original English spelling, use natural Hebrew food terminology
 - chef_names must be an array (even if only one chef)
 - Detect if the prompt mentions one or multiple chefs
 - Keep descriptions concise (2-3 sentences), factual, and without exaggerated adjectives
 - Focus on the food, chef, and format of the event
+- If a specific time is mentioned in the poster, include it naturally in both english_description and hebrew_description (e.g. "The event starts at 7pm" / "האירוע מתחיל ב-19:00")
 - If information is missing, make a reasonable inference or leave empty string
 - For dates: extract from the prompt. Use today's date (injected below) to infer the correct year if the poster only shows a day/month. If no date info is available, return empty string for both datetime fields.
-- Times should be in 24-hour format (e.g. 19:00 for 7pm). If no time is mentioned, use 19:00 as a reasonable default for start and 22:00 for end.
+- Times should be in 24-hour format (e.g. 19:00 for 7pm). 
 
 Respond in JSON.
 `;

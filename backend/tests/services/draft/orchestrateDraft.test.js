@@ -15,7 +15,6 @@ vi.mock('../../../services/draft/generate/vision/visionCall.js', () => ({
   analyzeImage: vi.fn().mockResolvedValue({
     extractedText: '',
     cropCoordinates: null,
-    visionResponseId: null,
   }),
 }));
 

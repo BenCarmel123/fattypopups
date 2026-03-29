@@ -1,31 +1,7 @@
 import { openai } from '../../../../config/index.js';
 import { logger } from '../../../../utils/logger.js';
 import { buildVisionInstructions } from './buildVisionInstructions.js';
-
-const VISION_SCHEMA = {
-  type: "json_schema",
-  name: "vision_analysis",
-  strict: true,
-  schema: {
-    type: "object",
-    properties: {
-      extractedText: { type: "string" },
-      cropCoordinates: {
-        type: "object",
-        properties: {
-          top: { type: "number" },
-          left: { type: "number" },
-          bottom: { type: "number" },
-          right: { type: "number" }
-        },
-        required: ["top", "left", "bottom", "right"],
-        additionalProperties: false
-      }
-    },
-    required: ["extractedText", "cropCoordinates"],
-    additionalProperties: false
-  }
-};
+import { VISION_SCHEMA } from '../../../../schemas/openai.schema.js';
 
 export async function analyzeImage(posterUrl = null, contextUrl = null) {
   if (!posterUrl && !contextUrl) {
@@ -44,12 +20,12 @@ export async function analyzeImage(posterUrl = null, contextUrl = null) {
   const instructions = buildVisionInstructions();
   content.push({ type: "input_text", text: "Analyze these images." });
 
-  logger.info("[VISION] Calling OpenAI Vision API");
+  logger.info("[VISION] Calling OpenAI API with Image");
   const response = await openai.responses.create({
     model: "gpt-5.4",
     input: [{ role: "user", content }],
     instructions,
-    reasoning: { effort: "none" },
+    reasoning: { effort: "low" },
     text: { format: VISION_SCHEMA, verbosity: "low" }
   });
 
@@ -57,9 +33,7 @@ export async function analyzeImage(posterUrl = null, contextUrl = null) {
   if (!response.output_text) throw new Error("Vision API returned empty output");
 
   try {
-    const parsed = JSON.parse(response.output_text);
-    parsed.visionResponseId = response.id;
-    return parsed;
+    return JSON.parse(response.output_text);
   } catch (parseError) {
     logger.error("[VISION] Failed to parse output as JSON:", response.output_text);
     throw new Error("Vision API returned invalid JSON");

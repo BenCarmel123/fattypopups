@@ -4,7 +4,6 @@ import { createEventEmbeddings } from '../../embeddings/storage/orchestrator.js'
 import { insertEvent } from '../../entities/event/operations.js';
 import { linkChefsToEvent } from '../../entities/linking/operations.js';
 import { handleEventImageUpload } from '#services/s3/upload.js';
-import { notifyUsers } from '#services/twilio/notify.js';
 import { isTrue } from '../../../utils/isTrue.js';
 import { logger } from "../../../utils/logger.js";
 import { invalidateEventsCache } from '../../cache/invalidation.js';
@@ -80,7 +79,6 @@ export const orchestrateEventCreate = async (body, file) => {
   Promise.all([
     createEventEmbeddings(newEvent.id, english_description, hebrew_description, chefNamesArray.join(", ")),
     invalidateEventsCache(),
-    // notifyUsers(newEvent.title),
   ]).catch(err => logger.error('[EVENT] Background processing error:', err));
 
   return newEvent;
