@@ -29,7 +29,10 @@ export const getDraftEvents = async (_req, res) => {
 
 export const createEvent = async (req, res) => {
   const parsed = EventBodySchema.safeParse(req.body);
-  if (!parsed.success) return res.status(400).json({ error: parsed.error.issues });
+  if (!parsed.success) {
+    logger.error('Schema validation failed:', JSON.stringify(parsed.error.issues, null, 2));
+    return res.status(400).json({ error: parsed.error.issues.map(i => `${i.path.join('.')}: ${i.message}`).join(', ') });
+  }
 
   try {
     const newEvent = await orchestrateEventCreate(parsed.data, req.file);
@@ -42,7 +45,10 @@ export const createEvent = async (req, res) => {
 
 export const updateEvent = async (req, res) => {
   const parsed = EventBodySchema.safeParse(req.body);
-  if (!parsed.success) return res.status(400).json({ error: parsed.error.issues });
+  if (!parsed.success) {
+    logger.error('Schema validation failed:', JSON.stringify(parsed.error.issues, null, 2));
+    return res.status(400).json({ error: parsed.error.issues.map(i => `${i.path.join('.')}: ${i.message}`).join(', ') });
+  }
 
   try {
     const updatedEvent = await orchestrateEventUpdate(req.params.id, parsed.data, req.file);
@@ -55,7 +61,10 @@ export const updateEvent = async (req, res) => {
 
 export const deleteEventsByTitles = async (req, res) => {
   const parsed = DeleteBodySchema.safeParse(req.body);
-  if (!parsed.success) return res.status(400).json({ error: parsed.error.issues });
+  if (!parsed.success) {
+    logger.error('Schema validation failed:', JSON.stringify(parsed.error.issues, null, 2));
+    return res.status(400).json({ error: parsed.error.issues.map(i => `${i.path.join('.')}: ${i.message}`).join(', ') });
+  }
 
   try {
     const deleted = await deleteEvents(parsed.data.titles);

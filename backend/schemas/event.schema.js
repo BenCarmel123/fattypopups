@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const DateTimeString = z.string().regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/, 'Must be YYYY-MM-DDTHH:MM');
+const DateTimeString = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Must be YYYY-MM-DD');
 
 export const EventBodySchema = z.object({
   title: z.string().min(1),
@@ -11,7 +11,7 @@ export const EventBodySchema = z.object({
   venue_address: z.string().optional(),
   chef_names: z.string().min(1),
   chef_instagrams: z.string().optional(),
-  reservation_url: z.string().url().optional(),
+  reservation_url: z.string().optional(),
   english_description: z.string().optional(),
   hebrew_description: z.string().optional(),
   is_draft: z.string().optional(),
