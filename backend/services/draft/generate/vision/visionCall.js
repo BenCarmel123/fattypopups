@@ -1,31 +1,7 @@
 import { openai } from '../../../../config/index.js';
 import { logger } from '../../../../utils/logger.js';
 import { buildVisionInstructions } from './buildVisionInstructions.js';
-
-const VISION_SCHEMA = {
-  type: "json_schema",
-  name: "vision_analysis",
-  strict: true,
-  schema: {
-    type: "object",
-    properties: {
-      extractedText: { type: "string" },
-      cropCoordinates: {
-        type: "object",
-        properties: {
-          top: { type: "number" },
-          left: { type: "number" },
-          bottom: { type: "number" },
-          right: { type: "number" }
-        },
-        required: ["top", "left", "bottom", "right"],
-        additionalProperties: false
-      }
-    },
-    required: ["extractedText", "cropCoordinates"],
-    additionalProperties: false
-  }
-};
+import { VISION_SCHEMA } from '../../../../schemas/openai.schema.js';
 
 export async function analyzeImage(posterUrl = null, contextUrl = null) {
   if (!posterUrl && !contextUrl) {

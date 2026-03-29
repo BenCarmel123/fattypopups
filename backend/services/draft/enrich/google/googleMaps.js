@@ -1,7 +1,13 @@
+import { MapsResponseSchema } from '../../../../schemas/google.schema.js';
+import { logger } from '../../../../utils/logger.js';
+
 function extractStreetAndNumber(addressResponse) {
-    const fullAddress = addressResponse?.places?.[0]?.formattedAddress;
-    if (!fullAddress) return null;
-    return fullAddress.split(',')[0].trim();
+    const check = MapsResponseSchema.safeParse(addressResponse);
+    if (!check.success) {
+        logger.error("[MAPS] Unexpected response shape:", check.error.issues);
+        return null;
+    }
+    return check.data.places[0].formattedAddress.split(',')[0].trim();
 }
 
 export async function fetchAddress(venueName) {

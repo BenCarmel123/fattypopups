@@ -1,4 +1,5 @@
 import { logger } from '../../../../utils/logger.js';
+import { TranslateResponseSchema } from '../../../../schemas/google.schema.js';
 
 export async function translate(english_description) {
     logger.info("[TRANSLATE] Calling Google Translate API");
@@ -15,6 +16,11 @@ export async function translate(english_description) {
     });
     logger.info("[TRANSLATE] Response received from Google Translate");
     const data = await response.json();
+    const check = TranslateResponseSchema.safeParse(data);
+    if (!check.success) {
+        logger.error("[TRANSLATE] Unexpected response shape:", check.error.issues);
+        throw new Error("Google Translate returned unexpected response");
+    }
     logger.info("[TRANSLATE] Translation complete");
-    return data.data.translations[0].translatedText;
+    return check.data.data.translations[0].translatedText;
 }
