@@ -112,4 +112,3 @@ Each file contains one focused test (1 `describe`, 1 `it`).
 - **Supabase** - PostgreSQL client & RPC (pgvector search)
 - **Google OAuth** - Admin authentication
 - **Google Places** - Venue location enrichment
-- **Twilio** - WhatsApp notifications (currently disabled)
