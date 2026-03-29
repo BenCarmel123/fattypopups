@@ -5,7 +5,7 @@ import { DraftBodySchema } from '../schemas/draft.schema.js';
 
 export const createDraft = async (req, res) => {
   const parsed = DraftBodySchema.safeParse(req.body);
-  if (!parsed.success) return res.status(400).json({ error: parsed.error.issues });
+  if (!parsed.success) return res.status(400).json({ error: 'A non-empty prompt is required' });
 
   const { prompt } = parsed.data;
 
