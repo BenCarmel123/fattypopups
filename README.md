@@ -107,6 +107,12 @@ Each file contains one focused test (1 `describe`, 1 `it`).
 - **Testing** - Vitest (ESM-native unit tests)
 - **Dev** - Docker Compose, Claude Code
 
+## AI Tooling (Claude Code)
+
+**Rules** (`.claude/rules/`): `unit-test.md`, `hld.md`
+
+**Commands** (`.claude/commands/`): `/clean-branches`, `/pre-commit`, `/review-project`, `/thumb-rules`, `/sync-backend-env`, `/sync-frontend-env`
+
 ## External APIs
 - **OpenAI** - Vision analysis, text generation, Hebrew translation & vector embeddings
 - **AWS S3** - Image storage & retrieval
