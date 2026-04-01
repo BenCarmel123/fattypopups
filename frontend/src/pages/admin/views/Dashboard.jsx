@@ -10,6 +10,7 @@ import SpinnerOverlay from "components/SpinnerOverlay.jsx";
 const Dashboard = ({ handleClick, events, setEvents }) => {
   const [alert, setAlert] = useState(undefined);
   const [deleting, setDeleting] = useState(false);
+  const [hoveredIcon, setHoveredIcon] = useState(null);
 
   const handleDeleteSingle = (title) => {
     setDeleting(true);
@@ -34,8 +35,18 @@ const Dashboard = ({ handleClick, events, setEvents }) => {
         {event.is_draft && <span style={{ marginLeft: '0.5rem', color: 'gray', fontStyle: 'italic', fontSize: '0.85em' }}>(draft)</span>}
       </Table.Cell>
       <Table.Cell style={{ textAlign: 'right', display: Config.FLEX, gap: '1rem', alignItems: Config.CENTER, justifyContent: 'flex-end', paddingRight: '2rem' }}>
-        <FaPen style={{ cursor: Config.POINTER, color: 'gray' }} onClick={() => handleClick(Config.EDIT, event)()} />
-        <FaTrash style={{ cursor: Config.POINTER, color: 'gray' }} onClick={() => handleDeleteSingle(event.title)} />
+        <FaPen
+          style={{ cursor: Config.POINTER, color: hoveredIcon === `edit-${event.title}` ? Config.ADMIN_PANEL_COLOR : 'gray', transition: 'color 0.2s' }}
+          onMouseEnter={() => setHoveredIcon(`edit-${event.title}`)}
+          onMouseLeave={() => setHoveredIcon(null)}
+          onClick={() => handleClick(Config.EDIT, event)()}
+        />
+        <FaTrash
+          style={{ cursor: Config.POINTER, color: hoveredIcon === `delete-${event.title}` ? Config.DANGER_HOVER_COLOR : 'gray', transition: 'color 0.2s' }}
+          onMouseEnter={() => setHoveredIcon(`delete-${event.title}`)}
+          onMouseLeave={() => setHoveredIcon(null)}
+          onClick={() => handleDeleteSingle(event.title)}
+        />
       </Table.Cell>
     </Table.Row>
     )  );

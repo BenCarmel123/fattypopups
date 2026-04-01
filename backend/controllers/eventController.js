@@ -5,7 +5,8 @@ import {
   deleteEvents
 } from '../services/orchestrator/index.js';
 import { logger } from '../utils/logger.js';
-import { EventBodySchema, DeleteBodySchema } from '../schemas/event.schema.js';
+import { EventBodySchema, DraftEventBodySchema, DeleteBodySchema } from '../schemas/event.schema.js';
+import { isTrue } from '../utils/isTrue.js';
 
 export const getEvents = async (_req, res) => {
   try {
@@ -28,7 +29,8 @@ export const getDraftEvents = async (_req, res) => {
 };
 
 export const createEvent = async (req, res) => {
-  const parsed = EventBodySchema.safeParse(req.body);
+  const schema = isTrue(req.body.is_draft) ? DraftEventBodySchema : EventBodySchema;
+  const parsed = schema.safeParse(req.body);
   if (!parsed.success) {
     logger.error('Schema validation failed:', JSON.stringify(parsed.error.issues, null, 2));
     return res.status(400).json({ error: parsed.error.issues.map(i => `${i.path.join('.')}: ${i.message}`).join(', ') });
@@ -44,7 +46,8 @@ export const createEvent = async (req, res) => {
 };
 
 export const updateEvent = async (req, res) => {
-  const parsed = EventBodySchema.safeParse(req.body);
+  const schema = isTrue(req.body.is_draft) ? DraftEventBodySchema : EventBodySchema;
+  const parsed = schema.safeParse(req.body);
   if (!parsed.success) {
     logger.error('Schema validation failed:', JSON.stringify(parsed.error.issues, null, 2));
     return res.status(400).json({ error: parsed.error.issues.map(i => `${i.path.join('.')}: ${i.message}`).join(', ') });
