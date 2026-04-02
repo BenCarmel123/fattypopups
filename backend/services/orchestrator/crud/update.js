@@ -2,6 +2,7 @@ import { updateEventEmbeddings } from "../../embeddings/storage/orchestrator.js"
 import { handleEventImageUpload } from "#services/s3/upload.js";
 import { getEventById, updateEventById, handleEventVenueUpdate } from "../../entities/event/operations.js";
 import { computeUpdateState } from "../../orchestrator/utils/computeState.js";
+import { buildMetadata } from "../../orchestrator/utils/metadata.js";
 import { getChefsForEvent } from "../../entities/linking/operations.js";
 import { getVenueById } from "../../entities/venue/operations.js";
 import { handleEventChefsUpdate } from "../../entities/chef/operations.js";
@@ -49,9 +50,14 @@ export const orchestrateEventUpdate = async (id, body, file) => {
   delete body.venue_address;
   delete body.venue_instagram;
 
+  if (typeof body.metadata === 'string') {
+    body.metadata = JSON.parse(body.metadata);
+  }
+
   // 4. Compute draft/publish state and what changed
   const {
     toPublish,
+    stillDraft,
     alreadyPublished,
     englishChanged,
     hebrewChanged,
@@ -97,6 +103,11 @@ export const orchestrateEventUpdate = async (id, body, file) => {
   if (toPublish) {
     body.embedding_id_en = en_id;
     body.embedding_id_he = he_id;
+    body.metadata = null;
+  }
+
+  if (stillDraft && (venueChanged || chefsChanged)) {
+    body.metadata = buildMetadata(venueName, venueInstagram, venueAddress, chefNames, chefInstagrams);
   }
 
   if (venueId) {

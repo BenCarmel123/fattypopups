@@ -22,9 +22,11 @@ export const orchestrateEventCreate = async (body, file) => {
     reservation_url,
     english_description,
     hebrew_description,
-    is_draft
+    is_draft,
+    metadata: rawMetadata
   } = body;
 
+  const metadata = rawMetadata ? JSON.parse(rawMetadata) : null;
   const uploadedUrl = await handleEventImageUpload(null, body, file, null);
   if (uploadedUrl) body.poster = uploadedUrl;
   const isDraft = isTrue(is_draft);
@@ -44,7 +46,8 @@ export const orchestrateEventCreate = async (body, file) => {
       reservation_url,
       english_description,
       hebrew_description,
-      is_draft
+      is_draft,
+      metadata
     });
     await invalidateEventsCache();
     return draftEvent;

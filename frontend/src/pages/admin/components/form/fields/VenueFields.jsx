@@ -8,9 +8,9 @@ import Row from "../structure/Row.jsx";
 export default function VenueFields({ event }) {
   const [venueData, setVenueData] = useState([]);
   const [venue, setVenue] = useState({
-    name: event?.venue?.name || "",
-    address: event?.venue?.address || "",
-    instagram: event?.venue?.instagram_handle || ""
+    name: event?.venue?.name || event?.metadata?.venue?.name || "",
+    address: event?.venue?.address || event?.metadata?.venue?.address || "",
+    instagram: event?.venue?.instagram_handle || event?.metadata?.venue?.instagram || ""
   });
 
   // Fetch venue data when component mounts

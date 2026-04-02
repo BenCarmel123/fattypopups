@@ -13,7 +13,8 @@ export async function insertEvent(eventData) {
     reservation_url,
     english_description,
     hebrew_description,
-    is_draft
+    is_draft,
+    metadata
   } = eventData;
 
   const { data, error } = await supabase
@@ -27,7 +28,8 @@ export async function insertEvent(eventData) {
       reservation_url,
       english_description,
       hebrew_description,
-      is_draft
+      is_draft,
+      metadata
     }])
     .select()
     .single();

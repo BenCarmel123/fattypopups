@@ -16,6 +16,7 @@ export const EventBodySchema = z.object({
   hebrew_description: z.string().min(1),
   is_draft: z.string().optional(),
   poster: z.string().optional(),
+  metadata: z.string().optional(),
 });
 
 export const DraftEventBodySchema = z.object({
@@ -32,6 +33,7 @@ export const DraftEventBodySchema = z.object({
   hebrew_description: z.string().optional(),
   is_draft: z.string().optional(),
   poster: z.string().optional(),
+  metadata: z.string().optional(),
 });
 
 export const DeleteBodySchema = z.object({
