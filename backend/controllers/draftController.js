@@ -1,5 +1,5 @@
-import { orchestrateDraft } from '../services/draft/orchestrateDraft.js';
 import { uploadDraftImages } from '../services/s3/draftUpload.js';
+import { publishDraftJob } from '../services/queue/publish.js';
 import { logger } from '../utils/logger.js';
 import { DraftBodySchema } from '../schemas/draft.schema.js';
 
@@ -16,9 +16,9 @@ export const createDraft = async (req, res) => {
       req.files?.context_image?.[0] ?? null,
     );
     logger.info('[DRAFT] Images uploaded');
-    const draft = await orchestrateDraft(prompt, posterUrl, contextUrl);
-    logger.info('[DRAFT] Draft generated successfully');
-    return res.status(200).json({ event: draft });
+    await publishDraftJob({ prompt, posterUrl, contextUrl });
+    logger.info('[DRAFT] Draft job queued');
+    return res.status(202).json({ message: 'Draft queued' });
   } catch (err) {
     logger.error('[ERROR] Draft or event creation failed:', err.message || err);
     logger.error('[ERROR] Stack trace:', err.stack);
