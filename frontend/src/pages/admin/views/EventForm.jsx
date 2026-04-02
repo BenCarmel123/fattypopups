@@ -32,36 +32,36 @@ export default function EventForm({ event, isEdit, handleClick, setEvents } ) {
         // Parse form data including draft status for validation and submission
         const formData = parseFormData(form, isDraftRef.current);
 
-const validationResult = validateEvent(formData, isEdit, isDraftRef.current);
-        if (!validationResult.valid) {
-            setAlert({ status: Config.STATUS_ERROR, description: validationResult.error });
-            return;
-        }
+        const validationResult = validateEvent(formData, isEdit, isDraftRef.current);
+            if (!validationResult.valid) {
+                setAlert({ status: Config.STATUS_ERROR, description: validationResult.error });
+                return;
+            }
 
-        try {
-            setLoading(true);
-            const savedEvent = await submitEvent(formData, isEdit ? event.id : null);
-            setLoading(false);
-            // Update state and sessionStorage cache so the dashboard reflects the change instantly
-            const successTitle = handleSavedEvent(savedEvent);
+            try {
+                setLoading(true);
+                const savedEvent = await submitEvent(formData, isEdit ? event.id : null);
+                setLoading(false);
+                // Update state and sessionStorage cache so the dashboard reflects the change instantly
+                const successTitle = handleSavedEvent(savedEvent);
 
-            setAlert({
-                status: Config.STATUS_SUCCESS,
-                title: successTitle,
-            });
+                setAlert({
+                    status: Config.STATUS_SUCCESS,
+                    title: successTitle,
+                });
 
-            setTimeout(() => {
-                handleClick(Config.DASHBOARD)();
-            }, 750);
-        }
-        
-        catch (err) {
-            setLoading(false);
-            setAlert({
-                status: Config.STATUS_ERROR,
-                description: err.message,
-            });
-        }
+                setTimeout(() => {
+                    handleClick(Config.DASHBOARD)();
+                }, 750);
+            }
+            
+            catch (err) {
+                setLoading(false);
+                setAlert({
+                    status: Config.STATUS_ERROR,
+                    description: err.message,
+                });
+            }
     }
 
     return (

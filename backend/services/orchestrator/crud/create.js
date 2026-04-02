@@ -26,11 +26,7 @@ export const orchestrateEventCreate = async (body, file) => {
     metadata: rawMetadata
   } = body;
 
-  console.log(rawMetadata)
   const metadata = rawMetadata ? JSON.parse(rawMetadata) : null;
-  console.log(metadata)
-  
-
   const uploadedUrl = await handleEventImageUpload(null, body, file, null);
   if (uploadedUrl) body.poster = uploadedUrl;
   const isDraft = isTrue(is_draft);
