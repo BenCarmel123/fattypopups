@@ -23,7 +23,7 @@ const processMessage = async (message) => {
   logger.info('[WORKER] Draft saved to DB');
 
   await sqs.send(new DeleteMessageCommand({
-    QueueUrl: process.env.SQS_DRAFT_QUEUE_URL,
+    QueueUrl: process.env.AWS_DRAFT_QUEUE_URL,
     ReceiptHandle: message.ReceiptHandle,
   }));
   logger.info('[WORKER] Message deleted from queue');
@@ -32,7 +32,7 @@ const processMessage = async (message) => {
 // Fetches up to 1 message from SQS using long polling (waits up to 20s for a message before returning empty)
 const receiveMessages = async () => {
   const command = new ReceiveMessageCommand({
-    QueueUrl: process.env.SQS_DRAFT_QUEUE_URL,
+    QueueUrl: process.env.AWS_DRAFT_QUEUE_URL,
     MaxNumberOfMessages: 1,
     WaitTimeSeconds: 20,
   });
