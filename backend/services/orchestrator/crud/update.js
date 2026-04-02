@@ -49,9 +49,14 @@ export const orchestrateEventUpdate = async (id, body, file) => {
   delete body.venue_address;
   delete body.venue_instagram;
 
+  if (typeof body.metadata === 'string') {
+    body.metadata = JSON.parse(body.metadata);
+  }
+
   // 4. Compute draft/publish state and what changed
   const {
     toPublish,
+    stillDraft,
     alreadyPublished,
     englishChanged,
     hebrewChanged,
@@ -97,6 +102,16 @@ export const orchestrateEventUpdate = async (id, body, file) => {
   if (toPublish) {
     body.embedding_id_en = en_id;
     body.embedding_id_he = he_id;
+    body.metadata = null;
+  }
+
+  if (stillDraft && (venueChanged || chefsChanged)) {
+    const chefNamesArr = chefNames?.split(',').map(s => s.trim()).filter(Boolean) || [];
+    const chefInstagramsArr = chefInstagrams?.split(',').map(s => s.trim()).filter(Boolean) || [];
+    body.metadata = {
+      venue: { name: venueName, instagram: venueInstagram, address: venueAddress },
+      chef: { names: chefNamesArr, instagrams: chefInstagramsArr }
+    };
   }
 
   if (venueId) {
