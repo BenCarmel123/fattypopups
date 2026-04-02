@@ -2,6 +2,7 @@ import { supabase } from "#config/index.js";
 import { normalizeChefName } from "../utils/parse.js";
 import { unlinkChefsFromEvent, linkChefsToEvent } from "../linking/operations.js";
 import { logger } from "../../../utils/logger.js";
+import { splitList } from "../../../utils/strings.js";
 
 // Check if chef exists by name
 // Returns the chef object if found, null otherwise
@@ -45,8 +46,8 @@ export async function createChef(name, instagram_handle) {
 // Upsert multiple chefs from comma-separated strings
 // Returns array of chef IDs (creates new chefs only if they don't exist)
 export async function upsertChefs(chefNamesString, chefInstagramsString) {
-  const chefNamesArray = chefNamesString?.split(',').map(s => s.trim()).filter(Boolean) ?? [];
-  const chefInstagramsArray = chefInstagramsString?.split(',').map(s => s.trim()).filter(Boolean) ?? [];
+  const chefNamesArray = splitList(chefNamesString);
+  const chefInstagramsArray = splitList(chefInstagramsString);
 
   if (chefNamesArray.length !== chefInstagramsArray.length) {
     throw new Error("Chef names and instagrams must match in length");

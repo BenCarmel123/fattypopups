@@ -2,6 +2,7 @@ import { updateEventEmbeddings } from "../../embeddings/storage/orchestrator.js"
 import { handleEventImageUpload } from "#services/s3/upload.js";
 import { getEventById, updateEventById, handleEventVenueUpdate } from "../../entities/event/operations.js";
 import { computeUpdateState } from "../../orchestrator/utils/computeState.js";
+import { buildMetadata } from "../../orchestrator/utils/metadata.js";
 import { getChefsForEvent } from "../../entities/linking/operations.js";
 import { getVenueById } from "../../entities/venue/operations.js";
 import { handleEventChefsUpdate } from "../../entities/chef/operations.js";
@@ -106,12 +107,7 @@ export const orchestrateEventUpdate = async (id, body, file) => {
   }
 
   if (stillDraft && (venueChanged || chefsChanged)) {
-    const chefNamesArr = chefNames?.split(',').map(s => s.trim()).filter(Boolean) || [];
-    const chefInstagramsArr = chefInstagrams?.split(',').map(s => s.trim()).filter(Boolean) || [];
-    body.metadata = {
-      venue: { name: venueName, instagram: venueInstagram, address: venueAddress },
-      chef: { names: chefNamesArr, instagrams: chefInstagramsArr }
-    };
+    body.metadata = buildMetadata(venueName, venueInstagram, venueAddress, chefNames, chefInstagrams);
   }
 
   if (venueId) {

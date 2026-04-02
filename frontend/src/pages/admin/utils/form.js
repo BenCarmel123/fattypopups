@@ -1,8 +1,14 @@
+import { splitList } from 'utils/strings.js';
+
+const buildMetadata = (fields) => JSON.stringify({
+  venue: { name: fields.venue_name, instagram: fields.venue_instagram, address: fields.venue_address },
+  chef: { names: splitList(fields.chef_names), instagrams: splitList(fields.chef_instagrams) }
+});
 
 // Builds a chefs array from comma-separated chef_names and chef_instagrams strings
 const parseChefs = (draft) => {
-  const chefNames = draft.chef_names?.split(',').map(s => s.trim()).filter(Boolean) || [];
-  const chefInstagrams = draft.chef_instagrams?.split(',').map(s => s.trim()).filter(Boolean) || [];
+  const chefNames = splitList(draft.chef_names);
+  const chefInstagrams = splitList(draft.chef_instagrams);
   return chefNames.map((name, i) => ({ name, instagram_handle: chefInstagrams[i] || '' }));
 };
 
@@ -71,22 +77,8 @@ export const parseFormData = (form, isDraft = false) => {
   };
 
   if (isDraft) {
-    const chefNamesArr = fields.chef_names.split(',').map(s => s.trim()).filter(Boolean);
-    const chefInstagramsArr = fields.chef_instagrams.split(',').map(s => s.trim()).filter(Boolean);
-    fields.metadata = JSON.stringify({
-      venue: {
-        name: fields.venue_name,
-        instagram: fields.venue_instagram,
-        address: fields.venue_address
-      },
-      chef: {
-        names: chefNamesArr,
-        instagrams: chefInstagramsArr
-      }
-    });
+    fields.metadata = buildMetadata(fields);
   }
-
-  console.log(fields.metadata)
 
   const formData = new FormData();
   Object.entries(fields).forEach(([key, value]) => formData.append(key, value));
