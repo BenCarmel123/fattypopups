@@ -9,14 +9,14 @@ import AddChef from "./AddButton.jsx";
 const MAX_CHEFS = 5;
 
 export default function ChefFields({ event }) {
-  const initialCount = event?.chefs?.length > 0 ? event.chefs.length : 1;
+  const initialCount = event?.chefs?.length > 0 ? event.chefs.length : (event?.metadata?.chef?.names?.length || 1);
   const [chefCount, setChefCount] = useState(initialCount);
   const [chefData, setChefData] = useState([]);
 
   // Initialize chef values from event data
   const initialChefs = Array.from({ length: MAX_CHEFS }, (_, i) => ({
-    name: event?.chefs?.[i]?.name || "",
-    instagram: event?.chefs?.[i]?.instagram_handle || ""
+    name: event?.chefs?.[i]?.name || event?.metadata?.chef?.names?.[i] || "",
+    instagram: event?.chefs?.[i]?.instagram_handle || event?.metadata?.chef?.instagrams?.[i] || ""
   }));
   const [chefs, setChefs] = useState(initialChefs);
 

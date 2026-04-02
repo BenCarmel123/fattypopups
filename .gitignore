@@ -22,4 +22,6 @@ CLAUDE.md
 .serena/
 .docker/
 docker/
+.mcp.json
+*.drawio
 

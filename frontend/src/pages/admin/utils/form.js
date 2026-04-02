@@ -70,6 +70,24 @@ export const parseFormData = (form, isDraft = false) => {
     is_draft: isDraft ? 'true' : 'false',
   };
 
+  if (isDraft) {
+    const chefNamesArr = fields.chef_names.split(',').map(s => s.trim()).filter(Boolean);
+    const chefInstagramsArr = fields.chef_instagrams.split(',').map(s => s.trim()).filter(Boolean);
+    fields.metadata = JSON.stringify({
+      venue: {
+        name: fields.venue_name,
+        instagram: fields.venue_instagram,
+        address: fields.venue_address
+      },
+      chef: {
+        names: chefNamesArr,
+        instagrams: chefInstagramsArr
+      }
+    });
+  }
+
+  console.log(fields.metadata)
+
   const formData = new FormData();
   Object.entries(fields).forEach(([key, value]) => formData.append(key, value));
   return formData;
