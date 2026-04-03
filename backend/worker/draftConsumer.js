@@ -61,5 +61,4 @@ const start = async () => {
   }
 };
 
-// Only auto-start when run directly (So tests don't trigger this)
-if (process.argv[1]?.includes('draftConsumer')) start();
+if (process.env.NODE_ENV !== 'test') start();
