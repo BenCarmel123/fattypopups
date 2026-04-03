@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import FormAlert from '../components/form/FormAlert.jsx';
 import { Textarea } from "@chakra-ui/react";
-import { parseLLMOutput } from '../utils/form.js';
 import FileUpload, { ContextFileUpload } from '../../../components/FileUpload.jsx';
 import * as Config from 'config/index.jsx';
 import { SubmitPromptButton, BackButton } from 'components/Buttons.jsx';
@@ -30,11 +29,10 @@ export default function DraftBuilder({ placeholder = Config.PROMPT_PLACEHOLDER, 
             const adminInput = new FormData();
             for (const [key, value] of Object.entries(parameters)) if (value) adminInput.append(key, value);
 
-            const { event } = await sendPrompt(adminInput);
+            await sendPrompt(adminInput);
 
             setPrompt('');
-            const generatedFormData = parseLLMOutput(event);
-            handleClick(Config.ADD, generatedFormData)();
+            handleClick(Config.DASHBOARD, undefined)();
 
             // Switch to ADD mode and pass the generated draft
             }
