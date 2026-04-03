@@ -18,7 +18,6 @@ export default function AdminPageHandler() {
   const[_isAuthenticated, setAuthenticated] = useState(false)
   const[action, setAction] = useState(null);
   const[selectedEvent, setSelectedEvent] = useState(undefined);
-  
   // [3] Load from sessionStorage so dashboard renders instantly on remount
   const cached = sessionStorage.getItem('admin_events');
   const[events, setEvents] = useState(cached ? JSON.parse(cached) : []);
@@ -36,7 +35,7 @@ export default function AdminPageHandler() {
         setEvents(fresh);
         sessionStorage.setItem('admin_events', JSON.stringify(fresh));
       }).catch(() => {});
-    }, 10000);
+    }, 5000);
     return () => clearInterval(interval);
   }, [action]);
 
