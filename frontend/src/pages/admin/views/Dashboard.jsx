@@ -33,8 +33,8 @@ const Dashboard = ({ handleClick, events, setEvents }) => {
     <Table.Row key={event.title}>
       <Table.Cell style={{ textAlign: 'left', paddingLeft: '2rem' }}>
         <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-          {event.title}
-          {event.is_draft && <span style={{ color: 'gray', fontStyle: 'italic', fontSize: '0.85em' }}>(draft)</span>}
+          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{event.title}</span>
+          {event.is_draft && <span style={{ color: 'gray', fontStyle: 'italic', fontSize: '0.85em', flexShrink: 0 }}>(draft)</span>}
         </span>
       </Table.Cell>
       <Table.Cell style={{ textAlign: 'right', display: Config.FLEX, gap: '1rem', alignItems: Config.CENTER, justifyContent: 'flex-end', paddingRight: '2rem' }}>
@@ -57,14 +57,14 @@ const Dashboard = ({ handleClick, events, setEvents }) => {
 
   return (
     <div className={Config.CENTER} style={{ position: Config.RELATIVE, display: Config.FLEX, alignItems: Config.CENTER, justifyContent: Config.CENTER, minHeight: '100vh', paddingTop: '3rem' }}>
-    <div style={{ display: Config.FLEX, flexDirection: 'column', alignItems: 'stretch', maxWidth: '1200px', width: '100%', padding: '1rem', borderRadius: '2rem' }}>
+    <div style={{ display: Config.FLEX, flexDirection: 'column', alignItems: 'stretch', maxWidth: '1200px', width: '100%', padding: '1rem', borderRadius: '2rem', overflow: 'hidden' }}>
       <SpinnerOverlay isLoading={deleting} />
       {alert && <MyAlert {...alert} onClose={() => setAlert(null)} />}
-      <Table.Root size={Config.LARGE} marginTop="2rem">
+      <Table.Root size={Config.LARGE} marginTop="2rem" style={{ tableLayout: 'fixed', width: '100%' }}>
         <Table.Header>
           <Table.Row style={{ backgroundColor: Config.BACKGROUND_COLOR, fontSize: '1.25rem', height: '3.5rem' }}>
-            <Table.ColumnHeader />
-            <Table.ColumnHeader />
+            <Table.ColumnHeader style={{ width: '70%' }} />
+            <Table.ColumnHeader style={{ width: '30%' }} />
           </Table.Row>
         </Table.Header>
         <Table.Body>{eventRows}</Table.Body>
