@@ -45,8 +45,7 @@ const handleNoFileUpload = async (body, currentEvent) => {
   const wasDraft = isTrue(currentEvent.is_draft);
   // True when transitioning a draft to a published event
   const toPublish = wasDraft && !isDraft;
-
-  // TODO: enforce poster requirement when publishing once fallback image is implemented
+  
   if (toPublish && !currentEvent.poster) {
     throw new Error("Cannot publish draft: event must have an image.");
   } else if (typeof body.poster !== 'string') {
