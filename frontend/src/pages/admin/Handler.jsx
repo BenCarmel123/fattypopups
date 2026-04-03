@@ -8,11 +8,17 @@ import { handleTokenCheck } from "../../utils/auth.js";
 import { fetchEvents } from "../../controller/events.js";
 import { checkAuth } from "../../controller/auth.js";
 
+// AdminPageHandler is responsible for:
+// 1. Authentication — checks token on mount and redirects to Login if invalid
+// 2. View routing — controls which admin view is rendered (Dashboard, EventForm, DraftBuilder, Login)
+// 3. Event state — owns the events list and passes it down to child views
+// 4. Polling — re-fetches events every 10s while on the Dashboard to surface new drafts
+
 export default function AdminPageHandler() {
   const[_isAuthenticated, setAuthenticated] = useState(false)
   const[action, setAction] = useState(null);
   const[selectedEvent, setSelectedEvent] = useState(undefined);
-  // Load from sessionStorage so dashboard renders instantly on remount
+  // [3] Load from sessionStorage so dashboard renders instantly on remount
   const cached = sessionStorage.getItem('admin_events');
   const[events, setEvents] = useState(cached ? JSON.parse(cached) : []);
 
@@ -21,7 +27,32 @@ export default function AdminPageHandler() {
     setSelectedEvent(selectedEvent || undefined);
   };
 
-  // On Mount
+  // [4] After a draft is queued, poll until the placeholder row appears then navigate to Dashboard
+  const onDraftQueued = async () => {
+    const poll = async () => {
+      const fresh = await fetchEvents(true);
+      if (fresh.some(e => e.status === 'processing')) {
+        setEvents(fresh);
+        sessionStorage.setItem('admin_events', JSON.stringify(fresh));
+        setAction(Config.DASHBOARD);
+      } 
+    };
+    await poll();
+  };
+
+  // [4] Poll for new drafts every 10s while on the Dashboard
+  useEffect(() => {
+    if (action !== Config.DASHBOARD) return;
+    const interval = setInterval(() => {
+      fetchEvents(true).then(fresh => {
+        setEvents(fresh);
+        sessionStorage.setItem('admin_events', JSON.stringify(fresh));
+      }).catch(() => {});
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [action]);
+
+  // [1] + [2] On Mount — auth check and initial event fetch
   useEffect(() => {
   const token = handleTokenCheck();
 
@@ -58,7 +89,7 @@ export default function AdminPageHandler() {
          case Config.LOGIN:
             return (<Login />);
          case Config.AI:
-            return (<DraftBuilder handleClick={handleClick} />);
+            return (<DraftBuilder handleClick={handleClick} onDraftQueued={onDraftQueued} />);
          default:
             return (<Login />);
    }

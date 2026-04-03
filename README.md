@@ -24,7 +24,9 @@ fattypopups/
 │   │   ├── embeddings/     # pgvector embeddings (generate, search, store)
 │   │   ├── entities/       # CRUD operations (chef, venue, event, linking)
 │   │   ├── orchestrator/   # Event creation/update coordination
+│   │   ├── queue/          # SQS message publishing
 │   │   └── s3/
+│   ├── worker/             # Background consumers (SQS draft processing)
 │   ├── config/
 │   ├── utils/
 │   ├── tests/              # Unit tests 
@@ -47,7 +49,7 @@ fattypopups/
 │   ├── cleanup/            # Scheduled cleanup (1-day retention)
 │   └── verify-embeddings/  # Verifies all published events have embeddings, regenerates missing ones
 │
-└── docker/                 # Docker Compose configuration (local only)
+└── docker-compose.yml      # Docker Compose configuration (local only)
 ```
 
 ## API Endpoints
@@ -96,7 +98,7 @@ Each file contains one focused test (1 `describe`, 1 `it`).
 
 ## Tech Stack
 
-- **Cloud** - AWS EC2, Amplify, S3, Lambda, EventBridge
+- **Cloud** - AWS EC2, S3, SQS, Lambda, EventBridge, Amplify
 - **Backend** - Node.js 20, Express.js, PM2
 - **Database** - PostgreSQL (Supabase) with pgvector
 - **Cache** - Redis via Upstash (prod) / Docker (dev)

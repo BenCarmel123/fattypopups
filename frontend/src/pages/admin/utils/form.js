@@ -5,13 +5,6 @@ const buildMetadata = (fields) => JSON.stringify({
   chef: { names: splitList(fields.chef_names), instagrams: splitList(fields.chef_instagrams) }
 });
 
-// Builds a chefs array from comma-separated chef_names and chef_instagrams strings
-const parseChefs = (draft) => {
-  const chefNames = splitList(draft.chef_names);
-  const chefInstagrams = splitList(draft.chef_instagrams);
-  return chefNames.map((name, i) => ({ name, instagram_handle: chefInstagrams[i] || '' }));
-};
-
 const extractChefDetails = (form) => {
     let chefNames = [];
     let chefInstagrams = [];
@@ -30,29 +23,6 @@ const extractChefDetails = (form) => {
     chefInstagrams = chefInstagrams.join(',');
     return [chefNames, chefInstagrams];
 }
-
-// Parse LLM generated draft data to format expected by form components
-export const parseLLMOutput = (draft) => {
-
-  if (!draft) return null;
-
-  const chefs = parseChefs(draft);
-
-  const venue = { name: draft.venue_name || '', address: draft.venue_address || '', instagram_handle: draft.venue_instagram || '' };
-
-  return {
-    title: draft.title,
-    start_datetime: draft.start_datetime,
-    end_datetime: draft.end_datetime,
-    reservation_url: draft.reservation_url,
-    english_description: draft.english_description,
-    hebrew_description: draft.hebrew_description,
-    poster: draft.poster,
-    is_draft: draft.is_draft,
-    chefs,
-    venue
-  };
-};
 
 // Parse form into FormData for upload and validation
 export const parseFormData = (form, isDraft = false) => {
