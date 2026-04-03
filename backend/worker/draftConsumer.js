@@ -6,10 +6,12 @@ import { buildMetadata } from '../services/orchestrator/utils/metadata.js';
 import { logger } from '../utils/logger.js';
 
 // Runs the AI pipeline on a message and updates the placeholder draft row
-const processMessage = async (message) => {
+export const processMessage = async (message) => {
   const { prompt, posterUrl, contextUrl, draftId } = JSON.parse(message.Body);
 
   const draft = await orchestrateDraft(prompt, posterUrl, contextUrl);
+  // Title cannot be empty — fall back to the admin's original prompt
+  if (!draft.title) draft.title = prompt;
 
   const metadata = buildMetadata(
     draft.venue_name,
@@ -31,6 +33,7 @@ const processMessage = async (message) => {
 
 // Fetches up to 1 message from SQS using long polling (waits up to 20s for a message before returning empty)
 const receiveMessages = async () => {
+  logger.info('[WORKER] Polling SQS...', { queueUrl: process.env.AWS_DRAFT_QUEUE_URL });
   const command = new ReceiveMessageCommand({
     QueueUrl: process.env.AWS_DRAFT_QUEUE_URL,
     MaxNumberOfMessages: 1,
@@ -38,6 +41,8 @@ const receiveMessages = async () => {
   });
 
   const response = await sqs.send(command);
+  const count = response.Messages?.length ?? 0;
+  logger.info(`[WORKER] Poll complete, received ${count} message(s)`);
   return response.Messages ?? [];
 };
 
@@ -56,4 +61,5 @@ const start = async () => {
   }
 };
 
-start();
+// Only auto-start when run directly (So tests don't trigger this)
+if (process.argv[1]?.endsWith('draftConsumer.js')) start();

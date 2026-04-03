@@ -2,12 +2,26 @@ import { vi } from 'vitest';
 import request from 'supertest';
 import express from 'express';
 
+vi.mock('../../config/index.js', () => ({
+  supabase: {},
+  s3: { send: vi.fn() },
+  sqs: { send: vi.fn() },
+  upload: {},
+  uploadMemory: { fields: () => (req, res, next) => next() },
+  oauth2Client: {},
+  redis: { get: vi.fn(), set: vi.fn(), del: vi.fn() },
+}));
+
 vi.mock('../../services/draft/orchestrateDraft.js', () => ({
   orchestrateDraft: vi.fn().mockResolvedValue({ title: 'Draft Event', is_draft: true }),
 }));
 
 vi.mock('../../services/s3/draftUpload.js', () => ({
   uploadDraftImages: vi.fn().mockResolvedValue({ posterUrl: null, contextUrl: null }),
+}));
+
+vi.mock('../../services/queue/publish.js', () => ({
+  publishDraftJob: vi.fn().mockResolvedValue({}),
 }));
 
 vi.mock('../../config/middleware/isAuthorized.js', () => ({

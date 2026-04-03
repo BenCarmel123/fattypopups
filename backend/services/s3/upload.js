@@ -45,12 +45,11 @@ const handleNoFileUpload = async (body, currentEvent) => {
   const wasDraft = isTrue(currentEvent.is_draft);
   // True when transitioning a draft to a published event
   const toPublish = wasDraft && !isDraft;
-
-  // TODO: enforce poster requirement when publishing once fallback image is implemented
+  
   if (toPublish && !currentEvent.poster) {
     throw new Error("Cannot publish draft: event must have an image.");
-  } else {
-    // No new file uploaded — let the DB keep its existing poster
+  } else if (typeof body.poster !== 'string') {
+    // No new file and no S3 URL from the AI pipeline — let the DB keep its existing poster
     delete body.poster;
   }
 };

@@ -68,10 +68,10 @@ function InnerFileUploadButton({ label, existingImage }) {
             transition={Config.MINIMAL_TRANSITION}
             as="label">
             <ChakraFileUpload.HiddenInput />
-            <div style={{ display: Config.FLEX, gap: '2rem', alignItems: Config.CENTER, justifyContent: Config.CENTER }}>
+            <div style={{ display: Config.FLEX, gap: '1rem', alignItems: Config.CENTER, justifyContent: Config.CENTER }}>
                 <ChakraFileUpload.Trigger asChild>
                     <Button variant={Config.OUTLINE} size={Config.SMALL}>
-                        <Config.LuFileImage /> {label}
+                        {!isSelected && <Config.LuFileImage />} {label}
                     </Button>
                 </ChakraFileUpload.Trigger>
                 <FilePreview existingImage={existingImage} onImageError={() => setImageValid(false)} />

@@ -62,15 +62,30 @@ export async function updateEventById(id, updates) {
     .from('events_new')
     .update(updates)
     .eq('id', id)
-    .select()
+    .select(`
+      *,
+      venue:venues(id, name, address, instagram_handle),
+      event_chefs(
+        chef:chefs(id, name, instagram_handle)
+      )
+    `)
     .single();
 
   if (error) throw new Error(`Error updating event: ${error.message}`);
 
-  return data;
+  return {
+    ...data,
+    venue: {
+      name: data.venue?.name || '',
+      address: data.venue?.address || '',
+      instagram_handle: data.venue?.instagram_handle || '',
+    },
+    chefs: (data.event_chefs || [])
+      .map(ec => ({ name: ec.chef?.name || '', instagram_handle: ec.chef?.instagram_handle || '' }))
+      .filter(chef => chef.name),
+  };
 }
 
-// Delete event
 // Get all events with relations
 export async function getAllEventsWithRelations(isAdmin = false) {
   let query = supabase
