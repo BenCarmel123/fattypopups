@@ -6,7 +6,7 @@ import { buildMetadata } from '../services/orchestrator/utils/metadata.js';
 import { logger } from '../utils/logger.js';
 
 // Runs the AI pipeline on a message and updates the placeholder draft row
-const processMessage = async (message) => {
+export const processMessage = async (message) => {
   const { prompt, posterUrl, contextUrl, draftId } = JSON.parse(message.Body);
 
   const draft = await orchestrateDraft(prompt, posterUrl, contextUrl);
@@ -61,4 +61,5 @@ const start = async () => {
   }
 };
 
-start();
+// Only auto-start when run directly (So tests don't trigger this)
+if (process.argv[1]?.endsWith('draftConsumer.js')) start();

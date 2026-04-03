@@ -16,7 +16,7 @@ export default function FormFooter({ isEdit, handleClick, event, isDraftRef }) {
             />
           )}
           <SubmitFormButton
-            text={isEdit ? "Update" : "Publish"}
+            text={"Publish"}
             onClick={() => { isDraftRef.current = false; }}
           />
         </div>
