@@ -17,6 +17,7 @@ export const EventBodySchema = z.object({
   is_draft: z.string().optional(),
   poster: z.string().optional(),
   metadata: z.string().optional(),
+  status: z.enum(['processing', 'done']).optional(),
 });
 
 export const DraftEventBodySchema = z.object({
@@ -34,6 +35,7 @@ export const DraftEventBodySchema = z.object({
   is_draft: z.string().optional(),
   poster: z.string().optional(),
   metadata: z.string().optional(),
+  status: z.enum(['processing', 'done']).optional(),
 });
 
 export const DeleteBodySchema = z.object({

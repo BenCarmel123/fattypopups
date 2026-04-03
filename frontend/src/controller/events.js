@@ -1,7 +1,11 @@
 import { authFetch } from './authFetch.js';
 
 export const fetchEvents = (includeDrafts = false) =>
-  authFetch(includeDrafts ? '/api/events/drafts' : '/api/events');
+  authFetch(includeDrafts ? '/api/events/drafts' : '/api/events')
+    .then(events => events.map(event => ({
+      ...event,
+      metadata: typeof event.metadata === 'string' ? JSON.parse(event.metadata) : event.metadata,
+    })));
 
 export const deleteEvents = (titles) =>
   authFetch('/api/events', {

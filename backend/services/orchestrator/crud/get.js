@@ -27,6 +27,8 @@ export async function getEventsWithDetails(isAdmin = false) {
       english_description: event.english_description,
       hebrew_description: event.hebrew_description,
       is_draft: event.is_draft,
+      metadata: event.metadata,
+      status: event.status,
       created_at: event.created_at,
       embedding_id_en: event.embedding_id_en,
       embedding_id_he: event.embedding_id_he,

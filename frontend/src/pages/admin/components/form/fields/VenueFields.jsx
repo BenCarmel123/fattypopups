@@ -36,7 +36,7 @@ export default function VenueFields({ event }) {
     setVenue(updatedVenue);
   };
 
-  return (
+return (
     <Stack gap={0}>
       <Row>
         <TypeaheadInput

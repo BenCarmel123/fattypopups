@@ -1,5 +1,7 @@
 import { uploadDraftImages } from '../services/s3/draftUpload.js';
 import { publishDraftJob } from '../services/queue/publish.js';
+import { insertEvent } from '../services/entities/event/operations.js';
+import { invalidateEventsCache } from '../services/cache/invalidation.js';
 import { logger } from '../utils/logger.js';
 import { DraftBodySchema } from '../schemas/draft.schema.js';
 
@@ -16,7 +18,10 @@ export const createDraft = async (req, res) => {
       req.files?.context_image?.[0] ?? null,
     );
     logger.info('[DRAFT] Images uploaded');
-    await publishDraftJob({ prompt, posterUrl, contextUrl });
+    const placeholder = await insertEvent({ title: prompt, is_draft: true, status: 'processing' });
+    await invalidateEventsCache();
+    logger.info('[DRAFT] Placeholder draft created with ID:', placeholder.id);
+    await publishDraftJob({ prompt, posterUrl, contextUrl, draftId: placeholder.id });
     logger.info('[DRAFT] Draft job queued');
     return res.status(202).json({ message: 'Draft queued' });
   } catch (err) {
