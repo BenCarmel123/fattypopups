@@ -7,7 +7,7 @@ import { SubmitPromptButton, BackButton } from 'components/Buttons.jsx';
 import SpinnerOverlay from 'components/SpinnerOverlay.jsx';
 import { sendPrompt } from '../../../controller/draft.js';
 
-export default function DraftBuilder({ placeholder = Config.PROMPT_PLACEHOLDER, handleClick }) {
+export default function DraftBuilder({ placeholder = Config.PROMPT_PLACEHOLDER, handleClick, onDraftQueued }) {
     const [prompt, setPrompt] = useState('');
     const [isLoading, setLoading] = useState(false)
     const [requestInProgress, setRequestInProgress] = useState(false);
@@ -32,7 +32,7 @@ export default function DraftBuilder({ placeholder = Config.PROMPT_PLACEHOLDER, 
             await sendPrompt(adminInput);
 
             setPrompt('');
-            handleClick(Config.DASHBOARD, undefined)();
+            await onDraftQueued();
 
             // Switch to ADD mode and pass the generated draft
             }

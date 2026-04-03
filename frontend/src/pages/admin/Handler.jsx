@@ -27,6 +27,19 @@ export default function AdminPageHandler() {
     setSelectedEvent(selectedEvent || undefined);
   };
 
+  // [4] After a draft is queued, poll until the placeholder row appears then navigate to Dashboard
+  const onDraftQueued = async () => {
+    const poll = async () => {
+      const fresh = await fetchEvents(true);
+      if (fresh.some(e => e.status === 'processing')) {
+        setEvents(fresh);
+        sessionStorage.setItem('admin_events', JSON.stringify(fresh));
+        setAction(Config.DASHBOARD);
+      } 
+    };
+    await poll();
+  };
+
   // [4] Poll for new drafts every 10s while on the Dashboard
   useEffect(() => {
     if (action !== Config.DASHBOARD) return;
@@ -76,7 +89,7 @@ export default function AdminPageHandler() {
          case Config.LOGIN:
             return (<Login />);
          case Config.AI:
-            return (<DraftBuilder handleClick={handleClick} />);
+            return (<DraftBuilder handleClick={handleClick} onDraftQueued={onDraftQueued} />);
          default:
             return (<Login />);
    }
