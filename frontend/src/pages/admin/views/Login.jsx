@@ -2,8 +2,8 @@ import * as Config from 'config/index.jsx';
 import { FcGoogle } from 'config/index.jsx';
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 
-const SERVER_URL = process.env.REACT_APP_SERVER_URL
-const LOGO_URL = process.env.REACT_APP_LOGO;
+const SERVER_URL = import.meta.env.VITE_SERVER_URL
+const LOGO_URL = import.meta.env.VITE_LOGO;
 
 const handleGoogle = () => {
   window.location.href = `${SERVER_URL}/auth/google`;

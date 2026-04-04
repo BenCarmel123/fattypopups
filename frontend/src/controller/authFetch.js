@@ -1,6 +1,6 @@
 import * as Config from 'config/index.jsx';
 
-const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 export const authFetch = async (path, { method = 'GET', headers = {}, body = undefined } = {}) => {
   const token = localStorage.getItem(Config.AUTH_TOKEN);

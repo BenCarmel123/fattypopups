@@ -2,7 +2,7 @@ import React from "react"
 import { Button } from "@chakra-ui/react";
 import * as Config from '../config/index.jsx';
 
-const ADMIN_ROUTE = process.env.REACT_APP_ADMIN_ROUTE;
+const ADMIN_ROUTE = import.meta.env.VITE_ADMIN_ROUTE;
 
 export default function AdminButton() {
   function handleAdmin() {
