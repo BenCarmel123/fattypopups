@@ -5,12 +5,6 @@ import * as Config from '../../config/index.jsx';
 import { BackButton } from "../../components/Buttons.jsx";
 import * as Colors from '../../config/colors.jsx';
 
-const INSTA_LINK_HALLIE = import.meta.env.VITE_INSTA_LINK_HALLIE;
-const INSTA_LINK_BEN = import.meta.env.VITE_INSTA_LINK_BEN;
-const BEN_PIC_URL = import.meta.env.VITE_BEN_PIC_URL;
-const HALLIE_PIC_URL = import.meta.env.VITE_HALLIE_PIC_URL;
-const BEN_EMAIL = import.meta.env.VITE_BEN_EMAIL;
-const HALLIE_EMAIL = import.meta.env.VITE_HALLIE_EMAIL;
 
 export const ParagraphComponent = ({ text }) => {
   return (
@@ -47,15 +41,15 @@ export default function AboutPage() {
   const creators = [
     {
       name: "Ben",
-      image: BEN_PIC_URL,
-      instagram: INSTA_LINK_BEN,
-      email: BEN_EMAIL
+      image: Config.BEN_PIC_URL,
+      instagram: Config.INSTA_LINK_BEN,
+      email: Config.BEN_EMAIL
     },
     {
       name: "Hallie",
-      image: HALLIE_PIC_URL,
-      instagram: INSTA_LINK_HALLIE,
-      email: HALLIE_EMAIL
+      image: Config.HALLIE_PIC_URL,
+      instagram: Config.INSTA_LINK_HALLIE,
+      email: Config.HALLIE_EMAIL
     }
   ];
 
@@ -124,8 +118,8 @@ export default function AboutPage() {
             {Config.CONTACT}
           </p>
           <div className="flex flex-col items-center space-y-2 mt-2">
-            <ContactEmail email={HALLIE_EMAIL} />
-            <ContactEmail email={BEN_EMAIL} />
+            <ContactEmail email={Config.HALLIE_EMAIL} />
+            <ContactEmail email={Config.BEN_EMAIL} />
           </div>
       </div>
     </div>

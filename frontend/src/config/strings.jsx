@@ -1,3 +1,17 @@
+// S3 assets
+const S3_BASE = "https://fattypopups-production.s3.il-central-1.amazonaws.com/misc";
+export const LOGO_URL = `${S3_BASE}/logo.png`;
+export const BEN_PIC_URL = `${S3_BASE}/ben.png`;
+export const HALLIE_PIC_URL = `${S3_BASE}/hallie.jpeg`;
+export const BACKGROUND_IMAGE_URL = `${S3_BASE}/background.jpeg`;
+
+// Contact & social
+export const BEN_EMAIL = "BenCarmel123@gmail.com";
+export const HALLIE_EMAIL = "HallieSheinbaum@gmail.com";
+export const INSTA_LINK_BEN = "https://www.instagram.com/ben_ashamen/";
+export const INSTA_LINK_HALLIE = "http://www.instagram.com/tel_a_bites/";
+export const ABOUT_ROUTE = "about";
+
 // App / page labels
 export const APP_NAME = "fatty popups";
 export const ADD = "ADD";

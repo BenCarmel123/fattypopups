@@ -2,8 +2,7 @@ import * as Config from 'config/index.jsx';
 import { FcGoogle } from 'config/index.jsx';
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 
-const SERVER_URL = import.meta.env.VITE_SERVER_URL
-const LOGO_URL = import.meta.env.VITE_LOGO;
+const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 const handleGoogle = () => {
   window.location.href = `${SERVER_URL}/auth/google`;
@@ -16,7 +15,7 @@ export default function Login() {
         <div direction="column"
         align={Config.CENTER}
         justify={Config.CENTER}>
-        <img src={LOGO_URL} alt={Config.APP_NAME} className="h-42 w-40" style={{width:'9rem', backgroundColor:Config.HOVER, borderRadius:"16px", padding:"10px"}} />
+        <img src={Config.LOGO_URL} alt={Config.APP_NAME} className="h-42 w-40" style={{width:'9rem', backgroundColor:Config.HOVER, borderRadius:"16px", padding:"10px"}} />
         <br></br>
         <Button onClick={handleGoogle} variant="outline" padding="0.8rem" size={Config.LARGE} rounded={Config.XXL} border="3px solid" borderColor={Config.BORDER_COLOR} _hover={{ bg: Config.HOVER }} transition={Config.MINIMAL_TRANSITION}>
           <FcGoogle />

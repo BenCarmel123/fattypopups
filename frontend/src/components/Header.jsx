@@ -4,11 +4,9 @@ import Logo from './Logo.jsx';
 import AdminButton from './AdminButton.jsx';
 import * as Config from '../config/index.jsx';
 
-const ABOUT_ROUTE = import.meta.env.VITE_ABOUT_ROUTE;
-
 export function About() {
   function handleAbout() {
-    window.location.href = "/" + ABOUT_ROUTE;
+    window.location.href = "/" + Config.ABOUT_ROUTE;
   }
   return (
     <div className="flex items-center">

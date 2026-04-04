@@ -110,8 +110,8 @@ Each file contains one focused test (1 `describe`, 1 `it`).
 - **Cache** - Redis via Upstash (prod) / Docker (dev)
 - **AI** - OpenAI (vision + text + translation), Sharp (image processing)
 - **Auth** - JWT + Google OAuth
-- **Frontend** - React 19, Chakra UI
-- **Validation** - Zod (schema validation at HTTP and API boundaries)
+- **Frontend** - React 19, Vite, Chakra UI
+- **Validation** - Zod (schema validation)
 - **Testing** - Vitest (ESM-native unit tests)
 - **Dev** - Docker Compose, Claude Code
 
@@ -119,7 +119,7 @@ Each file contains one focused test (1 `describe`, 1 `it`).
 
 **Rules** (`.claude/rules/`): `unit-test.md`, `hld.md`
 
-**Commands** (`.claude/commands/`): `/clean-branches`, `/pre-commit`, `/review-project`, `/thumb-rules`, `/sync-backend-env`, `/sync-frontend-env`
+**Commands** (`.claude/commands/`): `/clean-branches`, `/pre-commit`, `/review-project`, `/thumb-rules`, `/sync-backend-env`
 
 ## External APIs
 - **OpenAI** - Vision analysis, text generation, Hebrew translation & vector embeddings

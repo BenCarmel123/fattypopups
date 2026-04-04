@@ -4,8 +4,6 @@ import { formatEventDescription } from 'utils/formatting';
 import * as Config from 'config/index.jsx';
 import { useEventIndex } from 'pages/home/context/EventIndexContext.js';
 
-const detailsBackgroundImageUrl = import.meta.env.VITE_DETAILS_BACKGROUND_IMAGE_URL;
-const LOGO_URL = import.meta.env.VITE_LOGO;
 
 export function EventImage({ event }) {
   const index = useEventIndex();
@@ -21,7 +19,7 @@ export function EventImage({ event }) {
       <img
         src={event.poster}
         // When no image -> fallback to logo
-        onError={(e) => { e.currentTarget.src = LOGO_URL; }}
+        onError={(e) => { e.currentTarget.src = Config.LOGO_URL; }}
         alt={event.title}
         loading={index === 0 ? 'eager' : 'lazy'}
         fetchPriority={index === 0 ? Config.FETCH_PRIORITY_HIGH : Config.FETCH_PRIORITY_LOW}
@@ -62,7 +60,7 @@ export default function FlipImage({ event }) {
         position: Config.RELATIVE,
         cursor: Config.POINTER,
         perspective: '1200px',
-        backgroundImage: `url('${detailsBackgroundImageUrl}')`
+        backgroundImage: `url('${Config.BACKGROUND_IMAGE_URL}')`
       }}
       onPointerEnter={handleInteraction}
       onPointerLeave={handleInteraction}
