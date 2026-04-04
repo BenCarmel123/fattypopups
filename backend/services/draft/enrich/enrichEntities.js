@@ -14,15 +14,10 @@ async function enrichChefEntities(chefNames) {
     const name = chefNames[i];
     const entity = chefEntitiesFromDB[i];
 
-    let instagramHandle = entity?.instagram_handle ?? null;
-    if (!instagramHandle) {
-      instagramHandle = await fetchInstagramHandle(name);
-    }
-
     if (entity) {
-      chefEntities.push({ ...entity, instagram_handle: instagramHandle });
+      chefEntities.push(entity);
     } else {
-      chefEntities.push({ name, instagram_handle: instagramHandle });
+      chefEntities.push({ name, instagram_handle: await fetchInstagramHandle(name) });
     }
   }
 
@@ -33,16 +28,11 @@ async function enrichChefEntities(chefNames) {
 async function enrichVenueEntity(venueName) {
   let venueEntity = await getVenueByName(venueName);
 
-  let instagramHandle = venueEntity?.instagram_handle ?? null;
-  if (!instagramHandle) {
-    instagramHandle = await fetchInstagramHandle(venueName);
-  }
-
   if (!venueEntity) {
     const address = await fetchVenueAddress(venueName);
     venueEntity = {
       name: venueName,
-      instagram_handle: instagramHandle,
+      instagram_handle: await fetchInstagramHandle(venueName),
       address: address
     };
   }
