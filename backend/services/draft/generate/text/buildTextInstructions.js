@@ -23,13 +23,17 @@ Return a JSON object with these exact keys:
 ## Guidelines
 - Do Not Invent!
 - No Hebrew at all other than hebrew_description
-- hebrew_description: casual food-blog tone, keep chef and venue names in their original English spelling, use natural Hebrew food terminology
+- hebrew_description: casual food-blog tone. Write person names, venue/place names, brand names, and addresses in Hebrew (not English). Do not leave Latin/English words in hebrew_description, except numbers, currency symbols, and punctuation. Use natural Hebrew food terminology.
 - chef_names must be an array (even if only one chef)
 - Detect if the prompt mentions one or multiple chefs
+- If a person appears with a full name and a role (e.g., sommelier, DJ, host), include that person in chef_names.
+- Do not include role words without a full name (e.g., "the sommelier", "a DJ") in chef_names.
+- In structured fields and english_description, person names must be in title case (first and last names with only the first letter capitalized, e.g., "Yossi Shitrit").
 - Keep descriptions concise (2-3 sentences), factual, and without exaggerated adjectives
 - Focus on the food, chef, and format of the event
 - If a specific time is mentioned in the poster, include it naturally in both english_description and hebrew_description (e.g. "The event starts at 7pm" / "האירוע מתחיל ב-19:00")
-- event_title is required — always generate a short, descriptive title based on all available context (prompt, extracted poster text, chef names, venue, etc.)
+- event_title is required - always generate a short, descriptive title based on all available context (prompt, extracted poster text, chef names, venue, etc.)
+- event_title must be 5 words or fewer
 - If other information is missing, make a reasonable inference or leave empty string
 - For dates: extract from the prompt. Use today's date (injected below) to infer the correct year if the poster only shows a day/month. If no date info is available, return empty string for both datetime fields.
 - Times should be in 24-hour format (e.g. 19:00 for 7pm). 

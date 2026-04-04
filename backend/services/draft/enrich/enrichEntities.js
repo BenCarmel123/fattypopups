@@ -1,6 +1,7 @@
 import { getChefByName } from '../../entities/chef/operations.js';
 import { getVenueByName } from '../../entities/venue/operations.js';
 import { fetchVenueAddress } from './google/googleMaps.js';
+import { fetchInstagramHandle } from './google/googleSearch.js';
 
 // Enrich chef data by looking up in DB, create placeholders for missing chefs
 async function enrichChefEntities(chefNames) {
@@ -13,10 +14,15 @@ async function enrichChefEntities(chefNames) {
     const name = chefNames[i];
     const entity = chefEntitiesFromDB[i];
 
+    let instagramHandle = entity?.instagram_handle ?? null;
+    if (!instagramHandle) {
+      instagramHandle = await fetchInstagramHandle(name);
+    }
+
     if (entity) {
-      chefEntities.push(entity);
+      chefEntities.push({ ...entity, instagram_handle: instagramHandle });
     } else {
-      chefEntities.push({ name, instagram_handle: null });
+      chefEntities.push({ name, instagram_handle: instagramHandle });
     }
   }
 
@@ -27,11 +33,16 @@ async function enrichChefEntities(chefNames) {
 async function enrichVenueEntity(venueName) {
   let venueEntity = await getVenueByName(venueName);
 
+  let instagramHandle = venueEntity?.instagram_handle ?? null;
+  if (!instagramHandle) {
+    instagramHandle = await fetchInstagramHandle(venueName);
+  }
+
   if (!venueEntity) {
     const address = await fetchVenueAddress(venueName);
     venueEntity = {
       name: venueName,
-      instagram_handle: null,
+      instagram_handle: instagramHandle,
       address: address
     };
   }
