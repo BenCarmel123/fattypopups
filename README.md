@@ -6,6 +6,12 @@ Designed as a production learning sandbox for end-to-end product ownership.
 
 ---
 
+## Architecture
+
+![](architecture.png)
+
+---
+
 ## Project Structure
 
 ```
@@ -121,3 +127,4 @@ Each file contains one focused test (1 `describe`, 1 `it`).
 - **Supabase** - PostgreSQL client & RPC (pgvector search)
 - **Google OAuth** - Admin authentication
 - **Google Places** - Venue location enrichment
+- **SerpApi** - Google Search API for Instagram handle discovery during entity enrichment
