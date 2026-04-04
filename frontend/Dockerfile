@@ -10,9 +10,7 @@ RUN npm install
 # Copy all project files
 COPY . .
 
-# Enable live reloading
-ENV CHOKIDAR_USEPOLLING=true
 EXPOSE 3000
 
-# Run the React dev server
-CMD ["npm", "start"]
+# Run the Vite dev server
+CMD ["npm", "run", "dev", "--", "--host"]

@@ -4,8 +4,8 @@ import { formatEventDescription } from 'utils/formatting';
 import * as Config from 'config/index.jsx';
 import { useEventIndex } from 'pages/home/context/EventIndexContext.js';
 
-const detailsBackgroundImageUrl = process.env.REACT_APP_DETAILS_BACKGROUND_IMAGE_URL;
-const LOGO_URL = process.env.REACT_APP_LOGO;
+const detailsBackgroundImageUrl = import.meta.env.VITE_DETAILS_BACKGROUND_IMAGE_URL;
+const LOGO_URL = import.meta.env.VITE_LOGO;
 
 export function EventImage({ event }) {
   const index = useEventIndex();

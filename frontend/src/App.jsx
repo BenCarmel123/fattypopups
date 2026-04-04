@@ -7,9 +7,9 @@ import AdminPageHandler from "./pages/admin/Handler";
 import HomePage from "./pages/home/Home";
 import AboutPage from "./pages/about/AboutPage";
 
-ReactGA.initialize(process.env.REACT_APP_GA4_MEASUREMENT_ID);
+ReactGA.initialize(import.meta.env.VITE_GA4_MEASUREMENT_ID);
 
-const ADMIN_ROUTE = process.env.REACT_APP_ADMIN_ROUTE;
+const ADMIN_ROUTE = import.meta.env.VITE_ADMIN_ROUTE;
 
 function usePageTracking() {
   const location = useLocation();

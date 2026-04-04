@@ -7,7 +7,7 @@ import Row from "./Row.jsx";
 import ChefFields from "../fields/ChefFields.jsx";
 import VenueFields from "../fields/VenueFields.jsx";
 import FileUpload from "components/FileUpload.jsx";
-import { formatDate, getTomorrowDate } from "utils/formatting.js";
+import { formatDate, getTomorrowDate } from "utils/formatting.jsx";
 
 export default function FormFields({ event }) {
     const tomorrowStr = getTomorrowDate();

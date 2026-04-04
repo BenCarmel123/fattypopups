@@ -1,7 +1,7 @@
 import React from "react"
 import * as Config from '../config/index.jsx';
 
-const LOGO_URL = process.env.REACT_APP_LOGO;
+const LOGO_URL = import.meta.env.VITE_LOGO;
 
 export default function Logo() {
   return (

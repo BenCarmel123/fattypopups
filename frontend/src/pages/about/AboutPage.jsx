@@ -5,12 +5,12 @@ import * as Config from '../../config/index.jsx';
 import { BackButton } from "../../components/Buttons.jsx";
 import * as Colors from '../../config/colors.jsx';
 
-const INSTA_LINK_HALLIE = process.env.REACT_APP_INSTA_LINK_HALLIE;
-const INSTA_LINK_BEN = process.env.REACT_APP_INSTA_LINK_BEN;
-const BEN_PIC_URL = process.env.REACT_APP_BEN_PIC_URL;
-const HALLIE_PIC_URL = process.env.REACT_APP_HALLIE_PIC_URL;
-const BEN_EMAIL = process.env.REACT_APP_BEN_EMAIL;
-const HALLIE_EMAIL = process.env.REACT_APP_HALLIE_EMAIL;
+const INSTA_LINK_HALLIE = import.meta.env.VITE_INSTA_LINK_HALLIE;
+const INSTA_LINK_BEN = import.meta.env.VITE_INSTA_LINK_BEN;
+const BEN_PIC_URL = import.meta.env.VITE_BEN_PIC_URL;
+const HALLIE_PIC_URL = import.meta.env.VITE_HALLIE_PIC_URL;
+const BEN_EMAIL = import.meta.env.VITE_BEN_EMAIL;
+const HALLIE_EMAIL = import.meta.env.VITE_HALLIE_EMAIL;
 
 export const ParagraphComponent = ({ text }) => {
   return (

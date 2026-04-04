@@ -1,8 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url('https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap');
 
 /* Global CSS Variables (only those used in this file) */
 :root {
