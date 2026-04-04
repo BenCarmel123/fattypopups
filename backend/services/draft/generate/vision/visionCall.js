@@ -25,7 +25,7 @@ export async function analyzeImage(posterUrl = null, contextUrl = null) {
     model: "gpt-5.4",
     input: [{ role: "user", content }],
     instructions,
-    reasoning: { effort: "low" },
+    reasoning: { effort: "high" },
     text: { format: VISION_SCHEMA, verbosity: "low" }
   });
 

@@ -12,7 +12,7 @@ export async function generateDraftDetails(prompt, styleExamples) {
     model: "gpt-5.4",
     input: [{ role: "user", content: prompt }],
     instructions,
-    reasoning: { effort: "low" },
+    reasoning: { effort: "medium" },
     text: { format: DRAFT_SCHEMA, verbosity: "low" }
   };
 
