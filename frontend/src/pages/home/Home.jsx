@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import { Spinner } from '@chakra-ui/react';
 import DisplayCard from './components/card/DisplayCard.jsx';
 import Header from '../../components/Header.jsx';
-import InstructionText from './components/InstructionText.jsx';
+import HomeBanner from './components/HomeBanner.jsx';
 import EventIndexContext from './context/EventIndexContext.js';
 import { handleTokenCheck } from "utils/auth.js";
 import { fetchEvents } from "../../controller/events.js";
@@ -30,7 +30,7 @@ export default function HomePage() {
     <>
     <Header token={handleTokenCheck} />
     <div className="mt-2 w-full flex flex-col items-center px-2 sm:px-4 md:px-8 box-border">
-      <InstructionText />
+      <HomeBanner />
       {events.map((evt, index) => (
         <EventIndexContext.Provider key={evt.title} value={index}>
           <div className="mb-8 w-full max-w-xl relative">
