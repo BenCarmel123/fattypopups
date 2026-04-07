@@ -1,6 +1,6 @@
 // Barrel file for all react-icons imports
 
-export { LuFileImage, LuX, LuMoon, LuSun } from "react-icons/lu";
+export { LuFileImage, LuX, LuMoon, LuSun, LuPointer } from "react-icons/lu";
 
 export { RiInstagramFill } from "react-icons/ri";
 

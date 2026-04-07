@@ -50,7 +50,9 @@ export const ABOUT_CREATORS_2 = "Hallie and Ben connected through their food-cen
 export const ABOUT_CREATORS_3 = "Together, they created fatty popups - the number one source for everything happening in Tel Aviv’s pop-up culinary scene (and beyond). There’s a lot going on out there, we’re just here to make it easier to keep up.";
 export const CONTACT = "Questions or feedback? We'd love to hear from you.";
 export const SUBHEADER_TEXT_1 = "Discover TLV's pop-ups!";
-export const SUBHEADER_TEXT_2 = "Tap each image for more details.";
+export const SUBHEADER_TEXT_2 = "Tap each image for more details";
+export const WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/K4iW8Z5VVIo0GvLxKVeTYY?mode=gi_t";
+export const WHATSAPP_GROUP_TEXT = "Join Our Group";
 
 // Link/window constants
 export const SELF = "_self";
