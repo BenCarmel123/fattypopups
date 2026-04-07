@@ -71,8 +71,23 @@ describe('orchestrateDraft', () => {
     expect(result.is_draft).toBe(true);
   });
 
-  it('uses ontopo URL for reservation_url', async () => {
+  it('uses venue instagram URL for reservation_url when venue has instagram', async () => {
     generateDraftDetails.mockResolvedValueOnce(mockLlmOutput());
+    const result = await orchestrateDraft('prompt');
+    expect(result.reservation_url).toBe('https://instagram.com/venuex');
+  });
+
+  it('falls back to ontopo URL for reservation_url when venue has no instagram', async () => {
+    generateDraftDetails.mockResolvedValueOnce(mockLlmOutput());
+    formatDraft.mockResolvedValueOnce({
+      chefNames: ['Chef A'],
+      chefInstagrams: '@chefa',
+      venueName: 'Venue X',
+      venueInstagram: '***',
+      venueAddress: '123 Main St',
+      english_description: 'A great popup event.',
+      hebrew_description: 'אירוע פופ-אפ נהדר.',
+    });
     const result = await orchestrateDraft('prompt');
     expect(result.reservation_url).toBe('https://ontopo.com/he/il');
   });
