@@ -24,6 +24,7 @@ Guidelines:
 - Instagram-specific overlays to crop out (already account for these in your returned coordinates — do not leave them in):
   - Top: crop tight — no gap between the top of the poster and where the feed chrome ends
   - Bottom: exclude carousel dots, likes, comments, tag icon, and sound icon
+- Black-surrounded posters: The screenshot may come from a messaging app (e.g. WhatsApp, iMessage) where the poster is displayed in the center with large black regions above, below, or around it. These black areas are NOT part of the poster — they are the phone/app background. In this case, crop tightly to just the colored/visual poster content and exclude all surrounding black regions. The poster is everything that has actual color or imagery.
 
 Example: For a typical Instagram feed post, return something like: { "top": 17, "left": 3, "bottom": 68, "right": 97 }
 `;

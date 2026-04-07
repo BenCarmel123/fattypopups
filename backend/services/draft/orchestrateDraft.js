@@ -1,6 +1,12 @@
 const ONTOPO_URL = "https://ontopo.com/he/il";
 const today = new Date().toISOString().split('T')[0];
 
+const resolveReservationUrl = (instagramHandle) => {
+    if (instagramHandle && instagramHandle !== "***")
+        return `https://instagram.com/${instagramHandle.replace(/^@/, '')}`;
+    return ONTOPO_URL;
+};
+
 import { analyzeImage } from "./generate/vision/visionCall.js";
 import { fetchStyleExamples } from "./generate/text/similaritySearch.js";
 import { generateDraftDetails } from "./generate/text/textCall.js";
@@ -56,7 +62,7 @@ const orchestrateDraft =
             venue_address: enriched.venueAddress,
             chef_names: enriched.chefNames.join(','),
             chef_instagrams: enriched.chefInstagrams,
-            reservation_url: ONTOPO_URL,
+            reservation_url: resolveReservationUrl(enriched.venueInstagram),
             english_description: enriched.english_description,
             hebrew_description: enriched.hebrew_description,
             poster: croppedPosterUrl || posterUrl,
