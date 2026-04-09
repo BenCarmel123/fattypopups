@@ -51,8 +51,8 @@ export const ABOUT_CREATORS_3 = "Together, they created fatty popups - the numbe
 export const CONTACT = "Questions or feedback? We'd love to hear from you.";
 export const SUBHEADER_TEXT_1 = "Discover TLV's pop-ups!";
 export const SUBHEADER_TEXT_2 = "Tap each image for more details";
-export const WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/K4iW8Z5VVIo0GvLxKVeTYY?mode=gi_t";
-export const WHATSAPP_GROUP_TEXT = "Join Our Group";
+export const WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/GnidD34OvNmJ1U0K7aV3SA?mode=gi_t";
+export const WHATSAPP_GROUP_TEXT = "Join Group";
 
 // Link/window constants
 export const SELF = "_self";

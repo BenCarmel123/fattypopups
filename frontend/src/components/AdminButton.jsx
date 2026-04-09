@@ -23,7 +23,7 @@ export default function AdminButton() {
         borderWidth='2px'
         backgroundColor={Config.TRANSPARENT}
         borderColor="#ffffff3d"
-        _hover={{ transform: Config.MINIMAL_TRANSFORM }}
+        _hover={{ opacity: 0.8 }}
         transition={Config.MINIMAL_TRANSITION}
         onClick={handleAdmin}
       >

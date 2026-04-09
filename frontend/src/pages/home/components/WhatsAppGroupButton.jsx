@@ -1,27 +1,33 @@
+import { Button } from "@chakra-ui/react";
+import { FaWhatsapp } from "react-icons/fa";
 import * as Config from 'config/index.jsx';
 
 export default function WhatsAppGroupButton() {
+    function handleJoin() {
+        window.open(Config.WHATSAPP_GROUP_URL, '_blank', 'noopener,noreferrer');
+    }
     return (
-        <a
-            href={Config.WHATSAPP_GROUP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.4rem',
-                padding: '0.5rem 1rem',
-                backgroundColor: Config.SECONDARY_COLOR,
-                color: Config.WHITE,
-                borderRadius: '999px',
-                fontSize: '0.85rem',
-                fontWeight: 700,
-                textDecoration: 'none',
-                transition: Config.MINIMAL_TRANSITION,
-            }}
+        <Button
+            variant={Config.SOLID}
+            size={Config.SMALL}
+            color={Config.SECONDARY_COLOR}
+            px={2}
+            py={2}
+            borderRadius={Config.XL}
+            borderBoxing='border-box'
+            boxShadow={Config.SMALL}
+            borderStyle={Config.SOLID}
+            borderWidth='2px'
+            backgroundColor={Config.TRANSPARENT}
+            borderColor="#ffffff3d"
+            _hover={{ opacity: 0.8 }}
+            transition={Config.MINIMAL_TRANSITION}
+            letterSpacing="normal"
+            whiteSpace="nowrap"
+            onClick={handleJoin}
         >
-            <Config.FaWhatsapp size={18} />
+            <FaWhatsapp style={{ marginRight: '0.05rem' }} />
             {Config.WHATSAPP_GROUP_TEXT}
-        </a>
+        </Button>
     );
 }

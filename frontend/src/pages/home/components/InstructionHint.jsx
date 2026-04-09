@@ -23,7 +23,6 @@ export default function InstructionHint() {
                 color: Config.GRAY,
             }}>
                 {Config.SUBHEADER_TEXT_2}
-                <Config.LuPointer size={18} />
             </p>
         </>
     );
