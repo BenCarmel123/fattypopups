@@ -45,13 +45,13 @@ describe('processMessage', () => {
     });
 
     const message = {
-      Body: JSON.stringify({ prompt: 'Eyal Shani at HO HO', posterUrl: 'http://img.jpg', contextUrl: null, draftId: 42 }),
+      Body: JSON.stringify({ prompt: 'Eyal Shani at HO HO', posterUrl: 'http://img.jpg', contextUrl: null, draftId: 42, toCrop: false }),
       ReceiptHandle: 'receipt-abc',
     };
 
     await processMessage(message);
 
-    expect(mockOrchestrateDraft).toHaveBeenCalledWith('Eyal Shani at HO HO', 'http://img.jpg', null);
+    expect(mockOrchestrateDraft).toHaveBeenCalledWith('Eyal Shani at HO HO', 'http://img.jpg', null, false);
     expect(mockBuildMetadata).toHaveBeenCalledWith('HO HO', '@hoho', 'Tel Aviv', 'Eyal Shani', '@eyal');
     expect(mockOrchestrateEventUpdate).toHaveBeenCalledWith(
       42,

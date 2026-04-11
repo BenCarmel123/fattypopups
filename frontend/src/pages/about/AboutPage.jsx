@@ -1,9 +1,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import * as Config from '../../config/index.jsx';
-import { BackButton } from "../../components/Buttons.jsx";
-import * as Colors from '../../config/colors.jsx';
+import * as Config from 'config/index.jsx';
+import { BackButton } from "../../components/buttons/Buttons.jsx";
+import * as Colors from 'config/colors.jsx';
 
 
 export const ParagraphComponent = ({ text }) => {

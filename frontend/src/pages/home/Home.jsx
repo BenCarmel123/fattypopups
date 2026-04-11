@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react"
 import { Spinner } from '@chakra-ui/react';
 import DisplayCard from './components/card/DisplayCard.jsx';
-import Header from '../../components/Header.jsx';
-import HomeBanner from './components/HomeBanner.jsx';
+import Header from './components/header/Header.jsx';
+import HomeBanner from './components/header/HomeBanner.jsx';
 import EventIndexContext from './context/EventIndexContext.js';
 import { handleTokenCheck } from "utils/auth.js";
-import { fetchEvents } from "../../controller/events.js";
+import { fetchEvents } from "controller/events.js";
 
 export default function HomePage() {
   const [events, setEvents] = useState(null);

@@ -1,5 +1,5 @@
 import React from "react"
-import * as Config from '../config/index.jsx';
+import * as Config from 'config/index.jsx';
 
 export default function Logo() {
   return (

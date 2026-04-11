@@ -24,6 +24,16 @@ export default function CardBody({ event }) {
         {event.title}
       </Card.Title>
       <Card.Description fontSize={Config.MEDIUM} color="gray.600" paddingRight={4} paddingLeft={4} lineHeight={3.5}>
+        {event.venue?.instagram_handle && (
+          <span
+            style={{ cursor: Config.POINTER, display: Config.BLOCK }}
+            onClick={() => handleInstagram(event.venue.instagram_handle)}
+          >
+            <Config.RiInstagramFill className="inline-block mr-2.5 mb-1" />
+            <EventAttributeSpan attribute={event.venue.name} onClick={() => handleInstagram(event.venue.instagram_handle)} />
+            <br />
+          </span>
+        )}
         {event.chefs &&
           Array.isArray(event.chefs) &&
           event.chefs.length > 0 &&

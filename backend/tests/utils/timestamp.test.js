@@ -1,4 +1,4 @@
-import { getTimestamp } from '../../utils/timestamp.js';
+import { getTimestamp } from '../../utils/time.js';
 
 describe('getTimestamp', () => {
   it('returns a zero-padded HH:MM:SS string', () => {

@@ -9,7 +9,6 @@ export async function getEventsWithDetails(isAdmin = false) {
   if (redis) {
     const cached = await redis.get(key);
     if (cached) {
-      logger.info(`[Cache] HIT with key - ${key}`);
       return JSON.parse(cached);
     }
     logger.info(`[Cache] MISS with key - ${key}`);

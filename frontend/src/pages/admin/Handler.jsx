@@ -1,18 +1,12 @@
 import { useState, useEffect } from "react";
 import EventForm from "./views/EventForm.jsx";
-import * as Config from '../../config/index.jsx';
+import * as Config from 'config/index.jsx';
 import Dashboard from "./views/Dashboard.jsx";
 import Login from "./views/Login.jsx";
 import DraftBuilder from "./views/DraftBuilder.jsx";
-import { handleTokenCheck } from "../../utils/auth.js";
-import { fetchEvents } from "../../controller/events.js";
-import { checkAuth } from "../../controller/auth.js";
-
-// AdminPageHandler is responsible for:
-// 1. Authentication — checks token on mount and redirects to Login if invalid
-// 2. View routing — controls which admin view is rendered (Dashboard, EventForm, DraftBuilder, Login)
-// 3. Event state — owns the events list and passes it down to child views
-// 4. Polling — re-fetches events every 10s while on the Dashboard to surface new drafts
+import { handleTokenCheck } from "utils/auth.js";
+import { fetchEvents } from "controller/events.js";
+import { checkAuth } from "controller/auth.js";
 
 export default function AdminPageHandler() {
   const[_isAuthenticated, setAuthenticated] = useState(false)

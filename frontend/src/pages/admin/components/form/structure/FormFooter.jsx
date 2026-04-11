@@ -1,5 +1,5 @@
 import { Card } from "@chakra-ui/react";
-import { BackToDashboard, SubmitFormButton } from "components/Buttons.jsx";
+import { BackToDashboard, SubmitFormButton } from "components/buttons/Buttons.jsx";
 import * as Config from 'config/index.jsx';
 export default function FormFooter({ isEdit, handleClick, event, isDraftRef }) {
   const showDraftButton = !isEdit || event?.is_draft;

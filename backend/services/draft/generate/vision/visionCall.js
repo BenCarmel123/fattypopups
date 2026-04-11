@@ -3,7 +3,7 @@ import { logger } from '../../../../utils/logger.js';
 import { buildVisionInstructions } from './buildVisionInstructions.js';
 import { VISION_SCHEMA } from '../../../../schemas/openai.schema.js';
 
-export async function analyzeImage(posterUrl = null, contextUrl = null) {
+export async function analyzeImage(posterUrl = null, contextUrl = null, toCrop) {
   if (!posterUrl && !contextUrl) {
     return { extractedText: "", cropCoordinates: null };
   }
@@ -17,15 +17,15 @@ export async function analyzeImage(posterUrl = null, contextUrl = null) {
     content.push({ type: "input_image", image_url: contextUrl });
   }
 
-  const instructions = buildVisionInstructions();
+  const instructions = buildVisionInstructions(toCrop);
   content.push({ type: "input_text", text: "Analyze these images." });
-
+  
   logger.info("[VISION] Calling OpenAI API with Image");
   const response = await openai.responses.create({
     model: "gpt-5.4",
     input: [{ role: "user", content }],
     instructions,
-    reasoning: { effort: "high" },
+    reasoning: { effort: "medium" },
     text: { format: VISION_SCHEMA, verbosity: "low" }
   });
 
