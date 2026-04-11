@@ -1,10 +1,10 @@
 import * as Config from 'config/index.jsx';
 import validateEvent from "../utils/validation.js";
 import { parseFormData } from "../utils/form.js";
-import { submitEvent } from "../../../controller/events.js";
+import { submitEvent } from "controller/events.js";
 import { useRef, useState } from "react";
-import SpinnerOverlay from "components/SpinnerOverlay.jsx";
-import FormAlert from "../components/form/FormAlert.jsx";
+import SpinnerOverlay from "../components/SpinnerOverlay.jsx";
+import MyAlert from "../components/CustomAlert.jsx";
 import FormBody from "../components/form/structure/FormBody.jsx";
 
 
@@ -67,7 +67,7 @@ export default function EventForm({ event, isEdit, handleClick, setEvents } ) {
     return (
         <div className={Config.CENTER} style={{ position: Config.RELATIVE, display: Config.FLEX, alignItems: Config.CENTER, justifyContent: Config.CENTER, minHeight: '100vh', paddingTop: '3rem' }}>
             <SpinnerOverlay isLoading={isLoading} />
-            <FormAlert alert={alert} onClose={() => setAlert(null)} />
+            {alert && <MyAlert {...alert} onClose={() => setAlert(null)} />}
             <FormBody
                 event={event}
                 isEdit={isEdit}

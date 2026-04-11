@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Float, Image, useFileUploadContext, FileUpload as ChakraFileUpload } from "@chakra-ui/react";
-import * as Config from "../config/index.jsx";
+import * as Config from "config/index.jsx";
 
 function ExistingImagePreview({ src, onError }) {
     const [hidden, setHidden] = React.useState(false);

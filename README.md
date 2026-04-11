@@ -43,13 +43,24 @@ fattypopups/
 │
 ├── frontend/             
 │   ├── src/
-│   │   ├── pages/          # Main page components
-│   │   │   ├── home/       # Public event listing
-│   │   │   └── admin/      # Dashboard, EventForm, Login
-│   │   ├── components/     # Reusable UI components
-│   │   ├── controller/     # API client layer 
-│   │   └── utils/          # Helper functions 
-│   └── public/             # Static assets
+│   │   ├── pages/
+│   │   │   ├── home/             # Public event listing
+│   │   │   │   ├── components/
+│   │   │   │   │   ├── card/     # Event card (display, flip, body, footer)
+│   │   │   │   │   └── header/   # Header, Logo, HomeBanner, WhatsApp button
+│   │   │   │   └── context/      # React contexts (EventIndex)
+│   │   │   ├── admin/            # Dashboard, EventForm, DraftBuilder, Login
+│   │   │   │   ├── components/   # Admin-specific UI (alerts, spinners, file upload)
+│   │   │   │   │   ├── draft/    # Draft-specific (Toggle, ProcessingBar)
+│   │   │   │   │   └── form/     # Form fields, structure, typeahead
+│   │   │   │   ├── views/        # Page-level views
+│   │   │   │   └── utils/        # Admin validation & form parsing
+│   │   │   └── about/            # About page
+│   │   ├── components/buttons/   # Shared buttons (AdminButton, navigation)
+│   │   ├── config/               # Theme, colors, icons, strings
+│   │   ├── controller/           # API client layer
+│   │   └── utils/                # Shared helpers (auth, formatting, links)
+│   └── public/                   # Static assets
 │
 ├── lambdas/                # AWS Lambda functions
 │   ├── cleanup/            # Scheduled cleanup (1-day retention)

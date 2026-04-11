@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as Config from "config/index.jsx";
-import { AdminActionButton, BackButton } from 'components/Buttons.jsx';
+import { AdminActionButton, BackButton } from 'components/buttons/Buttons.jsx';
 
 export default function AdminActions({ handleClick }) {
   const navigate = useNavigate();

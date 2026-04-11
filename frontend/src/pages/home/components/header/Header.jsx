@@ -1,9 +1,9 @@
 import React from "react"
 import { Button } from "@chakra-ui/react";
 import Logo from './Logo.jsx';
-import AdminButton from './AdminButton.jsx';
-import WhatsAppGroupButton from '../pages/home/components/WhatsAppGroupButton.jsx';
-import * as Config from '../config/index.jsx';
+import AdminButton from '../../../../components/buttons/AdminButton.jsx';
+import WhatsAppGroupButton from './WhatsAppGroupButton.jsx';
+import * as Config from 'config/index.jsx';
 
 export function About() {
   function handleAbout() {
