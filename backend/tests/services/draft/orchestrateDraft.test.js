@@ -27,11 +27,19 @@ vi.mock('../../../services/draft/generate/text/textCall.js', () => ({
 }));
 
 vi.mock('../../../services/draft/image/crop.js', () => ({
-  cropPoster: vi.fn().mockResolvedValue(null),
+  cropPoster: vi.fn().mockResolvedValue(Buffer.from('cropped')),
 }));
 
-vi.mock('../../../services/draft/image/upload.js', () => ({
-  uploadCroppedPoster: vi.fn().mockResolvedValue(null),
+vi.mock('../../../utils/fetchImageBuffer.js', () => ({
+  fetchImageBuffer: vi.fn().mockResolvedValue(Buffer.from('raw')),
+}));
+
+vi.mock('../../../services/s3/upload.js', () => ({
+  uploadToS3: vi.fn().mockResolvedValue(undefined),
+}));
+
+vi.mock('../../../services/s3/utils.js', () => ({
+  buildS3Url: vi.fn().mockReturnValue('https://s3.example.com/poster.jpg'),
 }));
 
 vi.mock('../../../services/draft/enrich/formatDraft.js', () => ({
@@ -49,6 +57,8 @@ vi.mock('../../../services/draft/enrich/formatDraft.js', () => ({
 const { orchestrateDraft } = await import('../../../services/draft/orchestrateDraft.js');
 const { generateDraftDetails } = await import('../../../services/draft/generate/text/textCall.js');
 const { formatDraft } = await import('../../../services/draft/enrich/formatDraft.js');
+const { cropPoster } = await import('../../../services/draft/image/crop.js');
+const { fetchImageBuffer } = await import('../../../utils/fetchImageBuffer.js');
 
 describe('orchestrateDraft', () => {
   beforeEach(() => vi.clearAllMocks());
@@ -160,10 +170,17 @@ describe('orchestrateDraft', () => {
     expect(result.start_datetime).toBe(today);
   });
 
-  it('passes posterUrl as null when not provided', async () => {
+  it('uses s3 url as poster when upload succeeds', async () => {
     generateDraftDetails.mockResolvedValueOnce(mockLlmOutput());
-    const result = await orchestrateDraft('prompt');
-    expect(result.poster).toBeNull();
+    const result = await orchestrateDraft('prompt', 'http://poster.url');
+    expect(result.poster).toBe('https://s3.example.com/poster.jpg');
+  });
+
+  it('skips cropPoster and uses fetchImageBuffer when toCrop is false', async () => {
+    generateDraftDetails.mockResolvedValueOnce(mockLlmOutput());
+    await orchestrateDraft('prompt', 'http://poster.url', null, false);
+    expect(cropPoster).not.toHaveBeenCalled();
+    expect(fetchImageBuffer).toHaveBeenCalledWith('http://poster.url');
   });
 
   it('handles chef_names as a string (not array) from LLM', async () => {
