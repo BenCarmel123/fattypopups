@@ -1,12 +1,12 @@
 import _React, { useState } from 'react';
-import FormAlert from '../components/form/FormAlert.jsx';
+import MyAlert from '../components/CustomAlert.jsx';
 import { Textarea } from "@chakra-ui/react";
-import FileUpload, { ContextFileUpload } from '../../../components/FileUpload.jsx';
+import FileUpload, { ContextFileUpload } from '../components/FileUpload.jsx';
 import * as Config from 'config/index.jsx';
-import { SubmitPromptButton, BackButton } from 'components/Buttons.jsx';
-import Toggle from 'components/Toggle.jsx';
-import SpinnerOverlay from 'components/SpinnerOverlay.jsx';
-import { sendPrompt } from '../../../controller/draft.js';
+import { SubmitPromptButton, BackButton } from 'components/buttons/Buttons.jsx';
+import Toggle from '../components/draft/Toggle.jsx';
+import SpinnerOverlay from '../components/SpinnerOverlay.jsx';
+import { sendPrompt } from 'controller/draft.js';
 
 export default function DraftBuilder({ placeholder = Config.PROMPT_PLACEHOLDER, handleClick, onDraftQueued }) {
     const [prompt, setPrompt] = useState('');
@@ -61,7 +61,7 @@ export default function DraftBuilder({ placeholder = Config.PROMPT_PLACEHOLDER, 
     return (
         <div>
         <SpinnerOverlay isLoading={isLoading} />
-        <FormAlert alert={alert} onClose={() => setAlert(null)} />
+        {alert && <MyAlert {...alert} onClose={() => setAlert(null)} />}
         <form onSubmit={handleSubmit} className="min-h-screen flex flex-col items-center justify-center gap-4">
             <div className="w-full max-w-xl md:max-w-3xl lg:max-w-4xl px-6 flex items-center justify-between">
                 <BackButton variant="default" onBack={() => handleClick(Config.DASHBOARD, undefined)()} />

@@ -1,5 +1,5 @@
 import { Button } from '@chakra-ui/react';
-import * as Config from '../config/index.jsx';
+import * as Config from 'config/index.jsx';
 import { Send, Loader2, ArrowLeft, Home } from 'lucide-react';
 
 function StyledButton({ children, bgColor, hoverBg, textColor = Config.WHITE, onClick, ...props }) {

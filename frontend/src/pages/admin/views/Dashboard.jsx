@@ -1,12 +1,12 @@
 import { Table } from "@chakra-ui/react"
 import { useState } from "react"
 import * as Config from 'config/index.jsx'
-import MyAlert from "components/CustomAlert.jsx";
+import MyAlert from "../components/CustomAlert.jsx";
 import AdminActions from "../components/AdminActions.jsx";
-import { deleteEvents } from "../../../controller/events.js";
+import { deleteEvents } from "controller/events.js";
 import { FaTrash, FaPen } from "config/index.jsx";
-import SpinnerOverlay from "components/SpinnerOverlay.jsx";
-import ProcessingBar from "components/ProcessingBar.jsx";
+import SpinnerOverlay from "../components/SpinnerOverlay.jsx";
+import ProcessingBar from "../components/draft/ProcessingBar.jsx";
 
 const Dashboard = ({ handleClick, events, setEvents }) => {
   const [alert, setAlert] = useState(undefined);

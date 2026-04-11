@@ -1,5 +1,5 @@
 import { Alert } from "@chakra-ui/react";
-import * as Config from "../config/index.jsx";
+import * as Config from "config/index.jsx";
 
 export default function MyAlert({ status = "info", title, description, onClose }) {
   return (
