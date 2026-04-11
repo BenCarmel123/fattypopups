@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import _React, { useState } from 'react';
 import FormAlert from '../components/form/FormAlert.jsx';
 import { Textarea } from "@chakra-ui/react";
 import FileUpload, { ContextFileUpload } from '../../../components/FileUpload.jsx';
 import * as Config from 'config/index.jsx';
 import { SubmitPromptButton, BackButton } from 'components/Buttons.jsx';
+import Toggle from 'components/Toggle.jsx';
 import SpinnerOverlay from 'components/SpinnerOverlay.jsx';
 import { sendPrompt } from '../../../controller/draft.js';
 
 export default function DraftBuilder({ placeholder = Config.PROMPT_PLACEHOLDER, handleClick, onDraftQueued }) {
     const [prompt, setPrompt] = useState('');
+    const [toCrop, setToCrop] = useState(true);
     const [isLoading, setLoading] = useState(false)
     const [requestInProgress, setRequestInProgress] = useState(false);
     const [alert, setAlert] = useState(undefined);
@@ -24,7 +26,7 @@ export default function DraftBuilder({ placeholder = Config.PROMPT_PLACEHOLDER, 
 
             const posterImage = e.target.poster?.files[0] || null;
             const contextImage = e.target.context_image?.files[0] || null;
-            const parameters = {'prompt': prompt, 'poster': posterImage, 'context_image': contextImage}
+            const parameters = {'prompt': prompt, 'poster': posterImage, 'context_image': contextImage, 'toCrop': toCrop}
 
             const adminInput = new FormData();
             for (const [key, value] of Object.entries(parameters)) if (value) adminInput.append(key, value);
@@ -35,6 +37,7 @@ export default function DraftBuilder({ placeholder = Config.PROMPT_PLACEHOLDER, 
             await onDraftQueued();
 
             // Switch to ADD mode and pass the generated draft
+
             }
 
         catch (err) {
@@ -59,8 +62,9 @@ export default function DraftBuilder({ placeholder = Config.PROMPT_PLACEHOLDER, 
         <SpinnerOverlay isLoading={isLoading} />
         <FormAlert alert={alert} onClose={() => setAlert(null)} />
         <form onSubmit={handleSubmit} className="min-h-screen flex flex-col items-center justify-center gap-4">
-            <div className="w-full max-w-xl md:max-w-3xl lg:max-w-4xl pl-6">
+            <div className="w-full max-w-xl md:max-w-3xl lg:max-w-4xl pl-6 flex items-center gap-4">
                 <BackButton variant="default" onBack={() => handleClick(Config.DASHBOARD, undefined)()} />
+                <Toggle checked={toCrop} onChange={(e) => setToCrop(e.target.checked)} disabled={isLoading} label="Crop poster" />
             </div>
             <div className="relative flex items-end gap-2 p-1 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-200 w-full max-w-xl md:max-w-3xl lg:max-w-4xl">
             <Textarea
