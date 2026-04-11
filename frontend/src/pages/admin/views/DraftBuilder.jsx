@@ -26,10 +26,11 @@ export default function DraftBuilder({ placeholder = Config.PROMPT_PLACEHOLDER, 
 
             const posterImage = e.target.poster?.files[0] || null;
             const contextImage = e.target.context_image?.files[0] || null;
-            const parameters = {'prompt': prompt, 'poster': posterImage, 'context_image': contextImage, 'toCrop': toCrop}
+            const parameters = {'prompt': prompt, 'poster': posterImage, 'context_image': contextImage}
 
             const adminInput = new FormData();
             for (const [key, value] of Object.entries(parameters)) if (value) adminInput.append(key, value);
+            adminInput.append('toCrop', toCrop);
 
             await sendPrompt(adminInput);
 

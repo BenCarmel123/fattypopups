@@ -19,13 +19,13 @@ export async function analyzeImage(posterUrl = null, contextUrl = null, toCrop) 
 
   const instructions = buildVisionInstructions(toCrop);
   content.push({ type: "input_text", text: "Analyze these images." });
-
+  
   logger.info("[VISION] Calling OpenAI API with Image");
   const response = await openai.responses.create({
     model: "gpt-5.4",
     input: [{ role: "user", content }],
     instructions,
-    reasoning: { effort: "high" },
+    reasoning: { effort: "medium" },
     text: { format: VISION_SCHEMA, verbosity: "low" }
   });
 
