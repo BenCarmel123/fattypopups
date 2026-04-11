@@ -63,7 +63,7 @@ export default function DraftBuilder({ placeholder = Config.PROMPT_PLACEHOLDER, 
         <SpinnerOverlay isLoading={isLoading} />
         <FormAlert alert={alert} onClose={() => setAlert(null)} />
         <form onSubmit={handleSubmit} className="min-h-screen flex flex-col items-center justify-center gap-4">
-            <div className="w-full max-w-xl md:max-w-3xl lg:max-w-4xl pl-6 flex items-center gap-4">
+            <div className="w-full max-w-xl md:max-w-3xl lg:max-w-4xl px-6 flex items-center justify-between">
                 <BackButton variant="default" onBack={() => handleClick(Config.DASHBOARD, undefined)()} />
                 <Toggle checked={toCrop} onChange={(e) => setToCrop(e.target.checked)} disabled={isLoading} label="Crop poster" />
             </div>
