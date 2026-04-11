@@ -1,4 +1,4 @@
-import { getTimestamp } from './timestamp.js';
+import { getTimestamp } from './time.js';
 
 const formatMessage = (level, message, data) => {
   const timestamp = getTimestamp();

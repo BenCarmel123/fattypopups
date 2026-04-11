@@ -11,16 +11,22 @@ import { analyzeImage } from "./generate/vision/visionCall.js";
 import { fetchStyleExamples } from "./generate/text/similaritySearch.js";
 import { generateDraftDetails } from "./generate/text/textCall.js";
 import { cropPoster } from "./image/crop.js";
-import { uploadCroppedPoster } from "./image/upload.js";
+import { fetchImageBuffer } from "../../utils/fetchImageBuffer.js";
+import { uploadToS3 } from "../s3/upload.js";
+import { buildS3Url } from "../s3/utils.js";
 import { formatDraft } from "./enrich/formatDraft.js";
 import { logger } from "../../utils/logger.js";
-import { resolveEndDatetime } from "../../utils/datetime.js";
+import { resolveEndDatetime } from "../../utils/time.js";
 
-const imagePipeline = async (posterUrl, cropCoordinates) => {
-    logger.info("[IMAGE PIPELINE] Starting crop + upload");
-    const croppedBuffer = await cropPoster(posterUrl, cropCoordinates);
-    const url = await uploadCroppedPoster(croppedBuffer);
-    logger.info("[IMAGE PIPELINE] Complete");
+const imagePipeline = async (posterUrl, cropCoordinates, toCrop) => {
+    logger.info("[IMAGE PIPELINE] Starting image + upload");
+    const buffer = toCrop
+        ? await cropPoster(posterUrl, cropCoordinates)
+        : await fetchImageBuffer(posterUrl);
+    const s3_key = `posters/poster-${Date.now()}.jpg`;
+    await uploadToS3(s3_key, { buffer, mimetype: 'image/jpeg' });
+    const url = buildS3Url(s3_key);
+    logger.info("[IMAGE PIPELINE] Complete:", url);
     return url;
 };
 
@@ -33,13 +39,13 @@ const textPipeline = async (prompt, styleExamples) => {
 };
 
 const orchestrateDraft =
-    async (prompt, posterUrl = null, contextUrl = null) =>
+    async (prompt, posterUrl = null, contextUrl = null, toCrop = true) =>
     {
         const _startTime = Date.now();
 
         // Stage 1 — Parallel: vision analysis + similarity search
         const [{ extractedText, cropCoordinates }, styleExamples] = await Promise.all([
-            analyzeImage(posterUrl, contextUrl),
+            analyzeImage(posterUrl, contextUrl, toCrop),
             fetchStyleExamples(prompt)
         ]);
 
@@ -49,7 +55,7 @@ const orchestrateDraft =
 
         // Stage 2 — Parallel: image pipeline (crop → upload) + text pipeline (LLM → enrich)
         const [croppedPosterUrl, { llmResponse, enriched }] = await Promise.all([
-            imagePipeline(posterUrl, cropCoordinates),
+            imagePipeline(posterUrl, cropCoordinates, toCrop),
             textPipeline(enrichedPrompt, styleExamples)
         ]);
 

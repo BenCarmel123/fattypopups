@@ -1,4 +1,4 @@
-import { resolveEndDatetime } from '../../utils/datetime.js';
+import { resolveEndDatetime } from '../../utils/time.js';
 
 describe('resolveEndDatetime', () => {
   it('returns start when end is before start', () => {

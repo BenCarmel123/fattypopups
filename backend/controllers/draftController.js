@@ -9,7 +9,7 @@ export const createDraft = async (req, res) => {
   const parsed = DraftBodySchema.safeParse(req.body);
   if (!parsed.success) return res.status(400).json({ error: 'A non-empty prompt is required' });
 
-  const { prompt } = parsed.data;
+  const { prompt, toCrop } = parsed.data;
 
   try {
     logger.info('[DRAFT] Uploading images');
@@ -21,7 +21,7 @@ export const createDraft = async (req, res) => {
     const placeholder = await insertEvent({ title: prompt, is_draft: true, status: 'processing' });
     await invalidateEventsCache();
     logger.info('[DRAFT] Placeholder draft created with ID:', placeholder.id);
-    await publishDraftJob({ prompt, posterUrl, contextUrl, draftId: placeholder.id });
+    await publishDraftJob({ prompt, posterUrl, contextUrl, draftId: placeholder.id, toCrop });
     logger.info('[DRAFT] Draft job queued');
     return res.status(202).json({ message: 'Draft queued' });
   } catch (err) {
