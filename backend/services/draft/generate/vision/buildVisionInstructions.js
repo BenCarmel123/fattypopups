@@ -29,11 +29,6 @@ Guidelines:
 Example: For a typical Instagram feed post, return something like: { "top": 17, "left": 3, "bottom": 68, "right": 97 }
 `;
 
-const NO_CROP_SUFFIX = `\
-
-Since cropping is not required, return cropCoordinates as the full image: { "top": 0, "left": 0, "bottom": 100, "right": 100 }.
-`;
-
-export function buildVisionInstructions(toCrop) {
-  return toCrop ? VISION_INSTRUCTIONS : VISION_INSTRUCTIONS + NO_CROP_SUFFIX;
+export function buildVisionInstructions() {
+  return VISION_INSTRUCTIONS;
 }

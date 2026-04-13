@@ -30,16 +30,8 @@ vi.mock('../../../services/draft/image/crop.js', () => ({
   cropPoster: vi.fn().mockResolvedValue(Buffer.from('cropped')),
 }));
 
-vi.mock('../../../utils/fetchImageBuffer.js', () => ({
-  fetchImageBuffer: vi.fn().mockResolvedValue(Buffer.from('raw')),
-}));
-
-vi.mock('../../../services/s3/upload.js', () => ({
-  uploadToS3: vi.fn().mockResolvedValue(undefined),
-}));
-
-vi.mock('../../../services/s3/utils.js', () => ({
-  buildS3Url: vi.fn().mockReturnValue('https://s3.example.com/poster.jpg'),
+vi.mock('../../../services/draft/image/upload.js', () => ({
+  uploadCroppedPoster: vi.fn().mockResolvedValue('https://s3.example.com/poster.jpg'),
 }));
 
 vi.mock('../../../services/draft/enrich/formatDraft.js', () => ({
@@ -57,8 +49,6 @@ vi.mock('../../../services/draft/enrich/formatDraft.js', () => ({
 const { orchestrateDraft } = await import('../../../services/draft/orchestrateDraft.js');
 const { generateDraftDetails } = await import('../../../services/draft/generate/text/textCall.js');
 const { formatDraft } = await import('../../../services/draft/enrich/formatDraft.js');
-const { cropPoster } = await import('../../../services/draft/image/crop.js');
-const { fetchImageBuffer } = await import('../../../utils/fetchImageBuffer.js');
 
 describe('orchestrateDraft', () => {
   beforeEach(() => vi.clearAllMocks());
@@ -174,13 +164,6 @@ describe('orchestrateDraft', () => {
     generateDraftDetails.mockResolvedValueOnce(mockLlmOutput());
     const result = await orchestrateDraft('prompt', 'http://poster.url');
     expect(result.poster).toBe('https://s3.example.com/poster.jpg');
-  });
-
-  it('skips cropPoster and uses fetchImageBuffer when toCrop is false', async () => {
-    generateDraftDetails.mockResolvedValueOnce(mockLlmOutput());
-    await orchestrateDraft('prompt', 'http://poster.url', null, false);
-    expect(cropPoster).not.toHaveBeenCalled();
-    expect(fetchImageBuffer).toHaveBeenCalledWith('http://poster.url');
   });
 
   it('handles chef_names as a string (not array) from LLM', async () => {
