@@ -7,9 +7,9 @@ import { logger } from '../utils/logger.js';
 
 // Runs the AI pipeline on a message and updates the placeholder draft row
 export const processMessage = async (message) => {
-  const { prompt, posterUrl, contextUrl, draftId, toCrop } = JSON.parse(message.Body);
+  const { prompt, posterUrl, contextUrl, draftId } = JSON.parse(message.Body);
 
-  const draft = await orchestrateDraft(prompt, posterUrl, contextUrl, toCrop);
+  const draft = await orchestrateDraft(prompt, posterUrl, contextUrl);
   // Title cannot be empty — fall back to the admin's original prompt
   if (!draft.title) draft.title = prompt;
 

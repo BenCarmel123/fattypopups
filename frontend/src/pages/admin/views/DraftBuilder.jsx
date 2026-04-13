@@ -4,13 +4,11 @@ import { Textarea } from "@chakra-ui/react";
 import FileUpload, { ContextFileUpload } from '../components/FileUpload.jsx';
 import * as Config from 'config/index.jsx';
 import { SubmitPromptButton, BackButton } from 'components/buttons/Buttons.jsx';
-import Toggle from '../components/draft/Toggle.jsx';
 import SpinnerOverlay from '../components/SpinnerOverlay.jsx';
 import { sendPrompt } from 'controller/draft.js';
 
 export default function DraftBuilder({ placeholder = Config.PROMPT_PLACEHOLDER, handleClick, onDraftQueued }) {
     const [prompt, setPrompt] = useState('');
-    const [toCrop, setToCrop] = useState(true);
     const [isLoading, setLoading] = useState(false)
     const [requestInProgress, setRequestInProgress] = useState(false);
     const [alert, setAlert] = useState(undefined);
@@ -30,7 +28,6 @@ export default function DraftBuilder({ placeholder = Config.PROMPT_PLACEHOLDER, 
 
             const adminInput = new FormData();
             for (const [key, value] of Object.entries(parameters)) if (value) adminInput.append(key, value);
-            adminInput.append('toCrop', toCrop);
 
             await sendPrompt(adminInput);
 
@@ -63,9 +60,8 @@ export default function DraftBuilder({ placeholder = Config.PROMPT_PLACEHOLDER, 
         <SpinnerOverlay isLoading={isLoading} />
         {alert && <MyAlert {...alert} onClose={() => setAlert(null)} />}
         <form onSubmit={handleSubmit} className="min-h-screen flex flex-col items-center justify-center gap-4">
-            <div className="w-full max-w-xl md:max-w-3xl lg:max-w-4xl px-6 flex items-center justify-between">
+            <div className="w-full max-w-xl md:max-w-3xl lg:max-w-4xl pl-6">
                 <BackButton variant="default" onBack={() => handleClick(Config.DASHBOARD, undefined)()} />
-                <Toggle checked={toCrop} onChange={(e) => setToCrop(e.target.checked)} disabled={isLoading} label="Crop poster" />
             </div>
             <div className="relative flex items-end gap-2 p-1 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-200 w-full max-w-xl md:max-w-3xl lg:max-w-4xl">
             <Textarea
