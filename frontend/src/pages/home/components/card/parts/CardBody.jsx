@@ -4,7 +4,21 @@ import { handleMaps, handleInstagram, handleCalendar } from 'utils/externalLinks
 import * as Config from 'config/index.jsx';
 import EventAttributeSpan from './EventAttributeSpan.jsx';
 
+const CardDivider = () => <hr style={{ borderColor: Config.GRAY, opacity: 0.15, margin: '2px 0' }} />;
+
+// Combines venue and chefs into a consolidated list of instagram entries
+function getInstagramEntries(event) {
+  return [
+    event.venue?.instagram_handle ? { name: event.venue.name, handle: event.venue.instagram_handle } : null,
+    ...(Array.isArray(event.chefs) ? event.chefs.map(chef => ({ name: chef.name, handle: chef.instagram_handle })) : []),
+  ]
+    .filter(Boolean)
+    .filter((entry, idx, arr) => arr.findIndex(e => e.handle === entry.handle) === idx);
+}
+
 export default function CardBody({ event }) {
+  const instagramEntries = getInstagramEntries(event);
+  
   return (
     <Card.Body gap="2" padding="5" bg={Config.CARD_BACKGROUND_COLOR} style={{ lineHeight: 2.0 }}>
       <Card.Title
@@ -15,56 +29,33 @@ export default function CardBody({ event }) {
         mt={-1}
         mb={1}
         borderRadius="20px"
-        backgroundColor={Config.EVENT_TITLE_PADDING_COLOR}
+        backgroundColor={Config.HOVER}
         borderBottom="medium solid"
-        borderBottomColor={Config.BORDER_COLOR}
+        borderBottomColor={Config.VERY_SUBTLE_BORDER}
         px={2}
         py={1}
       >
         {event.title}
       </Card.Title>
-      <Card.Description fontSize={Config.MEDIUM} color="gray.600" paddingRight={4} paddingLeft={4} lineHeight={3.5}>
-        {event.venue?.instagram_handle && (
+      <Card.Description fontSize={Config.MEDIUM} paddingRight={4} paddingLeft={4} lineHeight={3.5}>
+        {instagramEntries.map((entry, idx) => (
           <span
-            style={{ cursor: Config.POINTER, display: Config.BLOCK }}
-            onClick={() => handleInstagram(event.venue.instagram_handle)}
+            key={idx}
+            style={{ cursor: Config.POINTER, display: Config.BLOCK, marginLeft: idx === 0 ? 0 : "27px" }}
+            onClick={() => handleInstagram(entry.handle)}
           >
-            <Config.RiInstagramFill className="inline-block mr-2.5 mb-1" />
-            <EventAttributeSpan attribute={event.venue.name} onClick={() => handleInstagram(event.venue.instagram_handle)} />
+            {idx === 0 && <Config.RiInstagramFill className="inline-block mr-2.5 mb-1" style={{ color: Config.GRAY }} />}
+            <EventAttributeSpan attribute={entry.name} onClick={() => handleInstagram(entry.handle)} />
             <br />
           </span>
-        )}
-        {event.chefs &&
-          Array.isArray(event.chefs) &&
-          event.chefs.length > 0 &&
-          event.chefs
-            .map((chef, idx) => (
-             <span
-                key={idx}
-                style={{
-                  cursor: Config.POINTER,
-                  marginRight: idx < event.chefs.length - 1 ? 4 : 0,
-                  display: Config.BLOCK,
-                  marginLeft: idx === 0 ? 0 : "27px"
-                }}
-                onClick={() => handleInstagram(chef.instagram_handle)}
-                >
-                {(event.chefs.length === 1 || idx === 0) && 
-                <p className="inline-block mr-6 mb-1" />}
-                {(chef.instagram_handle != event.venue?.instagram_handle) && (
-                  <>
-                    <EventAttributeSpan attribute={chef.name} onClick={() => handleInstagram(chef.instagram_handle)} style={{ marginLeft: '3.5px' }} />
-                    <br />
-                  </>
-                )}
-              </span>
-            ))
-        }
-        <Config.SiGooglecalendar className={Config.ACTION_BUTTON_SPACING} />
+        ))}
+        <CardDivider />
+        <Config.SiGooglecalendar className={Config.ACTION_BUTTON_SPACING} style={{ color: Config.GRAY }} />
         <EventAttributeSpan attribute={formatDateRange(event.start_datetime, event.end_datetime)} onClick={() => handleCalendar(event)} />
         <br />
+        <CardDivider />
         <span style={{ display: Config.BLOCK }}>
-          <Config.SiGooglemaps className={Config.ACTION_BUTTON_SPACING} />
+          <Config.SiGooglemaps className={Config.ACTION_BUTTON_SPACING} style={{ color: Config.GRAY }} />
           <EventAttributeSpan attribute={event.venue?.address} onClick={() => handleMaps(event.venue?.address)} />
         </span>
       </Card.Description>
