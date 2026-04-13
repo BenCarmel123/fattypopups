@@ -49,9 +49,14 @@ export default function CardBody({ event }) {
                 }}
                 onClick={() => handleInstagram(chef.instagram_handle)}
                 >
-                {(event.chefs.length === 1 || idx === 0) && <Config.RiInstagramFill className="inline-block mr-2.5 mb-1" />}
-                <EventAttributeSpan attribute={chef.name} onClick={() => handleInstagram(chef.instagram_handle)} style={{ marginLeft: '3.5px' }} />
-                <br></br>
+                {(event.chefs.length === 1 || idx === 0) && 
+                <p className="inline-block mr-6 mb-1" />}
+                {(chef.instagram_handle != event.venue?.instagram_handle) && (
+                  <>
+                    <EventAttributeSpan attribute={chef.name} onClick={() => handleInstagram(chef.instagram_handle)} style={{ marginLeft: '3.5px' }} />
+                    <br />
+                  </>
+                )}
               </span>
             ))
         }
