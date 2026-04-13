@@ -31,6 +31,7 @@ export function EventImage({ event }) {
           objectFit: Config.CONTAIN,
           display: Config.BLOCK,
           background: '#fffaf5',
+          borderBottom: `medium solid ${Config.VERY_SUBTLE_BORDER}`,
         }}
       />
     </motion.div>

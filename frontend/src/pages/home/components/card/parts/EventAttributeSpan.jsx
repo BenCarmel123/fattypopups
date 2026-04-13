@@ -12,7 +12,8 @@ export default function EventAttributeSpan({ attribute, onClick }) {
         padding: Config.LINK_PADDING,
         borderWidth: '2.5px',
         cursor: Config.POINTER,
-        color: Config.GRAY,
+        color: Config.Gray,
+        backgroundColor: Config.HOVER,
         letterSpacing: '1px',
       }}
       onMouseEnter={defaultOnMouseEnter}

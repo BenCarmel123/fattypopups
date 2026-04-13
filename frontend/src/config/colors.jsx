@@ -1,5 +1,4 @@
 // Brand / primary colors
-export const PRIMARY_COLOR = '#e0e4dd';
 export const SECONDARY_COLOR = '#368382';
 
 // Neutrals / text colors
@@ -9,13 +8,11 @@ export const GRAY = '#51515b';
 
 // Semantic UI colors
 export const CARD_BACKGROUND_COLOR = '#fffbf1';
-export const FOOTER_BACKGROUND_COLOR = '#cde6e5';
+export const CARD_ACCENT_COLOR = '#cde6e5';
 export const HEADER_BACKGROUND_COLOR = 'transparent';
 export const HEADER_BORDER_COLOR = '#368382';
-export const DRAWER_BACKGROUND_COLOR = '#fffbf1';
 export const ABOUT_PAGE_BACKGROUND_COLOR = '#fffaee';
 export const BACKGROUND_COLOR = '#a1c4fd';
-export const EVENT_TITLE_PADDING_COLOR = 'rgb(205 230 229 / 22%)';
 export const BORDER_COLOR = '#cde6e5';
 export const ADMIN_PANEL_COLOR = '#a1c4fd';
 export const FORM_BACKGROUND_COLOR = '#ffffffcf';
@@ -30,4 +27,6 @@ export const DANGER_HOVER_COLOR = '#e04545';
 
 // Utility colors
 export const TRANSPARENT = 'transparent';
-export const HOVER = '#cde6e5';
+export const HOVER = CARD_ACCENT_COLOR;
+export const SUBTLE_BORDER = 'rgba(81, 81, 91, 0.3)';
+export const VERY_SUBTLE_BORDER = 'rgba(81, 81, 91, 0.15)';
