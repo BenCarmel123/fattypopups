@@ -24,7 +24,8 @@ const deletePastEvents = async () => {
             return;
         }
 
-        console.log(`[CLEANUP] Deleted ${data?.length ?? 0} past events`);
+        const titles = data?.map(e => e.title ?? e.id) ?? [];
+        console.log(`[CLEANUP] Deleted ${titles.length} past events: ${titles.join(', ')}`);
     } catch (error) {
         console.error('[CLEANUP] Unexpected error deleting past events:', error.message);
     }
@@ -47,7 +48,8 @@ const deleteTempS3Files = async () => {
             Delete: { Objects: list.Contents.map(obj => ({ Key: obj.Key })) }
         }));
 
-        console.log(`[CLEANUP] Deleted ${list.Contents.length} temp S3 files`);
+        const keys = list.Contents.map(obj => obj.Key);
+        console.log(`[CLEANUP] Deleted ${keys.length} temp S3 files: ${keys.join(', ')}`);
     } catch (error) {
         console.error('[CLEANUP] Unexpected error deleting temp S3 files:', error.message);
     }
