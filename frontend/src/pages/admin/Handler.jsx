@@ -7,6 +7,7 @@ import DraftBuilder from "./views/DraftBuilder.jsx";
 import { handleTokenCheck } from "utils/auth.js";
 import { fetchEvents } from "controller/events.js";
 import { checkAuth } from "controller/auth.js";
+import { logger } from "utils/logger.js";
 
 export default function AdminPageHandler() {
   const[_isAuthenticated, setAuthenticated] = useState(false)
@@ -41,7 +42,7 @@ export default function AdminPageHandler() {
       fetchEvents(true).then(fresh => {
         setEvents(fresh);
         sessionStorage.setItem('admin_events', JSON.stringify(fresh));
-      }).catch(() => {});
+      }).catch(err => logger.error('Failed to poll draft events:', err));
     }, 5000);
     return () => clearInterval(interval);
   }, [action]);
@@ -65,10 +66,10 @@ export default function AdminPageHandler() {
           fetchEvents(true).then(fresh => {
             setEvents(fresh);
             sessionStorage.setItem('admin_events', JSON.stringify(fresh));
-          }).catch(() => setEvents([]));
+          }).catch(err => { logger.error('Failed to fetch events after auth:', err); setEvents([]); });
         }
         setAction(data.authenticated ? Config.DASHBOARD : Config.LOGIN);
-      }).catch(() => setAction(Config.LOGIN));
+      }).catch(err => { logger.error('Auth check failed:', err); setAction(Config.LOGIN); });
   }, []);
 
    if (action === null) return null;

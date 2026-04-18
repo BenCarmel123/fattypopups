@@ -3,6 +3,7 @@ import * as Config from 'config/index.jsx';
 import { useState, useEffect } from "react";
 import TypeaheadInput from "./TypeaheadInput.jsx";
 import { fetchChefs } from "controller/chefs.js";
+import { logger } from "utils/logger.js";
 import Row from "../structure/Row.jsx";
 import AddChef from "./AddButton.jsx";
 
@@ -24,7 +25,7 @@ export default function ChefFields({ event }) {
   useEffect(() => {
     fetchChefs()
       .then(data => setChefData(data))
-      .catch(err => console.log('[ERROR] Failed to fetch chefs:', err));
+      .catch(err => logger.error('Failed to fetch chefs:', err));
   }, []);
 
   // Check if last chef row has both fields filled

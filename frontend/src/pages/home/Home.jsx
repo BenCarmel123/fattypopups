@@ -6,6 +6,7 @@ import HomeBanner from './components/header/HomeBanner.jsx';
 import EventIndexContext from './context/EventIndexContext.js';
 import { handleTokenCheck } from "utils/auth.js";
 import { fetchEvents } from "controller/events.js";
+import { logger } from "utils/logger.js";
 
 export default function HomePage() {
   const [events, setEvents] = useState(null);
@@ -13,7 +14,7 @@ export default function HomePage() {
     fetchEvents()
       .then(data => setEvents(Array.isArray(data) ? data : []))
       .catch(err => {
-        console.log('[ERROR] Error fetching events:', err);
+        logger.error('Error fetching events:', err);
         setEvents([]);
       });
   }, []);

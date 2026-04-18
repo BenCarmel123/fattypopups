@@ -8,27 +8,25 @@ import { logger } from '../utils/logger.js';
 import { EventBodySchema, DraftEventBodySchema, DeleteBodySchema } from '../schemas/event.schema.js';
 import { isTrue } from '../utils/isTrue.js';
 
-export const getEvents = async (_req, res) => {
+export const getEvents = async (_req, res, next) => {
   try {
     const events = await getEventsWithDetails(false);
     res.json(events);
   } catch (err) {
-    logger.error("HTTP Error:", err);
-    res.status(500).json({ error: 'Internal Server Error' });
+    next(err);
   }
 };
 
-export const getDraftEvents = async (_req, res) => {
+export const getDraftEvents = async (_req, res, next) => {
   try {
     const events = await getEventsWithDetails(true);
     res.json(events);
   } catch (err) {
-    logger.error("HTTP Error:", err);
-    res.status(500).json({ error: 'Internal Server Error' });
+    next(err);
   }
 };
 
-export const createEvent = async (req, res) => {
+export const createEvent = async (req, res, next) => {
   const schema = isTrue(req.body.is_draft) ? DraftEventBodySchema : EventBodySchema;
   const parsed = schema.safeParse(req.body);
   if (!parsed.success) {
@@ -40,12 +38,11 @@ export const createEvent = async (req, res) => {
     const newEvent = await orchestrateEventCreate(parsed.data, req.file);
     res.json(newEvent);
   } catch (err) {
-    logger.error('HTTP Error:', err);
-    res.status(500).json({ error: 'Internal Server Error' });
+    next(err);
   }
 };
 
-export const updateEvent = async (req, res) => {
+export const updateEvent = async (req, res, next) => {
   const schema = isTrue(req.body.is_draft) ? DraftEventBodySchema : EventBodySchema;
   const parsed = schema.safeParse(req.body);
   if (!parsed.success) {
@@ -57,12 +54,11 @@ export const updateEvent = async (req, res) => {
     const updatedEvent = await orchestrateEventUpdate(req.params.id, parsed.data, req.file);
     res.json(updatedEvent);
   } catch (err) {
-    logger.error('HTTP Error:', err);
-    res.status(500).json({ error: 'Internal Server Error' });
+    next(err);
   }
 };
 
-export const deleteEventsByTitles = async (req, res) => {
+export const deleteEventsByTitles = async (req, res, next) => {
   const parsed = DeleteBodySchema.safeParse(req.body);
   if (!parsed.success) {
     logger.error('Schema validation failed:', JSON.stringify(parsed.error.issues, null, 2));
@@ -73,7 +69,6 @@ export const deleteEventsByTitles = async (req, res) => {
     const deleted = await deleteEvents(parsed.data.titles);
     res.json(deleted);
   } catch (err) {
-    logger.error('HTTP Error:', err);
-    res.status(500).json({ error: 'Internal Server Error' });
+    next(err);
   }
 };
