@@ -10,6 +10,6 @@ eventRouter.get('/', eventsLimiter, eventController.getEvents);
 eventRouter.get('/drafts', isAuthorized, eventController.getDraftEvents);
 eventRouter.post('/', isAuthorized, uploadMemory.single('poster'), eventController.createEvent);
 eventRouter.put('/:id', isAuthorized, uploadMemory.single('poster'), eventController.updateEvent);
-eventRouter.delete('/', isAuthorized, eventController.deleteEventsByTitles);
+eventRouter.delete('/:id', isAuthorized, eventController.deleteEventById);
 
 export default eventRouter;
