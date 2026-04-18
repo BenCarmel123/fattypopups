@@ -10,7 +10,7 @@ import 'dotenv-flow/config';
 
 // Import routers
 import * as routers from './routes/index.js';
-const { eventRouter, authRouter, draftRouter, chefRouter, venueRouter } = routers;
+const { eventRouter, authRouter, draftRouter, chefRouter, venueRouter, healthRouter } = routers;
 
 // Initialize Express app
 const app = express();
@@ -43,6 +43,7 @@ app.use('/api/chefs', chefRouter);
 app.use('/api/venues', venueRouter);
 app.use('/auth', authRouter);
 app.use('/agent', draftRouter);
+app.use('/health', healthRouter);
 
 app.use((err, req, res, _next) => {
   logger.error(`[${req.method}] ${req.url}`, err);
