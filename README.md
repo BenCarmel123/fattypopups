@@ -88,6 +88,9 @@ fattypopups/
 ### Drafts
 - `POST /agent/draft` - Generate AI draft from prompt 🔒
 
+### Health
+- `GET /health` - Server and DB connectivity check (rate limited)
+
 ## Testing
 
 **Framework:** Vitest — run with `npm test` from `backend/`
@@ -108,6 +111,8 @@ Tests live in `backend/tests/` mirroring the `services/` structure:
 Each file contains one focused test (1 `describe`, 1 `it`).
 
 ## CI/CD Pipeline
+
+**Rate limiting** applied to `GET /api/events` and `GET /health` via `express-rate-limit`.
 
 **CI** (on PR to `main`): API route checks, npm audit, unit tests (all block merge), ESLint (non-blocking)
 
