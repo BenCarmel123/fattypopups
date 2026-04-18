@@ -6,6 +6,7 @@ import AdminActions from "../components/AdminActions.jsx";
 import { deleteEvents } from "controller/events.js";
 import { FaTrash, FaPen } from "config/index.jsx";
 import SpinnerOverlay from "../components/SpinnerOverlay.jsx";
+import { logger } from "utils/logger.js";
 import ProcessingBar from "../components/draft/ProcessingBar.jsx";
 
 const Dashboard = ({ handleClick, events, setEvents }) => {
@@ -24,7 +25,7 @@ const Dashboard = ({ handleClick, events, setEvents }) => {
         });
         setAlert({ status: Config.STATUS_SUCCESS, description: `"${title}" was deleted.` });
       })
-      .catch(err => console.log("[ERROR] Error deleting event:", err))
+      .catch(err => logger.error('Error deleting event:', err))
       .finally(() => setDeleting(false));
   };
 

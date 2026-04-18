@@ -2,6 +2,7 @@ import { Stack } from "@chakra-ui/react";
 import { useState, useEffect } from 'react';
 import TypeaheadInput from './TypeaheadInput.jsx';
 import { fetchVenues } from 'controller/venues.js';
+import { logger } from 'utils/logger.js';
 import Row from "../structure/Row.jsx";
 
 // Venue fields component - manages venue name, address, and instagram inputs
@@ -17,7 +18,7 @@ export default function VenueFields({ event }) {
   useEffect(() => {
     fetchVenues()
       .then(data => setVenueData(data))
-      .catch(err => console.log('[ERROR] Failed to fetch venues:', err));
+      .catch(err => logger.error('Failed to fetch venues:', err));
   }, []);
 
   const handleVenueChange = (field, value) => {
