@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import { logger } from '../../utils/logger.js';
 
 export const isAuthorized = (req, res, next) => {
     const authHeader = req.headers.authorization;
@@ -11,7 +12,8 @@ export const isAuthorized = (req, res, next) => {
     try {
         req.user = jwt.verify(token, process.env.JWT_SECRET);
         next();
-    } catch {
+    } catch (err) {
+        logger.warn('[AUTH] Invalid token:', err.message);
         return res.status(401).json({ error: 'Invalid token' });
   }
 };

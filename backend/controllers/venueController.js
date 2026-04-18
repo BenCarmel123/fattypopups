@@ -1,7 +1,6 @@
 import { getAllVenues } from '../services/entities/venue/operations.js';
-import { logger } from '../utils/logger.js';
 
-export const getVenues = async (_req, res) => {
+export const getVenues = async (_req, res, next) => {
   try {
     const venues = await getAllVenues();
     res.json(venues.map(venue => ({
@@ -10,7 +9,6 @@ export const getVenues = async (_req, res) => {
       instagram: venue.instagram_handle
     })));
   } catch (err) {
-    logger.error('HTTP Error:', err);
-    res.status(500).json({ error: 'Internal Server Error' });
+    next(err);
   }
 };

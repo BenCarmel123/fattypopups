@@ -5,7 +5,7 @@ import { invalidateEventsCache } from '../services/cache/invalidation.js';
 import { logger } from '../utils/logger.js';
 import { DraftBodySchema } from '../schemas/draft.schema.js';
 
-export const createDraft = async (req, res) => {
+export const createDraft = async (req, res, next) => {
   const parsed = DraftBodySchema.safeParse(req.body);
   if (!parsed.success) return res.status(400).json({ error: 'A non-empty prompt is required' });
 
@@ -25,8 +25,6 @@ export const createDraft = async (req, res) => {
     logger.info('[DRAFT] Draft job queued');
     return res.status(202).json({ message: 'Draft queued' });
   } catch (err) {
-    logger.error('[ERROR] Draft or event creation failed:', err.message || err);
-    logger.error('[ERROR] Stack trace:', err.stack);
-    return res.status(500).json({ error: 'Draft or event creation failed' });
+    next(err);
   }
 };

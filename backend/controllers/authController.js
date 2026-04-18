@@ -16,26 +16,30 @@ export const redirectToGoogle = (_req, res) => {
   res.redirect(url);
 };
 
-export const handleGoogleCallback = async (req, res) => {
-  const { tokens } = await oauth2Client.getToken(req.query.code);
-  oauth2Client.setCredentials(tokens);
+export const handleGoogleCallback = async (req, res, next) => {
+  try {
+    const { tokens } = await oauth2Client.getToken(req.query.code);
+    oauth2Client.setCredentials(tokens);
 
-  const ticket = await oauth2Client.verifyIdToken({
-    idToken: tokens.id_token,
-    audience: process.env.GOOGLE_CLIENT_ID,
-  });
+    const ticket = await oauth2Client.verifyIdToken({
+      idToken: tokens.id_token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
 
-  const email = ticket.getPayload().email.toLowerCase();
-  logger.info(`[AUTH] Logged in as: ${email} | isAdmin: ${isAdminEmail(email)}`);
+    const email = ticket.getPayload().email.toLowerCase();
+    logger.info(`[AUTH] Logged in as: ${email} | isAdmin: ${isAdminEmail(email)}`);
 
-  if (isAdminEmail(email)) {
-    const token = jwt.sign({ email, role: 'admin' }, process.env.JWT_SECRET, { expiresIn: '7d' });
-    logger.info('[AUTH] GOOGLE CALLBACK');
-    logger.info('[AUTH] JWT created:', !!token);
-    return res.redirect(`${process.env.FRONTEND_URL}/${process.env.ADMIN_ROUTE}?token=${token}`);
+    if (isAdminEmail(email)) {
+      const token = jwt.sign({ email, role: 'admin' }, process.env.JWT_SECRET, { expiresIn: '7d' });
+      logger.info('[AUTH] GOOGLE CALLBACK');
+      logger.info('[AUTH] JWT created:', !!token);
+      return res.redirect(`${process.env.FRONTEND_URL}/${process.env.ADMIN_ROUTE}?token=${token}`);
+    }
+
+    return res.redirect(process.env.FRONTEND_URL);
+  } catch (err) {
+    next(err);
   }
-
-  return res.redirect(process.env.FRONTEND_URL);
 };
 
 export const checkAuth = (req, res) => {

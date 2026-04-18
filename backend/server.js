@@ -44,6 +44,11 @@ app.use('/api/venues', venueRouter);
 app.use('/auth', authRouter);
 app.use('/agent', draftRouter);
 
+app.use((err, req, res, _next) => {
+  logger.error(`[${req.method}] ${req.url}`, err);
+  res.status(500).json({ error: 'Internal Server Error' });
+});
+
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, '0.0.0.0', () => {
   logger.info(`Server running on port ${PORT}`);
