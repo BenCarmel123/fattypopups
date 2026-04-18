@@ -1,9 +1,10 @@
 import { Router } from 'express';
 import { supabase } from '../config/index.js';
+import { healthLimiter } from '../config/middleware/rateLimiter.js';
 
 const healthRouter = Router();
 
-healthRouter.get('/status', async (_req, res) => {
+healthRouter.get('/status', healthLimiter, async (_req, res) => {
   try {
     const { error } = await supabase.from('events').select('id').limit(1);
     if (error) throw error;
