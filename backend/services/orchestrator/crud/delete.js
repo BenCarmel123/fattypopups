@@ -1,15 +1,11 @@
-import { deleteEventsByTitles, getImageUrlsByTitles } from '../../entities/event/operations.js';
+import { deleteEventById, getImageUrlById } from '../../entities/event/operations.js';
 import { deleteS3Images } from '#services/s3/delete.js';
 import { invalidateEventsCache } from '../../cache/invalidation.js';
 
-export const deleteEvents = async (titles) => {
-  if (!Array.isArray(titles) || titles.length === 0) {
-    throw new Error('Titles must be a non-empty array');
-  }
-
-  const imageUrls = await getImageUrlsByTitles(titles);
-  await deleteS3Images(imageUrls);
-  const result = await deleteEventsByTitles(titles);
+export const deleteEvent = async (id) => {
+  const imageUrl = await getImageUrlById(id);
+  if (imageUrl) await deleteS3Images([imageUrl]);
+  const result = await deleteEventById(id);
 
   await invalidateEventsCache();
   return result;

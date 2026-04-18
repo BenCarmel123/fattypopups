@@ -7,11 +7,9 @@ export const fetchEvents = (includeDrafts = false) =>
       metadata: typeof event.metadata === 'string' ? JSON.parse(event.metadata) : event.metadata,
     })));
 
-export const deleteEvents = (titles) =>
-  authFetch('/api/events', {
+export const deleteEvent = (id) =>
+  authFetch(`/api/events/${id}`, {
     method: 'DELETE',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ titles }),
   });
 
 export const submitEvent = (formData, eventId = null) =>

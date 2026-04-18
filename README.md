@@ -78,7 +78,7 @@ fattypopups/
 - `GET /api/events/drafts` - List all events including drafts 🔒
 - `POST /api/events` - Create new event 🔒
 - `PUT /api/events/:id` - Update event 🔒
-- `DELETE /api/events` - Delete events by title 🔒
+- `DELETE /api/events/:id` - Delete event by ID 🔒
 
 ### Authentication
 - `GET /auth/google` - Initiate Google OAuth flow

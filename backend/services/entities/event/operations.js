@@ -125,16 +125,27 @@ export async function getImageUrlsByTitles(titles) {
   return data.map(row => row.poster);
 }
 
-// Delete events by titles
-export async function deleteEventsByTitles(titles) {
+export async function getImageUrlById(id) {
+  const { data, error } = await supabase
+    .from('events_new')
+    .select('poster')
+    .eq('id', id)
+    .single();
+
+  if (error) throw new Error(`Error fetching image URL: ${error.message}`);
+
+  return data?.poster || null;
+}
+
+export async function deleteEventById(id) {
   const { error } = await supabase
     .from('events_new')
     .delete()
-    .in('title', titles);
+    .eq('id', id);
 
-  if (error) throw new Error(`Error deleting events: ${error.message}`);
+  if (error) throw new Error(`Error deleting event: ${error.message}`);
 
-  return { message: 'Events deleted successfully', deleted: titles };
+  return { message: 'Event deleted successfully', deleted: id };
 }
 
 // Handle venue updates - only update if venue changed or publishing draft

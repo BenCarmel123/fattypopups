@@ -3,7 +3,7 @@ import { useState } from "react"
 import * as Config from 'config/index.jsx'
 import MyAlert from "../components/CustomAlert.jsx";
 import AdminActions from "../components/AdminActions.jsx";
-import { deleteEvents } from "controller/events.js";
+import { deleteEvent } from "controller/events.js";
 import { FaTrash, FaPen } from "config/index.jsx";
 import SpinnerOverlay from "../components/SpinnerOverlay.jsx";
 import { logger } from "utils/logger.js";
@@ -14,12 +14,12 @@ const Dashboard = ({ handleClick, events, setEvents }) => {
   const [deleting, setDeleting] = useState(false);
   const [hoveredIcon, setHoveredIcon] = useState(null);
 
-  const handleDeleteSingle = (title) => {
+  const handleDeleteSingle = (id, title) => {
     setDeleting(true);
-    deleteEvents([title])
-      .then(data => {
+    deleteEvent(id)
+      .then(() => {
         setEvents(prev => {
-          const updated = prev.filter(ev => !data.deleted.includes(ev.title));
+          const updated = prev.filter(ev => ev.id !== id);
           sessionStorage.setItem('admin_events', JSON.stringify(updated));
           return updated;
         });
@@ -50,7 +50,7 @@ const Dashboard = ({ handleClick, events, setEvents }) => {
           style={{ cursor: Config.POINTER, color: hoveredIcon === `delete-${event.title}` ? Config.DANGER_HOVER_COLOR : 'gray', transition: 'color 0.2s' }}
           onMouseEnter={() => setHoveredIcon(`delete-${event.title}`)}
           onMouseLeave={() => setHoveredIcon(null)}
-          onClick={() => handleDeleteSingle(event.title)}
+          onClick={() => handleDeleteSingle(event.id, event.title)}
         />
       </Table.Cell>
     </Table.Row>
