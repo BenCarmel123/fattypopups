@@ -2,7 +2,6 @@ import { supabase, TABLES } from "#config/index.js";
 import { upsertVenue } from "../venue/operations.js";
 import { logger } from "../../../utils/logger.js";
 
-// Insert a new event into the events_new table
 export async function insertEvent(eventData) {
   const {
     title,
@@ -41,7 +40,6 @@ export async function insertEvent(eventData) {
   return data;
 }
 
-// Get event by ID
 export async function getEventById(id, fields = '*') {
   const { data, error } = await supabase
     .from(TABLES.EVENTS)
@@ -56,7 +54,6 @@ export async function getEventById(id, fields = '*') {
   return data || null;
 }
 
-// Update event
 export async function updateEventById(id, updates) {
   const { data, error } = await supabase
     .from(TABLES.EVENTS)
@@ -86,7 +83,6 @@ export async function updateEventById(id, updates) {
   };
 }
 
-// Get all events with relations
 export async function getAllEventsWithRelations(isAdmin = false) {
   let query = supabase
     .from(TABLES.EVENTS)
@@ -113,7 +109,6 @@ export async function getAllEventsWithRelations(isAdmin = false) {
   return data;
 }
 
-// Get poster URLs for events by titles
 export async function getImageUrlsByTitles(titles) {
   const { data, error } = await supabase
     .from(TABLES.EVENTS)
@@ -148,7 +143,6 @@ export async function deleteEventById(id) {
   return { message: 'Event deleted successfully', deleted: id };
 }
 
-// Handle venue updates - only update if venue changed or publishing draft
 export async function handleEventVenueUpdate({ eventId, venueName, venueAddress, venueInstagram, shouldUpdate }) {
   if (!shouldUpdate) {
     logger.info('[VENUE] No venue update needed (draft mode or no changes to published event)');

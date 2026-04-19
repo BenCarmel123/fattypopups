@@ -1,7 +1,6 @@
 import { isTrue } from '../../../utils/isTrue.js';
 import { logger } from "../../../utils/logger.js";
 
-// Helper: Compute draft/publish state transitions
 function computeStateTransitions(body, currentEvent) {
   const isDraft = isTrue(body.is_draft);
   const wasDraft = isTrue(currentEvent.is_draft);
@@ -16,7 +15,6 @@ function computeStateTransitions(body, currentEvent) {
   };
 }
 
-// Helper: Detect what content changed
 function computeContentChanges(body, currentEvent, currentVenue, currentChefs) {
   const englishChanged = body.english_description !== currentEvent.english_description;
   const hebrewChanged = body.hebrew_description !== currentEvent.hebrew_description;
@@ -32,7 +30,6 @@ function computeContentChanges(body, currentEvent, currentVenue, currentChefs) {
   return { englishChanged, hebrewChanged, venueChanged, chefsChanged };
 }
 
-// Helper: Compute action flags for venue/chef/embedding updates
 function computeActionFlags(stateFlags, changeFlags, currentChefs) {
   const { toPublish, alreadyPublished } = stateFlags;
   const { venueChanged, chefsChanged } = changeFlags;
@@ -49,7 +46,6 @@ function computeActionFlags(stateFlags, changeFlags, currentChefs) {
   return { shouldUpdateVenue, shouldUpdateChefs, shouldUnlinkChefs };
 }
 
-// Main: Compute draft/publish state and what changed for event updates
 export function computeUpdateState(body, currentEvent, currentVenue, currentChefs) {
   const stateFlags = computeStateTransitions(body, currentEvent);
   const changeFlags = computeContentChanges(body, currentEvent, currentVenue, currentChefs);

@@ -135,7 +135,7 @@ Each file contains one focused test (1 `describe`, 1 `it`).
 
 **Rules** (`.claude/rules/`): `unit-test.md`, `hld.md`
 
-**Commands** (`.claude/commands/`): `/clean-branches`, `/pre-commit`, `/review-project`, `/thumb-rules`, `/sync-backend-env`
+**Commands** (`.claude/commands/`): `/clean-branches`, `/cleanup`, `/pre-commit`, `/review-project`, `/thumb-rules`, `/sync-backend-env`
 
 ## External APIs
 - **OpenAI** - Vision analysis, text generation, Hebrew translation & vector embeddings

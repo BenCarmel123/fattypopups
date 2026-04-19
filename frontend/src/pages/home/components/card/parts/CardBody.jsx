@@ -6,7 +6,6 @@ import EventAttributeSpan from './EventAttributeSpan.jsx';
 
 const CardDivider = () => <hr style={{ borderColor: Config.GRAY, opacity: 0.15, margin: '2px 0' }} />;
 
-// Combines venue and chefs into a consolidated list of instagram entries
 function getInstagramEntries(event) {
   return [
     event.venue?.instagram_handle ? { name: event.venue.name, handle: event.venue.instagram_handle } : null,

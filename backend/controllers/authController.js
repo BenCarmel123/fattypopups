@@ -31,8 +31,6 @@ export const handleGoogleCallback = async (req, res, next) => {
 
     if (isAdminEmail(email)) {
       const token = jwt.sign({ email, role: 'admin' }, process.env.JWT_SECRET, { expiresIn: '7d' });
-      logger.info('[AUTH] GOOGLE CALLBACK');
-      logger.info('[AUTH] JWT created:', !!token);
       return res.redirect(`${process.env.FRONTEND_URL}/${process.env.ADMIN_ROUTE}?token=${token}`);
     }
 

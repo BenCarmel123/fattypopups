@@ -4,8 +4,6 @@ import { unlinkChefsFromEvent, linkChefsToEvent } from "../linking/operations.js
 import { logger } from "../../../utils/logger.js";
 import { splitList } from "../../../utils/strings.js";
 
-// Check if chef exists by name
-// Returns the chef object if found, null otherwise
 export async function getChefByName(name) {
   if (!name) return null;
 
@@ -24,7 +22,6 @@ export async function getChefByName(name) {
   return data || null;
 }
 
-// Create a new chef
 export async function createChef(name, instagram_handle) {
   if (!name || !instagram_handle) {
     throw new Error("Chef name and instagram_handle are required");
@@ -43,8 +40,6 @@ export async function createChef(name, instagram_handle) {
   return data;
 }
 
-// Upsert multiple chefs from comma-separated strings
-// Returns array of chef IDs (creates new chefs only if they don't exist)
 export async function upsertChefs(chefNamesString, chefInstagramsString) {
   const chefNamesArray = splitList(chefNamesString);
   const chefInstagramsArray = splitList(chefInstagramsString);
@@ -73,7 +68,6 @@ export async function upsertChefs(chefNamesString, chefInstagramsString) {
   return chefIds;
 }
 
-// Get all chefs from database
 export async function getAllChefs() {
   const { data, error } = await supabase
     .from(TABLES.CHEFS)
@@ -85,7 +79,6 @@ export async function getAllChefs() {
   return data;
 }
 
-// Handle chef relationship updates - only update if chefs changed or publishing draft
 export async function handleEventChefsUpdate({ eventId, chefNames, chefInstagrams, shouldUpdate, shouldUnlink }) {
   if (!shouldUpdate) {
     logger.info('[CHEFS] No chef update needed (draft mode or no changes to published event)');

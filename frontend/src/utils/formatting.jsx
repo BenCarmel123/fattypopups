@@ -1,6 +1,5 @@
 import * as Config from 'config/index.jsx';
 
-// Helper to format date ranges from start and end dates of events
 export function formatDateRange(start, end) {
     if (start && end) {
         const startDate = new Date(start);
@@ -22,7 +21,6 @@ export function formatDateRange(start, end) {
     }
 }
 
-// Helper to format event description with English and Hebrew parts
 export function formatEventDescription(event) {
   return (
     <div style={{ textAlign: 'center' }}>

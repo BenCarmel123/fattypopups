@@ -12,18 +12,22 @@ export const createDraft = async (req, res, next) => {
   const { prompt } = parsed.data;
 
   try {
+
     logger.info('[DRAFT] Uploading images');
     const { posterUrl, contextUrl } = await uploadDraftImages(
       req.files?.poster?.[0] ?? null,
       req.files?.context_image?.[0] ?? null,
     );
     logger.info('[DRAFT] Images uploaded');
+
     const placeholder = await insertEvent({ title: prompt, is_draft: true, status: 'processing' });
     await invalidateEventsCache();
     logger.info('[DRAFT] Placeholder draft created with ID:', placeholder.id);
+
     await publishDraftJob({ prompt, posterUrl, contextUrl, draftId: placeholder.id });
     logger.info('[DRAFT] Draft job queued');
     return res.status(202).json({ message: 'Draft queued' });
+
   } catch (err) {
     next(err);
   }

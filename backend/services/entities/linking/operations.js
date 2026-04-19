@@ -1,6 +1,5 @@
 import { supabase, TABLES } from "#config/index.js";
 
-// Get all chefs linked to an event
 export async function getChefsForEvent(eventId) {
   const { data, error } = await supabase
     .from(TABLES.EVENT_CHEFS)
@@ -15,7 +14,6 @@ export async function getChefsForEvent(eventId) {
   return data?.map(item => item.chef) || [];
 }
 
-// Link chefs to event in junction table
 export async function linkChefsToEvent(eventId, chefIds) {
   if (!chefIds || chefIds.length === 0) return;
 
@@ -31,7 +29,6 @@ export async function linkChefsToEvent(eventId, chefIds) {
   if (error) throw new Error(`Error linking chefs to event: ${error.message}`);
 }
 
-// Unlink all chefs from an event (for updates)
 export async function unlinkChefsFromEvent(eventId) {
   const { error } = await supabase
     .from(TABLES.EVENT_CHEFS)

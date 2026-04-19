@@ -3,7 +3,6 @@ import { S3Client } from '@aws-sdk/client-s3';
 
 dotenvFlow.config();
 
-// AWS S3 setup
 export const s3 = new S3Client({
   credentials: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,

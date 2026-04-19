@@ -34,8 +34,6 @@ export default function DraftBuilder({ placeholder = Config.PROMPT_PLACEHOLDER, 
             setPrompt('');
             await onDraftQueued();
 
-            // Switch to ADD mode and pass the generated draft
-
             }
 
         catch (err) {

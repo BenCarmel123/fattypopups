@@ -1,7 +1,6 @@
 import { supabase, TABLES } from "#config/index.js";
 import { normalizeVenueName } from "../utils/parse.js";
 
-// Get venue by ID
 export async function getVenueById(id) {
   if (!id) return null;
 
@@ -11,15 +10,13 @@ export async function getVenueById(id) {
     .eq("id", id)
     .single();
 
-  if (error && error.code !== 'PGRST116') { // PGRST116 = not found
+  if (error && error.code !== 'PGRST116') { 
     throw new Error(`Error finding venue: ${error.message}`);
   }
 
   return data || null;
 }
 
-// Check if venue exists by name
-// Returns the venue object if found, null otherwise
 export async function getVenueByName(name) {
   if (!name) return null;
 
@@ -31,14 +28,13 @@ export async function getVenueByName(name) {
     .eq("name", normalizedName)
     .single();
 
-  if (error && error.code !== 'PGRST116') { // PGRST116 = not found
+  if (error && error.code !== 'PGRST116') { 
     throw new Error(`Error finding venue: ${error.message}`);
   }
 
   return data || null;
 }
 
-// Create a new venue
 export async function createVenue(name, address, instagram_handle) {
   if (!name || !address || !instagram_handle) {
     throw new Error("Venue name, address, and instagram_handle are required");
@@ -57,7 +53,6 @@ export async function createVenue(name, address, instagram_handle) {
   return data;
 }
 
-// Get all venues from database
 export async function getAllVenues() {
   const { data, error } = await supabase
     .from(TABLES.VENUES)
@@ -69,8 +64,6 @@ export async function getAllVenues() {
   return data;
 }
 
-// Upsert venue data - get existing or create new
-// Returns venue ID (does not update existing venue from user input)
 export async function upsertVenue(venueName, venueAddress, venueInstagram) {
   if (!venueName || !venueAddress || !venueInstagram) {
     throw new Error("Venue name, address, and instagram_handle are required");
@@ -79,10 +72,8 @@ export async function upsertVenue(venueName, venueAddress, venueInstagram) {
   let venue = await getVenueByName(venueName);
 
   if (!venue) {
-    // Create new venue only if doesn't exist
     venue = await createVenue(venueName, venueAddress, venueInstagram);
   }
-  // If venue exists, use existing data (don't update from user input)
 
   return venue.id;
 }

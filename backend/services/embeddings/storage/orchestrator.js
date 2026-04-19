@@ -3,8 +3,6 @@ import { insertEmbedding, upsertEventEmbeddings } from "./operations.js";
 import { updateEventById } from "../../entities/event/operations.js";
 import { logger } from "../../../utils/logger.js";
 
-// Create embeddings for a new event - generate, store, and link to event
-// Returns object with embedding IDs or null if failed
 export async function createEventEmbeddings(eventId, englishDescription, hebrewDescription, chefNames) {
   logger.info('Starting embedding process for event', { eventId });
 
@@ -47,7 +45,6 @@ export async function createEventEmbeddings(eventId, englishDescription, hebrewD
   return { embedding_id_en, embedding_id_he };
 }
 
-// Update embeddings for an existing event
 export async function updateEventEmbeddings(options) {
   const {
     toPublish,
@@ -64,7 +61,7 @@ export async function updateEventEmbeddings(options) {
   let newEnglishEmbedding = null;
   let newHebrewEmbedding = null;
 
-  // 1. GENERATE NEW EMBEDDINGS (IF NEEDED)
+  // 1. Generate new embeddings (if needed)
   if (toPublish || (alreadyPublished && (englishChanged || hebrewChanged))) {
     const embeddings = await generateEmbeddings(
       englishDescription,
@@ -77,7 +74,7 @@ export async function updateEventEmbeddings(options) {
     newHebrewEmbedding = embeddings.hebrew;
   }
 
-  // 2. SAVE EMBEDDINGS TO DATABASE
+  // 2. Save embeddings to DB 
   const { en_id, he_id } = await upsertEventEmbeddings({
     toPublish,
     alreadyPublished,

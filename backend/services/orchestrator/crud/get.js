@@ -3,7 +3,6 @@ import { logger } from "../../../utils/logger.js";
 import { redis } from "../../../config/index.js";
 const REDIS_TTL = process.env.REDIS_TTL || 1800; 
 
-// Get normalized events with all relations
 export async function getEventsWithDetails(isAdmin = false) {
   const key = `events:${isAdmin ? 'admin' : 'public'}`;
   if (redis) {

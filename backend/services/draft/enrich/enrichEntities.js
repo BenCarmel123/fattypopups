@@ -3,7 +3,6 @@ import { getVenueByName } from '../../entities/venue/operations.js';
 import { fetchVenueAddress } from './google/googleMaps.js';
 import { fetchInstagramHandle } from './google/googleSearch.js';
 
-// Enrich chef data by looking up in DB, create placeholders for missing chefs
 async function enrichChefEntities(chefNames) {
   const chefEntitiesFromDB = await Promise.all(
     chefNames.map(name => getChefByName(name))
@@ -24,7 +23,6 @@ async function enrichChefEntities(chefNames) {
   return chefEntities;
 }
 
-// Enrich venue data from DB, fetche address from Google Maps if missing
 async function enrichVenueEntity(venueName) {
   let venueEntity = await getVenueByName(venueName);
 
@@ -40,7 +38,6 @@ async function enrichVenueEntity(venueName) {
   return venueEntity;
 }
 
-// Enrich both chef and venue data in parallel for draft generation
 export async function enrichEntities(chefNames, venueName) {
   const [chefEntities, venueEntity] = await Promise.all([
     enrichChefEntities(chefNames),
