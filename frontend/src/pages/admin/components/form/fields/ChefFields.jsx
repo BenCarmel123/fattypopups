@@ -14,21 +14,18 @@ export default function ChefFields({ event }) {
   const [chefCount, setChefCount] = useState(initialCount);
   const [chefData, setChefData] = useState([]);
 
-  // Initialize chef values from event data
   const initialChefs = Array.from({ length: MAX_CHEFS }, (_, i) => ({
     name: event?.chefs?.[i]?.name || event?.metadata?.chef?.names?.[i] || "",
     instagram: event?.chefs?.[i]?.instagram_handle || event?.metadata?.chef?.instagrams?.[i] || ""
   }));
   const [chefs, setChefs] = useState(initialChefs);
 
-  // Fetch chef data on mount
   useEffect(() => {
     fetchChefs()
       .then(data => setChefData(data))
       .catch(err => logger.error('Failed to fetch chefs:', err));
   }, []);
 
-  // Check if last chef row has both fields filled
   const lastChefIndex = chefCount - 1;
   const lastChefFilled = chefs[lastChefIndex].name && chefs[lastChefIndex].instagram;
 

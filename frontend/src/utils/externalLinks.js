@@ -1,13 +1,11 @@
 import * as Config from '../config/index.jsx';
 
-// Function to open Google Maps with the given address
 export function handleMaps(address) {
   const query = encodeURIComponent(address, 'Tel-Aviv');
   const url = `https://www.google.com/maps/search/?api=1&query=${query}`;
   window.open(url, Config.SELF, Config.NO_OPENER);
 }
 
-// Function to open WhatsApp with pre-filled message
 export function handleWhatsApp(description) {
         const desc = description || '';
         window.open(`https://wa.me/?text=${encodeURIComponent(`${window.location.href}\n\n${desc}`)}`, Config.SELF, Config.NO_OPENER);

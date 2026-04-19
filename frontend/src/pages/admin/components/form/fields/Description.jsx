@@ -2,7 +2,6 @@ import { Field, Textarea } from "@chakra-ui/react";
 import * as Config from 'config/index.jsx';
 
 export default function FormTextArea({ event, lang = 'en' }) {
-  // Choose the right field from event
   const value = lang === 'en' ? event?.english_description || "" : event?.hebrew_description || "";
   const label = lang === 'en' ? 'English Description' : 'Hebrew Description';
   const name = lang === 'en' ? 'english_description' : 'hebrew_description';

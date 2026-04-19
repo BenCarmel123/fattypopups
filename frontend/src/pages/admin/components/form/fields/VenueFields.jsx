@@ -5,7 +5,6 @@ import { fetchVenues } from 'controller/venues.js';
 import { logger } from 'utils/logger.js';
 import Row from "../structure/Row.jsx";
 
-// Venue fields component - manages venue name, address, and instagram inputs
 export default function VenueFields({ event }) {
   const [venueData, setVenueData] = useState([]);
   const [venue, setVenue] = useState({
@@ -14,7 +13,6 @@ export default function VenueFields({ event }) {
     instagram: event?.venue?.instagram_handle || event?.metadata?.venue?.instagram || ""
   });
 
-  // Fetch venue data when component mounts
   useEffect(() => {
     fetchVenues()
       .then(data => setVenueData(data))

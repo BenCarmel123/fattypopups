@@ -29,7 +29,6 @@ export default function EventForm({ event, isEdit, handleClick, setEvents } ) {
         e.preventDefault();
         const form = e.target;
 
-        // Parse form data including draft status for validation and submission
         const formData = parseFormData(form, isDraftRef.current);
 
         const validationResult = validateEvent(formData, isEdit, isDraftRef.current);
@@ -42,7 +41,6 @@ export default function EventForm({ event, isEdit, handleClick, setEvents } ) {
                 setLoading(true);
                 const savedEvent = await submitEvent(formData, isEdit ? event.id : null);
                 setLoading(false);
-                // Update state and sessionStorage cache so the dashboard reflects the change instantly
                 const successTitle = handleSavedEvent(savedEvent);
 
                 setAlert({

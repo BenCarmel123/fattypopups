@@ -1,7 +1,6 @@
 import CreatableSelect from 'react-select/creatable';
 import * as Config from 'config/index.jsx';
 
-// Generic typeahead input component
 export default function TypeaheadInput({
   options = [],
   value,
@@ -10,16 +9,13 @@ export default function TypeaheadInput({
   label,
   name
 }) {
-  // Transform options array to react-select format
   const selectOptions = options.map(option => ({
     value: option,
     label: option
   }));
 
-  // Find the selected option object
   const selectedOption = value ? { value, label: value } : null;
 
-  // Handle selection change
   const handleChange = (selectedOption) => {
     onChange(selectedOption?.value || '');
   };

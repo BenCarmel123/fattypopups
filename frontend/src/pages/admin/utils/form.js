@@ -24,7 +24,6 @@ const extractChefDetails = (form) => {
     return [chefNames, chefInstagrams];
 }
 
-// Parse form into FormData for upload and validation
 export const parseFormData = (form, isDraft = false) => {
   const chefDetails = extractChefDetails(form)
   const chefNames = chefDetails[0];
