@@ -6,7 +6,7 @@ const supabaseMock = {
   eq: vi.fn().mockResolvedValue({ error: null }),
 };
 
-vi.mock('#config/index.js', () => ({ supabase: supabaseMock }));
+vi.mock('#config/index.js', () => ({ supabase: supabaseMock, TABLES: { EVENTS: 'events_new' } }));
 vi.mock('../../../services/entities/venue/operations.js', () => ({ upsertVenue: vi.fn() }));
 
 const { deleteEventById } = await import('../../../services/entities/event/operations.js');
