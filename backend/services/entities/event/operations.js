@@ -1,4 +1,4 @@
-import { supabase } from "#config/index.js";
+import { supabase, TABLES } from "#config/index.js";
 import { upsertVenue } from "../venue/operations.js";
 import { logger } from "../../../utils/logger.js";
 
@@ -19,7 +19,7 @@ export async function insertEvent(eventData) {
   } = eventData;
 
   const { data, error } = await supabase
-    .from('events_new')
+    .from(TABLES.EVENTS)
     .insert([{
       title,
       start_datetime,
@@ -44,7 +44,7 @@ export async function insertEvent(eventData) {
 // Get event by ID
 export async function getEventById(id, fields = '*') {
   const { data, error } = await supabase
-    .from('events_new')
+    .from(TABLES.EVENTS)
     .select(fields)
     .eq('id', id)
     .single();
@@ -59,7 +59,7 @@ export async function getEventById(id, fields = '*') {
 // Update event
 export async function updateEventById(id, updates) {
   const { data, error } = await supabase
-    .from('events_new')
+    .from(TABLES.EVENTS)
     .update(updates)
     .eq('id', id)
     .select(`
@@ -89,7 +89,7 @@ export async function updateEventById(id, updates) {
 // Get all events with relations
 export async function getAllEventsWithRelations(isAdmin = false) {
   let query = supabase
-    .from("events_new")
+    .from(TABLES.EVENTS)
     .select(`
       *,
       venue:venues(id, name, address, instagram_handle),
@@ -116,7 +116,7 @@ export async function getAllEventsWithRelations(isAdmin = false) {
 // Get poster URLs for events by titles
 export async function getImageUrlsByTitles(titles) {
   const { data, error } = await supabase
-    .from('events_new')
+    .from(TABLES.EVENTS)
     .select('poster')
     .in('title', titles);
 
@@ -127,7 +127,7 @@ export async function getImageUrlsByTitles(titles) {
 
 export async function getImageUrlById(id) {
   const { data, error } = await supabase
-    .from('events_new')
+    .from(TABLES.EVENTS)
     .select('poster')
     .eq('id', id)
     .single();
@@ -139,7 +139,7 @@ export async function getImageUrlById(id) {
 
 export async function deleteEventById(id) {
   const { error } = await supabase
-    .from('events_new')
+    .from(TABLES.EVENTS)
     .delete()
     .eq('id', id);
 

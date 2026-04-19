@@ -1,9 +1,9 @@
-import { supabase } from "#config/index.js";
+import { supabase, TABLES } from "#config/index.js";
 
 // Get all chefs linked to an event
 export async function getChefsForEvent(eventId) {
   const { data, error } = await supabase
-    .from("event_chefs")
+    .from(TABLES.EVENT_CHEFS)
     .select("chef:chefs(id, name, instagram_handle)")
     .eq("event_id", eventId);
 
@@ -25,7 +25,7 @@ export async function linkChefsToEvent(eventId, chefIds) {
   }));
 
   const { error } = await supabase
-    .from('event_chefs')
+    .from(TABLES.EVENT_CHEFS)
     .insert(eventChefLinks);
 
   if (error) throw new Error(`Error linking chefs to event: ${error.message}`);
@@ -34,7 +34,7 @@ export async function linkChefsToEvent(eventId, chefIds) {
 // Unlink all chefs from an event (for updates)
 export async function unlinkChefsFromEvent(eventId) {
   const { error } = await supabase
-    .from('event_chefs')
+    .from(TABLES.EVENT_CHEFS)
     .delete()
     .eq('event_id', eventId);
 

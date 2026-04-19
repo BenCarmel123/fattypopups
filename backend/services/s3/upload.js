@@ -1,4 +1,4 @@
-import { supabase, s3 } from "../../config/index.js";
+import { supabase, s3, TABLES } from "../../config/index.js";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { generateS3KeyAndUrl } from './utils.js';
 import { isTrue } from '../../utils/isTrue.js';
@@ -23,7 +23,7 @@ export const uploadToS3 = async (s3_key, file) => {
 const fetchExistingImageUrl = async (id) => {
   try {
     const { data, error } = await supabase
-      .from('events_new')
+      .from(TABLES.EVENTS)
       .select('poster')
       .eq('id', id)
       .single();

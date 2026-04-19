@@ -1,10 +1,10 @@
-import { supabase } from "#config/index.js";
+import { supabase, TABLES } from "#config/index.js";
 import { logger } from "../../../utils/logger.js";
 
 // Insert a single embedding into the database
 export async function insertEmbedding(language, description, embedding, chefNames) {
   const { data, error } = await supabase
-    .from('embeddings')
+    .from(TABLES.EMBEDDINGS)
     .insert({
       chef_names: chefNames,
       language: language,
@@ -22,7 +22,7 @@ export async function insertEmbedding(language, description, embedding, chefName
 // Update an existing embedding
 export async function updateEmbeddingById(id, description, embedding) {
   const { data, error } = await supabase
-    .from('embeddings')
+    .from(TABLES.EMBEDDINGS)
     .update({
       description: description,
       embedding: embedding

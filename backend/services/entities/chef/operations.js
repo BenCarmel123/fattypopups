@@ -1,4 +1,4 @@
-import { supabase } from "#config/index.js";
+import { supabase, TABLES } from "#config/index.js";
 import { normalizeChefName } from "../utils/parse.js";
 import { unlinkChefsFromEvent, linkChefsToEvent } from "../linking/operations.js";
 import { logger } from "../../../utils/logger.js";
@@ -12,7 +12,7 @@ export async function getChefByName(name) {
   const normalizedName = normalizeChefName(name);
 
   const { data, error } = await supabase
-    .from("chefs")
+    .from(TABLES.CHEFS)
     .select("*")
     .eq("name", normalizedName)
     .single();
@@ -33,7 +33,7 @@ export async function createChef(name, instagram_handle) {
   const normalizedName = normalizeChefName(name);
 
   const { data, error } = await supabase
-    .from("chefs")
+    .from(TABLES.CHEFS)
     .insert([{ name: normalizedName, instagram_handle }])
     .select()
     .single();
@@ -76,7 +76,7 @@ export async function upsertChefs(chefNamesString, chefInstagramsString) {
 // Get all chefs from database
 export async function getAllChefs() {
   const { data, error } = await supabase
-    .from('chefs')
+    .from(TABLES.CHEFS)
     .select('name, instagram_handle')
     .order('name');
 

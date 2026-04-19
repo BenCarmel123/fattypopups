@@ -1,4 +1,4 @@
-import { supabase } from "#config/index.js";
+import { supabase, TABLES } from "#config/index.js";
 import { normalizeVenueName } from "../utils/parse.js";
 
 // Get venue by ID
@@ -6,7 +6,7 @@ export async function getVenueById(id) {
   if (!id) return null;
 
   const { data, error } = await supabase
-    .from("venues")
+    .from(TABLES.VENUES)
     .select("*")
     .eq("id", id)
     .single();
@@ -26,7 +26,7 @@ export async function getVenueByName(name) {
   const normalizedName = normalizeVenueName(name);
 
   const { data, error } = await supabase
-    .from("venues")
+    .from(TABLES.VENUES)
     .select("*")
     .eq("name", normalizedName)
     .single();
@@ -47,7 +47,7 @@ export async function createVenue(name, address, instagram_handle) {
   const normalizedName = normalizeVenueName(name);
 
   const { data, error } = await supabase
-    .from("venues")
+    .from(TABLES.VENUES)
     .insert([{ name: normalizedName, address, instagram_handle }])
     .select()
     .single();
@@ -60,7 +60,7 @@ export async function createVenue(name, address, instagram_handle) {
 // Get all venues from database
 export async function getAllVenues() {
   const { data, error } = await supabase
-    .from('venues')
+    .from(TABLES.VENUES)
     .select('name, address, instagram_handle')
     .order('name');
 
