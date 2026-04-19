@@ -1,7 +1,6 @@
 import { supabase, TABLES } from "#config/index.js";
 import { logger } from "../../../utils/logger.js";
 
-// Insert a single embedding into the database
 export async function insertEmbedding(language, description, embedding, chefNames) {
   const { data, error } = await supabase
     .from(TABLES.EMBEDDINGS)
@@ -19,7 +18,6 @@ export async function insertEmbedding(language, description, embedding, chefName
   return data;
 }
 
-// Update an existing embedding
 export async function updateEmbeddingById(id, description, embedding) {
   const { data, error } = await supabase
     .from(TABLES.EMBEDDINGS)
@@ -36,8 +34,6 @@ export async function updateEmbeddingById(id, description, embedding) {
   return data;
 }
 
-// Get embedding by ID
-// Insert or update embeddings when publishing/updating events
 export async function upsertEventEmbeddings(options) {
   const {
     toPublish,
@@ -54,7 +50,7 @@ export async function upsertEventEmbeddings(options) {
   let en_id = null;
   let he_id = null;
 
-  // [INSERT] When publishing a draft for the first time
+  // When publishing a draft for the first time
   if (toPublish) {
     logger.info("[EMBEDDING] Inserting new embeddings for published event...");
     try {
@@ -83,7 +79,7 @@ export async function upsertEventEmbeddings(options) {
     }
   }
 
-  // [UPDATE] When updating already published event
+  // When updating an already published event
   if (alreadyPublished) {
     logger.info("[EMBEDDING] Updating existing embeddings...");
     try {

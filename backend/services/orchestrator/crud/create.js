@@ -8,7 +8,6 @@ import { isTrue } from '../../../utils/isTrue.js';
 import { logger } from "../../../utils/logger.js";
 import { invalidateEventsCache } from '../../cache/invalidation.js';
 
-// Orchestrates creating an event with all related entities (venue, chefs, embeddings)
 export const orchestrateEventCreate = async (body, file) => {
   const {
     title,
@@ -36,7 +35,6 @@ export const orchestrateEventCreate = async (body, file) => {
 
   // Early return for drafts - minimal processing
   if (isDraft) {
-    logger.info('[EVENT] Draft mode - skipping venue, chefs, and embeddings');
     const draftEvent = await insertEvent({
       title,
       start_datetime,
@@ -52,9 +50,6 @@ export const orchestrateEventCreate = async (body, file) => {
     await invalidateEventsCache();
     return draftEvent;
   }
-
-  // Published event - full processing
-  logger.info('[EVENT] Published mode - processing all relations');
 
   // 1. Process venue and chefs in parallel (independent operations)
   const [venueId, chefIds] = await Promise.all([

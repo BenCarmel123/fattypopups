@@ -54,8 +54,6 @@ const handleNoFileUpload = async (body, currentEvent) => {
   }
 };
 
-// Main function: Handle event image upload/overwrite
-// id and currentEvent are null on create, populated on update
 export const handleEventImageUpload = async (id, body, file, currentEvent) => {
   if (file) {
     logger.info(`[FILE] Uploaded file: ${file.originalname} (${file.mimetype}, ${file.size} bytes)`);

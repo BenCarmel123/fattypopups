@@ -1,4 +1,3 @@
-// Normalize a name by trimming whitespace and capitalizing the first letter of each word
 export function normalizeName(name) {
   if (!name || typeof name !== 'string') {
     return '';
@@ -6,9 +5,8 @@ export function normalizeName(name) {
 
   return name
     .trim()
-    .split(/\s+/) // Split by whitespace
+    .split(/\s+/) 
     .map(word => {
-      // Handle hyphenated names
       return word
         .split('-')
         .map(part => {
@@ -20,7 +18,6 @@ export function normalizeName(name) {
     .join(' ');
 }
 
-// Wrappers
 export function normalizeVenueName(venueName) {
   return normalizeName(venueName);
 }

@@ -1,11 +1,10 @@
 import { openai } from "../../config/index.js";
 import { logger } from "../../utils/logger.js";
 
-// Function to generate embedding using OpenAI API
 export async function generateEmbedding(description) {
   if (!openai) {
     logger.warn("OpenAI client is not initialized. Skipping embedding creation.");
-    return null; // Return a fallback value or handle gracefully
+    return null; 
   }
   const embeddingResponse = await openai.embeddings.create({
     model: "text-embedding-3-small",
@@ -15,9 +14,6 @@ export async function generateEmbedding(description) {
   return embedding;
 }
 
-// Generate embeddings for English and/or Hebrew descriptions in parallel
-// Pass true/false for each language to control what gets generated
-// If no flags provided, generates both by default
 export async function generateEmbeddings(englishDescription, hebrewDescription, generateEnglish = true, generateHebrew = true) {
   logger.info(`[EMBEDDING] Starting embedding generation - English: ${generateEnglish} | Hebrew: ${generateHebrew}`);
 
@@ -27,7 +23,6 @@ export async function generateEmbeddings(englishDescription, hebrewDescription, 
   };
 
   try {
-    // Build array of promises for parallel execution
     const promises = [];
 
     if (generateEnglish) {
@@ -42,11 +37,9 @@ export async function generateEmbeddings(englishDescription, hebrewDescription, 
       );
     }
 
-    // Execute all generations in parallel
     if (promises.length > 0) {
       const results = await Promise.all(promises);
 
-      // Map results back to their respective languages
       results.forEach(({ type, embedding }) => {
         result[type] = embedding;
         const status = embedding ? 'SUCCESS' : 'NULL';
@@ -62,6 +55,5 @@ export async function generateEmbeddings(englishDescription, hebrewDescription, 
   return result;
 }
 
-// Backwards compatibility aliases
 export const generateBothEmbeddings = (en, he) => generateEmbeddings(en, he, true, true);
 export const generateChangedEmbeddings = (enChanged, heChanged, en, he) => generateEmbeddings(en, he, enChanged, heChanged);

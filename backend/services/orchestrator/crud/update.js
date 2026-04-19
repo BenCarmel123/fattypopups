@@ -9,7 +9,6 @@ import { handleEventChefsUpdate } from "../../entities/chef/operations.js";
 import { logger } from "../../../utils/logger.js";
 import { invalidateEventsCache } from '../../cache/invalidation.js';
 
-// Orchestrates updating an event with all related operations (S3, embeddings, event data)
 export const orchestrateEventUpdate = async (id, body, file) => {
   logger.info("[UPDATE] Starting update for event ID:", id, "| File attached:", !!file);
 
@@ -21,10 +20,8 @@ export const orchestrateEventUpdate = async (id, body, file) => {
   }
 
   // 2. Handle image upload to S3
-  logger.info(`[UPDATE] Handling image upload for event ID: ${id}`);
   const uploadedUrl = await handleEventImageUpload(id, body, file, currentEvent);
   if (uploadedUrl) body.poster = uploadedUrl;
-  logger.info(`[UPDATE] Image upload completed for event ID: ${id}`);
 
   // 3. Fetch current venue and chefs for change detection
   const [currentVenue, currentChefs] = await Promise.all([
