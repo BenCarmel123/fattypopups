@@ -56,6 +56,7 @@ export const WHATSAPP_GROUP_TEXT = "Join Group";
 
 // Link/window constants
 export const SELF = "_self";
+export const BLANK = "_blank";
 export const NO_OPENER = "noopener,noreferrer";
 
 // Layout sizes / breakpoints / responsive tokens

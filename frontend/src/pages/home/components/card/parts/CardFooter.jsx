@@ -41,14 +41,14 @@ export default function CardFooter({ event }) {
     <Card.Footer style={{ padding: '1.25rem 1rem 1rem 1rem', backgroundColor: Config.CARD_ACCENT_COLOR, borderTop: `medium solid ${Config.VERY_SUBTLE_BORDER}`, borderBottom: `medium solid ${Config.VERY_SUBTLE_BORDER}` }}>
       <div style={{ display: Config.FLEX, alignItems: Config.CENTER, justifyContent: Config.CENTER, width: Config.MAX, marginTop: '-15px', marginBottom: '-10px' }}>
         <div className="eventcard-actions" style={{ display: Config.FLEX, alignItems: Config.CENTER, justifyContent: Config.CENTER, gap: '1rem', width: Config.MAX, maxWidth: '340px', margin: '0 auto' }}>
-          <ActionButton onClick={() => window.open(event.reservation_url, Config.SELF, Config.NO_OPENER)} ariaLabel={Config.RESERVE}>
+          <ActionButton onClick={() => window.open(event.reservation_url, Config.BLANK, Config.NO_OPENER)} ariaLabel={Config.RESERVE}>
             <Config.GiForkKnifeSpoon style={{ verticalAlign: Config.MIDDLE, marginRight: '-0.3rem' }} />
-           <FooterOption text={Config.RESERVE} onClick={() => window.open(event.reservation_url, Config.SELF, Config.NO_OPENER)} />
+            <FooterOption text={Config.RESERVE} />
           </ActionButton>
           <div style={{ width: '1px', height: '1.5rem', backgroundColor: Config.GRAY, opacity: 0.3 }} />
-          <ActionButton onClick={() => handleWhatsApp(event.english_description)} ariaLabel="Share">
+          <ActionButton onClick={() => handleWhatsApp(event)} ariaLabel="Share">
             <Config.FaWhatsapp style={{ verticalAlign: Config.MIDDLE, marginRight: '-0.3rem' }} />
-            <FooterOption text={Config.SHARE} onClick={() => handleWhatsApp(event.english_description)} />
+            <FooterOption text={Config.SHARE} />
           </ActionButton>
         </div>
       </div>
