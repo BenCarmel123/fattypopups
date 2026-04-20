@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { Spinner } from '@chakra-ui/react';
+import { useParams } from 'react-router-dom';
 import DisplayCard from './components/card/DisplayCard.jsx';
 import Header from './components/header/Header.jsx';
 import HomeBanner from './components/header/HomeBanner.jsx';
@@ -10,11 +11,12 @@ import { logger } from "utils/logger.js";
 
 export default function HomePage() {
   const [events, setEvents] = useState(null);
+  const { eventId } = useParams();
+
   useEffect(() => {
     fetchEvents()
       .then(data => {
         setEvents(Array.isArray(data) ? data : []);
-        const eventId = new URLSearchParams(window.location.search).get('event');
         if (eventId) {
           setTimeout(() => {
             document.getElementById(`event-${eventId}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
