@@ -2,30 +2,38 @@ import { ReceiveMessageCommand, DeleteMessageCommand } from '@aws-sdk/client-sqs
 import { sqs } from '../config/index.js';
 import { orchestrateDraft } from '../services/draft/orchestrateDraft.js';
 import { orchestrateEventUpdate } from '../services/orchestrator/crud/update.js';
+import { deleteEvent } from '../services/orchestrator/crud/delete.js';
 import { buildMetadata } from '../services/orchestrator/utils/metadata.js';
 import { logger } from '../utils/logger.js';
+
+const deleteMessage = (message) => sqs.send(new DeleteMessageCommand({
+  QueueUrl: process.env.AWS_DRAFT_QUEUE_URL,
+  ReceiptHandle: message.ReceiptHandle,
+}));
 
 export const processMessage = async (message) => {
   const { prompt, posterUrl, contextUrl, draftId } = JSON.parse(message.Body);
 
-  const draft = await orchestrateDraft(prompt, posterUrl, contextUrl);
-  if (!draft.title) draft.title = prompt;
+  try {
+    const draft = await orchestrateDraft(prompt, posterUrl, contextUrl);
+    if (!draft.title) draft.title = prompt;
 
-  const metadata = buildMetadata(
-    draft.venue_name,
-    draft.venue_instagram,
-    draft.venue_address,
-    draft.chef_names,
-    draft.chef_instagrams
-  );
+    const metadata = buildMetadata(
+      draft.venue_name,
+      draft.venue_instagram,
+      draft.venue_address,
+      draft.chef_names,
+      draft.chef_instagrams
+    );
 
-  await orchestrateEventUpdate(draftId, { ...draft, metadata: JSON.stringify(metadata), status: 'done' }, null);
-  logger.info('[WORKER] Draft saved to DB');
+    await orchestrateEventUpdate(draftId, { ...draft, metadata: JSON.stringify(metadata), status: 'done' }, null);
+    logger.info('[WORKER] Draft saved to DB');
+  } catch (err) {
+    logger.error(`[WORKER] draftId=${draftId} failed: ${err.message}`);
+    await deleteEvent(draftId);
+  }
 
-  await sqs.send(new DeleteMessageCommand({
-    QueueUrl: process.env.AWS_DRAFT_QUEUE_URL,
-    ReceiptHandle: message.ReceiptHandle,
-  }));
+  await deleteMessage(message);
   logger.info('[WORKER] Message deleted from queue');
 };
 

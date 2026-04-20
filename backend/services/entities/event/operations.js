@@ -127,7 +127,7 @@ export async function getImageUrlById(id) {
     .eq('id', id)
     .single();
 
-  if (error) throw new Error(`Error fetching image URL: ${error.message}`);
+  if (error && error.code !== 'PGRST116') throw new Error(`Error fetching image URL: ${error.message}`);
 
   return data?.poster || null;
 }
