@@ -40,8 +40,7 @@ export default function CardBody({ event }) {
         {instagramEntries.map((entry, idx) => (
           <span
             key={idx}
-            style={{ cursor: Config.POINTER, display: Config.BLOCK, marginLeft: idx === 0 ? 0 : "27px" }}
-            onClick={() => handleInstagram(entry.handle)}
+            style={{ display: Config.BLOCK, marginLeft: idx === 0 ? 0 : "27px" }}
           >
             {idx === 0 && <Config.RiInstagramFill className="inline-block mr-2.5 mb-1" style={{ color: Config.GRAY }} />}
             <EventAttributeSpan attribute={entry.name} onClick={() => handleInstagram(entry.handle)} />
