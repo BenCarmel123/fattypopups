@@ -21,7 +21,6 @@ export default function CardBody({ event }) {
   return (
     <Card.Body gap="2" padding="5" bg={Config.CARD_BACKGROUND_COLOR} style={{ lineHeight: 2.0 }}>
       <Card.Title
-        id={`event-${event.id}`}
         textAlign={Config.CENTER}
         fontSize={Config.XL}
         fontWeight={Config.BOLDER}
