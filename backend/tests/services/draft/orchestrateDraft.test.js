@@ -36,6 +36,7 @@ vi.mock('../../../services/draft/image/upload.js', () => ({
 
 vi.mock('../../../services/draft/enrich/formatDraft.js', () => ({
   formatDraft: vi.fn().mockResolvedValue({
+    title: 'Test Popup',
     chefNames: ['Chef A'],
     chefInstagrams: '@chefa',
     venueName: 'Venue X',
