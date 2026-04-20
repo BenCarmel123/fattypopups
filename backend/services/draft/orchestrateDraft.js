@@ -13,45 +13,48 @@ import { generateDraftDetails } from "./generate/text/textCall.js";
 import { cropPoster } from "./image/crop.js";
 import { uploadCroppedPoster } from "./image/upload.js";
 import { formatDraft } from "./enrich/formatDraft.js";
-import { logger } from "../../utils/logger.js";
 import { resolveEndDatetime } from "../../utils/time.js";
 
 const imagePipeline = async (posterUrl, cropCoordinates) => {
-    logger.info("[IMAGE PIPELINE] Starting crop + upload");
     const croppedBuffer = await cropPoster(posterUrl, cropCoordinates);
     const url = await uploadCroppedPoster(croppedBuffer);
-    logger.info("[IMAGE PIPELINE] Complete");
     return url;
 };
 
 const textPipeline = async (prompt, styleExamples) => {
-    logger.info("[TEXT PIPELINE] Starting LLM + enrich");
     const llmResponse = await generateDraftDetails(prompt, styleExamples);
     const enriched = await formatDraft(llmResponse);
-    logger.info("[TEXT PIPELINE] Complete");
     return { llmResponse, enriched };
 };
 
 const orchestrateDraft =
     async (prompt, posterUrl = null, contextUrl = null) =>
     {
-        const _startTime = Date.now();
-
         // Stage 1 — Parallel: vision analysis + similarity search
-        const [{ extractedText, cropCoordinates }, styleExamples] = await Promise.all([
-            analyzeImage(posterUrl, contextUrl),
-            fetchStyleExamples(prompt)
-        ]);
+        let extractedText, cropCoordinates, styleExamples;
+        try {
+            [{ extractedText, cropCoordinates }, styleExamples] = await Promise.all([
+                analyzeImage(posterUrl, contextUrl),
+                fetchStyleExamples(prompt)
+            ]);
+        } catch (err) {
+            throw new Error(`[STAGE 1] ${err.message}`);
+        }
 
         const enrichedPrompt = extractedText
             ? `${prompt}\n\nExtracted from poster:\n${extractedText}`
             : prompt;
 
         // Stage 2 — Parallel: image pipeline (crop → upload) + text pipeline (LLM → enrich)
-        const [croppedPosterUrl, { llmResponse, enriched }] = await Promise.all([
-            imagePipeline(posterUrl, cropCoordinates),
-            textPipeline(enrichedPrompt, styleExamples)
-        ]);
+        let croppedPosterUrl, llmResponse, enriched;
+        try {
+            [croppedPosterUrl, { llmResponse, enriched }] = await Promise.all([
+                imagePipeline(posterUrl, cropCoordinates),
+                textPipeline(enrichedPrompt, styleExamples)
+            ]);
+        } catch (err) {
+            throw new Error(`[STAGE 2] ${err.message}`);
+        }
 
         const result = {
             title: enriched.title,
@@ -69,8 +72,6 @@ const orchestrateDraft =
             is_draft: true
         };
 
-        logger.info("[DRAFT] Final result:", result);
-        logger.info("[DRAFT] Total generation time:", Date.now() - _startTime, "ms");
         return result;
     }
 

@@ -3,6 +3,7 @@ import { vi } from 'vitest';
 const mockSqsSend = vi.fn().mockResolvedValue({});
 const mockOrchestrateDraft = vi.fn();
 const mockOrchestrateEventUpdate = vi.fn().mockResolvedValue({});
+const mockDeleteEvent = vi.fn().mockResolvedValue({});
 const mockBuildMetadata = vi.fn().mockReturnValue({ venue: 'Test Venue' });
 
 vi.mock('../../config/index.js', () => ({
@@ -15,6 +16,10 @@ vi.mock('../../services/draft/orchestrateDraft.js', () => ({
 
 vi.mock('../../services/orchestrator/crud/update.js', () => ({
   orchestrateEventUpdate: mockOrchestrateEventUpdate,
+}));
+
+vi.mock('../../services/orchestrator/crud/delete.js', () => ({
+  deleteEvent: mockDeleteEvent,
 }));
 
 vi.mock('../../services/orchestrator/utils/metadata.js', () => ({
@@ -60,5 +65,21 @@ describe('processMessage', () => {
     );
     const deleteCall = mockSqsSend.mock.calls.find(([cmd]) => cmd.constructor.name === 'DeleteMessageCommand');
     expect(deleteCall[0].input.ReceiptHandle).toBe('receipt-abc');
+  });
+
+  it('marks draft as failed and still deletes the SQS message when orchestrateDraft throws', async () => {
+    mockOrchestrateDraft.mockRejectedValue(new Error('[STAGE 1] Vision analysis failed'));
+
+    const message = {
+      Body: JSON.stringify({ prompt: 'some prompt', posterUrl: 'http://img.jpg', contextUrl: null, draftId: 99 }),
+      ReceiptHandle: 'receipt-xyz',
+    };
+
+    await processMessage(message);
+
+    expect(mockDeleteEvent).toHaveBeenCalledWith(99);
+
+    const deleteCall = mockSqsSend.mock.calls.find(([cmd]) => cmd.constructor.name === 'DeleteMessageCommand');
+    expect(deleteCall[0].input.ReceiptHandle).toBe('receipt-xyz');
   });
 });
