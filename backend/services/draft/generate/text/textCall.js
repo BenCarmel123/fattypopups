@@ -18,13 +18,10 @@ export async function generateDraftDetails(prompt, styleExamples) {
     text: { format: DRAFT_SCHEMA, verbosity: "low" }
   };
 
-  logger.info("[LLM] Calling OpenAI API with Text");
-  const response = await llmCall(
-    () => openai.responses.create(requestParams),
-    { callType: 'text', model, prompt }
-  );
+  const textCall = () => openai.responses.create(requestParams);
 
-  logger.info("[LLM] " + response.output_text);
+  const response = await llmCall(textCall, { callType: 'text', model, prompt });
+
   if (!response.output_text) throw new Error("LLM returned empty output");
 
   try {

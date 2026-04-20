@@ -22,19 +22,16 @@ export async function analyzeImage(posterUrl = null, contextUrl = null) {
   content.push({ type: "input_text", text: "Analyze these images." });
 
   const model = "gpt-5.4";
-  logger.info("[VISION] Calling OpenAI API with Image");
-  const response = await llmCall(
-    async () => openai.responses.create({
-      model,
-      input: [{ role: "user", content }],
-      instructions,
-      reasoning: { effort: "high" },
-      text: { format: VISION_SCHEMA, verbosity: "low" }
-    }),
-    { callType: 'vision', model, prompt: instructions, metadata: { posterUrl, contextUrl } }
-  );
+  const visionCall = () => openai.responses.create({
+    model,
+    input: [{ role: "user", content }],
+    instructions,
+    reasoning: { effort: "high" },
+    text: { format: VISION_SCHEMA, verbosity: "low" }
+  });
 
-  logger.info("[VISION] " + response.output_text);
+  const response = await llmCall(visionCall, { callType: 'vision', model, prompt: instructions, metadata: { posterUrl, contextUrl } });
+
   if (!response.output_text) throw new Error("Vision API returned empty output");
 
   try {

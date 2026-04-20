@@ -7,6 +7,7 @@ export async function llmCall(call, { callType, model, prompt = null, metadata =
   let response = null;
   let error = null;
 
+  logger.info(`[LLM] calling ${callType}`);
   try {
     response = await call();
     return response;

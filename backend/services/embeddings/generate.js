@@ -8,10 +8,8 @@ export async function generateEmbedding(description) {
     return null;
   }
   const model = "text-embedding-3-small";
-  const embeddingResponse = await llmCall(
-    () => openai.embeddings.create({ model, input: description }),
-    { callType: 'embedding', model, prompt: description }
-  );
+  const embeddingCall = () => openai.embeddings.create({ model, input: description });
+  const embeddingResponse = await llmCall(embeddingCall, { callType: 'embedding', model, prompt: description });
   const embedding = embeddingResponse.data[0].embedding;
   return embedding;
 }
