@@ -29,6 +29,7 @@ function App() {
       <RouteTracker />
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/:eventId" element={<HomePage />} />
         <Route path={`/${ADMIN_ROUTE}`} element={<AdminPageHandler action={undefined} />} />
         <Route path="/about" element={<AboutPage />} />
       </Routes>

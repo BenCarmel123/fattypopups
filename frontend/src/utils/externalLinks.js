@@ -7,10 +7,14 @@ export function handleMaps(address) {
   window.open(url, Config.BLANK, Config.NO_OPENER);
 }
 
-export function handleWhatsApp(event) {
-  const { title, start_datetime, end_datetime, reservation_url } = event;
+function buildWhatsAppMessage(event) {
+  const { id, title, start_datetime, end_datetime, venue, reservation_url } = event;
   const dateRange = formatDateRange(start_datetime, end_datetime);
-  const text = `${title}\n${dateRange}\n\nhttps://fattypopups.com\nReserve: ${reservation_url}`;
+  return `https://fattypopups.com/${id}\n\n${title}\n${dateRange}\n${venue?.name || ''}\n\nReserve: ${reservation_url}`;
+}
+
+export function handleWhatsApp(event) {
+  const text = buildWhatsAppMessage(event);
   window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, Config.BLANK, Config.NO_OPENER);
 }
 
