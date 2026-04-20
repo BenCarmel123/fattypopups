@@ -3,13 +3,15 @@ import { openai } from '../../../../config/index.js';
 import { logger } from '../../../../utils/logger.js';
 import { buildTextInstructions } from './buildTextInstructions.js';
 import { DRAFT_SCHEMA } from '../../../../schemas/openai.schema.js';
+import { llmCall } from '../../../llm/llmCall.js';
 
 export async function generateDraftDetails(prompt, styleExamples) {
 
   const instructions = buildTextInstructions(styleExamples);
 
+  const model = "gpt-5.4";
   const requestParams = {
-    model: "gpt-5.4",
+    model,
     input: [{ role: "user", content: prompt }],
     instructions,
     reasoning: { effort: "high" },
@@ -17,7 +19,10 @@ export async function generateDraftDetails(prompt, styleExamples) {
   };
 
   logger.info("[LLM] Calling OpenAI API with Text");
-  const response = await openai.responses.create(requestParams);
+  const response = await llmCall(
+    () => openai.responses.create(requestParams),
+    { callType: 'text', model, prompt }
+  );
 
   logger.info("[LLM] " + response.output_text);
   if (!response.output_text) throw new Error("LLM returned empty output");

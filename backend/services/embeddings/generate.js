@@ -1,15 +1,17 @@
 import { openai } from "../../config/index.js";
 import { logger } from "../../utils/logger.js";
+import { llmCall } from "../llm/llmCall.js";
 
 export async function generateEmbedding(description) {
   if (!openai) {
     logger.warn("OpenAI client is not initialized. Skipping embedding creation.");
-    return null; 
+    return null;
   }
-  const embeddingResponse = await openai.embeddings.create({
-    model: "text-embedding-3-small",
-    input: description,
-  });
+  const model = "text-embedding-3-small";
+  const embeddingResponse = await llmCall(
+    () => openai.embeddings.create({ model, input: description }),
+    { callType: 'embedding', model, prompt: description }
+  );
   const embedding = embeddingResponse.data[0].embedding;
   return embedding;
 }
