@@ -2,6 +2,7 @@ import { openai } from '../../../../config/index.js';
 import { logger } from '../../../../utils/logger.js';
 import { buildVisionInstructions } from './buildVisionInstructions.js';
 import { VISION_SCHEMA } from '../../../../schemas/openai.schema.js';
+import { llmCall } from '../../../llm/llmCall.js';
 
 export async function analyzeImage(posterUrl = null, contextUrl = null) {
   if (!posterUrl && !contextUrl) {
@@ -19,17 +20,18 @@ export async function analyzeImage(posterUrl = null, contextUrl = null) {
 
   const instructions = buildVisionInstructions();
   content.push({ type: "input_text", text: "Analyze these images." });
-  
-  logger.info("[VISION] Calling OpenAI API with Image");
-  const response = await openai.responses.create({
-    model: "gpt-5.4",
+
+  const model = "gpt-5.4";
+  const visionCall = () => openai.responses.create({
+    model,
     input: [{ role: "user", content }],
     instructions,
     reasoning: { effort: "high" },
     text: { format: VISION_SCHEMA, verbosity: "low" }
   });
 
-  logger.info("[VISION] " + response.output_text);
+  const response = await llmCall(visionCall, { callType: 'vision', model, prompt: instructions, metadata: { posterUrl, contextUrl } });
+
   if (!response.output_text) throw new Error("Vision API returned empty output");
 
   try {
