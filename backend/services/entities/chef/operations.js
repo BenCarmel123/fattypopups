@@ -4,6 +4,14 @@ import { unlinkChefsFromEvent, linkChefsToEvent } from "../linking/operations.js
 import { logger } from "../../../utils/logger.js";
 import { splitList } from "../../../utils/strings.js";
 
+export async function findSimilarChef(name) {
+  if (!name) return null;
+  const normalizedName = normalizeChefName(name);
+  const { data, error } = await supabase.rpc('find_similar_chef', { input_name: normalizedName, threshold: 0.6 });
+  if (error) throw new Error(`Error finding similar chef: ${error.message}`);
+  return data?.[0] || null;
+}
+
 export async function getChefByName(name) {
   if (!name) return null;
 
@@ -57,10 +65,12 @@ export async function upsertChefs(chefNamesString, chefInstagramsString) {
     let chef = await getChefByName(name);
 
     if (!chef) {
-      // Create new chef only if doesn't exist
+      chef = await findSimilarChef(name);
+    }
+
+    if (!chef) {
       chef = await createChef(name, instagram);
     }
-    // If chef exists, use existing data (don't update from user input)
 
     chefIds.push(chef.id);
   }

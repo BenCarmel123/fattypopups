@@ -54,7 +54,7 @@ const orchestrateDraft =
         ]);
 
         const result = {
-            title: llmResponse.event_title,
+            title: enriched.title,
             start_datetime: llmResponse.start_datetime || today,
             end_datetime: resolveEndDatetime(llmResponse.start_datetime || today, llmResponse.end_datetime),
             venue_name: enriched.venueName,

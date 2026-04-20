@@ -64,12 +64,23 @@ export async function getAllVenues() {
   return data;
 }
 
+export async function findSimilarVenue(name) {
+  const normalizedName = normalizeVenueName(name);
+  const { data, error } = await supabase.rpc('find_similar_venue', { input_name: normalizedName, threshold: 0.6 });
+  if (error) throw new Error(`Error finding similar venue: ${error.message}`);
+  return data?.[0] || null;
+}
+
 export async function upsertVenue(venueName, venueAddress, venueInstagram) {
   if (!venueName || !venueAddress || !venueInstagram) {
     throw new Error("Venue name, address, and instagram_handle are required");
   }
 
   let venue = await getVenueByName(venueName);
+
+  if (!venue) {
+    venue = await findSimilarVenue(venueName);
+  }
 
   if (!venue) {
     venue = await createVenue(venueName, venueAddress, venueInstagram);
