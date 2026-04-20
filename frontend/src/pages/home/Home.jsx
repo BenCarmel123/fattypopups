@@ -10,22 +10,23 @@ import { logger } from "utils/logger.js";
 
 export default function HomePage() {
   const [events, setEvents] = useState(null);
+
   useEffect(() => {
     fetchEvents()
-      .then(data => {
-        setEvents(Array.isArray(data) ? data : []);
-        const eventId = new URLSearchParams(window.location.search).get('event');
-        if (eventId) {
-          setTimeout(() => {
-            document.getElementById(`event-${eventId}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          }, 100);
-        }
-      })
+      .then(data => setEvents(Array.isArray(data) ? data : []))
       .catch(err => {
         logger.error('Error fetching events:', err);
         setEvents([]);
       });
   }, []);
+
+  useEffect(() => {
+    if (!events) return;
+    const eventId = new URLSearchParams(window.location.search).get('event');
+    if (eventId) {
+      document.getElementById(`event-${eventId}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [events]);
 
   if (events === null) {
     return (
