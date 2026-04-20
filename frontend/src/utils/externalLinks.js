@@ -10,7 +10,7 @@ export function handleMaps(address) {
 function buildWhatsAppMessage(event) {
   const { id, title, start_datetime, end_datetime, venue, reservation_url } = event;
   const dateRange = formatDateRange(start_datetime, end_datetime);
-  return `https://fattypopups.com/${id}\n\n${title}\n${dateRange}\n${venue?.name || ''}\n\nReserve: ${reservation_url}`;
+  return `https://fattypopups.com?event=${id}\n\n${title}\n${dateRange}\n${venue?.name || ''}\n\nReserve: ${reservation_url}`;
 }
 
 export function handleWhatsApp(event) {
