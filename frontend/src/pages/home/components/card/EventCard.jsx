@@ -18,7 +18,6 @@ export default function EventCard({ event }) {
         }
       `}</style>
         <Card.Root
-        id={`event-${event.id}`}
         size={Config.MEDIUM}
         overflow="hidden"
         rounded={Config.LARGE}
