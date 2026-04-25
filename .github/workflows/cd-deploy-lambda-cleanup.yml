@@ -16,7 +16,7 @@ jobs:
       - name: Zip lambda
         run: |
           cd lambdas/cleanup
-          zip -r ../../cleanup.zip . --exclude "node_modules/*" "*.zip"
+          zip -r ../../cleanup.zip . --exclude "*.zip"
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
