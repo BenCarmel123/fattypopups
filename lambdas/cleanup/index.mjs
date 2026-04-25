@@ -1,34 +1,20 @@
-import { createClient } from '@supabase/supabase-js';
 import { S3Client, ListObjectsV2Command, DeleteObjectsCommand } from '@aws-sdk/client-s3';
-
-const supabase = createClient(
-    process.env.SUPABASE_URL,
-    process.env.SUPABASE_KEY
-);
 
 const s3 = new S3Client({ region: "il-central-1" });
 
-const deletePastEvents = async () => {
-    try {
-        const cutoffDate = new Date();
-        cutoffDate.setDate(cutoffDate.getDate() - 2);
+const cleanupPastEvents = async () => {
+    const response = await fetch(`${process.env.BACKEND_URL}/api/events/cleanup-past`, {
+        method: 'DELETE',
+        headers: { 'x-internal-api-key': process.env.INTERNAL_API_KEY }
+    });
 
-        const { data, error } = await supabase
-            .from('events_new')
-            .delete()
-            .lt('end_datetime', cutoffDate.toISOString())
-            .select('*');
-
-        if (error) {
-            console.error('[CLEANUP] Error deleting past events:', error);
-            return;
-        }
-
-        const titles = data?.map(e => e.title ?? e.id) ?? [];
-        console.log(`[CLEANUP] Deleted ${titles.length} past events: ${titles.join(', ')}`);
-    } catch (error) {
-        console.error('[CLEANUP] Unexpected error deleting past events:', error.message);
+    if (!response.ok) {
+        console.error('[CLEANUP] Backend cleanup-past failed:', response.status, await response.text());
+        return;
     }
+
+    const { deleted, ids } = await response.json();
+    console.log(`[CLEANUP] Deleted ${deleted} past events: ${ids.join(', ')}`);
 };
 
 const deleteTempS3Files = async () => {
@@ -56,7 +42,7 @@ const deleteTempS3Files = async () => {
 };
 
 export const handler = async () => {
-    await deletePastEvents();
+    await cleanupPastEvents();
     await deleteTempS3Files();
     return { statusCode: 200, body: JSON.stringify({ message: 'Cleanup complete' }) };
 };

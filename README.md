@@ -63,7 +63,7 @@ fattypopups/
 │   └── public/                   # Static assets
 │
 ├── lambdas/                # AWS Lambda functions
-│   ├── cleanup/            # Scheduled cleanup (1-day retention)
+│   ├── cleanup/            # Scheduled cleanup — calls backend API to delete past events (handles cache + S3) and purges tmp/ S3 files
 │   └── verify-embeddings/  # Verifies all published events have embeddings, regenerates missing ones
 │
 └── docker-compose.yml      # Docker Compose configuration (local only)
@@ -72,12 +72,14 @@ fattypopups/
 ## API Endpoints
 
 > Routes marked 🔒 require a valid JWT in the `Authorization: Bearer <token>` header.
+> Routes marked 🔑 require an internal API key in the `x-internal-api-key` header (Lambda use only).
 
 ### Events
 - `GET /api/events` - List published events
 - `GET /api/events/drafts` - List all events including drafts 🔒
 - `POST /api/events` - Create new event 🔒
 - `PUT /api/events/:id` - Update event 🔒
+- `DELETE /api/events/cleanup-past` - Delete all past events (internal Lambda only) 🔑
 - `DELETE /api/events/:id` - Delete event by ID 🔒
 
 ### Authentication
