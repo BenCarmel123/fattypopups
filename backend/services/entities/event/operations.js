@@ -143,6 +143,20 @@ export async function deleteEventById(id) {
   return { message: 'Event deleted successfully', deleted: id };
 }
 
+export async function getPastEvents() {
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - 2);
+
+  const { data, error } = await supabase
+    .from(TABLES.EVENTS)
+    .select('id, title')
+    .lt('end_datetime', cutoff.toISOString());
+
+  if (error) throw new Error(`Error fetching past events: ${error.message}`);
+
+  return data;
+}
+
 export async function handleEventVenueUpdate({ eventId, venueName, venueAddress, venueInstagram, shouldUpdate }) {
   if (!shouldUpdate) {
     logger.info('[VENUE] No venue update needed (draft mode or no changes to published event)');

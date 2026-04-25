@@ -4,6 +4,7 @@ import {
   orchestrateEventUpdate,
   deleteEvent
 } from '../services/orchestrator/index.js';
+import { getPastEvents } from '../services/entities/event/operations.js';
 import { logger } from '../utils/logger.js';
 import { EventBodySchema, DraftEventBodySchema } from '../schemas/event.schema.js';
 import { isTrue } from '../utils/isTrue.js';
@@ -65,6 +66,16 @@ export const deleteEventById = async (req, res, next) => {
   try {
     const result = await deleteEvent(id);
     res.json(result);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const cleanupPastEvents = async (_req, res, next) => {
+  try {
+    const pastEvents = await getPastEvents();
+    const results = await Promise.all(pastEvents.map(e => deleteEvent(e.id)));
+    res.json({ deleted: results.length, ids: pastEvents.map(e => e.id) });
   } catch (err) {
     next(err);
   }
