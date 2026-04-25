@@ -8,10 +8,15 @@ import * as eventController from '../controllers/eventController.js';
 const eventRouter = express.Router();
 
 eventRouter.get('/', eventsLimiter, eventController.getEvents);
+
 eventRouter.get('/drafts', isAuthorized, eventController.getDraftEvents);
+
 eventRouter.post('/', isAuthorized, uploadMemory.single('poster'), eventController.createEvent);
+
 eventRouter.put('/:id', isAuthorized, uploadMemory.single('poster'), eventController.updateEvent);
+
 eventRouter.delete('/cleanup-past', isInternalService, eventController.cleanupPastEvents);
+
 eventRouter.delete('/:id', isAuthorized, eventController.deleteEventById);
 
 export default eventRouter;
