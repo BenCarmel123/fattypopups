@@ -60,3 +60,4 @@ export const handler = async () => {
     await deleteTempS3Files();
     return { statusCode: 200, body: JSON.stringify({ message: 'Cleanup complete' }) };
 };
+
