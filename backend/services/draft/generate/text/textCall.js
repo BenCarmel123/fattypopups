@@ -9,7 +9,7 @@ export async function generateDraftDetails(prompt, styleExamples) {
 
   const instructions = buildTextInstructions(styleExamples);
 
-  const model = "gpt-5.4";
+  const model = "gpt-5.5";
   const requestParams = {
     model,
     input: [{ role: "user", content: prompt }],
