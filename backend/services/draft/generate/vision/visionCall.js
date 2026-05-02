@@ -21,7 +21,7 @@ export async function analyzeImage(posterUrl = null, contextUrl = null) {
   const instructions = buildVisionInstructions();
   content.push({ type: "input_text", text: "Analyze these images." });
 
-  const model = "gpt-5.4";
+  const model = "gpt-5.5";
   const visionCall = () => openai.responses.create({
     model,
     input: [{ role: "user", content }],

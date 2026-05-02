@@ -30,13 +30,10 @@ const textPipeline = async (prompt, styleExamples) => {
 const orchestrateDraft =
     async (prompt, posterUrl = null, contextUrl = null) =>
     {
-        // Stage 1 — Parallel: vision analysis + similarity search
-        let extractedText, cropCoordinates, styleExamples;
+        // Stage 1 — Vision analysis
+        let extractedText, cropCoordinates;
         try {
-            [{ extractedText, cropCoordinates }, styleExamples] = await Promise.all([
-                analyzeImage(posterUrl, contextUrl),
-                fetchStyleExamples(prompt)
-            ]);
+            ({ extractedText, cropCoordinates } = await analyzeImage(posterUrl, contextUrl));
         } catch (err) {
             throw new Error(`[STAGE 1] ${err.message}`);
         }
@@ -45,9 +42,10 @@ const orchestrateDraft =
             ? `${prompt}\n\nExtracted from poster:\n${extractedText}`
             : prompt;
 
-        // Stage 2 — Parallel: image pipeline (crop → upload) + text pipeline (LLM → enrich)
+        // Stage 2 — Parallel: image pipeline (crop → upload) + text pipeline (similarity search → LLM → enrich)
         let croppedPosterUrl, llmResponse, enriched;
         try {
+            const styleExamples = await fetchStyleExamples(enrichedPrompt);
             [croppedPosterUrl, { llmResponse, enriched }] = await Promise.all([
                 imagePipeline(posterUrl, cropCoordinates),
                 textPipeline(enrichedPrompt, styleExamples)

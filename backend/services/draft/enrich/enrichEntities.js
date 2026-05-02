@@ -3,18 +3,15 @@ import { getVenueByName, findSimilarVenue } from '../../entities/venue/operation
 import { fetchVenueAddress } from './google/googleMaps.js';
 import { fetchInstagramHandle } from './google/googleSearch.js';
 
+async function enrichChefEntity(name) {
+  let entity = await getChefByName(name);
+  if (!entity) entity = await findSimilarChef(name);
+  if (entity) return entity;
+  return { name, instagram_handle: await fetchInstagramHandle(name) };
+}
+
 async function enrichChefEntities(chefNames) {
-  const chefEntities = [];
-  for (const name of chefNames) {
-    let entity = await getChefByName(name);
-    if (!entity) entity = await findSimilarChef(name);
-    if (entity) {
-      chefEntities.push(entity);
-    } else {
-      chefEntities.push({ name, instagram_handle: await fetchInstagramHandle(name) });
-    }
-  }
-  return chefEntities;
+  return Promise.all(chefNames.map(enrichChefEntity));
 }
 
 async function enrichVenueEntity(venueName) {
