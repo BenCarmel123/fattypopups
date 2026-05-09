@@ -7,7 +7,7 @@ export const BACKGROUND_IMAGE_URL = `${S3_BASE}/background.jpeg`;
 
 // Contact & social
 export const BEN_EMAIL = "BenCarmel123@gmail.com";
-export const HALLIE_EMAIL = "HallieSheinbaum@gmail.com";
+export const HALLIE_EMAIL = "hallie@in-themaking.co";
 export const INSTA_LINK_BEN = "https://www.instagram.com/ben_ashamen/";
 export const INSTA_LINK_HALLIE = "http://www.instagram.com/tel_a_bites/";
 export const ABOUT_ROUTE = "about";

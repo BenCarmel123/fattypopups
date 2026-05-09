@@ -10,16 +10,13 @@
   --letter-spacing: 2px;
   --line-height: 1.5;
   --spacing-small: 5px;
+  --background-color: #d8e1e1;
 }
 
 /* Global body styling */
 body {
-  background-image: url("https://fattypopups-event-images.s3.eu-north-1.amazonaws.com/posters/WhatsApp+Image+2025-11-05+at+15.36.48+(5).jpeg");
-  background-size: cover;        
-  background-position: center; 
-  background-repeat: no-repeat;   
-  background-attachment: fixed;   
-  font-family: var(--primary-font);           
+  background-color: var(--background-color);
+  font-family: var(--primary-font);
   line-height: var(--line-height);
   letter-spacing: var(--letter-spacing);
 }
