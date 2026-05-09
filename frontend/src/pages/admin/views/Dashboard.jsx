@@ -63,7 +63,7 @@ const Dashboard = ({ handleClick, events, setEvents }) => {
       {alert && <MyAlert {...alert} onClose={() => setAlert(null)} />}
       <Table.Root size={Config.LARGE} marginTop="2rem" style={{ tableLayout: 'fixed', width: '100%' }}>
         <Table.Header>
-          <Table.Row style={{ backgroundColor: Config.BACKGROUND_COLOR, fontSize: '1.25rem', height: '3.5rem' }}>
+          <Table.Row style={{ backgroundColor: Config.ADMIN_TABLE_HEADER_COLOR, fontSize: '1.25rem', height: '3.5rem' }}>
             <Table.ColumnHeader style={{ width: '70%' }} />
             <Table.ColumnHeader style={{ width: '30%' }} />
           </Table.Row>

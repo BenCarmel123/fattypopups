@@ -15,6 +15,7 @@ export const ABOUT_PAGE_BACKGROUND_COLOR = '#fffaee';
 export const BACKGROUND_COLOR = '#d8e1e1';
 export const BORDER_COLOR = '#cde6e5';
 export const ADMIN_PANEL_COLOR = '#a1c4fd';
+export const ADMIN_TABLE_HEADER_COLOR = '#a1c4fd';
 export const FORM_BACKGROUND_COLOR = '#ffffffcf';
 
 // Misc colors / tokens
