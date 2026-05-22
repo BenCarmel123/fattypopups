@@ -1,6 +1,7 @@
 import { logger } from '../../utils/logger.js';
 import { computeCost } from './pricing.js';
 import { insertLlmCallLog } from './storage.js';
+import { withRetry, RETRY_PROFILES } from '../../utils/retry/index.js';
 
 export async function llmCall(call, { callType, model, prompt = null, metadata = null } = {}) {
   const startTime = Date.now();
@@ -9,7 +10,7 @@ export async function llmCall(call, { callType, model, prompt = null, metadata =
 
   logger.info(`[LLM] calling ${callType}`);
   try {
-    response = await call();
+    response = await withRetry(call, RETRY_PROFILES.LLM_CALL);
     return response;
   } catch (err) {
     error = err.message;

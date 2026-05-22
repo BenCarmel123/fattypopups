@@ -1,5 +1,6 @@
 import { MapsResponseSchema } from '../../../../schemas/google.schema.js';
 import { logger } from '../../../../utils/logger.js';
+import { withRetry, RETRY_PROFILES } from '../../../../utils/retry/index.js';
 
 function extractStreetAndNumber(addressResponse) {
     const parsed = MapsResponseSchema.safeParse(addressResponse);
@@ -11,7 +12,7 @@ function extractStreetAndNumber(addressResponse) {
 }
 
 export async function fetchAddress(venueName) {
-    const response = await fetch('https://places.googleapis.com/v1/places:searchText', {
+    const response = await withRetry(() => fetch('https://places.googleapis.com/v1/places:searchText', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -23,7 +24,7 @@ export async function fetchAddress(venueName) {
             languageCode: 'en',
             maxResultCount: 1
         })
-    });
+    }), RETRY_PROFILES.EXTERNAL_FETCH);
 
     return response.json();
 }

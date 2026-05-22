@@ -3,11 +3,12 @@ import { normalizeChefName } from "../utils/parse.js";
 import { unlinkChefsFromEvent, linkChefsToEvent } from "../linking/operations.js";
 import { logger } from "../../../utils/logger.js";
 import { splitList } from "../../../utils/strings.js";
+import { withRetry, RETRY_PROFILES } from "../../../utils/retry/index.js";
 
 export async function findSimilarChef(name) {
   if (!name) return null;
   const normalizedName = normalizeChefName(name);
-  const { data, error } = await supabase.rpc('find_similar_chef', { input_name: normalizedName, threshold: 0.6 });
+  const { data, error } = await withRetry(() => supabase.rpc('find_similar_chef', { input_name: normalizedName, threshold: 0.6 }), RETRY_PROFILES.SUPABASE_READ);
   if (error) throw new Error(`Error finding similar chef: ${error.message}`);
   return data?.[0] || null;
 }
@@ -17,13 +18,13 @@ export async function getChefByName(name) {
 
   const normalizedName = normalizeChefName(name);
 
-  const { data, error } = await supabase
+  const { data, error } = await withRetry(() => supabase
     .from(TABLES.CHEFS)
     .select("*")
     .eq("name", normalizedName)
-    .single();
+    .single(), RETRY_PROFILES.SUPABASE_READ);
 
-  if (error && error.code !== 'PGRST116') { // PGRST116 = not found
+  if (error && error.code !== 'PGRST116') { 
     throw new Error(`Error finding chef: ${error.message}`);
   }
 
@@ -37,11 +38,11 @@ export async function createChef(name, instagram_handle) {
 
   const normalizedName = normalizeChefName(name);
 
-  const { data, error } = await supabase
+  const { data, error } = await withRetry(() => supabase
     .from(TABLES.CHEFS)
     .insert([{ name: normalizedName, instagram_handle }])
     .select()
-    .single();
+    .single(), RETRY_PROFILES.SUPABASE_WRITE);
 
   if (error) throw new Error(`Error creating chef: ${error.message}`);
 
@@ -79,10 +80,10 @@ export async function upsertChefs(chefNamesString, chefInstagramsString) {
 }
 
 export async function getAllChefs() {
-  const { data, error } = await supabase
+  const { data, error } = await withRetry(() => supabase
     .from(TABLES.CHEFS)
     .select('name, instagram_handle')
-    .order('name');
+    .order('name'), RETRY_PROFILES.SUPABASE_READ);
 
   if (error) throw new Error(`Error fetching chefs: ${error.message}`);
 

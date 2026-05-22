@@ -1,6 +1,7 @@
 import { supabase, TABLES } from "#config/index.js";
 import { upsertVenue } from "../venue/operations.js";
 import { logger } from "../../../utils/logger.js";
+import { withRetry, RETRY_PROFILES } from "../../../utils/retry/index.js";
 
 export async function insertEvent(eventData) {
   const {
@@ -17,7 +18,7 @@ export async function insertEvent(eventData) {
     status
   } = eventData;
 
-  const { data, error } = await supabase
+  const { data, error } = await withRetry(() => supabase
     .from(TABLES.EVENTS)
     .insert([{
       title,
@@ -33,7 +34,7 @@ export async function insertEvent(eventData) {
       status
     }])
     .select()
-    .single();
+    .single(), RETRY_PROFILES.SUPABASE_WRITE);
 
   if (error) throw new Error(`Error creating event: ${error.message}`);
 
@@ -41,11 +42,11 @@ export async function insertEvent(eventData) {
 }
 
 export async function getEventById(id, fields = '*') {
-  const { data, error } = await supabase
+  const { data, error } = await withRetry(() => supabase
     .from(TABLES.EVENTS)
     .select(fields)
     .eq('id', id)
-    .single();
+    .single(), RETRY_PROFILES.SUPABASE_READ);
 
   if (error && error.code !== 'PGRST116') {
     throw new Error(`Error finding event: ${error.message}`);
@@ -55,7 +56,7 @@ export async function getEventById(id, fields = '*') {
 }
 
 export async function updateEventById(id, updates) {
-  const { data, error } = await supabase
+  const { data, error } = await withRetry(() => supabase
     .from(TABLES.EVENTS)
     .update(updates)
     .eq('id', id)
@@ -66,7 +67,7 @@ export async function updateEventById(id, updates) {
         chef:chefs(id, name, instagram_handle)
       )
     `)
-    .single();
+    .single(), RETRY_PROFILES.SUPABASE_WRITE);
 
   if (error) throw new Error(`Error updating event: ${error.message}`);
 
@@ -100,7 +101,7 @@ export async function getAllEventsWithRelations(isAdmin = false) {
     query = query.eq("is_draft", false);
   }
 
-  const { data, error } = await query;
+  const { data, error } = await withRetry(() => query.then(res => res), RETRY_PROFILES.SUPABASE_READ);
 
   if (error) {
     throw new Error(`Error fetching events: ${error.message}`);
@@ -110,10 +111,10 @@ export async function getAllEventsWithRelations(isAdmin = false) {
 }
 
 export async function getImageUrlsByTitles(titles) {
-  const { data, error } = await supabase
+  const { data, error } = await withRetry(() => supabase
     .from(TABLES.EVENTS)
     .select('poster')
-    .in('title', titles);
+    .in('title', titles), RETRY_PROFILES.SUPABASE_READ);
 
   if (error) throw new Error(`Error fetching image URLs: ${error.message}`);
 
@@ -121,11 +122,11 @@ export async function getImageUrlsByTitles(titles) {
 }
 
 export async function getImageUrlById(id) {
-  const { data, error } = await supabase
+  const { data, error } = await withRetry(() => supabase
     .from(TABLES.EVENTS)
     .select('poster')
     .eq('id', id)
-    .single();
+    .single(), RETRY_PROFILES.SUPABASE_READ);
 
   if (error && error.code !== 'PGRST116') throw new Error(`Error fetching image URL: ${error.message}`);
 
@@ -133,10 +134,10 @@ export async function getImageUrlById(id) {
 }
 
 export async function deleteEventById(id) {
-  const { error } = await supabase
+  const { error } = await withRetry(() => supabase
     .from(TABLES.EVENTS)
     .delete()
-    .eq('id', id);
+    .eq('id', id), RETRY_PROFILES.SUPABASE_WRITE);
 
   if (error) throw new Error(`Error deleting event: ${error.message}`);
 
@@ -147,10 +148,10 @@ export async function getPastEvents() {
   const cutoff = new Date();
   cutoff.setDate(cutoff.getDate() - 2);
 
-  const { data, error } = await supabase
+  const { data, error } = await withRetry(() => supabase
     .from(TABLES.EVENTS)
     .select('id, title')
-    .lt('end_datetime', cutoff.toISOString());
+    .lt('end_datetime', cutoff.toISOString()), RETRY_PROFILES.SUPABASE_READ);
 
   if (error) throw new Error(`Error fetching past events: ${error.message}`);
 

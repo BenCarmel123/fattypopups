@@ -1,8 +1,9 @@
 import sharp from 'sharp';
 import { logger } from '../../../utils/logger.js';
+import { withRetry, RETRY_PROFILES } from '../../../utils/retry/index.js';
 
 const fetchImageBuffer = async (url) => {
-  const response = await fetch(url);
+  const response = await withRetry(() => fetch(url), RETRY_PROFILES.EXTERNAL_FETCH);
   if (!response.ok) throw new Error(`Failed to fetch image: ${response.status}`);
   return Buffer.from(await response.arrayBuffer());
 };
