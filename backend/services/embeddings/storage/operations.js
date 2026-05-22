@@ -1,8 +1,9 @@
 import { supabase, TABLES } from "#config/index.js";
 import { logger } from "../../../utils/logger.js";
+import { withRetry, RETRY_PROFILES } from "../../../utils/retry/index.js";
 
 export async function insertEmbedding(language, description, embedding, chefNames) {
-  const { data, error } = await supabase
+  const { data, error } = await withRetry(() => supabase
     .from(TABLES.EMBEDDINGS)
     .insert({
       chef_names: chefNames,
@@ -11,7 +12,7 @@ export async function insertEmbedding(language, description, embedding, chefName
       embedding: embedding,
     })
     .select()
-    .single();
+    .single(), RETRY_PROFILES.SUPABASE_WRITE);
 
   if (error) throw new Error(`Error inserting embedding: ${error.message}`);
 
@@ -19,7 +20,7 @@ export async function insertEmbedding(language, description, embedding, chefName
 }
 
 export async function updateEmbeddingById(id, description, embedding) {
-  const { data, error } = await supabase
+  const { data, error } = await withRetry(() => supabase
     .from(TABLES.EMBEDDINGS)
     .update({
       description: description,
@@ -27,7 +28,7 @@ export async function updateEmbeddingById(id, description, embedding) {
     })
     .eq('id', id)
     .select()
-    .single();
+    .single(), RETRY_PROFILES.SUPABASE_WRITE);
 
   if (error) throw new Error(`Error updating embedding: ${error.message}`);
 

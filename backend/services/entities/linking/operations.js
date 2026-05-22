@@ -1,10 +1,11 @@
 import { supabase, TABLES } from "#config/index.js";
+import { withRetry, RETRY_PROFILES } from "../../../utils/retry/index.js";
 
 export async function getChefsForEvent(eventId) {
-  const { data, error } = await supabase
+  const { data, error } = await withRetry(() => supabase
     .from(TABLES.EVENT_CHEFS)
     .select("chef:chefs(id, name, instagram_handle)")
-    .eq("event_id", eventId);
+    .eq("event_id", eventId), RETRY_PROFILES.SUPABASE_READ);
 
   if (error) {
     throw new Error(`Error fetching chefs for event: ${error.message}`);
@@ -22,18 +23,18 @@ export async function linkChefsToEvent(eventId, chefIds) {
     chef_id: chefId
   }));
 
-  const { error } = await supabase
+  const { error } = await withRetry(() => supabase
     .from(TABLES.EVENT_CHEFS)
-    .insert(eventChefLinks);
+    .insert(eventChefLinks), RETRY_PROFILES.SUPABASE_WRITE);
 
   if (error) throw new Error(`Error linking chefs to event: ${error.message}`);
 }
 
 export async function unlinkChefsFromEvent(eventId) {
-  const { error } = await supabase
+  const { error } = await withRetry(() => supabase
     .from(TABLES.EVENT_CHEFS)
     .delete()
-    .eq('event_id', eventId);
+    .eq('event_id', eventId), RETRY_PROFILES.SUPABASE_WRITE);
 
   if (error) throw new Error(`Error unlinking chefs from event: ${error.message}`);
 }
