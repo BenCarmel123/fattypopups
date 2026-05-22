@@ -139,6 +139,8 @@ Each file contains one focused test (1 `describe`, 1 `it`).
 
 **Commands** (`.claude/commands/`): `/clean-branches`, `/cleanup`, `/pre-commit`, `/review-project`, `/thumb-rules`, `/sync-backend-env`
 
+**Global commands** (`~/.claude/commands/`): `/dead-code` — scans any project for unused functions, files, variables, dependencies, and dead routes
+
 ## External APIs
 - **OpenAI** - Vision analysis, text generation, Hebrew translation & vector embeddings
 - **AWS S3** - Image storage & retrieval
