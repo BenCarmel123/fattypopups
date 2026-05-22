@@ -26,7 +26,7 @@ export async function generateDraftDetails(prompt, styleExamples) {
 
   try {
     return JSON.parse(response.output_text);
-  } catch (parseError) {
+  } catch (_parseError) {
     logger.error("[LLM] Failed to parse LLM output as JSON:", response.output_text);
     throw new Error("LLM returned invalid JSON");
   }

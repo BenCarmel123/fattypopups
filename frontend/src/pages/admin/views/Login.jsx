@@ -15,9 +15,9 @@ export default function Login() {
         <div direction="column"
         align={Config.CENTER}
         justify={Config.CENTER}>
-        <img src={Config.LOGO_URL} alt={Config.APP_NAME} className="h-42 w-40" style={{width:'9rem', backgroundColor:Config.HOVER, borderRadius:"16px", padding:"10px"}} />
+        <img src={Config.LOGO_URL} alt={Config.APP_NAME} className="h-42 w-40" style={{width:'9rem', backgroundColor:Config.HOVER_COLOR, borderRadius:"16px", padding:"10px"}} />
         <br></br>
-        <Button onClick={handleGoogle} variant="outline" padding="0.8rem" size={Config.LARGE} rounded={Config.XXL} border="3px solid" borderColor={Config.BORDER_COLOR} _hover={{ bg: Config.HOVER }} transition={Config.MINIMAL_TRANSITION}>
+        <Button onClick={handleGoogle} variant="outline" padding="0.8rem" size={Config.LARGE} rounded={Config.XXL} border="3px solid" borderColor={Config.BORDER_COLOR} _hover={{ bg: Config.HOVER_COLOR }} transition={Config.MINIMAL_TRANSITION}>
           <FcGoogle />
           <Text fontWeight="semibold" color={Config.GRAY} fontSize={Config.LARGE}>
             Admin

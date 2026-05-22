@@ -38,7 +38,7 @@ const FooterOption = ({ text, onClick }) => {
 
 export default function CardFooter({ event }) {
   return (
-    <Card.Footer style={{ padding: '1.25rem 1rem 1rem 1rem', backgroundColor: Config.CARD_ACCENT_COLOR, borderTop: `medium solid ${Config.VERY_SUBTLE_BORDER}`, borderBottom: `medium solid ${Config.VERY_SUBTLE_BORDER}` }}>
+    <Card.Footer style={{ padding: '1.25rem 1rem 1rem 1rem', backgroundColor: Config.CARD_ACCENT_COLOR, borderTop: `medium solid ${Config.SUBTLE_BORDER}`, borderBottom: `medium solid ${Config.SUBTLE_BORDER}` }}>
       <div style={{ display: Config.FLEX, alignItems: Config.CENTER, justifyContent: Config.CENTER, width: Config.MAX, marginTop: '-15px', marginBottom: '-10px' }}>
         <div className="eventcard-actions" style={{ display: Config.FLEX, alignItems: Config.CENTER, justifyContent: Config.CENTER, gap: '1rem', width: Config.MAX, maxWidth: '340px', margin: '0 auto' }}>
           <ActionButton onClick={() => window.open(event.reservation_url, Config.BLANK, Config.NO_OPENER)} ariaLabel={Config.RESERVE}>

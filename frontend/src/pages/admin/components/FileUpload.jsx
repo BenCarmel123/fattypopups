@@ -96,4 +96,3 @@ export function ContextFileUpload() {
     return <FileUploadButton name="context_image" label="Context Image" />;
 };
 
-export { FilePreview };

@@ -13,7 +13,7 @@ export default function EventAttributeSpan({ attribute, onClick }) {
         borderWidth: '2.5px',
         cursor: Config.POINTER,
         color: Config.Gray,
-        backgroundColor: Config.HOVER,
+        backgroundColor: Config.HOVER_COLOR,
         letterSpacing: '1px',
       }}
       onMouseEnter={defaultOnMouseEnter}

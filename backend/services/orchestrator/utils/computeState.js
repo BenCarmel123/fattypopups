@@ -1,5 +1,4 @@
 import { isTrue } from '../../../utils/isTrue.js';
-import { logger } from "../../../utils/logger.js";
 
 function computeStateTransitions(body, currentEvent) {
   const isDraft = isTrue(body.is_draft);

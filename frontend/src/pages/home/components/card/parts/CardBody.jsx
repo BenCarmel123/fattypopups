@@ -28,9 +28,9 @@ export default function CardBody({ event }) {
         mt={-1}
         mb={1}
         borderRadius="20px"
-        backgroundColor={Config.HOVER}
+        backgroundColor={Config.HOVER_COLOR}
         borderBottom="medium solid"
-        borderBottomColor={Config.VERY_SUBTLE_BORDER}
+        borderBottomColor={Config.SUBTLE_BORDER}
         px={2}
         py={1}
       >
