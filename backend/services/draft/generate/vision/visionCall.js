@@ -36,7 +36,7 @@ export async function analyzeImage(posterUrl = null, contextUrl = null) {
 
   try {
     return JSON.parse(response.output_text);
-  } catch (parseError) {
+  } catch (_parseError) {
     logger.error("[VISION] Failed to parse output as JSON:", response.output_text);
     throw new Error("Vision API returned invalid JSON");
   }

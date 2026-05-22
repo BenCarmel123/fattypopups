@@ -9,7 +9,7 @@ export const defaultOnMouseEnter = (e) => {
 }
 
 export const defaultOnMouseLeave = (e) => {
-    e.currentTarget.style.backgroundColor = Config.HOVER;
+    e.currentTarget.style.backgroundColor = Config.HOVER_COLOR;
     e.currentTarget.style.color = Config.GRAY;
     e.currentTarget.style.transform = 'scale(1)';
     e.currentTarget.style.transition = Config.MINIMAL_TRANSITION;

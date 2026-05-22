@@ -5,7 +5,7 @@ import * as Config from 'config/index.jsx';
 import { useEventIndex } from 'pages/home/context/EventIndexContext.js';
 
 
-export function EventImage({ event }) {
+function EventImage({ event }) {
   const index = useEventIndex();
   return (
     <motion.div
@@ -31,7 +31,7 @@ export function EventImage({ event }) {
           objectFit: Config.CONTAIN,
           display: Config.BLOCK,
           background: '#fffaf5',
-          borderBottom: `medium solid ${Config.VERY_SUBTLE_BORDER}`,
+          borderBottom: `medium solid ${Config.SUBTLE_BORDER}`,
         }}
       />
     </motion.div>

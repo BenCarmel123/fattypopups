@@ -6,7 +6,7 @@ import { BackButton } from "../../components/buttons/Buttons.jsx";
 import * as Colors from 'config/colors.jsx';
 
 
-export const ParagraphComponent = ({ text }) => {
+const ParagraphComponent = ({ text }) => {
   return (
     <p className="font-light">
       {text}
@@ -14,7 +14,7 @@ export const ParagraphComponent = ({ text }) => {
   );
 }
 
-export const ABOUT_SUBHEADER = ({ text, color, style }) => {
+const ABOUT_SUBHEADER = ({ text, color, style }) => {
   return (
     <h1 className="text-5xl md:text-6xl font-extralight text-gray-900 text-center tracking-tight" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', marginTop: '0.5rem', fontWeight: '100', color: color, ...style }}>
       {text}
@@ -22,7 +22,7 @@ export const ABOUT_SUBHEADER = ({ text, color, style }) => {
   );
 }
 
-export const ContactEmail = ({ email }) => {
+const ContactEmail = ({ email }) => {
   return (
     <p className="text-sm text-gray-400 font-bold mt-0" style={{ color: Config.SECONDARY_COLOR }}>
         <span className="inline-flex items-center gap-2" style={{ color: Config.SECONDARY_COLOR, marginBottom: '1.5rem' }}>

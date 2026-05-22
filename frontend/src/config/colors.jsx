@@ -28,6 +28,5 @@ export const DANGER_HOVER_COLOR = '#e04545';
 
 // Utility colors
 export const TRANSPARENT = 'transparent';
-export const HOVER = CARD_ACCENT_COLOR;
-export const SUBTLE_BORDER = 'rgba(81, 81, 91, 0.3)';
-export const VERY_SUBTLE_BORDER = 'rgba(81, 81, 91, 0.15)';
+export const HOVER_COLOR = CARD_ACCENT_COLOR;
+export const SUBTLE_BORDER = 'rgba(81, 81, 91, 0.15)';

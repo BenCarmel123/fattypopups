@@ -5,7 +5,7 @@ import AdminButton from '../../../../components/buttons/AdminButton.jsx';
 import WhatsAppGroupButton from './WhatsAppGroupButton.jsx';
 import * as Config from 'config/index.jsx';
 
-export function About() {
+function About() {
   function handleAbout() {
     window.location.href = "/" + Config.ABOUT_ROUTE;
   }
