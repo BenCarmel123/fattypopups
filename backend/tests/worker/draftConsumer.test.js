@@ -3,11 +3,12 @@ import { vi } from 'vitest';
 const mockSqsSend = vi.fn().mockResolvedValue({});
 const mockOrchestrateDraft = vi.fn();
 const mockOrchestrateEventUpdate = vi.fn().mockResolvedValue({});
-const mockDeleteEvent = vi.fn().mockResolvedValue({});
+const mockUpdateEventById = vi.fn().mockResolvedValue({});
 const mockBuildMetadata = vi.fn().mockReturnValue({ venue: 'Test Venue' });
 
 vi.mock('../../config/index.js', () => ({
   sqs: { send: mockSqsSend },
+  supabase: {},
 }));
 
 vi.mock('../../services/draft/orchestrateDraft.js', () => ({
@@ -18,8 +19,8 @@ vi.mock('../../services/orchestrator/crud/update.js', () => ({
   orchestrateEventUpdate: mockOrchestrateEventUpdate,
 }));
 
-vi.mock('../../services/orchestrator/crud/delete.js', () => ({
-  deleteEvent: mockDeleteEvent,
+vi.mock('../../services/entities/event/operations.js', () => ({
+  updateEventById: mockUpdateEventById,
 }));
 
 vi.mock('../../services/orchestrator/utils/metadata.js', () => ({
@@ -77,7 +78,7 @@ describe('processMessage', () => {
 
     await processMessage(message);
 
-    expect(mockDeleteEvent).toHaveBeenCalledWith(99);
+    expect(mockUpdateEventById).toHaveBeenCalledWith(99, { status: 'failed' });
 
     const deleteCall = mockSqsSend.mock.calls.find(([cmd]) => cmd.constructor.name === 'DeleteMessageCommand');
     expect(deleteCall[0].input.ReceiptHandle).toBe('receipt-xyz');

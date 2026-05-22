@@ -1,20 +1,18 @@
 import _React, { useState } from 'react';
 import MyAlert from '../components/CustomAlert.jsx';
-import { Textarea } from "@chakra-ui/react";
-import FileUpload, { ContextFileUpload } from '../components/FileUpload.jsx';
 import * as Config from 'config/index.jsx';
-import { SubmitPromptButton, BackButton } from 'components/buttons/Buttons.jsx';
 import SpinnerOverlay from '../components/SpinnerOverlay.jsx';
 import { sendPrompt } from 'controller/draft.js';
+import AIDraftForm from '../components/draft/AIDraftForm.jsx';
 
-export default function DraftBuilder({ placeholder = Config.PROMPT_PLACEHOLDER, handleClick, onDraftQueued }) {
-    const [prompt, setPrompt] = useState('');
+export default function DraftBuilder({ handleClick, onDraftQueued, initialPrompt = '' }) {
+    const [prompt, setPrompt] = useState(initialPrompt);
     const [isLoading, setLoading] = useState(false)
     const [requestInProgress, setRequestInProgress] = useState(false);
     const [alert, setAlert] = useState(undefined);
 
     const handleSubmit = async (e) => {
-        if (requestInProgress) return; // Prevent duplicate
+        if (requestInProgress) return;
         setRequestInProgress(true);
         e.preventDefault();
         if (!prompt.trim() || isLoading) return;
@@ -33,8 +31,7 @@ export default function DraftBuilder({ placeholder = Config.PROMPT_PLACEHOLDER, 
 
             setPrompt('');
             await onDraftQueued();
-
-            }
+        }
 
         catch (err) {
             setAlert({ status: Config.STATUS_ERROR, description: err.message.split('\n')[0] });
@@ -55,31 +52,16 @@ export default function DraftBuilder({ placeholder = Config.PROMPT_PLACEHOLDER, 
 
     return (
         <div>
-        <SpinnerOverlay isLoading={isLoading} />
-        {alert && <MyAlert {...alert} onClose={() => setAlert(null)} />}
-        <form onSubmit={handleSubmit} className="min-h-screen flex flex-col items-center justify-center gap-4">
-            <div className="w-full max-w-xl md:max-w-3xl lg:max-w-4xl pl-6">
-                <BackButton variant="default" onBack={() => handleClick(Config.DASHBOARD, undefined)()} />
-            </div>
-            <div className="relative flex items-end gap-2 p-1 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-200 w-full max-w-xl md:max-w-3xl lg:max-w-4xl">
-            <Textarea
-                value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
+            <SpinnerOverlay isLoading={isLoading} />
+            {alert && <MyAlert {...alert} onClose={() => setAlert(null)} />}
+            <AIDraftForm
+                prompt={prompt}
+                onPromptChange={(e) => setPrompt(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder={placeholder}
-                disabled={isLoading}
-                borderWidth={"thick"}
-                borderRadius={"1rem"}
-                className="min-h-[64px] md:min-h-[100px] max-h-[400px] resize-none bg-transparent pl-1rem pr-12 py-4 px-4 text-base md:text-lg placeholder:text-slate-400"
-                rows={1}
+                onSubmit={handleSubmit}
+                onBack={() => handleClick(Config.DASHBOARD, undefined)()}
+                isLoading={isLoading}
             />
-            <SubmitPromptButton prompt={prompt} isLoading={isLoading} />
-            </div>
-            <div className="flex flex-col md:flex-row gap-4 scale-[90%] md:scale-100 origin-center">
-                <FileUpload />
-                <ContextFileUpload />
-            </div>
-        </form>
         </div>
-        );
+    );
 }

@@ -8,6 +8,8 @@ export { GiForkKnifeSpoon, GiKnifeFork } from "react-icons/gi";
 
 export { FaWhatsapp, FaTrash, FaPen } from "react-icons/fa";
 
+export { FaRotateRight } from "react-icons/fa6";
+
 export { AiOutlineMail } from "react-icons/ai";
 
 export { FcGoogle } from "react-icons/fc";
