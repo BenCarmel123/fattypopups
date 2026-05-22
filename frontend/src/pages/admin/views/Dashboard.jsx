@@ -4,10 +4,9 @@ import * as Config from 'config/index.jsx'
 import MyAlert from "../components/CustomAlert.jsx";
 import AdminActions from "../components/AdminActions.jsx";
 import { deleteEvent } from "controller/events.js";
-import { FaTrash, FaPen } from "config/index.jsx";
 import SpinnerOverlay from "../components/SpinnerOverlay.jsx";
 import { logger } from "utils/logger.js";
-import ProcessingBar from "../components/draft/ProcessingBar.jsx";
+import EventRow from "../components/rows/EventRow.jsx";
 
 const Dashboard = ({ handleClick, events, setEvents }) => {
   const [alert, setAlert] = useState(undefined);
@@ -29,32 +28,16 @@ const Dashboard = ({ handleClick, events, setEvents }) => {
       .finally(() => setDeleting(false));
   };
 
-  const eventRows = events.map((event) =>
-    (
-    <Table.Row key={event.title}>
-      <Table.Cell style={{ textAlign: 'left', paddingLeft: '2rem' }}>
-        <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{event.title}</span>
-          {event.is_draft && <span style={{ color: 'gray', fontStyle: 'italic', fontSize: '0.85em', flexShrink: 0 }}>(draft)</span>}
-        </span>
-      </Table.Cell>
-      <Table.Cell style={{ textAlign: 'right', display: Config.FLEX, gap: '1rem', alignItems: Config.CENTER, justifyContent: 'flex-end', paddingRight: '2rem' }}>
-        {event.status === 'processing' && <ProcessingBar />}
-        <FaPen
-          style={{ cursor: Config.POINTER, color: hoveredIcon === `edit-${event.title}` ? Config.ADMIN_PANEL_COLOR : 'gray', transition: 'color 0.2s' }}
-          onMouseEnter={() => setHoveredIcon(`edit-${event.title}`)}
-          onMouseLeave={() => setHoveredIcon(null)}
-          onClick={() => handleClick(Config.EDIT, event)()}
-        />
-        <FaTrash
-          style={{ cursor: Config.POINTER, color: hoveredIcon === `delete-${event.title}` ? Config.DANGER_HOVER_COLOR : 'gray', transition: 'color 0.2s' }}
-          onMouseEnter={() => setHoveredIcon(`delete-${event.title}`)}
-          onMouseLeave={() => setHoveredIcon(null)}
-          onClick={() => handleDeleteSingle(event.id, event.title)}
-        />
-      </Table.Cell>
-    </Table.Row>
-    )  );
+  const eventRows = events.map((event) => (
+    <EventRow
+      key={event.title}
+      event={event}
+      hoveredIcon={hoveredIcon}
+      setHoveredIcon={setHoveredIcon}
+      onDelete={() => handleDeleteSingle(event.id, event.title)}
+      onEdit={() => handleClick(Config.EDIT, event)()}
+    />
+  ));
 
   return (
     <div className={Config.CENTER} style={{ position: Config.RELATIVE, display: Config.FLEX, alignItems: Config.CENTER, justifyContent: Config.CENTER, minHeight: '100vh', paddingTop: '3rem' }}>

@@ -107,7 +107,9 @@ export async function getAllEventsWithRelations(isAdmin = false) {
     throw new Error(`Error fetching events: ${error.message}`);
   }
 
-  return data;
+  const failed = data.filter(e => e.status === 'failed');
+  const rest = data.filter(e => e.status !== 'failed');
+  return [...rest, ...failed];
 }
 
 export async function getImageUrlsByTitles(titles) {

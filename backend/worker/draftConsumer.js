@@ -2,7 +2,7 @@ import { ReceiveMessageCommand, DeleteMessageCommand } from '@aws-sdk/client-sqs
 import { sqs } from '../config/index.js';
 import { orchestrateDraft } from '../services/draft/orchestrateDraft.js';
 import { orchestrateEventUpdate } from '../services/orchestrator/crud/update.js';
-import { deleteEvent } from '../services/orchestrator/crud/delete.js';
+import { updateEventById } from '../services/entities/event/operations.js';
 import { buildMetadata } from '../services/orchestrator/utils/metadata.js';
 import { logger } from '../utils/logger.js';
 
@@ -30,7 +30,7 @@ export const processMessage = async (message) => {
     logger.info('[WORKER] Draft saved to DB');
   } catch (err) {
     logger.error(`[WORKER] draftId=${draftId} failed: ${err.message}`);
-    await deleteEvent(draftId);
+    await updateEventById(draftId, { status: 'failed' });
   }
 
   await deleteMessage(message);

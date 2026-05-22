@@ -1,0 +1,30 @@
+import { Table } from "@chakra-ui/react"
+import * as Config from 'config/index.jsx'
+import { FaTrash, FaPen } from "config/index.jsx";
+
+const DefaultEventRow = ({ event, hoveredIcon, setHoveredIcon, onDelete, onEdit }) => (
+  <Table.Row>
+    <Table.Cell style={{ textAlign: 'left', paddingLeft: '2rem' }}>
+      <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{event.title}</span>
+        {event.is_draft && <span style={{ color: 'gray', fontStyle: 'italic', fontSize: '0.85em', flexShrink: 0 }}>(draft)</span>}
+      </span>
+    </Table.Cell>
+    <Table.Cell style={{ textAlign: 'right', display: Config.FLEX, gap: '1rem', alignItems: Config.CENTER, justifyContent: 'flex-end', paddingRight: '2rem' }}>
+      <FaPen
+        style={{ cursor: Config.POINTER, color: hoveredIcon === `edit-${event.title}` ? Config.ADMIN_PANEL_COLOR : 'gray', transition: 'color 0.2s' }}
+        onMouseEnter={() => setHoveredIcon(`edit-${event.title}`)}
+        onMouseLeave={() => setHoveredIcon(null)}
+        onClick={onEdit}
+      />
+      <FaTrash
+        style={{ cursor: Config.POINTER, color: hoveredIcon === `delete-${event.title}` ? Config.DANGER_HOVER_COLOR : 'gray', transition: 'color 0.2s' }}
+        onMouseEnter={() => setHoveredIcon(`delete-${event.title}`)}
+        onMouseLeave={() => setHoveredIcon(null)}
+        onClick={onDelete}
+      />
+    </Table.Cell>
+  </Table.Row>
+)
+
+export default DefaultEventRow
