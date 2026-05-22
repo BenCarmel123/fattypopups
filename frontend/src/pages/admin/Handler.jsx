@@ -5,7 +5,7 @@ import Dashboard from "./views/Dashboard.jsx";
 import Login from "./views/Login.jsx";
 import DraftBuilder from "./views/DraftBuilder.jsx";
 import { handleTokenCheck } from "utils/auth.js";
-import { fetchEvents } from "controller/events.js";
+import { fetchEvents, deleteEvent } from "controller/events.js";
 import { checkAuth } from "controller/auth.js";
 import { logger } from "utils/logger.js";
 
@@ -20,6 +20,17 @@ export default function AdminPageHandler() {
   const handleClick = (action, selectedEvent) => () => {
     setAction(action);
     setSelectedEvent(selectedEvent || undefined);
+  };
+
+  const handleRetry = (id, prompt) => {
+    deleteEvent(id).catch(err => logger.error('Failed to delete failed event on retry:', err));
+    setEvents(prev => {
+      const updated = prev.filter(ev => ev.id !== id);
+      sessionStorage.setItem('admin_events', JSON.stringify(updated));
+      return updated;
+    });
+    setSelectedEvent({ prompt });
+    setAction(Config.AI);
   };
 
   // [4] After a draft is queued, poll until the placeholder row appears then navigate to Dashboard
@@ -80,11 +91,11 @@ export default function AdminPageHandler() {
          case Config.EDIT:
             return (<EventForm isEdit={true} handleClick={handleClick} event={selectedEvent} setEvents={setEvents} />);
          case Config.DASHBOARD:
-            return (<Dashboard handleClick={handleClick} events={events} setEvents={setEvents} />);
+            return (<Dashboard handleClick={handleClick} events={events} setEvents={setEvents} onRetry={handleRetry} />);
          case Config.LOGIN:
             return (<Login />);
          case Config.AI:
-            return (<DraftBuilder handleClick={handleClick} onDraftQueued={onDraftQueued} />);
+            return (<DraftBuilder handleClick={handleClick} onDraftQueued={onDraftQueued} initialPrompt={selectedEvent?.prompt ?? ''} />);
          default:
             return (<Login />);
    }

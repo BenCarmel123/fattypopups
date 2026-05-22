@@ -8,7 +8,7 @@ import SpinnerOverlay from "../components/SpinnerOverlay.jsx";
 import { logger } from "utils/logger.js";
 import EventRow from "../components/rows/EventRow.jsx";
 
-const Dashboard = ({ handleClick, events, setEvents }) => {
+const Dashboard = ({ handleClick, events, setEvents, onRetry }) => {
   const [alert, setAlert] = useState(undefined);
   const [deleting, setDeleting] = useState(false);
   const [hoveredIcon, setHoveredIcon] = useState(null);
@@ -36,6 +36,7 @@ const Dashboard = ({ handleClick, events, setEvents }) => {
       setHoveredIcon={setHoveredIcon}
       onDelete={() => handleDeleteSingle(event.id, event.title)}
       onEdit={() => handleClick(Config.EDIT, event)()}
+      onRetry={() => onRetry(event.id, event.title)}
     />
   ));
 

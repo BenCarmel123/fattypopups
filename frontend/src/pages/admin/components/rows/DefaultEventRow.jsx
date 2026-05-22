@@ -1,6 +1,6 @@
 import { Table } from "@chakra-ui/react"
 import * as Config from 'config/index.jsx'
-import { FaTrash, FaPen } from "config/index.jsx";
+import { EditButton, DeleteButton } from 'components/buttons/IconButtons.jsx';
 
 const DefaultEventRow = ({ event, hoveredIcon, setHoveredIcon, onDelete, onEdit }) => (
   <Table.Row>
@@ -11,18 +11,8 @@ const DefaultEventRow = ({ event, hoveredIcon, setHoveredIcon, onDelete, onEdit 
       </span>
     </Table.Cell>
     <Table.Cell style={{ textAlign: 'right', display: Config.FLEX, gap: '1rem', alignItems: Config.CENTER, justifyContent: 'flex-end', paddingRight: '2rem' }}>
-      <FaPen
-        style={{ cursor: Config.POINTER, color: hoveredIcon === `edit-${event.title}` ? Config.ADMIN_PANEL_COLOR : 'gray', transition: 'color 0.2s' }}
-        onMouseEnter={() => setHoveredIcon(`edit-${event.title}`)}
-        onMouseLeave={() => setHoveredIcon(null)}
-        onClick={onEdit}
-      />
-      <FaTrash
-        style={{ cursor: Config.POINTER, color: hoveredIcon === `delete-${event.title}` ? Config.DANGER_HOVER_COLOR : 'gray', transition: 'color 0.2s' }}
-        onMouseEnter={() => setHoveredIcon(`delete-${event.title}`)}
-        onMouseLeave={() => setHoveredIcon(null)}
-        onClick={onDelete}
-      />
+      <EditButton id={event.title} hoveredIcon={hoveredIcon} setHoveredIcon={setHoveredIcon} onClick={onEdit} />
+      <DeleteButton id={event.title} hoveredIcon={hoveredIcon} setHoveredIcon={setHoveredIcon} onClick={onDelete} />
     </Table.Cell>
   </Table.Row>
 )

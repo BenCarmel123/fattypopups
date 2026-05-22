@@ -7,8 +7,8 @@ import { SubmitPromptButton, BackButton } from 'components/buttons/Buttons.jsx';
 import SpinnerOverlay from '../components/SpinnerOverlay.jsx';
 import { sendPrompt } from 'controller/draft.js';
 
-export default function DraftBuilder({ placeholder = Config.PROMPT_PLACEHOLDER, handleClick, onDraftQueued }) {
-    const [prompt, setPrompt] = useState('');
+export default function DraftBuilder({ placeholder = Config.PROMPT_PLACEHOLDER, handleClick, onDraftQueued, initialPrompt = '' }) {
+    const [prompt, setPrompt] = useState(initialPrompt);
     const [isLoading, setLoading] = useState(false)
     const [requestInProgress, setRequestInProgress] = useState(false);
     const [alert, setAlert] = useState(undefined);
