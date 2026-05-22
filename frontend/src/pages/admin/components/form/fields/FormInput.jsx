@@ -1,7 +1,6 @@
 import { Input, Field } from "@chakra-ui/react";
 import * as Config from 'config/index.jsx';
 
-// Reusable form input field with consistent styling
 export default function FormInput({ label, name, type = "text", defaultValue = "", placeholder = "", onChange }) {
   return (
     <Field.Root>
