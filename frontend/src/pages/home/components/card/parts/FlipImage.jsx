@@ -5,18 +5,50 @@ import * as Config from 'config/index.jsx';
 import { useEventIndex } from 'pages/home/context/EventIndexContext.js';
 
 
-function EventImage({ event }) {
+function EventImage({ event, onMeasure }) {
   const index = useEventIndex();
+  const imgRef = React.useRef(null);
+
+  React.useEffect(() => {
+    const img = imgRef.current;
+    if (!img || !onMeasure) return;
+
+    // measure immediately if already loaded
+    const measure = () => onMeasure(img.clientHeight);
+    if (img.complete) measure();
+
+    // listen for load in case it's still loading
+    const onLoad = () => measure();
+    img.addEventListener('load', onLoad);
+
+    // observe resizes (handles responsive width changes)
+    let ro;
+    if (typeof ResizeObserver !== 'undefined') {
+      ro = new ResizeObserver(() => measure());
+      ro.observe(img);
+    }
+
+    const onResize = () => measure();
+    window.addEventListener('resize', onResize);
+
+    return () => {
+      img.removeEventListener('load', onLoad);
+      window.removeEventListener('resize', onResize);
+      if (ro) ro.disconnect();
+    };
+  }, [onMeasure]);
+
   return (
     <motion.div
       key="image"
       initial={{ rotateY: 90, opacity: 0 }}
       animate={{ rotateY: 0, opacity: 1 }}
       exit={{ rotateY: -90, opacity: 0 }}
-      transition={{ duration: 0.23, ease: [0.4, 0, 0.2, 1] }}
+      transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
       style={{ width: Config.MAX, display: Config.BLOCK, position: Config.RELATIVE, transformOrigin: 'right center' }}
     >
       <img
+        ref={imgRef}
         src={event.poster}
         // When no image -> fallback to logo
         onError={(e) => { e.currentTarget.src = Config.LOGO_URL; }}
@@ -41,6 +73,7 @@ function EventImage({ event }) {
 export default function FlipImage({ event }) {
   const [showDetails, setShowDetails] = React.useState(false);
   const [VisibleOverlay, setOverlayVisible] = React.useState(false);
+  const [imageHeight, setImageHeight] = React.useState(null);
 
   const handleInteraction = (e) => {
     if (e.type === 'pointerenter' && e.pointerType === Config.MOUSE) setOverlayVisible(true);
@@ -53,7 +86,7 @@ export default function FlipImage({ event }) {
     setShowDetails((prev) => !prev);
   };
 
-  return (
+    return (
     <div
       style={{
         width: Config.MAX,
@@ -61,7 +94,9 @@ export default function FlipImage({ event }) {
         position: Config.RELATIVE,
         cursor: Config.POINTER,
         perspective: '1200px',
-        backgroundImage: `url('${Config.BACKGROUND_IMAGE_URL}')`
+        backgroundImage: `url('${Config.BACKGROUND_IMAGE_URL}')`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
       }}
       onPointerEnter={handleInteraction}
       onPointerLeave={handleInteraction}
@@ -80,7 +115,10 @@ export default function FlipImage({ event }) {
               textAlign: 'center',
               lineHeight: 1.55,
               transformOrigin: 'left center',
-              minHeight: '320px',
+              minHeight: imageHeight ? `${imageHeight}px` : '320px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}
           >
             <p
@@ -98,7 +136,7 @@ export default function FlipImage({ event }) {
             </p>
           </motion.div>
         ) : (
-          <EventImage event={event} />
+          <EventImage event={event} onMeasure={setImageHeight} />
         )}
       </AnimatePresence>
       {VisibleOverlay && <div style={{ ...Config.OVERLAY_STYLE }} />}

@@ -30,18 +30,6 @@ export function formatEventDescription(event) {
   return (
     <div style={{ textAlign: 'center' }}>
       <p style={{ direction: 'ltr', unicodeBidi: 'isolate', textAlign: 'left', letterSpacing: '1.2px' }}>{event.english_description}</p>
-      <div
-        style={{
-          width: '50%',
-          height: '2px',
-          backgroundColor: '#d3d3d3',
-          margin: '1.2rem auto',
-          borderRadius: '2px',
-        }}
-      ></div>
-      <p style={{ direction: 'rtl', unicodeBidi: 'isolate', textAlign: 'right', letterSpacing: '1.2px' }}>
-        {event.hebrew_description}
-      </p>
     </div>
   );
 }
