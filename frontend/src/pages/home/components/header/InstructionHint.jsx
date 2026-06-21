@@ -3,7 +3,7 @@ import * as Config from 'config/index.jsx';
 const heroHeadingStyle = {
     margin: '0 auto',
     maxWidth: '12ch',
-    fontSize: 'clamp(1.8rem, 7vw, 2.75rem)',
+    fontSize: 'clamp(1.8rem, 7vw, 2.15rem)',
     fontWeight: 800,
     lineHeight: 1.12,
     letterSpacing: '-0.03em',
@@ -21,7 +21,7 @@ const heroAccentStyle = {
 
 const heroPillStyle = {
     display: 'inline-block',
-    fontSize: 'clamp(0.72rem, 0.6rem + 0.6vw, 0.95rem)',
+    fontSize: 'clamp(0.72rem, 0.6rem + 0.6vw, 0.85rem)',
     fontWeight: 700,
     letterSpacing: '0.12em',
     textTransform: 'uppercase',
@@ -29,7 +29,7 @@ const heroPillStyle = {
     background: 'rgba(54, 131, 130, 0.10)',
     padding: '0.4rem 1.1rem',
     borderRadius: '9999px',
-    marginTop: '1rem',
+    marginTop: 'calc(1rem + 4px)',
 };
 
 export default function InstructionHint() {

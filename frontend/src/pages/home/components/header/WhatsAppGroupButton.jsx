@@ -11,8 +11,8 @@ export default function WhatsAppGroupButton() {
             variant={Config.SOLID}
             size={Config.SMALL}
             color={Config.SECONDARY_COLOR}
-            px={3}
-            py={2}
+            px={[3, 4]}
+            py={[2, 3]}
             borderRadius="14px"
             borderBoxing='border-box'
             borderStyle={Config.SOLID}
@@ -26,7 +26,7 @@ export default function WhatsAppGroupButton() {
             whiteSpace="nowrap"
             onClick={handleJoin}
         >
-            <FaWhatsapp style={{ marginRight: '-0.25rem', fontSize: '1.1em' }} />
+            <FaWhatsapp style={{ marginRight: '-0.25rem', fontSize: ['1.05em', '1.25em'] }} />
             {Config.WHATSAPP_GROUP_TEXT}
         </Button>
     );
