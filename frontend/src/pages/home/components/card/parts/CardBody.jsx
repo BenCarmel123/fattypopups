@@ -4,7 +4,14 @@ import { handleMaps, handleInstagram, handleCalendar } from 'utils/externalLinks
 import * as Config from 'config/index.jsx';
 import EventAttributeSpan from './EventAttributeSpan.jsx';
 
-const CardDivider = () => <hr style={{ borderColor: Config.GRAY, opacity: 0.15, margin: '2px 0' }} />;
+const dividerStyle = { border: 'none', borderTop: `1px solid ${Config.SUBTLE_BORDER}`, margin: '7px 0' };
+const CardDivider = () => <hr style={dividerStyle} />;
+
+const cardBodyStyle = { lineHeight: 1.5, background: Config.CARD_BODY_GRADIENT };
+const cardDescriptionStyle = { background: Config.TRANSPARENT };
+const rowStyle = { display: 'flex', alignItems: 'flex-start', gap: '10px' };
+const iconStyle = { color: Config.GRAY, flexShrink: 0, marginTop: '7px', fontSize: '1.25rem' };
+const pillWrapStyle = { display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '8px', minWidth: 0 };
 
 function getInstagramEntries(event) {
   return [
@@ -19,43 +26,30 @@ export default function CardBody({ event }) {
   const instagramEntries = getInstagramEntries(event);
   
   return (
-    <Card.Body gap="2" padding="5" bg={Config.CARD_BACKGROUND_COLOR} style={{ lineHeight: 2.0 }}>
-      <Card.Title
-        textAlign={Config.CENTER}
-        fontSize={Config.XL}
-        fontWeight={Config.BOLDER}
-        color="gray.600"
-        mt={-1}
-        mb={1}
-        borderRadius="20px"
-        backgroundColor={Config.HOVER_COLOR}
-        borderBottom="medium solid"
-        borderBottomColor={Config.SUBTLE_BORDER}
-        px={2}
-        py={1}
-      >
-        {event.title}
-      </Card.Title>
-      <Card.Description fontSize={Config.MEDIUM} paddingRight={4} paddingLeft={4} lineHeight={3.5}>
-        {instagramEntries.map((entry, idx) => (
-          <span
-            key={idx}
-            style={{ display: Config.BLOCK, marginLeft: idx === 0 ? 0 : "27px" }}
-          >
-            {idx === 0 && <Config.RiInstagramFill className="inline-block mr-2.5 mb-1" style={{ color: Config.GRAY }} />}
-            <EventAttributeSpan attribute={entry.name} onClick={() => handleInstagram(entry.handle)} />
-            <br />
+    <Card.Body gap="1" padding="4" style={cardBodyStyle}>
+      <Card.Description fontSize={Config.MEDIUM} paddingRight={2} paddingLeft={2} lineHeight={1.8} style={cardDescriptionStyle}>
+        <div style={rowStyle}>
+          <Config.RiInstagramFill style={iconStyle} />
+          <span style={pillWrapStyle}>
+            {instagramEntries.map((entry, idx) => (
+              <EventAttributeSpan key={idx} attribute={entry.name} onClick={() => handleInstagram(entry.handle)} />
+            ))}
           </span>
-        ))}
+        </div>
         <CardDivider />
-        <Config.SiGooglecalendar className={Config.ACTION_BUTTON_SPACING} style={{ color: Config.GRAY }} />
-        <EventAttributeSpan attribute={formatDateRange(event.start_datetime, event.end_datetime)} onClick={() => handleCalendar(event)} />
-        <br />
+        <div style={rowStyle}>
+          <Config.SiGooglecalendar style={iconStyle} />
+          <span style={pillWrapStyle}>
+            <EventAttributeSpan attribute={formatDateRange(event.start_datetime, event.end_datetime)} onClick={() => handleCalendar(event)} />
+          </span>
+        </div>
         <CardDivider />
-        <span style={{ display: Config.BLOCK }}>
-          <Config.SiGooglemaps className={Config.ACTION_BUTTON_SPACING} style={{ color: Config.GRAY }} />
-          <EventAttributeSpan attribute={event.venue?.address} onClick={() => handleMaps(event.venue?.address)} />
-        </span>
+        <div style={rowStyle}>
+          <Config.SiGooglemaps style={iconStyle} />
+          <span style={pillWrapStyle}>
+            <EventAttributeSpan attribute={event.venue?.address} onClick={() => handleMaps(event.venue?.address)} />
+          </span>
+        </div>
       </Card.Description>
     </Card.Body>
   );

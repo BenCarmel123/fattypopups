@@ -6,11 +6,15 @@ const REDIS_TTL = process.env.REDIS_TTL || 1800;
 export async function getEventsWithDetails(isAdmin = false) {
   const key = `events:${isAdmin ? 'admin' : 'public'}`;
   if (redis) {
-    const cached = await redis.get(key);
-    if (cached) {
-      return JSON.parse(cached);
+    try {
+      const cached = await redis.get(key);
+      if (cached) {
+        return JSON.parse(cached);
+      }
+      logger.info(`[Cache] MISS with key - ${key}`);
+    } catch (err) {
+      logger.error(`[Cache] Read failed for key ${key}, falling back to database - ${err}`);
     }
-    logger.info(`[Cache] MISS with key - ${key}`);
   }
   try {
     const data = await getAllEventsWithRelations(isAdmin);
@@ -40,7 +44,13 @@ export async function getEventsWithDetails(isAdmin = false) {
         instagram_handle: ec.chef?.instagram_handle || ''
       })).filter(chef => chef.name)
     }));
-    if (redis) await redis.set(key, JSON.stringify(normalizedData), 'EX', REDIS_TTL);
+    if (redis) {
+      try {
+        await redis.set(key, JSON.stringify(normalizedData), 'EX', REDIS_TTL);
+      } catch (err) {
+        logger.error(`[Cache] Write failed for key ${key}, continuing without caching - ${err}`);
+      }
+    }
     return normalizedData;
   } catch (err) {
     logger.error("Unexpected error fetching events:", err);

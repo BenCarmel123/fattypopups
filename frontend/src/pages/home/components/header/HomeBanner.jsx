@@ -1,19 +1,18 @@
-import * as Config from 'config/index.jsx';
 import InstructionHint from './InstructionHint.jsx';
+
+const bannerStyle = {
+    width: '100%',
+    maxWidth: '640px',
+    margin: '1.75rem auto 2.5rem',
+    padding: '0 0.5rem',
+    textAlign: 'center',
+    boxSizing: 'border-box',
+};
 
 export default function HomeBanner() {
     return (
-        <div style={{
-            width: '100%',
-            maxWidth: 'clamp(260px, 86vw, 420px)',
-            margin: '1.5rem auto',
-            padding: '1.2rem 1.5rem',
-            backgroundColor: Config.INSTRUCTION_BACKGROUND_COLOR,
-            borderRadius: '24px',
-            textAlign: 'center',
-            boxSizing: 'border-box',
-        }}>
+        <section className="fp-rise" style={bannerStyle}>
             <InstructionHint />
-        </div>
+        </section>
     );
 }

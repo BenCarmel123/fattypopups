@@ -5,16 +5,17 @@ export default function EventAttributeSpan({ attribute, onClick }) {
   return (
     <span
       style={{
-        top: '2px',
-        border: Config.SOLID,
-        borderColor: Config.BORDER_COLOR,
-        borderRadius: '12px',
-        padding: Config.LINK_PADDING,
-        borderWidth: '2.5px',
+        display: 'inline-block',
+        borderRadius: '14px',
+        padding: '5px 14px',
         cursor: Config.POINTER,
-        color: Config.Gray,
-        backgroundColor: Config.HOVER_COLOR,
-        letterSpacing: '1px',
+        color: Config.SECONDARY_COLOR,
+        backgroundColor: Config.TEAL_TINT,
+        border: `1px solid ${Config.TEAL_BORDER_SOFT}`,
+        fontWeight: 600,
+        fontSize: '0.95rem',
+        letterSpacing: 'normal',
+        transition: 'transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease',
       }}
       onMouseEnter={defaultOnMouseEnter}
       onMouseLeave={defaultOnMouseLeave}

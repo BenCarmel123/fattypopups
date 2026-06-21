@@ -1,41 +1,56 @@
 @import url('https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Global CSS Variables (only those used in this file) */
+/* Global CSS Variables */
 :root {
-  --primary-font: 'RocknRoll One', sans-serif;
-  --letter-spacing: 2px;
+  --brand-font: 'RocknRoll One', sans-serif;
+  --primary-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --line-height: 1.5;
   --spacing-small: 5px;
-  --background-color: #d8e1e1;
+  --brand-teal: #368382;
+  --warm-bg: #eef4ec;
+}
+
+/* Page background lives on html so it always fills the viewport */
+html {
+    overscroll-behavior: none;
+    -webkit-text-size-adjust: 100%;
+    background-color: var(--warm-bg);
+    background-image:
+      radial-gradient(1100px 520px at 50% -180px, rgba(54, 131, 130, 0.22), transparent 70%),
+      radial-gradient(680px 400px at 100% 0%, rgba(205, 230, 229, 0.70), transparent 65%),
+      radial-gradient(560px 360px at 0% 140px, rgba(255, 220, 175, 0.45), transparent 60%);
+  background-repeat: no-repeat;
 }
 
 /* Global body styling */
 body {
-  background-color: var(--background-color);
   font-family: var(--primary-font);
   line-height: var(--line-height);
-  letter-spacing: var(--letter-spacing);
+  letter-spacing: normal;
+  color: #2a2a30;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  background: transparent;
+  min-height: 100vh;
 }
 
-html {
-    scroll-behavior: smooth;
-    overscroll-behavior: none;
+/* Brand wordmark / playful accents keep the display font */
+.brand-font {
+  font-family: var(--brand-font);
+  letter-spacing: 0.5px;
 }
 
-@media (max-width: 768px) {
-  form {
-    scale: 0.9;
-  }
+/* Soft entrance for content as it mounts */
+@keyframes fp-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-
-/* Responsive scaling for larger screens */
-@media (min-width: 1024px) {
-  body {
-    transform: scale(1.1);
-    transform-origin: top center;
-  }
+.fp-rise {
+  animation: fp-rise 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
 }

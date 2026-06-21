@@ -13,7 +13,7 @@ function EventImage({ event }) {
       initial={{ rotateY: 90, opacity: 0 }}
       animate={{ rotateY: 0, opacity: 1 }}
       exit={{ rotateY: -90, opacity: 0 }}
-      transition={{ duration: 0.25, ease: 'easeInOut' }}
+      transition={{ duration: 0.23, ease: [0.4, 0, 0.2, 1] }}
       style={{ width: Config.MAX, display: Config.BLOCK, position: Config.RELATIVE, transformOrigin: 'right center' }}
     >
       <img
@@ -31,7 +31,7 @@ function EventImage({ event }) {
           objectFit: Config.CONTAIN,
           display: Config.BLOCK,
           background: '#fffaf5',
-          borderBottom: `medium solid ${Config.SUBTLE_BORDER}`,
+          borderBottom: `3px solid ${Config.TEAL_BORDER}`,
         }}
       />
     </motion.div>
@@ -74,7 +74,7 @@ export default function FlipImage({ event }) {
             initial={{ rotateY: -90, opacity: 0 }}
             animate={{ rotateY: 0, opacity: 1 }}
             exit={{ rotateY: 90, opacity: 0 }}
-            transition={{ duration: 0.25, ease: 'easeInOut' }}
+            transition={{ duration: 0.23, ease: [0.4, 0, 0.2, 1] }}
             style={{
               padding: '1.8rem 1.5rem',
               textAlign: 'center',
@@ -86,7 +86,7 @@ export default function FlipImage({ event }) {
             <p
               style={{
                 padding: '1rem',
-                background: '#fffaf5',
+                background: Config.CARD_BODY_GRADIENT,
                 borderRadius: '1rem',
                 whiteSpace: 'pre-line',
                 fontSize: '1rem',
