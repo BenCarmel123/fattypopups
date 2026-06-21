@@ -35,7 +35,7 @@ const FOOTER_BUTTON_STYLES = `
   .fp-footer-btn--secondary:hover { background: ${Config.TEAL_TINT_HOVER}; transform: translateY(-1px); }
 `;
 
-const footerStyle = { padding: '0.85rem 1rem', background: Config.CARD_BACKGROUND_COLOR, borderTop: `2px solid ${Config.TEAL_BORDER}` };
+const footerStyle = { padding: '0.85rem 1rem', background: Config.CARD_SURFACE_GRADIENT, borderTop: `2px solid ${Config.TEAL_BORDER}` };
 
 export default function CardFooter({ event }) {
   return (
