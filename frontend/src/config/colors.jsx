@@ -41,4 +41,5 @@ export const TEAL_BORDER = 'rgba(54, 131, 130, 0.55)';
 // Gradients
 export const HERO_TEAL_GRADIENT = 'linear-gradient(120deg, #368382 0%, #4fb3a6 100%)';
 export const PRIMARY_BUTTON_GRADIENT = 'linear-gradient(135deg, #5aafa9 0%, #3c8d8b 100%)';
-export const CARD_BODY_GRADIENT = 'linear-gradient(165deg, #fffdf6 0%, #fdf6e7 100%)';
+export const CARD_SURFACE_GRADIENT = 'linear-gradient(165deg, rgb(255, 253, 246) 0%, rgb(253, 246, 231) 100%)';
+export const CARD_BODY_GRADIENT = CARD_SURFACE_GRADIENT;

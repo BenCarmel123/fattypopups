@@ -86,7 +86,7 @@ export default function FlipImage({ event }) {
             <p
               style={{
                 padding: '1rem',
-                background: Config.CARD_BODY_GRADIENT,
+                background: Config.CARD_SURFACE_GRADIENT,
                 borderRadius: '1rem',
                 whiteSpace: 'pre-line',
                 fontSize: '1rem',

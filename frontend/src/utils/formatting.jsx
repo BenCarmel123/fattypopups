@@ -4,19 +4,24 @@ export function formatDateRange(start, end) {
     if (start && end) {
         const startDate = new Date(start);
         const endDate = new Date(end);
-        const sameDay = startDate.getDate() === endDate.getDate() && startDate.getMonth() === endDate.getMonth() && startDate.getFullYear() === endDate.getFullYear();
-        if (sameDay) {
-            return startDate.toLocaleDateString(undefined, { month: Config.LONG, day: Config.NUMERIC });
-        }
-        const sameMonth = startDate.getMonth() === endDate.getMonth() && startDate.getFullYear() === endDate.getFullYear();
-        if (sameMonth) {
-            return `${startDate.toLocaleDateString(undefined, { month: Config.LONG })} ${startDate.getDate()}-${endDate.getDate()}`;
-        } else {
-            return `${startDate.toLocaleDateString(undefined, { month: Config.LONG })} ${startDate.getDate()} -${endDate.toLocaleDateString(undefined, { month: Config.LONG })} ${endDate.getDate()}`;
-        }
-    } else if (start) {
-        return new Date(start).toLocaleDateString(undefined, { month: Config.LONG, day: Config.NUMERIC });
+    const sameDay = startDate.getDate() === endDate.getDate() && startDate.getMonth() === endDate.getMonth() && startDate.getFullYear() === endDate.getFullYear();
+    const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+    const startMonth = capitalize(startDate.toLocaleDateString(undefined, { month: Config.LONG }));
+    const endMonth = capitalize(endDate.toLocaleDateString(undefined, { month: Config.LONG }));
+    if (sameDay) {
+      return `${startMonth} ${startDate.getDate()}`;
+    }
+    const sameMonth = startDate.getMonth() === endDate.getMonth() && startDate.getFullYear() === endDate.getFullYear();
+    if (sameMonth) {
+      return `${startMonth} ${startDate.getDate()} - ${endDate.getDate()}`;
     } else {
+      return `${startMonth} ${startDate.getDate()} - ${endMonth} ${endDate.getDate()}`;
+    }
+  } else if (start) {
+  const d = new Date(start);
+  const m = capitalize(d.toLocaleDateString(undefined, { month: Config.LONG }));
+  return `${m} ${d.getDate()}`;
+  } else {
         return '';
     }
 }

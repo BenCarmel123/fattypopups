@@ -10,14 +10,14 @@ function About() {
     window.location.href = "/" + Config.ABOUT_ROUTE;
   }
   return (
-    <div className="flex items-center">
+      <div className="flex items-center">
       <Button
-        variant={Config.SOLID}
-        size={["sm", "md"]}
-        fontSize={["sm", "md"]}
-        color={Config.SECONDARY_COLOR}
-        px={[3, 5]}
-        py={[2, 5]}
+          variant={Config.SOLID}
+          size={Config.SMALL}
+          fontSize={["sm", "md"]}
+          color={Config.SECONDARY_COLOR}
+          px={[3, 4]}
+          py={[2, 3]}
         borderRadius="14px"
         borderBoxing='border-box'
         borderStyle={Config.SOLID}

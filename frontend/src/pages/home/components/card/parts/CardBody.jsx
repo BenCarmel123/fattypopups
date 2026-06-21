@@ -7,7 +7,7 @@ import EventAttributeSpan from './EventAttributeSpan.jsx';
 const dividerStyle = { border: 'none', borderTop: `1px solid ${Config.SUBTLE_BORDER}`, margin: '7px 0' };
 const CardDivider = () => <hr style={dividerStyle} />;
 
-const cardBodyStyle = { lineHeight: 1.5, background: Config.CARD_BODY_GRADIENT };
+const cardBodyStyle = { lineHeight: 1.5, background: Config.CARD_SURFACE_GRADIENT };
 const cardDescriptionStyle = { background: Config.TRANSPARENT };
 const rowStyle = { display: 'flex', alignItems: 'flex-start', gap: '10px' };
 const iconStyle = { color: Config.GRAY, flexShrink: 0, marginTop: '7px', fontSize: '1.25rem' };
