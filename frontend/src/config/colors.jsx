@@ -9,6 +9,7 @@ export const GRAY = '#51515b';
 // Semantic UI colors
 export const CARD_BACKGROUND_COLOR = '#fffbf1';
 export const CARD_ACCENT_COLOR = '#cde6e5';
+export const INSTRUCTION_BACKGROUND_COLOR = '#fffbf1';
 export const HEADER_BACKGROUND_COLOR = 'transparent';
 export const HEADER_BORDER_COLOR = '#368382';
 export const ABOUT_PAGE_BACKGROUND_COLOR = '#fffaee';
@@ -30,3 +31,14 @@ export const DANGER_HOVER_COLOR = '#e04545';
 export const TRANSPARENT = 'transparent';
 export const HOVER_COLOR = CARD_ACCENT_COLOR;
 export const SUBTLE_BORDER = 'rgba(81, 81, 91, 0.15)';
+
+// Brand teal (SECONDARY_COLOR / rgb(54,131,130)) at the opacities used across the card UI
+export const TEAL_TINT = 'rgba(54, 131, 130, 0.08)';
+export const TEAL_TINT_HOVER = 'rgba(54, 131, 130, 0.14)';
+export const TEAL_BORDER_SOFT = 'rgba(54, 131, 130, 0.22)';
+export const TEAL_BORDER = 'rgba(54, 131, 130, 0.55)';
+
+// Gradients
+export const HERO_TEAL_GRADIENT = 'linear-gradient(120deg, #368382 0%, #4fb3a6 100%)';
+export const PRIMARY_BUTTON_GRADIENT = 'linear-gradient(135deg, #5aafa9 0%, #3c8d8b 100%)';
+export const CARD_BODY_GRADIENT = 'linear-gradient(165deg, #fffdf6 0%, #fdf6e7 100%)';

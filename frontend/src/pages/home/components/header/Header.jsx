@@ -13,20 +13,21 @@ function About() {
     <div className="flex items-center">
       <Button
         variant={Config.SOLID}
-        size={Config.SMALL}
+        size={["sm", "md"]}
+        fontSize={["sm", "md"]}
         color={Config.SECONDARY_COLOR}
-        px={2}
-        py={2}
-        borderRadius={Config.XL}
+        px={[3, 5]}
+        py={[2, 5]}
+        borderRadius="14px"
         borderBoxing='border-box'
-        boxShadow={Config.SMALL}
         borderStyle={Config.SOLID}
-        borderWidth='2px'
-        backgroundColor={Config.TRANSPARENT}
-        borderColor="#ffffff3d"
-        _hover={{ opacity: 0.8 }}
-        transition={Config.MINIMAL_TRANSITION}
-        letterSpacing="normal"
+        borderWidth='1px'
+        backgroundColor={Config.TEAL_TINT}
+        borderColor={Config.TEAL_BORDER_SOFT}
+        _hover={{ backgroundColor: Config.TEAL_TINT_HOVER, transform: 'translateY(-1px)' }}
+        transition="all 0.16s ease"
+        letterSpacing="0.04em"
+        fontWeight="bold"
         onClick={handleAbout}
       >
         {Config.ABOUT_BUTTON_TEXT}
@@ -39,10 +40,10 @@ export default function Header( { token } ) {
   const tokenValue = token ? token() : null;
 
   return (
-  <header className="top-0 z-50 pl-3 pr-2 md:px-16 py-[0.75rem] md:py-[0.75rem]" style={{ backgroundColor: Config.HEADER_BACKGROUND_COLOR, borderBottom: `0.5px solid ${Config.HEADER_BORDER_COLOR}` }} >
+  <header className="top-0 z-50 pl-3 pr-2 md:px-16 py-[0.75rem] md:py-[0.75rem]" style={{ backgroundColor: Config.HEADER_BACKGROUND_COLOR, borderBottom: `2.5px solid ${Config.TEAL_BORDER}` }} >
       <div className="flex items-center justify-between max-w-3xl mx-auto w-full">
         <Logo />
-        <div className="flex items-center gap-2 md:gap-4">
+        <div className="flex items-center gap-2 md:gap-4 pl-4 md:pl-8">
           {tokenValue ? <AdminButton /> : <WhatsAppGroupButton />}
           <About />
         </div>

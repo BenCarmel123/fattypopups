@@ -11,22 +11,22 @@ export default function WhatsAppGroupButton() {
             variant={Config.SOLID}
             size={Config.SMALL}
             color={Config.SECONDARY_COLOR}
-            px={2}
+            px={3}
             py={2}
-            borderRadius={Config.XL}
+            borderRadius="14px"
             borderBoxing='border-box'
-            boxShadow={Config.SMALL}
             borderStyle={Config.SOLID}
-            borderWidth='2px'
-            backgroundColor={Config.TRANSPARENT}
-            borderColor="#ffffff3d"
-            _hover={{ opacity: 0.8 }}
-            transition={Config.MINIMAL_TRANSITION}
-            letterSpacing="normal"
+            borderWidth='1px'
+            backgroundColor={Config.TEAL_TINT}
+            borderColor={Config.TEAL_BORDER_SOFT}
+            _hover={{ backgroundColor: Config.TEAL_TINT_HOVER, transform: 'translateY(-1px)' }}
+            transition="all 0.16s ease"
+            letterSpacing="0.04em"
+            fontWeight="bold"
             whiteSpace="nowrap"
             onClick={handleJoin}
         >
-            <FaWhatsapp style={{ marginRight: '0.05rem' }} />
+            <FaWhatsapp style={{ marginRight: '-0.25rem', fontSize: '1.1em' }} />
             {Config.WHATSAPP_GROUP_TEXT}
         </Button>
     );
