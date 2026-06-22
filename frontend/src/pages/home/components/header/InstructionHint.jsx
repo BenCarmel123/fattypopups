@@ -37,7 +37,7 @@ export default function InstructionHint() {
         <>
             <h1 style={heroHeadingStyle}>
                 Discover TLV's{' '}
-                <span style={heroAccentStyle}>pop-ups</span>
+                <span style={heroAccentStyle}>Pop-Ups</span>
             </h1>
 
             <span style={heroPillStyle}>

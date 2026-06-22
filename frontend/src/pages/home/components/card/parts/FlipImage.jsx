@@ -8,20 +8,36 @@ import { useEventIndex } from 'pages/home/context/EventIndexContext.js';
 function EventImage({ event, onMeasure }) {
   const index = useEventIndex();
   const imgRef = React.useRef(null);
+  const [src, setSrc] = React.useState(index === 0 ? event.poster : null);
+
+  React.useEffect(() => {
+    if (index === 0) return;
+    const img = imgRef.current;
+    if (!img) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setSrc(event.poster);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '300px' }
+    );
+    observer.observe(img);
+    return () => observer.disconnect();
+  }, [index, event.poster]);
 
   React.useEffect(() => {
     const img = imgRef.current;
     if (!img || !onMeasure) return;
 
-    // measure immediately if already loaded
     const measure = () => onMeasure(img.clientHeight);
     if (img.complete) measure();
 
-    // listen for load in case it's still loading
     const onLoad = () => measure();
     img.addEventListener('load', onLoad);
 
-    // observe resizes (handles responsive width changes)
     let ro;
     if (typeof ResizeObserver !== 'undefined') {
       ro = new ResizeObserver(() => measure());
@@ -49,8 +65,7 @@ function EventImage({ event, onMeasure }) {
     >
       <img
         ref={imgRef}
-        src={event.poster}
-        // When no image -> fallback to logo
+        src={src ?? ''}
         onError={(e) => { e.currentTarget.src = Config.LOGO_URL; }}
         alt={event.title}
         loading={index === 0 ? 'eager' : 'lazy'}

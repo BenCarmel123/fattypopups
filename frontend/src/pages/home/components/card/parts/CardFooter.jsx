@@ -45,15 +45,7 @@ export default function CardFooter({ event }) {
         <button
           className="fp-footer-btn fp-footer-btn--primary"
           aria-label={Config.RESERVE}
-          onClick={() => {
-            const w = window.open('', Config.BLANK, Config.NO_OPENER);
-            if (w) {
-              try { w.opener = null; } catch (e) {}
-              w.location = event.reservation_url;
-            } else {
-              window.open(event.reservation_url, Config.BLANK, Config.NO_OPENER);
-            }
-          }}
+          onClick={() => window.open(event.reservation_url, Config.BLANK, Config.NO_OPENER)}
         >
           <Config.GiForkKnifeSpoon style={{ fontSize: '1.05rem' }} />
           {Config.RESERVE}
