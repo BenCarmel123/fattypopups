@@ -1,23 +1,14 @@
-import React, { useState, useEffect } from "react"
+import React from "react"
 import { Spinner } from '@chakra-ui/react';
 import DisplayCard from './components/card/DisplayCard.jsx';
 import Header from './components/header/Header.jsx';
 import HomeBanner from './components/header/HomeBanner.jsx';
 import EventIndexContext from './context/EventIndexContext.js';
 import { handleTokenCheck } from "utils/auth.js";
-import { fetchEvents } from "controller/events.js";
-import { logger } from "utils/logger.js";
+import { useEvents } from './hooks/useEvents.js';
 
 export default function HomePage() {
-  const [events, setEvents] = useState(null);
-  useEffect(() => {
-    fetchEvents()
-      .then(data => setEvents(Array.isArray(data) ? data : []))
-      .catch(err => {
-        logger.error('Error fetching events:', err);
-        setEvents([]);
-      });
-  }, []);
+  const events = useEvents();
 
   if (events === null) {
     return (
