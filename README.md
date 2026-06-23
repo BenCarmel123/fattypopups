@@ -48,16 +48,18 @@ fattypopups/
 │   │   │   │   ├── components/
 │   │   │   │   │   ├── card/     # Event card (display, flip, body, footer)
 │   │   │   │   │   └── header/   # Header, Logo, HomeBanner, WhatsApp button
-│   │   │   │   └── context/      # React contexts (EventIndex)
+│   │   │   │   ├── context/      # React contexts (EventIndex)
+│   │   │   │   └── hooks/        # Page hooks (useEvents)
 │   │   │   ├── admin/            # Dashboard, EventForm, DraftBuilder, Login
 │   │   │   │   ├── components/   # Admin-specific UI (alerts, spinners, file upload)
 │   │   │   │   │   ├── draft/    # Draft-specific (Toggle, ProcessingBar)
 │   │   │   │   │   └── form/     # Form fields, structure, typeahead
 │   │   │   │   ├── views/        # Page-level views
+│   │   │   │   ├── hooks/        # Admin hooks (useEventForm)
 │   │   │   │   └── utils/        # Admin validation & form parsing
 │   │   │   └── about/            # About page
 │   │   ├── components/buttons/   # Shared buttons (AdminButton, navigation)
-│   │   ├── config/               # Theme, colors, icons, strings
+│   │   ├── config/               # Theme, colors, icons, strings, tailwind classes
 │   │   ├── controller/           # API client layer
 │   │   └── utils/                # Shared helpers (auth, formatting, links)
 │   └── public/                   # Static assets
