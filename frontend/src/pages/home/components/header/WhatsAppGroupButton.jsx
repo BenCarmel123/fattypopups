@@ -4,15 +4,16 @@ import * as Config from 'config/index.jsx';
 
 export default function WhatsAppGroupButton() {
     function handleJoin() {
-        window.open(Config.WHATSAPP_GROUP_URL, '_blank', 'noopener,noreferrer');
+        window.open(Config.WHATSAPP_GROUP_URL, Config.BLANK, Config.NO_OPENER);
     }
     return (
         <Button
             variant={Config.SOLID}
-            size={Config.SMALL}
+            size={[Config.SMALL, Config.MEDIUM]}
             color={Config.SECONDARY_COLOR}
-            px={[3, 4]}
-            py={[2, 3]}
+            fontSize={["sm", "md"]}
+            px={[3, 5]}
+            py={[2, 4]}
             borderRadius="14px"
             borderBoxing='border-box'
             borderStyle={Config.SOLID}
@@ -22,8 +23,8 @@ export default function WhatsAppGroupButton() {
             _hover={{ backgroundColor: Config.TEAL_TINT_HOVER, transform: 'translateY(-1px)' }}
             transition="all 0.16s ease"
             letterSpacing="0.04em"
-            fontWeight="bold"
-            whiteSpace="nowrap"
+            fontWeight={Config.BOLD}
+            whiteSpace={Config.NOWRAP}
             onClick={handleJoin}
         >
             <FaWhatsapp style={{ marginRight: '-0.25rem', fontSize: ['1.05em', '1.25em'] }} />

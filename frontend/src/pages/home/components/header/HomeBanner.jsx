@@ -1,7 +1,9 @@
 import InstructionHint from './InstructionHint.jsx';
+import * as Config from 'config/index.jsx';
+import * as Classes from 'config/classes.jsx';
 
 const bannerStyle = {
-    width: '100%',
+    width: Config.MAX,
     maxWidth: '640px',
     margin: '1.75rem auto 2.5rem',
     padding: '0 0.5rem',
@@ -11,7 +13,7 @@ const bannerStyle = {
 
 export default function HomeBanner() {
     return (
-        <section className="fp-rise" style={bannerStyle}>
+        <section className={Classes.BANNER_SECTION} style={bannerStyle}>
             <InstructionHint />
         </section>
     );

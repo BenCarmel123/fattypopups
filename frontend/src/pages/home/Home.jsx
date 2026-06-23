@@ -6,14 +6,16 @@ import HomeBanner from './components/header/HomeBanner.jsx';
 import EventIndexContext from './context/EventIndexContext.js';
 import { handleTokenCheck } from "utils/auth.js";
 import { useEvents } from './hooks/useEvents.js';
+import * as Config from 'config/index.jsx';
+import * as Classes from 'config/classes.jsx';
 
 export default function HomePage() {
   const events = useEvents();
 
   if (events === null) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <Spinner size="xl" color="blue.500" />
+      <div className={Classes.HOME_SPINNER_WRAPPER}>
+        <Spinner size={Config.XL} color="blue.500" />
       </div>
     );
   }
@@ -21,11 +23,11 @@ export default function HomePage() {
   return (
     <>
     <Header token={handleTokenCheck} />
-    <div className="mt-2 w-full flex flex-col items-center px-2 sm:px-4 md:px-8 box-border">
+    <div className={Classes.HOME_PAGE}>
       <HomeBanner />
       {events.map((evt, index) => (
         <EventIndexContext.Provider key={evt.title} value={index}>
-          <div className="mb-8 w-full max-w-xl relative">
+          <div className={Classes.HOME_CARD_WRAPPER}>
             <DisplayCard event={evt} />
           </div>
         </EventIndexContext.Provider>

@@ -7,12 +7,12 @@ const heroHeadingStyle = {
     fontWeight: 800,
     lineHeight: 1.12,
     letterSpacing: '-0.03em',
-    color: '#3d4f4e',
+    color: Config.HERO_HEADING_COLOR,
     overflowWrap: 'break-word',
 };
 
 const heroAccentStyle = {
-    whiteSpace: 'nowrap',
+    whiteSpace: Config.NOWRAP,
     background: Config.HERO_TEAL_GRADIENT,
     WebkitBackgroundClip: 'text',
     backgroundClip: 'text',
@@ -26,7 +26,7 @@ const heroPillStyle = {
     letterSpacing: '0.12em',
     textTransform: 'uppercase',
     color: Config.SECONDARY_COLOR,
-    background: 'rgba(54, 131, 130, 0.10)',
+    background: Config.TEAL_TINT_FAINT,
     padding: '0.4rem 1.1rem',
     borderRadius: '9999px',
     marginTop: 'calc(1rem + 4px)',

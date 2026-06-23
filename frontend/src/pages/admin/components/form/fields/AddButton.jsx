@@ -4,7 +4,7 @@ import * as Config from 'config/index.jsx';
 export default function AddChef({ onClick, label, disabled = false }) {
   return (
     <HStack
-      cursor={disabled ? "not-allowed" : "pointer"}
+      cursor={disabled ? "not-allowed" : Config.POINTER}
       onClick={disabled ? undefined : onClick}
       color={disabled ? "gray.400" : Config.BACKGROUND_COLOR}
       backgroundColor="transparent"
@@ -12,10 +12,10 @@ export default function AddChef({ onClick, label, disabled = false }) {
       width="fit-content"
       opacity={disabled ? 0.5 : 1}
       padding="0.25rem 0.5rem"
-      fontSize="sm"
+      fontSize={Config.SMALL}
       border="1px solid"
       borderColor="gray.300"
-      borderRadius="md"
+      borderRadius={Config.MEDIUM}
     >
       <Text>+</Text>
       <Text>{label}</Text>

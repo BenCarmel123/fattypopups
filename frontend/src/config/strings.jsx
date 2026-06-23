@@ -11,6 +11,10 @@ export const HALLIE_EMAIL = "hallie@in-themaking.co";
 export const INSTA_LINK_BEN = "https://www.instagram.com/ben_ashamen/";
 export const INSTA_LINK_HALLIE = "http://www.instagram.com/tel_a_bites/";
 export const ABOUT_ROUTE = "about";
+export const ROUTE_ABOUT = "/about";
+export const ROUTE_HOME = "/";
+export const AUTH_GOOGLE_PATH = "/auth/google";
+export const MAILTO_PREFIX = "mailto:";
 
 // App / page labels
 export const APP_NAME = "fatty popups";
@@ -26,6 +30,15 @@ export const SHARE = "Share";
 export const ABOUT_BUTTON_TEXT = "Our Story";
 export const ENTER = "Enter";
 export const AUTH_TOKEN = "auth_token";
+export const ADMIN_LABEL = "Admin";
+export const ABOUT_LABEL = "About";
+
+// Aria labels
+export const ARIA_GO_BACK = "Go back";
+export const ARIA_BACK_TO_DASHBOARD = "Back to dashboard";
+
+// Storage keys
+export const STORAGE_ADMIN_EVENTS = "admin_events";
 
 // Alert/Status Types
 export const STATUS_ERROR = "error";

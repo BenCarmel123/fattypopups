@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { useRef } from "react";
+import * as Classes from 'config/classes.jsx';
 
 export default function DynamicCard({ children }) {
   const ref = useRef(null);
@@ -35,7 +36,7 @@ export default function DynamicCard({ children }) {
     <motion.div
       ref={ref}
       style={{ y, opacity }}
-      className="overflow-hidden rounded-2xl bg-[transparent] will-change-transform relative z-10"
+      className={Classes.DYNAMIC_CARD}
     >
       {children}
     </motion.div>

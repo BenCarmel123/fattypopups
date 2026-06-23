@@ -15,7 +15,7 @@ const cardRootStyle = {
   borderColor: Config.TEAL_BORDER,
   borderRadius: '40px',
   borderWidth: '2.5px',
-  boxShadow: '0 10px 30px -14px rgba(54, 131, 130, 0.45)',
+  boxShadow: Config.TEAL_SHADOW_CARD,
   fontWeight: Config.BOLDER,
 };
 

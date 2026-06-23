@@ -61,7 +61,7 @@ export default function ChefFields({ event }) {
     const isLastRow = index === chefCount - 1;
 
     return (
-      <Row key={index} position="relative">
+      <Row key={index} position={Config.RELATIVE}>
         <TypeaheadInput
           label={isFirstRow ? "Chef Name" : ""}
           name={`chef_name_${index}`}
@@ -81,7 +81,7 @@ export default function ChefFields({ event }) {
         {isLastRow && canRemove && (
           <Button
             onClick={handleRemoveChef}
-            position="absolute"
+            position={Config.ABSOLUTE}
             right="-40px"
             top={isFirstRow ? "32px" : "4px"}
             size="xs"

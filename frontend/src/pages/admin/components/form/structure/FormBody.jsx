@@ -20,7 +20,7 @@ export default function FormBody({ event, isEdit, onSubmit, handleClick, isDraft
           backgroundColor: Config.FORM_BACKGROUND_COLOR,
           encType: "multipart/form-data",
           borderRadius: '1rem',
-          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+          boxShadow: Config.SHADOW_FORM
         }}
       >
         <Card.Body>

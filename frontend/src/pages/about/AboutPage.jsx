@@ -4,11 +4,11 @@ import { motion } from "framer-motion";
 import * as Config from 'config/index.jsx';
 import { BackButton } from "../../components/buttons/Buttons.jsx";
 import * as Colors from 'config/colors.jsx';
-
+import * as Classes from 'config/classes.jsx';
 
 const ParagraphComponent = ({ text }) => {
   return (
-    <p className="font-light">
+    <p className={Classes.ABOUT_PARAGRAPH}>
       {text}
     </p>
   );
@@ -16,7 +16,7 @@ const ParagraphComponent = ({ text }) => {
 
 const ABOUT_SUBHEADER = ({ text, color, style }) => {
   return (
-    <h1 className="text-5xl md:text-6xl font-extralight text-gray-900 text-center tracking-tight" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', marginTop: '0.5rem', fontWeight: '100', color: color, ...style }}>
+    <h1 className={Classes.ABOUT_SUBHEADER} style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', marginTop: '0.5rem', fontWeight: '100', color: color, ...style }}>
       {text}
     </h1>
   );
@@ -24,10 +24,10 @@ const ABOUT_SUBHEADER = ({ text, color, style }) => {
 
 const ContactEmail = ({ email }) => {
   return (
-    <p className="text-sm text-gray-400 font-bold mt-0" style={{ color: Config.SECONDARY_COLOR }}>
-        <span className="inline-flex items-center gap-2" style={{ color: Config.SECONDARY_COLOR, marginBottom: '1.5rem' }}>
-          <Config.AiOutlineMail className="inline-block" style={{ verticalAlign: 'middle', color: Config.SECONDARY_COLOR }} />
-          <a href={`mailto:${email}`} className="underline" style={{ color: Config.SECONDARY_COLOR }}>
+    <p className={Classes.ABOUT_CONTACT_EMAIL} style={{ color: Config.SECONDARY_COLOR }}>
+        <span className={Classes.ABOUT_CONTACT_INLINE} style={{ color: Config.SECONDARY_COLOR, marginBottom: '1.5rem' }}>
+          <Config.AiOutlineMail className={Classes.ABOUT_MAIL_ICON} style={{ verticalAlign: Config.MIDDLE, color: Config.SECONDARY_COLOR }} />
+          <a href={`${Config.MAILTO_PREFIX}${email}`} className={Classes.ABOUT_CONTACT_LINK} style={{ color: Config.SECONDARY_COLOR }}>
             {email}
           </a>
         </span>
@@ -54,20 +54,19 @@ export default function AboutPage() {
   ];
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-6 py-20" style={{ backgroundColor: Config.ABOUT_PAGE_BACKGROUND_COLOR, marginTop: '-40px' }}>
-      <div className="max-w-2xl w-full space-y-12">
-        <div className="flex justify-center mb-7">
+    <div className={Classes.ABOUT_PAGE_WRAPPER} style={{ backgroundColor: Config.ABOUT_PAGE_BACKGROUND_COLOR, marginTop: '-40px' }}>
+      <div className={Classes.ABOUT_CONTENT_WRAPPER}>
+        <div className={Classes.ABOUT_BACK_BUTTON_WRAPPER}>
           <BackButton variant="about" onBack={() => navigate('/')} />
         </div>
-        <ABOUT_SUBHEADER text="About" color={Config.BLACK} />
+        <ABOUT_SUBHEADER text={Config.ABOUT_LABEL} color={Config.BLACK} />
         <ABOUT_SUBHEADER text="fatty popups" color={Config.SECONDARY_COLOR} style={{ fontStyle: 'italic', fontWeight: '300' }} />
 
-      <div className="flex justify-center">
-        <Config.GiKnifeFork className="text-6xl text-gray-900" />
+      <div className={Classes.ABOUT_ICON_WRAPPER}>
+        <Config.GiKnifeFork className={Classes.ABOUT_KNIFE_FORK_ICON} />
       </div>
 
-        {/* Profile Pictures */}
-        <div className="flex justify-center gap-8">
+        <div className={Classes.ABOUT_CREATORS_ROW}>
           {creators.map((creator, index) => (
             <motion.a
               key={creator.name}
@@ -85,24 +84,21 @@ export default function AboutPage() {
                 y: -8,
                 transition: { duration: 0.3 }
               }}
-              className="group cursor-pointer"
+              className={Classes.ABOUT_CREATOR_GROUP}
             >
-               <div className="relative">
-                  <div className="w-[7.7rem] h-[7.7rem] md:w-[9.9rem] md:h-[9.9rem] rounded-full overflow-hidden ring-2 ring-gray-100 group-hover:ring-4 group-hover:ring-gray-200 transition-all duration-300">
+               <div className={Classes.ABOUT_CREATOR_RELATIVE}>
+                  <div className={Classes.ABOUT_CREATOR_AVATAR_WRAPPER}>
                     <img
                       src={creator.image}
                       alt={creator.name}
-                      className={creator.name === "Ben"
-                        ? "w-full h-full object-cover object-center scale-110 group-hover:scale-115 transition-transform duration-500"
-                        : "w-full h-full object-cover object-center scale-125 group-hover:scale-130 transition-transform duration-500"
-                      }
+                      className={creator.name === "Ben" ? Classes.ABOUT_CREATOR_IMG_BEN : Classes.ABOUT_CREATOR_IMG_HALLIE}
                       style={creator.name === "Ben" ? { objectPosition: '10% 5%' } : undefined}
                     />
                   </div>
                   <motion.div
                     initial={{ opacity: 0 }}
                     whileHover={{ opacity: 1 }}
-                    className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap text-sm text-gray-400"
+                    className={Classes.ABOUT_CREATOR_NAME}
                   >
                   </motion.div>
                 </div>
@@ -110,14 +106,14 @@ export default function AboutPage() {
           ))}
         </div>
 
-  <div className="space-y-6 text-lg text-gray-600 leading-relaxed text-center pt-8" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', marginTop: '1rem' }}>
+  <div className={Classes.ABOUT_BODY_TEXT} style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', marginTop: '1rem' }}>
           <ParagraphComponent text={Config.ABOUT_CREATORS_1} />
           <ParagraphComponent text={Config.ABOUT_CREATORS_2} />
           <ParagraphComponent text={Config.ABOUT_CREATORS_3} />
-          <p className="text-md text-gray-400 pt-4 font-light" style={{ color: Config.SECONDARY_COLOR }}>
+          <p className={Classes.ABOUT_CONTACT_TEXT} style={{ color: Config.SECONDARY_COLOR }}>
             {Config.CONTACT}
           </p>
-          <div className="flex flex-col items-center space-y-2 mt-2">
+          <div className={Classes.ABOUT_CONTACT_LIST}>
             <ContactEmail email={Config.HALLIE_EMAIL} />
             <ContactEmail email={Config.BEN_EMAIL} />
           </div>

@@ -1,14 +1,15 @@
 import { Button } from "@chakra-ui/react";
 import * as Config from 'config/index.jsx';
+import * as Classes from 'config/classes.jsx';
 
 const ADMIN_ROUTE = import.meta.env.VITE_ADMIN_ROUTE;
 
 export default function AdminButton() {
   function handleAdmin() {
-    window.location.href = "/" + ADMIN_ROUTE;
+    window.location.href = Config.ROUTE_HOME + ADMIN_ROUTE;
   }
   return (
-    <div className="flex items-center">
+    <div className={Classes.ADMIN_BUTTON_WRAPPER}>
       <Button
         variant={Config.SOLID}
         size={Config.SMALL}
@@ -24,10 +25,10 @@ export default function AdminButton() {
         _hover={{ backgroundColor: Config.TEAL_TINT_HOVER, transform: 'translateY(-1px)' }}
         transition="all 0.16s ease"
         letterSpacing="0.04em"
-        fontWeight="bold"
+        fontWeight={Config.BOLD}
         onClick={handleAdmin}
       >
-        Admin
+        {Config.ADMIN_LABEL}
       </Button>
     </div>
   );

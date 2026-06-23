@@ -13,7 +13,7 @@ function ExistingImagePreview({ src, onError }) {
             alt="Current poster"
             boxSize="20"
             objectFit="cover"
-            borderRadius="md"
+            borderRadius={Config.MEDIUM}
             border="1px solid"
             borderColor="gray.200"
         />
@@ -62,9 +62,9 @@ function InnerFileUploadButton({ label, existingImage }) {
             py={6}
             boxShadow={Config.MEDIUM}
             borderRadius={Config.XL}
-            backgroundColor={isSelected ? '#1a365d' : Config.ADMIN_PANEL_COLOR}
+            backgroundColor={isSelected ? Config.NAVY_HOVER_COLOR : Config.ADMIN_PANEL_COLOR}
             color={Config.WHITE}
-            _hover={{ boxShadow: '0 12px 24px rgba(0,0,0,0.15)', backgroundColor: '#1a365d' }}
+            _hover={{ boxShadow: Config.SHADOW_SOFT, backgroundColor: Config.NAVY_HOVER_COLOR }}
             transition={Config.MINIMAL_TRANSITION}
             as="label">
             <ChakraFileUpload.HiddenInput />

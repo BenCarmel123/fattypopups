@@ -1,6 +1,7 @@
 import { Button } from '@chakra-ui/react';
 import * as Config from 'config/index.jsx';
 import { Send, Loader2, ArrowLeft, Home } from 'lucide-react';
+import * as Classes from 'config/classes.jsx';
 
 function StyledButton({ children, bgColor, hoverBg, textColor = Config.WHITE, onClick, ...props }) {
   return (
@@ -11,7 +12,7 @@ function StyledButton({ children, bgColor, hoverBg, textColor = Config.WHITE, on
       boxShadow={Config.MEDIUM}
       borderRadius={Config.XL}
       backgroundColor={bgColor}
-      _hover={{ boxShadow: '0 12px 24px rgba(0,0,0,0.15)', backgroundColor: hoverBg }}
+      _hover={{ boxShadow: Config.SHADOW_SOFT, backgroundColor: hoverBg }}
       transition={Config.MINIMAL_TRANSITION}
       {...props}
     >
@@ -21,18 +22,18 @@ function StyledButton({ children, bgColor, hoverBg, textColor = Config.WHITE, on
 }
 
 export function BackButton({ homepage = false, variant = 'default', onBack }) {
-  let bgColor = '#f1f5f9';
-  let textColor = '#4b5563';
-  let hoverBg = '#e2e8f0';
+  let bgColor = Config.SLATE_BG;
+  let textColor = Config.SLATE_TEXT;
+  let hoverBg = Config.SLATE_BG_HOVER;
 
   if (variant === 'about') {
     bgColor = Config.SECONDARY_COLOR;
     textColor = Config.WHITE;
-    hoverBg = '#2a6563';
+    hoverBg = Config.SECONDARY_HOVER_COLOR;
   } else if (homepage) {
-    bgColor = '#f1f5f9';
-    textColor = '#4b5563';
-    hoverBg = '#e2e8f0';
+    bgColor = Config.SLATE_BG;
+    textColor = Config.SLATE_TEXT;
+    hoverBg = Config.SLATE_BG_HOVER;
   }
 
   return (
@@ -43,7 +44,7 @@ export function BackButton({ homepage = false, variant = 'default', onBack }) {
       textColor={textColor}
       px={4}
       py={4}
-      aria-label="Go back"
+      aria-label={Config.ARIA_GO_BACK}
     >
       {homepage ? <Home size={20} /> : <ArrowLeft size={20} />}
     </StyledButton>
@@ -54,7 +55,7 @@ export function SubmitFormButton({ text, onClick, isDraft }) {
   return (
     <StyledButton
       bgColor={Config.ADMIN_PANEL_COLOR}
-      hoverBg="#1a365d"
+      hoverBg={Config.NAVY_HOVER_COLOR}
       onClick={onClick}
       size={Config.MEDIUM}
       fontWeight={Config.BOLD}
@@ -70,13 +71,13 @@ export function SubmitFormButton({ text, onClick, isDraft }) {
 export function BackToDashboard({ handleClick }) {
   return (
     <StyledButton
-      bgColor="#f1f5f9"
-      hoverBg="#e2e8f0"
-      textColor="#4b5563"
+      bgColor={Config.SLATE_BG}
+      hoverBg={Config.SLATE_BG_HOVER}
+      textColor={Config.SLATE_TEXT}
       onClick={handleClick}
       px={4}
       py={4}
-      aria-label="Back to dashboard"
+      aria-label={Config.ARIA_BACK_TO_DASHBOARD}
     >
       <ArrowLeft size={20} />
     </StyledButton>
@@ -85,13 +86,12 @@ export function BackToDashboard({ handleClick }) {
 
 export function SubmitPromptButton({ prompt, isLoading}) {
     return(
-        <Button type="submit" size="lg" disabled={!prompt.trim() || isLoading}
-        className="absolute right-3 bottom-3 h-11 w-11 md:h-12 md:w-12 rounded-xl bg-slate-100
-        hover:bg-slate-200 disabled:bg-slate-100 disabled:text-slate-400 transition-all duration-200">
+        <Button type="submit" size={Config.LARGE} disabled={!prompt.trim() || isLoading}
+        className={Classes.SUBMIT_PROMPT_BTN}>
         {isLoading ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
+                <Loader2 className={Classes.LOADER_ICON} />
             ) : (
-                <Send className="h-4 w-4" />
+                <Send className={Classes.SEND_ICON} />
             )}
         </Button>)
 }
@@ -100,7 +100,7 @@ export function AdminActionButton({ onClick, text }) {
   return (
     <StyledButton
       bgColor={Config.ADMIN_PANEL_COLOR}
-      hoverBg="#1a365d"
+      hoverBg={Config.NAVY_HOVER_COLOR}
       onClick={onClick}
       px={6}
       py={6}

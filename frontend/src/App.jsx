@@ -5,6 +5,7 @@ import ReactGA from "react-ga4";
 import AdminPageHandler from "./pages/admin/Handler";
 import HomePage from "./pages/home/Home";
 import AboutPage from "./pages/about/AboutPage";
+import * as Config from "config/index.jsx";
 
 ReactGA.initialize(import.meta.env.VITE_GA4_MEASUREMENT_ID);
 
@@ -30,7 +31,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path={`/${ADMIN_ROUTE}`} element={<AdminPageHandler action={undefined} />} />
-        <Route path="/about" element={<AboutPage />} />
+        <Route path={Config.ROUTE_ABOUT} element={<AboutPage />} />
       </Routes>
     </Router>
   );

@@ -14,7 +14,7 @@ export function useEventForm({ event, isEdit, handleClick, setEvents }) {
       const updated = isEdit
         ? prev.map(ev => ev.id === savedEvent.id ? savedEvent : ev)
         : [...prev, savedEvent];
-      sessionStorage.setItem('admin_events', JSON.stringify(updated));
+      sessionStorage.setItem(Config.STORAGE_ADMIN_EVENTS, JSON.stringify(updated));
       return updated;
     });
     if (isEdit) return savedEvent.is_draft ? "Draft Updated" : "Event Updated";

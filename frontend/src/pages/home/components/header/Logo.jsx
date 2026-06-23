@@ -1,17 +1,18 @@
 import React from "react"
 import * as Config from 'config/index.jsx';
+import * as Classes from 'config/classes.jsx';
 
 export default function Logo() {
   function handleHome() {
-    window.location.href = "/";
+    window.location.href = Config.ROUTE_HOME;
   }
   return (
-    <div className="flex items-center">
+    <div className={Classes.LOGO_WRAPPER}>
       <img
         src={Config.LOGO_URL}
         alt={Config.APP_NAME}
-        className="w-28 md:w-40 object-contain"
-        style={{ cursor: 'pointer' }}
+        className={Classes.LOGO_IMG}
+        style={{ cursor: Config.POINTER }}
         onClick={handleHome}
       />
     </div>

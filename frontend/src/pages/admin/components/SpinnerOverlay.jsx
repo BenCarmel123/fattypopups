@@ -1,14 +1,16 @@
+import * as Classes from 'config/classes.jsx';
+
 export default function SpinnerOverlay({ isLoading }) {
   if (!isLoading) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40">
+    <div className={Classes.SPINNER_OVERLAY}>
       <svg
-        className="animate-spin h-10 w-10 text-white"
+        className={Classes.SPINNER_SVG}
         viewBox="0 0 24 24"
       >
         <circle
-          className="opacity-25"
+          className={Classes.SPINNER_CIRCLE}
           cx="12"
           cy="12"
           r="10"
@@ -17,7 +19,7 @@ export default function SpinnerOverlay({ isLoading }) {
           fill="none"
         />
         <path
-          className="opacity-75"
+          className={Classes.SPINNER_PATH}
           fill="currentColor"
           d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
         />

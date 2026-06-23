@@ -23,7 +23,7 @@ export function handleInstagram(instagram) {
   if (url.startsWith('@')) {
     url = `https://instagram.com/${url.slice(1)}`;
   }
-  window.open(url, "_blank", "noopener,noreferrer");
+  window.open(url, Config.BLANK, Config.NO_OPENER);
 }
 
 export function handleCalendar(event) {

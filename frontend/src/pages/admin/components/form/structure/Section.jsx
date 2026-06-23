@@ -5,7 +5,7 @@ export default function Section({ children, title }) {
   return (
     <div
       style={{
-        border: '1.5px solid #e5e7eb',
+        border: `1.5px solid ${Config.SLATE_BORDER}`,
         borderRadius: '1rem',
         padding: '1.5rem',
         marginBottom: '1rem',
@@ -18,7 +18,7 @@ export default function Section({ children, title }) {
             fontSize: '1.1rem',
             marginBottom: '1.8rem',
             color: Config.FORM_INPUT_COLOR,
-            backgroundColor: 'rgba(139, 162, 160, 0.15)',
+            backgroundColor: Config.SECTION_TINT,
             letterSpacing: '0.01em',
             textAlign: 'center',
             padding: '0.5rem 0.5rem',

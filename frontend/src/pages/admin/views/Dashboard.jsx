@@ -19,7 +19,7 @@ const Dashboard = ({ handleClick, events, setEvents, onRetry }) => {
       .then(() => {
         setEvents(prev => {
           const updated = prev.filter(ev => ev.id !== id);
-          sessionStorage.setItem('admin_events', JSON.stringify(updated));
+          sessionStorage.setItem(Config.STORAGE_ADMIN_EVENTS, JSON.stringify(updated));
           return updated;
         });
         setAlert({ status: Config.STATUS_SUCCESS, description: `"${title}" was deleted.` });
@@ -45,7 +45,7 @@ const Dashboard = ({ handleClick, events, setEvents, onRetry }) => {
     <div style={{ display: Config.FLEX, flexDirection: 'column', alignItems: 'stretch', maxWidth: '1200px', width: '100%', padding: '1rem', borderRadius: '2rem', overflow: 'hidden' }}>
       <SpinnerOverlay isLoading={deleting} />
       {alert && <MyAlert {...alert} onClose={() => setAlert(null)} />}
-      <Table.Root size={Config.LARGE} marginTop="2rem" style={{ tableLayout: 'fixed', width: '100%' }}>
+      <Table.Root size={Config.LARGE} marginTop="2rem" style={{ tableLayout: Config.FIXED, width: Config.MAX }}>
         <Table.Header>
           <Table.Row style={{ backgroundColor: Config.ADMIN_TABLE_HEADER_COLOR, fontSize: '1.25rem', height: '3.5rem' }}>
             <Table.ColumnHeader style={{ width: '70%' }} />

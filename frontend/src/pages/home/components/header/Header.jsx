@@ -4,20 +4,21 @@ import Logo from './Logo.jsx';
 import AdminButton from '../../../../components/buttons/AdminButton.jsx';
 import WhatsAppGroupButton from './WhatsAppGroupButton.jsx';
 import * as Config from 'config/index.jsx';
+import * as Classes from 'config/classes.jsx';
 
 function About() {
   function handleAbout() {
-    window.location.href = "/" + Config.ABOUT_ROUTE;
+    window.location.href = Config.ROUTE_HOME + Config.ABOUT_ROUTE;
   }
   return (
-      <div className="flex items-center">
+      <div className={Classes.HEADER_ABOUT_WRAPPER}>
       <Button
           variant={Config.SOLID}
-          size={Config.SMALL}
-          fontSize={["sm", "md"]}
+          size={[Config.SMALL, Config.MEDIUM]}
+          fontSize={[Config.SMALL, Config.MEDIUM]}
           color={Config.SECONDARY_COLOR}
-          px={[3, 4]}
-          py={[2, 3]}
+          px={[3, 5]}
+          py={[2, 4]}
         borderRadius="14px"
         borderBoxing='border-box'
         borderStyle={Config.SOLID}
@@ -27,7 +28,7 @@ function About() {
         _hover={{ backgroundColor: Config.TEAL_TINT_HOVER, transform: 'translateY(-1px)' }}
         transition="all 0.16s ease"
         letterSpacing="0.04em"
-        fontWeight="bold"
+        fontWeight={Config.BOLD}
         onClick={handleAbout}
       >
         {Config.ABOUT_BUTTON_TEXT}
@@ -40,10 +41,10 @@ export default function Header( { token } ) {
   const tokenValue = token ? token() : null;
 
   return (
-  <header className="top-0 z-50 pl-3 pr-2 md:px-16 py-[0.75rem] md:py-[0.75rem]" style={{ backgroundColor: Config.HEADER_BACKGROUND_COLOR, borderBottom: `2.5px solid ${Config.TEAL_BORDER}` }} >
-      <div className="flex items-center justify-between max-w-3xl mx-auto w-full">
+  <header className={Classes.HEADER} style={{ backgroundColor: Config.HEADER_BACKGROUND_COLOR, borderBottom: `2.5px solid ${Config.TEAL_BORDER}` }} >
+      <div className={Classes.HEADER_INNER}>
         <Logo />
-        <div className="flex items-center gap-2 md:gap-4 pl-4 md:pl-8">
+        <div className={Classes.HEADER_NAV}>
           {tokenValue ? <AdminButton /> : <WhatsAppGroupButton />}
           <About />
         </div>

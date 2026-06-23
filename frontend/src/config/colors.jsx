@@ -38,6 +38,31 @@ export const TEAL_TINT_HOVER = 'rgba(54, 131, 130, 0.14)';
 export const TEAL_BORDER_SOFT = 'rgba(54, 131, 130, 0.22)';
 export const TEAL_BORDER = 'rgba(54, 131, 130, 0.55)';
 
+// Slate neutrals (buttons / controls)
+export const SLATE_BG = '#f1f5f9';
+export const SLATE_BG_HOVER = '#e2e8f0';
+export const SLATE_TEXT = '#4b5563';
+export const SLATE_BORDER = '#e5e7eb';
+
+// Brand accent variants
+export const SECONDARY_HOVER_COLOR = '#2a6563';
+export const HERO_HEADING_COLOR = '#3d4f4e';
+export const IMAGE_FALLBACK_BG = '#fffaf5';
+
+// Admin / navy accents
+export const NAVY_HOVER_COLOR = '#1a365d';
+
+// Overlay / shadow tokens
+export const OVERLAY_DARK = 'rgba(0, 0, 0, 0.4)';
+export const SHADOW_SOFT = '0 12px 24px rgba(0,0,0,0.15)';
+export const SHADOW_FORM = '0 4px 6px rgba(0, 0, 0, 0.1)';
+export const SECTION_TINT = 'rgba(139, 162, 160, 0.15)';
+
+// Teal opacity variants (brand SECONDARY_COLOR / rgb(54,131,130))
+export const TEAL_TINT_FAINT = 'rgba(54, 131, 130, 0.10)';
+export const TEAL_SHADOW_CARD = '0 10px 30px -14px rgba(54, 131, 130, 0.45)';
+export const TEAL_SHADOW_HOVER = '0 8px 20px -8px rgba(54, 131, 130, 0.7)';
+
 // Gradients
 export const HERO_TEAL_GRADIENT = 'linear-gradient(120deg, #368382 0%, #4fb3a6 100%)';
 export const PRIMARY_BUTTON_GRADIENT = 'linear-gradient(135deg, #5aafa9 0%, #3c8d8b 100%)';

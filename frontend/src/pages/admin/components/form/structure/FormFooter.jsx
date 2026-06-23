@@ -6,9 +6,9 @@ export default function FormFooter({ isEdit, handleClick, event, isDraftRef }) {
 
   return (
     <Card.Footer>
-      <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+      <div style={{ display: Config.FLEX, width: Config.MAX, justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
         <BackToDashboard handleClick={handleClick(Config.DASHBOARD, undefined)} />
-        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+        <div style={{ display: Config.FLEX, gap: '1rem', flexWrap: 'wrap' }}>
           {showDraftButton && (
             <SubmitFormButton
               text="Save as Draft"

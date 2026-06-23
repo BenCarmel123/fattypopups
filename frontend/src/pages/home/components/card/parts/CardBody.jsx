@@ -9,9 +9,9 @@ const CardDivider = () => <hr style={dividerStyle} />;
 
 const cardBodyStyle = { lineHeight: 1.5, background: Config.CARD_SURFACE_GRADIENT };
 const cardDescriptionStyle = { background: Config.TRANSPARENT };
-const rowStyle = { display: 'flex', alignItems: 'flex-start', gap: '10px' };
+const rowStyle = { display: Config.FLEX, alignItems: 'flex-start', gap: '10px' };
 const iconStyle = { color: Config.GRAY, flexShrink: 0, marginTop: '7px', fontSize: '1.25rem' };
-const pillWrapStyle = { display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '8px', minWidth: 0 };
+const pillWrapStyle = { display: Config.FLEX, flexWrap: 'wrap', alignItems: Config.CENTER, gap: '8px', minWidth: 0 };
 
 function getInstagramEntries(event) {
   return [

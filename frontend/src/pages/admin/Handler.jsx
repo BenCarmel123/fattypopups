@@ -14,7 +14,7 @@ export default function AdminPageHandler() {
   const[action, setAction] = useState(null);
   const[selectedEvent, setSelectedEvent] = useState(undefined);
   // [3] Load from sessionStorage so dashboard renders instantly on remount
-  const cached = sessionStorage.getItem('admin_events');
+  const cached = sessionStorage.getItem(Config.STORAGE_ADMIN_EVENTS);
   const[events, setEvents] = useState(cached ? JSON.parse(cached) : []);
 
   const handleClick = (action, selectedEvent) => () => {
@@ -26,7 +26,7 @@ export default function AdminPageHandler() {
     deleteEvent(id).catch(err => logger.error('Failed to delete failed event on retry:', err));
     setEvents(prev => {
       const updated = prev.filter(ev => ev.id !== id);
-      sessionStorage.setItem('admin_events', JSON.stringify(updated));
+      sessionStorage.setItem(Config.STORAGE_ADMIN_EVENTS, JSON.stringify(updated));
       return updated;
     });
     setSelectedEvent({ prompt });
@@ -39,7 +39,7 @@ export default function AdminPageHandler() {
       const fresh = await fetchEvents(true);
       if (fresh.some(e => e.status === 'processing')) {
         setEvents(fresh);
-        sessionStorage.setItem('admin_events', JSON.stringify(fresh));
+        sessionStorage.setItem(Config.STORAGE_ADMIN_EVENTS, JSON.stringify(fresh));
         setAction(Config.DASHBOARD);
       } 
     };
@@ -52,7 +52,7 @@ export default function AdminPageHandler() {
     const interval = setInterval(() => {
       fetchEvents(true).then(fresh => {
         setEvents(fresh);
-        sessionStorage.setItem('admin_events', JSON.stringify(fresh));
+        sessionStorage.setItem(Config.STORAGE_ADMIN_EVENTS, JSON.stringify(fresh));
       }).catch(err => logger.error('Failed to poll draft events:', err));
     }, 5000);
     return () => clearInterval(interval);
@@ -76,7 +76,7 @@ export default function AdminPageHandler() {
         if (data.authenticated) {
           fetchEvents(true).then(fresh => {
             setEvents(fresh);
-            sessionStorage.setItem('admin_events', JSON.stringify(fresh));
+            sessionStorage.setItem(Config.STORAGE_ADMIN_EVENTS, JSON.stringify(fresh));
           }).catch(err => { logger.error('Failed to fetch events after auth:', err); setEvents([]); });
         }
         setAction(data.authenticated ? Config.DASHBOARD : Config.LOGIN);

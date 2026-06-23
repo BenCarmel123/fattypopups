@@ -1,6 +1,7 @@
 import { Card } from '@chakra-ui/react';
 import { handleWhatsApp } from 'utils/externalLinks';
 import * as Config from 'config/index.jsx';
+import * as Classes from 'config/classes.jsx';
 
 const FOOTER_BUTTON_STYLES = `
   .fp-footer-btn {
@@ -26,7 +27,7 @@ const FOOTER_BUTTON_STYLES = `
     background: ${Config.PRIMARY_BUTTON_GRADIENT};
     box-shadow: 0 6px 16px -8px ${Config.TEAL_BORDER};
   }
-  .fp-footer-btn--primary:hover { box-shadow: 0 8px 20px -8px rgba(54, 131, 130, 0.7); transform: translateY(-1px); }
+  .fp-footer-btn--primary:hover { box-shadow: ${Config.TEAL_SHADOW_HOVER}; transform: translateY(-1px); }
   .fp-footer-btn--secondary {
     color: ${Config.SECONDARY_COLOR};
     background: ${Config.TEAL_TINT};
@@ -41,9 +42,9 @@ export default function CardFooter({ event }) {
   return (
     <Card.Footer style={footerStyle}>
       <style>{FOOTER_BUTTON_STYLES}</style>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', width: '100%', maxWidth: '360px', margin: '0 auto' }}>
+      <div style={{ display: Config.FLEX, alignItems: Config.CENTER, gap: '0.6rem', width: Config.MAX, maxWidth: '360px', margin: '0 auto' }}>
         <button
-          className="fp-footer-btn fp-footer-btn--primary"
+          className={Classes.FOOTER_PRIMARY_BTN}
           aria-label={Config.RESERVE}
           onClick={() => window.open(event.reservation_url, Config.BLANK, Config.NO_OPENER)}
         >
@@ -51,8 +52,8 @@ export default function CardFooter({ event }) {
           {Config.RESERVE}
         </button>
         <button
-          className="fp-footer-btn fp-footer-btn--secondary"
-          aria-label="Share"
+          className={Classes.FOOTER_SECONDARY_BTN}
+          aria-label={Config.SHARE}
           onClick={() => handleWhatsApp(event)}
         >
           <Config.FaWhatsapp style={{ fontSize: '1.05rem' }} />

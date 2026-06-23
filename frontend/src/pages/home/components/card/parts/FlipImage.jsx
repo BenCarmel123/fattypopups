@@ -20,7 +20,7 @@ function EventImage({ event, onMeasure }) {
       initial={SLIDE_UP.initial}
       animate={SLIDE_UP.animate}
       exit={SLIDE_UP.exit}
-      transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+      transition={{ duration: 0.16, ease: [0.4, 0, 0.2, 1] }}
       style={{ width: Config.MAX, display: Config.BLOCK, position: Config.RELATIVE }}
     >
       <img
@@ -32,12 +32,12 @@ function EventImage({ event, onMeasure }) {
         fetchPriority={index === 0 ? Config.FETCH_PRIORITY_HIGH : Config.FETCH_PRIORITY_LOW}
         style={{
           width: Config.MAX,
-          height: 'auto',
+          height: Config.AUTO,
           maxWidth: '420px',
           minWidth: 0,
           objectFit: Config.CONTAIN,
           display: Config.BLOCK,
-          background: '#fffaf5',
+          background: Config.IMAGE_FALLBACK_BG,
           borderBottom: `3px solid ${Config.TEAL_BORDER}`,
         }}
       />
@@ -71,7 +71,7 @@ export default function FlipImage({ event }) {
         perspective: '1200px',
         backgroundImage: `url('${Config.BACKGROUND_IMAGE_URL}')`,
         backgroundSize: 'cover',
-        backgroundPosition: 'center',
+        backgroundPosition: Config.CENTER,
         minHeight: imageHeight ? `${imageHeight}px` : undefined,
         overflow: 'hidden',
       }}
@@ -86,15 +86,15 @@ export default function FlipImage({ event }) {
             initial={SLIDE_UP.initial}
             animate={SLIDE_UP.animate}
             exit={SLIDE_UP.exit}
-            transition={{ duration: 0.28, ease: [0.4, 0, 0.2, 1] }}
+            transition={{ duration: 0.179, ease: [0.4, 0, 0.2, 1] }}
             style={{
               padding: '1.8rem 1.5rem',
-              textAlign: 'center',
+              textAlign: Config.CENTER,
               lineHeight: 1.55,
               minHeight: imageHeight ? `${imageHeight}px` : '320px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+              display: Config.FLEX,
+              alignItems: Config.CENTER,
+              justifyContent: Config.CENTER,
             }}
           >
             <p
